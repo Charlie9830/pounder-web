@@ -1,0 +1,54 @@
+.SidebarToolbar {
+    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-Size: 16pt;
+    color: #FFF;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.SidebarVerticalFlexContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.ProjectSelectorsFlexItemContainerOpen {
+    flex-grow: 1;
+}
+
+.ProjectSelectorsFlexItemContainerCollapsed {
+    display: none;
+    
+}
+
+.CollapseButtonFlexItemContainer {
+    flex-grow: 0;
+    width: 25px;
+}
+
+.SidebarOpen {
+    z-index: 2;
+    position: relative; /* So .SidebarCollapseButtonContainer absolute position Works */
+    background: rgba(37,37,37,255);
+    width: 100vw;
+    height: 100vh;
+    float: left;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.SidebarCollapsed {
+    width: 5vw;
+}
+
+
+.SidebarCollapseButton {
+    background: rgba(50,50,50,255);
+    width: 50px;
+    height: 100vh;
+}
+
+

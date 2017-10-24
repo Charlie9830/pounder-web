@@ -1,0 +1,27 @@
+.ToolBarButton {
+    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+    color: #FFF;
+    margin: 5px;
+    cursor: pointer;
+    opacity: 0.85
+}
+
+.ProjectToolbarFlexContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.ToolbarButtonsFlexItemsLeft {
+    flex: 1;
+}
+
+.ToolbarButtonsFlexItemsRight {
+    flex: 0.75;
+}

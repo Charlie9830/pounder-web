@@ -1,0 +1,37 @@
+
+.Project {
+    background: rgba(30,30,30,255);
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+}
+
+.ProjectToolBar {
+    position: fixed;
+    background: rgba(37,37,37,255);
+    width: 100%;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.TaskListsContainer {
+    margin-top: 60px;
+}
+
+.TaskListWidgetContainer {
+    height: fit-content;
+    width: 100%;
+    margin: 5px 0px;
+}
+
+.ProjectName {
+    color: #FFF;
+    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-size: 15pt;
+    margin: 0px;
+}
+
+.ProjectNameContainer {
+    width: 100%;
+    text-align: center;
+}

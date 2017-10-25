@@ -1,6 +1,5 @@
 import '../assets/css/App.css';
 import React from 'react';
-import MouseTrap from 'mousetrap';
 import Sidebar from './Sidebar';
 import Project from './Project';
 import StatusBar from './StatusBar';
@@ -15,7 +14,6 @@ changeFocusedTaskList, moveTaskAsync, updateTaskListWidgetHeaderAsync, getTaskLi
 removeSelectedTaskAsync, updateTaskNameAsync, selectProject, updateProjectLayoutAsync, updateTaskCompleteAsync,
 addNewProjectAsync, removeProjectAsync, updateProjectNameAsync, removeTaskListAsync, updateTaskListSettingsAsync,
 updateTaskDueDateAsync } from 'pounder-redux/action-creators';
-import { getFirestore, TASKS, TASKLISTS, PROJECTS, PROJECTLAYOUTS } from 'pounder-firebase';
 
 class App extends React.Component {
   constructor(props) {
@@ -32,7 +30,6 @@ class App extends React.Component {
     
     // Method Bindings.
     this.handleTaskChanged = this.handleTaskChanged.bind(this);
-    this.handleKeyboardShortcut = this.handleKeyboardShortcut.bind(this);
     this.handleTaskListWidgetFocusChange = this.handleTaskListWidgetFocusChange.bind(this);
     this.handleTaskListWidgetHeaderChanged = this.handleTaskListWidgetHeaderChanged.bind(this);
     this.handleProjectSelectorClick = this.handleProjectSelectorClick.bind(this);
@@ -41,7 +38,6 @@ class App extends React.Component {
     this.handleRemoveProjectClick = this.handleRemoveProjectClick.bind(this);
     this.handleProjectNameSubmit = this.handleProjectNameSubmit.bind(this);
     this.handleTaskListWidgetRemoveButtonClick = this.handleTaskListWidgetRemoveButtonClick.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleAddTaskButtonClick = this.handleAddTaskButtonClick.bind(this);
     this.addNewTask = this.addNewTask.bind(this);
     this.handleRemoveTaskButtonClick = this.handleRemoveTaskButtonClick.bind(this);
@@ -50,8 +46,6 @@ class App extends React.Component {
     this.handleRemoveTaskListButtonClick = this.handleRemoveTaskListButtonClick.bind(this);
     this.handleTaskListSettingsChanged = this.handleTaskListSettingsChanged.bind(this);
     this.handleTaskClick = this.handleTaskClick.bind(this);
-    this.handleCtrlKeyDown = this.handleCtrlKeyDown.bind(this);
-    this.handleCtrlKeyUp = this.handleCtrlKeyUp.bind(this);
     this.handleTaskTwoFingerTouch = this.handleTaskTwoFingerTouch.bind(this);
     this.handleDueDateClick = this.handleDueDateClick.bind(this);
     this.handleNewDateSubmit = this.handleNewDateSubmit.bind(this);
@@ -60,11 +54,6 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-    // MouseTrap.
-    MouseTrap.bind(['mod+n', 'mod+shift+n', 'shift+esc', 'mod+shift+i', 'mod+f'], this.handleKeyboardShortcut);
-    MouseTrap.bind("mod", this.handleCtrlKeyDown, 'keydown');
-    MouseTrap.bind("mod", this.handleCtrlKeyUp, 'keyup');
-
     // TODO: Bring connection Status Monitoring over to Firestore.
     // Setup Connection Monitoring.
     // var connectionRef = Firebase.database().ref(".info/connected");
@@ -85,10 +74,6 @@ class App extends React.Component {
   }
   
   componentWillUnmount(){
-    MouseTrap.unBind(['ctrl+n', 'ctrl+shift+n', 'shift+esc', 'mod+shift+i', 'mod+f'], this.handleKeyboardShortcut);
-    MouseTrap.unBind("mod", this.handleCtrlKeyDown);
-    MouseTrap.unBind("mod", this.handleCtrlKeyUp);
-
     // Stop listening to the Database.
     this.props.dispatch(unsubscribeProjectsAsync());
     this.props.dispatch(unsubscribeTaskListsAsync());
@@ -181,24 +166,14 @@ class App extends React.Component {
     this.props.dispatch(openCalendar(taskListWidgetId, taskId));
   }
 
-  handleCtrlKeyDown(mouseTrap) {
-    this.isCtrlKeyDown = true;
-  }
-
-  handleCtrlKeyUp(mouseTrap) {
-    this.isCtrlKeyDown = false;
-  }
-
   handleTaskClick(element, projectId, taskListWidgetId) {
     // TODO: Do you need to provide the entire Element as a parameter? Why not just the taskID?
     var selectedTask = this.props.selectedTask;
     var openCalendarId = this.props.openCalendarId === element.props.taskId ? this.props.openCalendarId : -1; // Keep calendar Open if it already Open.
 
-    if (this.isCtrlKeyDown) {
-      this.props.dispatch(startTaskMove(element.props.taskId, taskListWidgetId));
-    }
-
-    else {
+    // If a task is already moving, it's completion will be handled by the Task List Focus change. Letting the selecition handling runs
+    // causes problems.
+    if (this.props.isATaskMoving === false) {
       if (selectedTask.taskListWidgetId === taskListWidgetId &&
         selectedTask.taskId === element.props.taskId) {
         // Task Already Selected. Exclusively open it's Text Input.
@@ -237,25 +212,6 @@ class App extends React.Component {
 
   handleTaskChanged(projectId, taskListWidgetId, taskId, newData) {
     this.props.dispatch(updateTaskNameAsync(taskListWidgetId, taskId, newData));
-  }
-
-  handleKeyDown(e) {
-  }
-
-
-  handleKeyboardShortcut(mouseTrap){
-    // Ctrl + n
-    if (mouseTrap.ctrlKey && mouseTrap.key === "n")
-      {
-        this.addNewTask();
-      }
-
-    // Ctrl + Shift + N
-    if (mouseTrap.ctrlKey && mouseTrap.shiftKey && mouseTrap.key === "N") {
-      // Add a new TaskList.
-      this.addNewTaskList();
-    }
-    
   }
 
   addNewTaskList() {

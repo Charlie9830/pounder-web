@@ -20,9 +20,6 @@
   flex-grow: 1;
 }
 
-.TaskInactiveStyle:hover {
-  background: rgba(52,55,56,255);
-}
 
 .TaskActiveStyle {
   background: rgba(63,63,76,255);

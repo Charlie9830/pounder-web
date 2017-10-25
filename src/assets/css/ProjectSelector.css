@@ -73,9 +73,6 @@
   border: 0px solid #FFF;
 }
 
-.ProjectSelectorInactiveStyle:hover {
-  background: rgba(52,52,52,255);
-}
 
 .ProjectSelectorActiveStyle {
   background: rgba(63,63,76,255);

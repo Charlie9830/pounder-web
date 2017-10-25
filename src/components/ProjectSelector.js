@@ -18,7 +18,7 @@ class ProjectSelector extends React.Component {
 
         return (
             <div className="ProjectSelectorContainer">
-                <div className={currentClassName} onClick={this.handleClick} onDoubleClick={this.handleDoubleClick}>
+                <div className={currentClassName} ref="projectSelector" onClick={this.handleClick} onDoubleClick={this.handleDoubleClick}>
                     <div className="ProjectSelectorFlexContainer">
                         <div className="ProjectSelectorLabelContainer">
                             {projectLabelJSX}

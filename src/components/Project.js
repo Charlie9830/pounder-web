@@ -1,6 +1,5 @@
 import React from 'react';
 import TaskListWidget from './TaskListWidget';
-import MouseTrap from 'mousetrap';
 import '../assets/css/Project.css';
 import ProjectToolBar from './ProjectToolBar';
 
@@ -30,14 +29,10 @@ class Project extends React.Component{
         this.handleTaskListSettingsButtonClick = this.handleTaskListSettingsButtonClick.bind(this);
     }
     
-    componentDidMount() {
-        MouseTrap.bind("mod", this.handleCtrlKeyDown, 'keydown');
-        MouseTrap.bind("mod", this.handleCtrlKeyUp, 'keyup');        
+    componentDidMount() {   
     }
 
     componentWillUnmount() {
-        MouseTrap.unBind("mod", this.handleCtrlKeyDown);
-        MouseTrap.unBind("mod", this.handleCtrlKeyUp);
     }
 
     render() {

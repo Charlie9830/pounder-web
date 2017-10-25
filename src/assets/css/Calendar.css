@@ -58,10 +58,6 @@
 }
 
 
-.CalendarPopupContainer .ShortcutItemContainer:hover {
-    background: rgba(52,52,52,255);
-}
-
 .CalenderPopupContainer .ShortcutItemContainer .SideBySide {
     float: left;
 }

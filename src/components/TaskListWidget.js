@@ -14,7 +14,7 @@ class TaskListWidget extends React.Component {
         this.handleTaskClick = this.handleTaskClick.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleWidgetClick = this.handleWidgetClick.bind(this);
-        this.handleHeaderDoubleClick = this.handleHeaderDoubleClick.bind(this);
+        this.handleHeaderPress = this.handleHeaderPress.bind(this);
         this.handleTaskListHeaderSubmit = this.handleTaskListHeaderSubmit.bind(this);
         this.handleTaskCheckBoxClick = this.handleTaskCheckBoxClick.bind(this);
         this.handleRemoveButtonClick = this.handleRemoveButtonClick.bind(this);
@@ -77,7 +77,7 @@ class TaskListWidget extends React.Component {
         return (
             <div className={style} onClick={this.handleWidgetClick}>
                 <ListToolbar headerText={this.props.taskListName} isHeaderOpen={this.props.isHeaderOpen}
-                 onHeaderDoubleClick={this.handleHeaderDoubleClick} onHeaderSubmit={this.handleTaskListHeaderSubmit}
+                 onHeaderPress={this.handleHeaderPress} onHeaderSubmit={this.handleTaskListHeaderSubmit}
                  onRemoveButtonClick={this.handleRemoveButtonClick} isSettingsMenuOpen={isSettingsMenuOpen}
                  onTaskListSettingsChanged={this.handleTaskListSettingsChanged}
                  settings={this.props.settings} onSettingsButtonClick={this.handleSettingsButtonClick}/>
@@ -128,8 +128,8 @@ class TaskListWidget extends React.Component {
         }   
     }
 
-    handleHeaderDoubleClick() {
-        this.props.onHeaderDoubleClick(this.props.taskListWidgetId);
+    handleHeaderPress() {
+        this.props.onHeaderPress(this.props.taskListWidgetId);
     }
 
     handleTaskListHeaderSubmit(newData) {

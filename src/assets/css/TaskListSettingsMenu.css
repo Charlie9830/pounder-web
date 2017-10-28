@@ -3,7 +3,8 @@
     top: 5px;
     left: 5px;
     width: 150px;
-    height: 150px;
+    height: 193px;
+    border: 1px solid white;
     z-index: 2;
     background: rgba(37,37,37,255);
 }

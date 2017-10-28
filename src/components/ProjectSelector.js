@@ -1,14 +1,21 @@
 import React from 'react';
 import '../assets/css/ProjectSelector.css';
+import Hammer from 'hammerjs';
 
 class ProjectSelector extends React.Component {
     constructor(props) {
         super(props);
 
         this.handleClick = this.handleClick.bind(this);
-        this.handleDoubleClick = this.handleDoubleClick.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.getDueDateCountsJSX = this.getDueDateCountsJSX.bind(this);
+    }
+
+    componentDidMount() {
+        var hammer = new Hammer(this.refs.projectSelector);
+        hammer.on('press', ev => {
+            this.props.onInputOpen(this.props.projectSelectorId);
+        })
     }
 
     render(){
@@ -18,7 +25,7 @@ class ProjectSelector extends React.Component {
 
         return (
             <div className="ProjectSelectorContainer">
-                <div className={currentClassName} ref="projectSelector" onClick={this.handleClick} onDoubleClick={this.handleDoubleClick}>
+                <div className={currentClassName} ref="projectSelector" onClick={this.handleClick}>
                     <div className="ProjectSelectorFlexContainer">
                         <div className="ProjectSelectorLabelContainer">
                             {projectLabelJSX}
@@ -68,10 +75,6 @@ class ProjectSelector extends React.Component {
 
     handleClick(e) {
         this.props.onClick(e, this.props.projectSelectorId);
-    }
-
-    handleDoubleClick(e) {
-        this.props.onDoubleClick(e, this.props.projectSelectorId);
     }
 
     handleKeyPress(e) {

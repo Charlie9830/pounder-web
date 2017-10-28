@@ -1,16 +1,23 @@
 import React from 'react';
 import '../assets/css/ListToolbar.css';
 import TaskListSettingsMenu from './TaskListSettingsMenu';
+import Hammer from 'hammerjs';
 
 class ListToolbar extends React.Component{
     constructor(props) {
         super(props);
 
-        this.handleDoubleClick = this.handleDoubleClick.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleRemoveButtonClick = this.handleRemoveButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.handleTaskListSettingsChanged = this.handleTaskListSettingsChanged.bind(this);
+    }
+
+    componentDidMount() {
+        var hammer = new Hammer(this.refs.listToolbarLabel);
+        hammer.on('press', ev => {
+            this.props.onHeaderPress()
+        })
     }
 
     render() {
@@ -55,15 +62,11 @@ class ListToolbar extends React.Component{
 
         else {
             return (
-                <label className="ListToolbarHeader" onDoubleClick={this.handleDoubleClick}>
+                <label className="ListToolbarHeader" ref="listToolbarLabel">
                     {this.props.headerText}  
                  </label>
             )
         }
-    }
-
-    handleDoubleClick(e) {
-        this.props.onHeaderDoubleClick();
     }
 
     handleRemoveButtonClick(e) {

@@ -9,7 +9,7 @@ class Sidebar extends React.Component{
 
         // Method Bindings.
         this.handleProjectSelectorClick = this.handleProjectSelectorClick.bind(this);
-        this.handleProjectSelectorDoubleClick = this.handleProjectSelectorDoubleClick.bind(this);
+        this.handleProjectSelectorInputOpen = this.handleProjectSelectorInputOpen.bind(this);
         this.handleAddProjectClick = this.handleAddProjectClick.bind(this);
         this.handleRemoveProjectClick = this.handleRemoveProjectClick.bind(this);
         this.handleProjectNameSubmit = this.handleProjectNameSubmit.bind(this);
@@ -34,7 +34,7 @@ class Sidebar extends React.Component{
 
             return (
                 <ProjectSelector key={index} projectSelectorId={item.uid} projectName={item.projectName} isSelected={isSelected}
-                    isInputOpen={isInputOpen} onClick={this.handleProjectSelectorClick} onDoubleClick={this.handleProjectSelectorDoubleClick}
+                    isInputOpen={isInputOpen} onClick={this.handleProjectSelectorClick} onInputOpen={this.handleProjectSelectorInputOpen}
                     onProjectNameSubmit={this.handleProjectNameSubmit} dueDateDisplay={dueDateDisplay} />
             )
         })
@@ -53,7 +53,8 @@ class Sidebar extends React.Component{
                         </div>
                     </div>
                     <div className="CollapseButtonFlexItemContainer">
-                        <div className="SidebarCollapseButton" onClick={this.handleSidebarCollapseButtonClick}/>
+                        <div className="SidebarCollapseButton" onClick={this.handleSidebarCollapseButtonClick}>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,12 +81,15 @@ class Sidebar extends React.Component{
     }
 
     handleProjectSelectorClick(e, projectSelectorId) {
-        this.setState({isCollapsed: true});
+        if (this.state.openProjectSelectorInputId !== projectSelectorId) {
+            this.setState({isCollapsed: true }); // Don't collapse if an Input is open.
+        }
+
         this.props.onProjectSelectorClick(e, projectSelectorId);
     }
 
-    handleProjectSelectorDoubleClick(e, projectSelectorId) {
-        this.setState({openProjectSelectorInputId: projectSelectorId});
+    handleProjectSelectorInputOpen(projectSelectorId) {
+        this.setState({openProjectSelectorInputId: projectSelectorId });
     }
 
     handleAddProjectClick(e) {

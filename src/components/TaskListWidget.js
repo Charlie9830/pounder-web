@@ -27,13 +27,11 @@ class TaskListWidget extends React.Component {
     }
 
     componentDidMount(){
-        var _this = this;
     }
     
 
     render(){
         var builtTasks = [];
-        var includesNewTask = false;
 
         if (this.props.tasks != undefined) {
             // Sort Tasks.
@@ -119,8 +117,6 @@ class TaskListWidget extends React.Component {
     }
 
     handleKeyPress(e, taskId, newData) {
-        var _this = this;
-
         // Enter Key.
         if (e.key == "Enter") {
             // Handle Data Changes.

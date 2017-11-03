@@ -7,17 +7,23 @@ class ListToolbar extends React.Component{
     constructor(props) {
         super(props);
 
+        // Method Bindings.
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleRemoveButtonClick = this.handleRemoveButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.handleTaskListSettingsChanged = this.handleTaskListSettingsChanged.bind(this);
+        this.handleHeaderPress = this.handleHeaderPress.bind(this);
     }
 
     componentDidMount() {
-        var hammer = new Hammer(this.refs.listToolbarLabel);
-        hammer.on('press', ev => {
-            this.props.onHeaderPress()
-        })
+        // Initialize Hammerjs.
+        var hammer = new Hammer(this.refs.listToolbarHeaderContainer);
+        hammer.on('press', this.handleHeaderPress);
+    }
+
+    handleHeaderPress(ev) {
+        console.log("Header Press Received!");
+        this.props.onHeaderPress();
     }
 
     render() {
@@ -26,11 +32,13 @@ class ListToolbar extends React.Component{
 
         return (
             <div className="ListToolbar">
-                <div className="SortingMenu">
+                <div className="SettingsMenu">
                     <img id="ListToolbarSettingsIcon" src="SettingsIcon.svg" onClick={this.handleSettingsClick}/>
                     {settingsMenu}
                 </div>
-                {listToolbarHeader}
+                <div className="ListToolbarHeader" ref="listToolbarHeaderContainer">
+                    {listToolbarHeader}
+                </div>
                 <label className="DeleteButton" onClick={this.handleRemoveButtonClick}>X</label>
             </div>
         )
@@ -62,7 +70,7 @@ class ListToolbar extends React.Component{
 
         else {
             return (
-                <label className="ListToolbarHeader" ref="listToolbarLabel">
+                <label>
                     {this.props.headerText}  
                  </label>
             )

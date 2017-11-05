@@ -69,6 +69,9 @@ class App extends React.Component {
     // Get Projects (Also attaches a Value listener for future changes).
     this.props.dispatch(getProjectsAsync());
 
+    // Get TaskLists (Also attaches a Value listener for future changes).
+    this.props.dispatch(getTaskListsAsync());
+
     // Get Tasks (Also attaches a Value listener for future changes).
     this.props.dispatch(getTasksAsync());
   }
@@ -246,12 +249,10 @@ class App extends React.Component {
 
     if (outgoingProjectId !== -1) {
       // Old Listeners.
-      this.props.dispatch(unsubscribeTaskListsAsync());
       this.props.dispatch(unsubscribeProjectLayoutsAsync());
     }
 
     if (incomingProjectId !== -1 ) {
-      this.props.dispatch(getTaskListsAsync(projectSelectorId));
       this.props.dispatch(getProjectLayoutsAsync(projectSelectorId));
     }
 

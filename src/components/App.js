@@ -13,7 +13,7 @@ setOpenTaskListSettingsMenuId, openCalendar, addNewTaskListAsync, addNewTaskAsyn
 changeFocusedTaskList, moveTaskAsync, updateTaskListWidgetHeaderAsync, getTaskListsAsync, getProjectLayoutsAsync,
 removeSelectedTaskAsync, updateTaskNameAsync, selectProject, updateProjectLayoutAsync, updateTaskCompleteAsync,
 addNewProjectAsync, removeProjectAsync, updateProjectNameAsync, removeTaskListAsync, updateTaskListSettingsAsync,
-updateTaskDueDateAsync } from 'pounder-redux/action-creators';
+updateTaskDueDateAsync, updateTaskPriority, openTaskListJumpMenu, closeTaskListJumpMenu } from 'pounder-redux/action-creators';
 
 class App extends React.Component {
   constructor(props) {
@@ -51,6 +51,8 @@ class App extends React.Component {
     this.handleNewDateSubmit = this.handleNewDateSubmit.bind(this);
     this.handleTaskListSettingsButtonClick = this.handleTaskListSettingsButtonClick.bind(this);
     this.getSelectedProjectTasks = this.getSelectedProjectTasks.bind(this);
+    this.handleTaskPriorityToggleClick = this.handleTaskPriorityToggleClick.bind(this);
+    this.handleTaskListJumpMenuButtonClick = this.handleTaskListJumpMenuButtonClick.bind(this);
   }
 
   componentDidMount(){
@@ -116,12 +118,28 @@ class App extends React.Component {
               openCalendarId={this.props.openCalendarId} onNewDateSubmit={this.handleNewDateSubmit}
               onTaskListSettingsButtonClick={this.handleTaskListSettingsButtonClick}
               openTaskListSettingsMenuId={this.props.openTaskListSettingsMenuId}
+              onTaskPriorityToggleClick={this.handleTaskPriorityToggleClick}
+              onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick}
+              isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen}
             />
           </div>
         </div>
-
       </div>
     );
+  }
+
+  handleTaskListJumpMenuButtonClick() {
+    if (this.props.isTaskListJumpMenuOpen) {
+      this.props.dispatch(closeTaskListJumpMenu());
+    }
+
+    else {
+      this.props.dispatch(openTaskListJumpMenu());
+    }
+  }
+
+  handleTaskPriorityToggleClick(taskId, newValue) {
+    this.props.dispatch(updateTaskPriority(taskId, newValue));
   }
 
   getProjectName(props) {
@@ -318,6 +336,7 @@ const mapStateToProps = state => {
     openCalendarId: state.openCalendarId,
     openTaskListSettingsMenuId: state.openTaskListSettingsMenuId,
     projectSelectorDueDateDisplays: state.projectSelectorDueDateDisplays,
+    isTaskListJumpMenuOpen: state.isTaskListJumpMenuOpen,
   }
 }
 

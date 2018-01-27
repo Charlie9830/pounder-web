@@ -2,8 +2,9 @@ import React from 'react';
 import TaskListWidget from './TaskListWidget';
 import '../assets/css/Project.css';
 import ProjectToolBar from './ProjectToolBar';
+import scrollToComponent from 'react-scroll-to-component';
 
-class Project extends React.Component{
+class Project extends React.Component {
     constructor(props){
         super(props);
 
@@ -27,6 +28,9 @@ class Project extends React.Component{
         this.handleDueDateClick = this.handleDueDateClick.bind(this);
         this.handleNewDateSubmit = this.handleNewDateSubmit.bind(this);
         this.handleTaskListSettingsButtonClick = this.handleTaskListSettingsButtonClick.bind(this);
+        this.handleTaskPriorityToggleClick = this.handleTaskPriorityToggleClick.bind(this);
+        this.handleTaskListJumpMenuItemClick = this.handleTaskListJumpMenuItemClick.bind(this);
+        this.handleTaskListJumpMenuButtonClick = this.handleTaskListJumpMenuButtonClick.bind(this);
     }
     
     componentDidMount() {   
@@ -64,9 +68,11 @@ class Project extends React.Component{
             }
 
             var movingTaskId = item.uid === this.props.sourceTaskListId ? this.props.movingTaskId : -1;
+
             return (
                 <div key={index} className="TaskListWidgetContainer">
-                    <TaskListWidget taskListWidgetId={item.uid} isFocused={isFocused} taskListName={item.taskListName}
+                    <TaskListWidget ref={item.uid}
+                        taskListWidgetId={item.uid} isFocused={isFocused} taskListName={item.taskListName}
                         tasks={tasks} isHeaderOpen={isHeaderOpen} selectedTaskId={selectedTaskId} openTaskInputId={openTaskInputId}
                         onTaskSubmit={this.handleTaskSubmit} onWidgetClick={this.handleWidgetClick} movingTaskId={movingTaskId}
                         onRemoveButtonClick={this.handleTaskListWidgetRemoveButtonClick}
@@ -76,7 +82,8 @@ class Project extends React.Component{
                         onSettingsChanged={this.handleTaskListSettingsChanged} onDueDateClick={this.handleDueDateClick}
                         openCalendarId={this.props.openCalendarId} onNewDateSubmit={this.handleNewDateSubmit}
                         onTaskListSettingsButtonClick={this.handleTaskListSettingsButtonClick}
-                        openTaskListSettingsMenuId={this.props.openTaskListSettingsMenuId} />
+                        openTaskListSettingsMenuId={this.props.openTaskListSettingsMenuId} 
+                        onTaskPriorityToggleClick={this.handleTaskPriorityToggleClick} />
                 </div>
                 
             )
@@ -87,7 +94,8 @@ class Project extends React.Component{
                 <div className="ProjectToolBar">
                     <ProjectToolBar onAddTaskButtonClick={this.handleAddTaskButtonClick} onAddTaskListButtonClick={this.handleAddTaskListButtonClick}
                     onRemoveTaskButtonClick={this.handleRemoveTaskButtonClick} onRemoveTaskListButtonClick={this.handleRemoveTaskListButtonClick}
-                    />
+                    taskLists={filteredTaskListWidgets} onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick}
+                    onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick} isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen}/>
                 </div>
                 <div className="TaskListsContainer">
                     <div className="ProjectNameContainer">
@@ -99,6 +107,24 @@ class Project extends React.Component{
                 </div>
             </div>
         )
+    }
+
+    handleTaskListJumpMenuButtonClick() {
+        this.props.onTaskListJumpMenuButtonClick();
+    }
+
+    handleTaskListJumpMenuItemClick(taskListId) {
+         // Offset here should be the Oppisite of .TaskListContainer padding-top.
+        scrollToComponent(this.refs[taskListId], {align: 'top', offset: -45, duration: 250});
+        this.props.onTaskListWidgetFocusChanged(taskListId, (this.props.focusedTaskListId === taskListId));
+
+        // Tell App to close the Menu.
+        this.props.onTaskListJumpMenuButtonClick();
+
+    }
+
+    handleTaskPriorityToggleClick(taskId, newValue) {
+        this.props.onTaskPriorityToggleClick(taskId, newValue);
     }
 
     handleTaskListSettingsButtonClick(taskListWidgetId) {

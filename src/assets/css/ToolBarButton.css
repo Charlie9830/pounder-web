@@ -19,9 +19,14 @@
 }
 
 .ToolbarButtonsFlexItemsLeft {
-    flex: 1;
+    flex-grow: 1;
+}
+
+.ToolbarButtonsFlexItemsCenter {
+    flex-grow: 1;
+    flex-shrink: 1;
 }
 
 .ToolbarButtonsFlexItemsRight {
-    flex: 0.5;
+    flex-grow: 0.15;
 }

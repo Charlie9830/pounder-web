@@ -11,6 +11,7 @@ class DueDate extends React.Component {
     // Method Bindings.
     this.handleClick = this.handleClick.bind(this);
     this.handleNewDateSubmit = this.handleNewDateSubmit.bind(this);
+    this.handlePriorityToggleClick = this.handlePriorityToggleClick.bind(this);
   }
 
   render() {
@@ -25,13 +26,18 @@ class DueDate extends React.Component {
     );
   }
 
-
   getCalendarMenu(props) {
     if (props.isCalendarOpen) {
       return (
-        <Calendar dueDate={this.props.dueDate} onNewDateSubmit={this.handleNewDateSubmit}/>
+        <Calendar dueDate={this.props.dueDate} onNewDateSubmit={this.handleNewDateSubmit}
+        onPriorityToggleClick={this.handlePriorityToggleClick}
+        isHighPriority={this.props.isHighPriority}/>
       )
     }
+  }
+
+  handlePriorityToggleClick(newValue) {
+    this.props.onPriorityToggleClick(newValue);
   }
 
   handleClick() {

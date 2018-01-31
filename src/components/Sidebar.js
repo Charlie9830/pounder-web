@@ -15,6 +15,7 @@ class Sidebar extends React.Component{
         this.handleProjectNameSubmit = this.handleProjectNameSubmit.bind(this);
         this.handleSidebarCollapseButtonClick = this.handleSidebarCollapseButtonClick.bind(this);
         this.getSidebarToolbarJSX = this.getSidebarToolbarJSX.bind(this);
+        this.handleAccountScreenButtonClick = this.handleAccountScreenButtonClick.bind(this);
 
         this.state = {
             openProjectSelectorInputId: -1,
@@ -63,10 +64,12 @@ class Sidebar extends React.Component{
 
     getSidebarToolbarJSX() {
         if (this.state.isCollapsed !== true) {
+            var accountIconSrc = this.props.isUserLoggedIn ? "AccountIconLoggedIn.svg" : "AccountIconLoggedOut.svg";
             return (
                 <div className="SidebarToolbar">
                     <img className="ToolBarButton" src="NewProjectIcon.svg" onClick={this.handleAddProjectClick} />
                     <img className="ToolBarButton" src="RemoveProjectIcon.svg" onClick={this.handleRemoveProjectClick} />
+                    <img className="AccountScreenButton" src={accountIconSrc} onClick={this.handleAccountScreenButtonClick}/>
                 </div>
             )     
         }
@@ -74,6 +77,10 @@ class Sidebar extends React.Component{
         else {
             return (<div/>)
         }
+    }
+
+    handleAccountScreenButtonClick(e) {
+        this.props.onAccountScreenButtonClick();
     }
 
     handleSidebarCollapseButtonClick(e) {

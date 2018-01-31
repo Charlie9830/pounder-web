@@ -2,6 +2,7 @@ import '../assets/css/App.css';
 import React from 'react';
 import Sidebar from './Sidebar';
 import Project from './Project';
+import AccountScreen from './AccountScreen';
 import StatusBar from './StatusBar';
 import '../assets/css/TaskListWidget.css';
 import '../assets/css/Sidebar.css';
@@ -13,7 +14,8 @@ setOpenTaskListSettingsMenuId, openCalendar, addNewTaskListAsync, addNewTaskAsyn
 changeFocusedTaskList, moveTaskAsync, updateTaskListWidgetHeaderAsync, getTaskListsAsync, getProjectLayoutsAsync,
 removeSelectedTaskAsync, updateTaskNameAsync, selectProject, updateProjectLayoutAsync, updateTaskCompleteAsync,
 addNewProjectAsync, removeProjectAsync, updateProjectNameAsync, removeTaskListAsync, updateTaskListSettingsAsync,
-updateTaskDueDateAsync, updateTaskPriority, openTaskListJumpMenu, closeTaskListJumpMenu } from 'pounder-redux/action-creators';
+updateTaskDueDateAsync, updateTaskPriority, openTaskListJumpMenu, closeTaskListJumpMenu, openAccountScreen,
+logInUser, logOutUser, subscribeToAuth, closeAccountScreen } from 'pounder-redux/action-creators';
 
 class App extends React.Component {
   constructor(props) {
@@ -53,29 +55,14 @@ class App extends React.Component {
     this.getSelectedProjectTasks = this.getSelectedProjectTasks.bind(this);
     this.handleTaskPriorityToggleClick = this.handleTaskPriorityToggleClick.bind(this);
     this.handleTaskListJumpMenuButtonClick = this.handleTaskListJumpMenuButtonClick.bind(this);
+    this.handleAccountScreenButtonClick = this.handleAccountScreenButtonClick.bind(this);
+    this.handleAccountScreenLogInLogOutButtonClick = this.handleAccountScreenLogInLogOutButtonClick.bind(this);
+    this.getAccountScreenJSX = this.getAccountScreenJSX.bind(this);
+    this.handleAccountScreenCloseButtonClick = this.handleAccountScreenCloseButtonClick.bind(this);
   }
 
   componentDidMount(){
-    // TODO: Bring connection Status Monitoring over to Firestore.
-    // Setup Connection Monitoring.
-    // var connectionRef = Firebase.database().ref(".info/connected");
-    // connectionRef.on("value", snap => {
-    //   if (snap.val() === true) {
-    //     this.setState({isConnectedToFirebase: true})
-    //   }
-    //   else {
-    //     this.setState({isConnectedToFirebase: false})
-    //   }
-    // })
-
-    // Get Projects (Also attaches a Value listener for future changes).
-    this.props.dispatch(getProjectsAsync());
-
-    // Get TaskLists (Also attaches a Value listener for future changes).
-    this.props.dispatch(getTaskListsAsync());
-
-    // Get Tasks (Also attaches a Value listener for future changes).
-    this.props.dispatch(getTasksAsync());
+    this.props.dispatch(subscribeToAuth()); // Projects, TaskLists and Tasks will be populated once Authentication is granted.
   }
   
   componentWillUnmount(){
@@ -89,19 +76,19 @@ class App extends React.Component {
   render() {
     var projects = this.props.projects == undefined ? [] : this.props.projects;
     var projectName = this.getProjectName(this.props);
+    var accountScreenJSX = this.getAccountScreenJSX(this.props);
 
     return (
       <div>
-        {/* <StatusBar isAwaitingFirebase={this.props.isAwaitingFirebase} isConnectedToFirebase={this.props.isConnectedToFirebase}
-          errorMessage={this.props.currentErrorMessage} />
-        */}
-        
+        {accountScreenJSX}
+
         <div className="SidebarProjectFlexContainer">
           <div className="SidebarContainer">
             <Sidebar className="Sidebar" projects={projects} selectedProjectId={this.props.selectedProjectId}
               onProjectSelectorClick={this.handleProjectSelectorClick} onAddProjectClick={this.handleAddProjectClick}
               onRemoveProjectClick={this.handleRemoveProjectClick} onProjectNameSubmit={this.handleProjectNameSubmit}
-              projectSelectorDueDateDisplays={this.props.projectSelectorDueDateDisplays} />
+              projectSelectorDueDateDisplays={this.props.projectSelectorDueDateDisplays}
+              onAccountScreenButtonClick={this.handleAccountScreenButtonClick} isUserLoggedIn={this.props.isUserLoggedIn} />
           </div>
           <div className="ProjectContainer">
             <Project taskLists={this.props.taskLists} tasks={this.props.tasks} selectedTask={this.props.selectedTask}
@@ -126,6 +113,44 @@ class App extends React.Component {
         </div>
       </div>
     );
+  }
+
+  handleAccountScreenLogInLogOutButtonClick(email, password) {
+    if (this.props.isUserLoggedIn === false) {
+      this.props.dispatch(logInUser(email, password));
+    }
+
+    else {
+      this.props.dispatch(logOutUser());
+    }
+  }
+
+  getAccountScreenJSX() {
+    if (this.props.isAccountScreenOpen) {
+      return (
+        <div>
+          <AccountScreen isUserLoggedIn={this.props.isUserLoggedIn} authMessage={this.props.authMessage}
+           onButtonClick={this.handleAccountScreenLogInLogOutButtonClick}
+           onCloseButtonClick={this.handleAccountScreenCloseButtonClick}/>
+        </div>
+      )
+    }
+  }
+
+  handleAccountScreenCloseButtonClick() {
+    if (this.props.isAccountScreenOpen === true) {
+      this.props.dispatch(closeAccountScreen());
+    }
+  }
+
+  handleAccountScreenButtonClick() {
+    if (this.props.isAccountScreenOpen) {
+      this.props.dispatch(closeAccountScreen());
+    }
+
+    else {
+      this.props.dispatch(openAccountScreen());
+    }
   }
 
   handleTaskListJumpMenuButtonClick() {
@@ -337,6 +362,9 @@ const mapStateToProps = state => {
     openTaskListSettingsMenuId: state.openTaskListSettingsMenuId,
     projectSelectorDueDateDisplays: state.projectSelectorDueDateDisplays,
     isTaskListJumpMenuOpen: state.isTaskListJumpMenuOpen,
+    isAccountScreenOpen: state.isAccountScreenOpen,
+    isUserLoggedIn: state.isUserLoggedIn,
+    authMessage: state.authMessage,
   }
 }
 

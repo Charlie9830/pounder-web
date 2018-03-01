@@ -32,7 +32,7 @@
 .SidebarOpen {
     z-index: 3;
     position: relative; /* So .SidebarCollapseButtonContainer absolute position Works */
-    background: rgba(37,37,37,255);
+    background: rgba(20,20,20,255);
     width: 100vw;
     height: 100vh;
     float: left;

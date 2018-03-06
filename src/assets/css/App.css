@@ -38,6 +38,6 @@ html, body {
 .ProjectContainer {
   float: right;
   position: absolute;
-  left: 35px;
+  left: 25px;
   width: 90vw;
 }

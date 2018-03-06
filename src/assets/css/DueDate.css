@@ -7,8 +7,8 @@
 .DueDate {
   position: relative;
   border-Radius: 50%;
-  width: 28px;
-  height: 28px; /* Set line-height of .DueDateText equal to this */
+  width: 32px;
+  height: 32px; /* Set line-height of .DueDateText equal to this */
   color: #FFF;
   flex-grow: 1;
   margin-right: 5px;
@@ -21,14 +21,14 @@
   font-weight: 700;
   text-align: center;
   margin: 0 auto;
-  line-height: 28px; /* Set height: of .DueDate Equal to This */
+  line-height: 32px; /* Set height: of .DueDate Equal to This */
   user-select: none;
 }
 
 .Complete {
   background: #444;
-  height: 20px;
-  width: 20px;
+  height: 32px;
+  width: 32px;
 }
 
 .Overdue {
@@ -46,6 +46,6 @@
 .NotSet {
   background: transparent;
   border: 1px solid #777;
-  height: 20px;
-  width: 20px;
+  height: 32px;
+  width: 32px;
 }

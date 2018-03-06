@@ -7,9 +7,9 @@
 
 .TaskCheckBoxIsNotChecked {
   flex-shrink: 1;
-  width: 12px;
-  height: 12px;
-  border: 1px solid #FFF;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #DDD;
   margin-left: 5px;
   animation: isDeChecking 0.25s linear 1;
 }
@@ -21,10 +21,10 @@
 
 .TaskCheckBoxIsChecked {
   flex-shrink: 1;
-  width: 12px;
-  height: 12px;
+  width: 15px;
+  height: 15px;
   border: 1px solid #777;
-  background: rgba(80,80,80,255);
+  background: rgba(60,60,60,255);
   margin-left: 5px;
   animation: isChecking 0.25s linear 1;
 }

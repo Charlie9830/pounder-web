@@ -7,7 +7,7 @@
 
 .ProjectToolBar {
     background: rgba(20,20,20,255);
-    width: 90%;
+    width: 100%;
     height: 45px;
     -webkit-user-select: none;
     user-select: none;
@@ -18,6 +18,7 @@
 .TaskListsContainer {
     padding-top: 45px; /* This should always be the opposite of the offset given to ScrollToComponent(). Otherwise it will scroll the
     list toolbar out of view. */
+    margin-left: 10px;
 }
 
 .TaskListWidgetContainer {
@@ -35,4 +36,8 @@
 .ProjectNameContainer {
     width: 100%;
     text-align: center;
+    margin-top: 5px;
+    margin-bottom: 10px;
 }
+
+

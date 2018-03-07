@@ -25,6 +25,10 @@
   user-select: none;
 }
 
+.Today .DueDateText {
+  line-height: 28px; /* Override Line Height to re center text */
+}
+
 .Complete {
   background: #444;
   height: 32px;
@@ -32,11 +36,18 @@
 }
 
 .Overdue {
-  background: #F00;
+  background: #FF0000;
 }
 
 .Soon {
   background: #FF9300;
+}
+
+.Today {
+  background: #FF9300;
+  border: 4px #CC0000 solid;
+  height: 28px;
+  width: 28px;
 }
 
 .Later {

@@ -105,23 +105,23 @@ class Calendar extends React.Component {
     }
 
     handleNoDueDateClick() {
-        this.submitNewDateSelection(getClearedDate());
+        this.props.onNewDateSubmit(getClearedDate());
     }
 
     handleDayClick(day) {
-        this.submitNewDateSelection(getDayPickerDate(day));
+        this.props.onNewDateSubmit(getDayPickerDate(day));
     }
 
     handleTodayItemClick() {
-        this.submitNewDateSelection(getDaysForwardDate(0));
+        this.props.onNewDateSubmit(getDaysForwardDate(0));
     }
 
     handleTomorrowItemClick() {
-        this.submitNewDateSelection(getDaysForwardDate(1));
+        this.props.onNewDateSubmit(getDaysForwardDate(1));
     }
 
     handleOneWeekItemClick() {
-        this.submitNewDateSelection(getWeeksForwardDate(1));
+        this.props.onNewDateSubmit(getWeeksForwardDate(1));
     }
 
     handleDaysChanged() {
@@ -134,21 +134,8 @@ class Calendar extends React.Component {
 
     submitDays() {
         var days = this.refs.DaysInput.value;
-        this.submitNewDateSelection(getDaysForwardDate(days));
+        this.props.onNewDateSubmit(getDaysForwardDate(days));
     }
-
-    submitNewDateSelection(newDate) {
-        if (newDate !== "") {
-            var normalizedDate = newDate.startOf('day').hours(12);
-            this.props.onNewDateSubmit(normalizedDate.toISOString());
-        }
-
-        else {
-            this.props.onNewDateSubmit(newDate);
-        }
-        
-    }
-    
 }
 
 export default Calendar;

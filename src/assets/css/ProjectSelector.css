@@ -42,12 +42,8 @@
   background: #F00;
 }
 
-.ProjectSelectorIcon[data-colour*="YellowRed"] {
-  background: #FF9300;
-  border: 2px red solid;
-  width: 22px; /* Width and Height to account for Increased Border */
-  height: 22px;
-  padding: -2px auto; /* Corrects Text postion once Border is added */
+.ProjectSelectorIcon[data-colour*="Blue"] {
+  background: #01D;
 }
 
 .ProjectSelectorIcon[data-colour*="Yellow"] {
@@ -68,6 +64,7 @@
   font-size: 12pt;
   color: #FFF;
   text-align: center;
+  line-height: 24px;
   margin: 0px auto;
 }
 

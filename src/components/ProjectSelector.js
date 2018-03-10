@@ -40,6 +40,7 @@ class ProjectSelector extends React.Component {
     }
 
     getDueDateCountsJSX(props) {
+        // eslint-disable-next-line
         if (props.dueDateDisplay == undefined || props.dueDateDisplay == {}) {
             return ( <div/>)
         }

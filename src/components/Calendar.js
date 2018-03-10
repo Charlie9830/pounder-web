@@ -19,14 +19,11 @@ class Calendar extends React.Component {
         this.handleTomorrowItemClick = this.handleTomorrowItemClick.bind(this);
         this.handleOneWeekItemClick = this.handleOneWeekItemClick.bind(this);
         this.handleDaysChanged = this.handleDaysChanged.bind(this);
-        this.submitNewDateSelection = this.submitNewDateSelection.bind(this);
         this.handleNoDueDateClick = this.handleNoDueDateClick.bind(this);
         this.handleDaysApplyButtonClick = this.handleDaysApplyButtonClick.bind(this);
         this.submitDays = this.submitDays.bind(this);
         this.handleDaysInputKeyPress = this.handleDaysInputKeyPress.bind(this);
         this.handlePriorityToggleClick = this.handlePriorityToggleClick.bind(this);
-
-        const dateFormat = "DD-MM-YYYY";
     }
 
     render() {

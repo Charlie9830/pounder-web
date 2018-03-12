@@ -11,6 +11,7 @@ class TaskListSettingsMenu extends React.Component {
         this.handleSortByCompletedTasksItemClick = this.handleSortByCompletedTasksItemClick.bind(this);
         this.handleSortByDateAddedItemClick = this.handleSortByDateAddedItemClick.bind(this);
         this.handleSortByDueDateItemClick = this.handleSortByDueDateItemClick.bind(this);
+        this.handleSortByPriorityItemClick = this.handleSortByPriorityItemClick.bind(this);
     }
 
     render() {
@@ -51,6 +52,10 @@ class TaskListSettingsMenu extends React.Component {
         var isCompleteTasksShown = this.refs.showCompleteTasksCheckbox.checked;
         this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "date added"));
     }
+    handleSortByPriorityItemClick(e) {
+        var isCompleteTasksShown = this.refs.showCompleteTasksCheckbox.checked;
+        this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "priority"));
+    }
 
     getSelectableMenuItems(props) {
         var jsx = [];
@@ -73,12 +78,19 @@ class TaskListSettingsMenu extends React.Component {
                 <label className="TaskListSettingsMenuItemContainer"> Sort by Due Date </label>
             </div>
        ))
-
+       // Sort by Priority.
+       var priorityClassName = this.props.settings.sortBy === "priority" ?
+            "TaskListSettingsMenuItemContainer" + selectedClassSuffix : "TaskListSettingsMenuItemContainer";
+        jsx.push((
+            <div key="2" className={priorityClassName} onClick={this.handleSortByPriorityItemClick}>
+                <label className="TaskListSettingsMenuItemContainer"> Sort by Priority </label>
+            </div>
+        ))
         // Sort by Date Added.
         var dateAddedClassName = this.props.settings.sortBy === "date added" ?
             "TaskListSettingsMenuItemContainer" + selectedClassSuffix : "TaskListSettingsMenuItemContainer";
         jsx.push((
-            <div key="2" className={dateAddedClassName} onClick={this.handleSortByDateAddedItemClick}>
+            <div key="3" className={dateAddedClassName} onClick={this.handleSortByDateAddedItemClick}>
                 <label className="TaskListSettingsMenuItemContainer"> Sort by Date Added </label>
             </div>
         ))

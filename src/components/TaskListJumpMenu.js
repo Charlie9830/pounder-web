@@ -2,6 +2,7 @@ import React from 'react';
 import TaskListJumpMenuItem from './TaskListJumpMenuItem';
 import '../assets/css/ToolBarButton.css';
 import '../assets/css/TaskListJumpMenu.css';
+import TaskListJumpMenuIcon from '../assets/icons/TaskListJumpMenuIcon.svg';
 
 class TaskListJumpMenu extends React.Component {
     constructor(props) {

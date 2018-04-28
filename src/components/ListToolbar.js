@@ -2,6 +2,7 @@ import React from 'react';
 import '../assets/css/ListToolbar.css';
 import TaskListSettingsMenu from './TaskListSettingsMenu';
 import Hammer from 'hammerjs';
+import SettingsIcon from '../assets/icons/SettingsIcon.svg';
 
 class ListToolbar extends React.Component{
     constructor(props) {
@@ -22,7 +23,6 @@ class ListToolbar extends React.Component{
     }
 
     handleHeaderPress(ev) {
-        console.log("Header Press Received!");
         this.props.onHeaderPress();
     }
 
@@ -33,7 +33,7 @@ class ListToolbar extends React.Component{
         return (
             <div className="ListToolbar">
                 <div className="SettingsMenu">
-                    <img id="ListToolbarSettingsIcon" src="SettingsIcon.svg" onClick={this.handleSettingsClick}/>
+                    <img id="ListToolbarSettingsIcon" src={SettingsIcon} onClick={this.handleSettingsClick}/>
                     {settingsMenu}
                 </div>
                 <div className="ListToolbarHeader" ref="listToolbarHeaderContainer">

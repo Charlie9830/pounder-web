@@ -9,9 +9,13 @@
 
 .TaskText {
   font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+  width: 100%;
   color: #EEE;
   font-Size: 12pt;
   margin-left: 8px;
+  margin-right: 8px;
+  margin-bottom: 3px;
+  margin-top: 3px;
 }
 
 .TaskText[data-ishighpriority*="true"] {
@@ -20,13 +24,19 @@
   font-stretch: 1;
 }
 
+
 .Fade {
   opacity: 0.15;
   font-weight: 200;
 }
 
 .TaskTextInput {
-  width: 300px;
+  width: 100%;
+  min-height: 20px;
+  margin: 10px 0px;
+  resize: none;
+  vertical-align: middle;
+  font-size: 12pt;
   font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
   color: #FFF;
   background: rgba(100,100,100,255);

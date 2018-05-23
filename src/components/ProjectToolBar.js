@@ -22,18 +22,28 @@ class ProjectToolBar extends React.Component {
         return (
             <div>
                 <div className="ProjectToolbarFlexContainer">
-                    <div className="ToolbarButtonsFlexItemsLeft">
-                        <img className="ToolBarButton" src={NewTaskIcon} onClick={this.handleAddTaskButtonClick} />
-                        <img className="ToolBarButton" src={RemoveTaskIcon} onClick={this.handleRemoveTaskButtonClick} />
+                    <div className="ToolbarPairsFlexContainer">
+                        <div className="ToolBarButtonContainer">
+                            <img className="ToolBarButton" src={NewTaskIcon} onClick={this.handleAddTaskButtonClick} />
+                        </div>
+                        <div className="ToolBarButtonContainer">
+                            <img className="ToolBarButton" src={RemoveTaskIcon} onClick={this.handleRemoveTaskButtonClick} />
+                        </div>
                     </div>
-                    <div className="ToolbarButtonsFlexItemsCenter">
+                    <div className="ToolBarButtonContainer">
                         <TaskListJumpMenu taskLists={this.props.taskLists} isOpen={this.props.isTaskListJumpMenuOpen} onMenuButtonClick={this.handleTaskListJumpMenuButtonClick}
-                        onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick}/>
+                            onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick} />
                     </div>
-                    <div className="ToolbarButtonsFlexItemsRight">
-                        <img className="ToolBarButton" src={NewTaskListIcon} onClick={this.handleAddTaskListButtonClick} />
-                        <img className="ToolBarButton" src={RemoveTaskListIcon} onClick={this.handleRemoveTaskListButtonCLick} />
+                    <div className="ToolbarPairsFlexContainer">
+                        <div className="ToolBarButtonContainer">
+                            <img className="ToolBarButton" src={NewTaskListIcon} onClick={this.handleAddTaskListButtonClick} />
+                        </div>
+                        <div className="ToolBarButtonContainer">
+                            <img className="ToolBarButton" src={RemoveTaskListIcon} onClick={this.handleRemoveTaskListButtonCLick} />
+                        </div>
                     </div>
+
+
                 </div>
             </div>
         )

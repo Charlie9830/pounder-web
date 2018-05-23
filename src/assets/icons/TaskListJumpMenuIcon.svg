@@ -15,9 +15,31 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="TaskListJumpMenu.svg">
+   sodipodi:docname="TaskListJumpMenuIcon.svg"
+   enable-background="new">
   <defs
-     id="defs4" />
+     id="defs4">
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter4186">
+      <feBlend
+         inkscape:collect="always"
+         mode="lighten"
+         in2="BackgroundImage"
+         id="feBlend4188" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter4186-9">
+      <feBlend
+         inkscape:collect="always"
+         mode="lighten"
+         in2="BackgroundImage"
+         id="feBlend4188-4" />
+    </filter>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#000000"
@@ -25,9 +47,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="82.274467"
-     inkscape:cy="206.37683"
+     inkscape:zoom="0.90509668"
+     inkscape:cx="82.922652"
+     inkscape:cy="190.2087"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -36,7 +58,9 @@
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     units="px" />
+     units="px"
+     inkscape:snap-to-guides="true"
+     inkscape:snap-object-midpoints="true" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -53,7 +77,8 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-652.36216)">
+     transform="translate(0,-652.36216)"
+     style="opacity:1;filter:url(#filter4186)">
     <rect
        style="fill:none;fill-opacity:1;stroke:none;stroke-width:5.9368825;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4139"
@@ -63,22 +88,24 @@
        y="657.82556"
        ry="1.9977899" />
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:6;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect4169"
-       width="280.51147"
-       height="35.264301"
-       x="-553.39801"
-       y="781.55157"
-       ry="2.8138905"
-       transform="matrix(0.69898278,-0.7151385,0.7151385,0.69898278,0,0)" />
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:1.27155733;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter4186)"
+       id="rect4162-3"
+       width="168.37643"
+       height="30.728443"
+       x="-84.188217"
+       y="84.823997"
+       ry="0"
+       rx="0"
+       transform="matrix(-0.95598666,-0.95598666,0.95598666,-0.95598666,37.614317,949.26018)" />
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:6;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect4169-3"
-       width="280.51147"
-       height="35.264301"
-       x="564.89502"
-       y="472.18915"
-       ry="2.8138905"
-       transform="matrix(0.67376341,0.73894713,-0.73894713,0.67376341,0,0)" />
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:1.27155733;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter4186-9)"
+       id="rect4162-3-0"
+       width="168.37643"
+       height="30.728443"
+       x="-84.188217"
+       y="84.823997"
+       ry="0"
+       rx="0"
+       transform="matrix(-0.95598666,0.95598666,-0.95598666,-0.95598666,361.4947,948.9055)" />
   </g>
 </svg>

@@ -24,7 +24,7 @@
 }
 
 .PriorityToggle[data-ishighpriority*=true] {
-    color: #F00;
+    color: rgb(255,150,0);
     font-weight: 600;
 }
 
@@ -113,4 +113,11 @@
     border: 1px solid #FFF;
 }
 
+.CalendarFullBleedDivider {
+    height: 0px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    border-bottom: 1px rgb(65,65,65) solid;
+}
 

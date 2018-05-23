@@ -1,6 +1,6 @@
 
 .ProjectSelectorText {
-    color: #FFF;
+    color: gray;
     margin: 5px;
     font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
     font-size: 16pt;
@@ -9,9 +9,15 @@
     line-height: 50px;
 }
 
+.ProjectSelectorText[data-isselected*="true"] {
+  color: #FFF;
+}
+
 .ProjectSelectorContainer {
   height: 50px;
 }
+
+
 
 .ProjectSelectorFlexContainer {
   display: flex;
@@ -77,8 +83,3 @@
   border: 0px solid #FFF;
 }
 
-
-.ProjectSelectorActiveStyle {
-  background: rgba(63,63,76,255);
-  height: 100%;
-}

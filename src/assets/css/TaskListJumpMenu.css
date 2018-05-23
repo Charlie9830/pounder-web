@@ -5,7 +5,7 @@
 }
 
 .TaskListJumpMenu {
-    background: rgba(37,37,37,255);
+    background: var(--surface-color);
     overflow: scroll;
     padding: 5px 15px;
     border: 1px white solid;
@@ -13,6 +13,6 @@
 
 .TaskListJumpMenuIcon {
     background: #FFF;
-    width: 25px;
-    height: 25px;
+    height: 100%;
+    width: 100%;
 }

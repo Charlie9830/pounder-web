@@ -10,7 +10,7 @@
 .TaskText {
   font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
   width: 100%;
-  color: #EEE;
+  color: #FFF;
   font-Size: 12pt;
   margin-left: 8px;
   margin-right: 8px;
@@ -19,9 +19,7 @@
 }
 
 .TaskText[data-ishighpriority*="true"] {
-  color: #D11;
-  font-weight: 700;
-  font-stretch: 1;
+  color: rgb(255, 150, 0);
 }
 
 
@@ -39,6 +37,6 @@
   font-size: 12pt;
   font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
   color: #FFF;
-  background: rgba(100,100,100,255);
+  background: var(--surface-color-alternate);
   border: 0px solid #FFF;
 }

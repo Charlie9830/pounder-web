@@ -7,6 +7,10 @@
     user-select: none;
 }
 
+.SidebarToolbarFlexContainer {
+    display: flex;
+}
+
 .SidebarVerticalFlexContainer {
     display: flex;
     flex-direction: row;
@@ -32,7 +36,7 @@
 .SidebarOpen {
     z-index: 3;
     position: relative; /* So .SidebarCollapseButtonContainer absolute position Works */
-    background: rgba(20,20,20,255);
+    background: var(--primary-color);
     width: 100vw;
     height: 100vh;
     float: left;

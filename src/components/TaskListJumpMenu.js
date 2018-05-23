@@ -33,9 +33,7 @@ class TaskListJumpMenu extends React.Component {
 
         else {
             return (
-                <div onClick={this.handleMenuButtonClick}>
-                    <img className="ToolBarButton" src={TaskListJumpMenuIcon}/>
-                </div>
+                <img className="ToolBarButton" onClick={this.handleMenuButtonClick} src={TaskListJumpMenuIcon}/>
             )
         }
     }

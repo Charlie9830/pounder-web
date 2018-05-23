@@ -72,7 +72,7 @@ class ProjectSelector extends React.Component {
 
         else {
             return (
-                <label className="ProjectSelectorText">{props.projectName}</label>
+                <label className="ProjectSelectorText" data-isselected={this.props.isSelected}>{props.projectName}</label>
             )
         }
     }

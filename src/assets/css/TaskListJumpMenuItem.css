@@ -1,9 +1,9 @@
 .TaskListJumpMenuItemContainer {
-    margin: 5px 0px;
+    margin: 20px 0px;
 }
 
 .TaskListJumpMenuItem {
-    color: #FFF;
+    color: #DDD;
     font-size: 14pt;
     font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
 }

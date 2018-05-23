@@ -21,7 +21,7 @@ class TaskText extends React.Component {
             )
         }
 
-        else{
+        else {
             var currentClassName = this.props.isComplete ? "TaskText Fade" : "TaskText";
 
             return (

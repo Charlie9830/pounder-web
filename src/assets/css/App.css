@@ -9,6 +9,14 @@ html, body {
   height: 100%;
   min-height: 100%;
   background: rgba(0,0,0,255);
+
+  /* Colors */
+  --primary-color: rgb(27, 27, 27);
+  --background-color: #000000; 
+  --surface-color:  rgb(17, 17, 17);
+  --surface-color-alternate: rgb(27, 27, 27);
+  --primary-button-background-image: linear-gradient(to bottom,rgba(68,68,68,0.50),rgba(60,60,60,0.50));
+
 }
 
 .App {

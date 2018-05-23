@@ -32,12 +32,15 @@ class Calendar extends React.Component {
 
         return (
             <div className="CalendarPopupContainer">
+            <div>
                 {humanFriendlyDate}
                 <div className="PriorityToggleContainer" onClick={this.handlePriorityToggleClick}>
                     <label className="PriorityToggle" data-ishighpriority={this.props.isHighPriority}>
                         !
                     </label>
                 </div>
+                </div>
+                <div className="CalendarFullBleedDivider"/>
                 <div className="ShortcutItemContainer" onClick={this.handleTodayItemClick}>
                     <label className="ItemLabel"> Today </label>
                 </div>

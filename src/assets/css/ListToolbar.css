@@ -65,7 +65,7 @@
 
 .ListToolbar {
     height: 36px;
-    background: rgba(37,37,37,255);
+    background: var(--primary-color);
     width: 100%;
     margin: 0px;
     display: flex;

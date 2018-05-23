@@ -46,13 +46,22 @@ class Task extends React.Component {
                     <div className="DueDateContainer">
                         <DueDate dueDate={this.props.dueDate} onClick={this.handleDueDateClick} isComplete={this.props.isComplete}
                             isCalendarOpen={this.props.isCalendarOpen} onNewDateSubmit={this.handleNewDateSubmit}
-                            onPriorityToggleClick={this.handlePriorityToggleClick}
-                            isHighPriority={this.props.isHighPriority}/>
+                            onPriorityToggleClick={this.handlePriorityToggleClick} isHighPriority={this.props.isHighPriority}/>
                     </div>
                 </div>
+                {this.getBottomBorderJSX(this.props)}
+                
             </div>
             
         )
+    }
+
+    getBottomBorderJSX(props) {
+        if (props.renderBottomBorder) {
+            return (
+                <div className="TaskBottomBorder"/>
+            )
+        }
     }
 
     handlePriorityToggleClick(newValue) {

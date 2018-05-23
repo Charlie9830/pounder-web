@@ -48,7 +48,7 @@ class TaskListWidget extends React.Component {
                 sortedTasks.unshift(sortedTasks.splice(newTaskIndex, 1)[0]);
             }
 
-            builtTasks = sortedTasks.map((item, index) => {
+            builtTasks = sortedTasks.map((item, index, array) => {
                 // Bail out if Task isn't meant to be Visible.
                 if (!this.props.settings.isCompleteTasksShown && item.isComplete) {
                     return;
@@ -59,6 +59,7 @@ class TaskListWidget extends React.Component {
                 var isTaskInputOpen = item.uid === this.props.openTaskInputId;
                 var isTaskMoving = item.uid === this.props.movingTaskId;
                 var isCalendarOpen = item.uid === this.props.openCalendarId;
+                var renderBottomBorder = array.length !== 1 && index !== array.length - 1;
 
                 return (
                     <Task key={index} taskId={item.uid} text={item.taskName} dueDate={item.dueDate}
@@ -68,7 +69,7 @@ class TaskListWidget extends React.Component {
                     onInputUnmounting={this.handleTaskInputUnmounting} onDueDateClick={this.handleDueDateClick}
                     isCalendarOpen={isCalendarOpen} onNewDateSubmit={this.handleNewDateSubmit}
                     onPriorityToggleClick={this.handleTaskPriorityToggleClick}
-                    isHighPriority={item.isHighPriority}/>
+                    isHighPriority={item.isHighPriority} renderBottomBorder={renderBottomBorder}/>
                 )
             })
         }

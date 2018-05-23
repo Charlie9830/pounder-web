@@ -19,7 +19,12 @@
   justify-content: space-between;
   align-items: center;
   flex-grow: 1;
-  border-bottom: 1px rgb(40,40,40) solid;
+}
+  
+.TaskBottomBorder {
+  margin-left: 30px;
+  height: 0px;
+  border-bottom: 1px rgb(50,50,50) solid;
 }
 
 

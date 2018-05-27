@@ -1,5 +1,6 @@
 import React from 'react';
 import TaskListWidget from './TaskListWidget';
+import ProjectMessageDisplay from './ProjectMessageDisplay';
 import '../assets/css/Project.css';
 import ProjectToolBar from './ProjectToolBar';
 import scrollToComponent from 'react-scroll-to-component';
@@ -31,6 +32,7 @@ class Project extends React.Component {
         this.handleTaskPriorityToggleClick = this.handleTaskPriorityToggleClick.bind(this);
         this.handleTaskListJumpMenuItemClick = this.handleTaskListJumpMenuItemClick.bind(this);
         this.handleTaskListJumpMenuButtonClick = this.handleTaskListJumpMenuButtonClick.bind(this);
+        this.getProjectMessageDisplayJSX = this.getProjectMessageDisplayJSX.bind(this);
     }
     
     componentDidMount() {   
@@ -89,6 +91,10 @@ class Project extends React.Component {
             )
         });
 
+        var projectMessageDisplayJSX = this.getProjectMessageDisplayJSX(filteredTaskListWidgets.length);
+        // Determine if getProjectMesssageDisplayJSX() has come back with null, if so we can show the Project.
+        var taskListsContainerClassName = projectMessageDisplayJSX == null ? "TaskListsContainer" : "TaskListsContainerHidden";
+
         return (
             <div className="Project">
                 <div className="ProjectToolBar">
@@ -97,7 +103,8 @@ class Project extends React.Component {
                     taskLists={filteredTaskListWidgets} onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick}
                     onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick} isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen}/>
                 </div>
-                <div className="TaskListsContainer">
+                {projectMessageDisplayJSX}
+                <div className={taskListsContainerClassName}>
                     <div className="ProjectNameContainer">
                         <label className="ProjectName">
                             {this.props.projectName}
@@ -113,6 +120,22 @@ class Project extends React.Component {
         this.props.onTaskListJumpMenuButtonClick();
     }
 
+    getProjectMessageDisplayJSX(taskListWidgetCount) {
+        // No Project Selected.
+        if (this.props.projectId === -1) {
+            return (
+                <ProjectMessageDisplay message="No project selected"/>
+            )
+        }
+
+        // No Tasklists created.
+        if (taskListWidgetCount === 0 || taskListWidgetCount == null) {
+            return (
+                <ProjectMessageDisplay message="No Task Lists created"/>
+            )
+        }
+    }
+
     handleTaskListJumpMenuItemClick(taskListId) {
          // Offset here should be the Oppisite of .TaskListContainer padding-top.
         scrollToComponent(this.refs[taskListId], {align: 'top', offset: -45, duration: 250});
@@ -122,6 +145,7 @@ class Project extends React.Component {
         this.props.onTaskListJumpMenuButtonClick();
 
     }
+    
 
     handleTaskPriorityToggleClick(taskId, newValue) {
         this.props.onTaskPriorityToggleClick(taskId, newValue);

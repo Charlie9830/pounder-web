@@ -10,9 +10,10 @@ import { setFocusedTaskListId, selectTask, openTask, startTaskMove, getProjectsA
 unsubscribeProjectsAsync, unsubscribeProjectLayoutsAsync, unsubscribeTaskListsAsync, unsubscribeTasksAsync,
 setOpenTaskListSettingsMenuId, openCalendar, addNewTaskListAsync, addNewTaskAsync,
 changeFocusedTaskList, moveTaskAsync, updateTaskListWidgetHeaderAsync, getTaskListsAsync, getProjectLayoutsAsync,
-removeSelectedTaskAsync, updateTaskNameAsync, selectProject, updateProjectLayoutAsync, updateTaskCompleteAsync,
+removeSelectedTaskAsync, updateTaskNameAsync, selectProjectAsync, updateProjectLayoutAsync, updateTaskCompleteAsync,
 addNewProjectAsync, removeProjectAsync, updateProjectNameAsync, removeTaskListAsync, updateTaskListSettingsAsync,
-updateTaskDueDateAsync, updateTaskPriority, openTaskListJumpMenu, closeTaskListJumpMenu, } from 'pounder-redux/action-creators';
+updateTaskDueDateAsync, updateTaskPriority, openTaskListJumpMenu, closeTaskListJumpMenu,
+} from 'pounder-redux/action-creators';
 
 class App extends React.Component {
   constructor(props) {
@@ -241,20 +242,7 @@ class App extends React.Component {
   }
 
   handleProjectSelectorClick(e, projectSelectorId) {
-    var outgoingProjectId = this.props.selectedProjectId;
-    var incomingProjectId = projectSelectorId;
-
-    if (outgoingProjectId !== -1) {
-      // Old Listeners.
-      this.props.dispatch(unsubscribeProjectLayoutsAsync());
-    }
-
-    if (incomingProjectId !== -1 ) {
-      this.props.dispatch(getProjectLayoutsAsync(projectSelectorId));
-    }
-
-    this.props.dispatch(selectProject(projectSelectorId));
-
+    this.props.dispatch(selectProjectAsync(projectSelectorId));
   }
   
   handleTaskCheckBoxClick(e, projectId, taskListWidgetId, taskId, incomingValue) {

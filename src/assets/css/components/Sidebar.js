@@ -4,8 +4,6 @@ import '../assets/css/Sidebar.css';
 import '../assets/css/ToolBarButton.css';
 import NewProjectIcon from '../assets/icons/NewProjectIcon.svg';
 import RemoveProjectIcon from '../assets/icons/RemoveProjectIcon.svg';
-import SettingsIcon from '../assets/icons/SettingsIcon.svg';
-import Button from './Button';
 
 class Sidebar extends React.Component{
     constructor(props) {
@@ -19,7 +17,6 @@ class Sidebar extends React.Component{
         this.handleProjectNameSubmit = this.handleProjectNameSubmit.bind(this);
         this.handleSidebarCollapseButtonClick = this.handleSidebarCollapseButtonClick.bind(this);
         this.getSidebarToolbarJSX = this.getSidebarToolbarJSX.bind(this);
-        this.getSidebarBottombarJSX = this.getSidebarBottombarJSX.bind(this);
 
         this.state = {
             openProjectSelectorInputId: -1,
@@ -45,7 +42,6 @@ class Sidebar extends React.Component{
         })
 
         var sidebarToolbarJSX = this.getSidebarToolbarJSX();
-        var sidebarBottombarJSX = this.getSidebarBottombarJSX();
 
         return (
             <div className={sidebarClassName}>
@@ -58,7 +54,6 @@ class Sidebar extends React.Component{
                             {projectSelectorsJSX}
                         </div>
                     </div>
-                    {sidebarBottombarJSX}
                     <div className="CollapseButtonFlexItemContainer">
                         <div className="SidebarCollapseButton" onClick={this.handleSidebarCollapseButtonClick}>
                         </div>
@@ -87,16 +82,6 @@ class Sidebar extends React.Component{
         else {
             return (<div/>)
         }
-    }
-
-    getSidebarBottombarJSX() {
-        return (
-            <div className="SidebarBottombarContainer" data-iscollapsed={this.state.isCollapsed}>
-                <div className="SidebarBottombarFlexContainer">
-                    <Button iconSrc={SettingsIcon} onClick={() => {this.props.onAppSettingsButtonClick()}}/>
-                </div>
-            </div>
-        )
     }
 
     handleSidebarCollapseButtonClick(e) {

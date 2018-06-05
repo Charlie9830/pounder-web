@@ -73,3 +73,6 @@
     justify-content: space-between;
     align-items: center;
 }
+.ListToolbar[data-isfocused*="true"] {
+    background: rgb(42,42,42);
+}

@@ -6,7 +6,6 @@ import VisibleAppSettingsMenu from './AppSettingsMenu/AppSettingsMenu';
 import MessageBox from './MessageBox';
 import Button from './Button';
 import VisibleSnackbar from './Snackbar';
-import CenteringContainer from '../containers/CenteringContainer';
 import '../assets/css/TaskListWidget.css';
 import '../assets/css/Sidebar.css';
 import '../assets/css/Project.css';
@@ -66,13 +65,11 @@ class App extends React.Component {
     this.getAppSettingsMenuJSX = this.getAppSettingsMenuJSX.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount(){
     // Read and Apply Config values.
     this.initializeConfig();
     // Attach an Authentication state listener. Will pull down database when Logged in.
     this.props.dispatch(attachAuthListenerAsync());
-
-    this.props.dispatch(setIsAppSettingsOpen(true));
   }
   
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -96,20 +93,16 @@ class App extends React.Component {
   render() {
     var projects = this.props.projects == undefined ? [] : this.props.projects;
     var projectName = this.getProjectName(this.props);
-    var appSettingsMenuJSX = this.getAppSettingsMenuJSX();
 
     return (
       <div>
-      <VisibleSnackbar/>
-      <MessageBox config={this.props.messageBox}/>
-      {appSettingsMenuJSX}
         <div className="SidebarProjectFlexContainer">
           <div className="SidebarContainer">
             <Sidebar className="Sidebar" projects={projects} selectedProjectId={this.props.selectedProjectId}
               onProjectSelectorClick={this.handleProjectSelectorClick} onAddProjectClick={this.handleAddProjectClick}
               onRemoveProjectClick={this.handleRemoveProjectClick} onProjectNameSubmit={this.handleProjectNameSubmit}
               projectSelectorDueDateDisplays={this.props.projectSelectorDueDateDisplays}
-              favouriteProjectId={this.props.accountConfig.favoriteProjectId} onAppSettingsButtonClick={this.handleAppSettingsButtonClick}
+              favouriteProjectId={this.props.accountConfig.favoriteProjectId}
               />
           </div>
           <div className="ProjectContainer">
@@ -159,7 +152,7 @@ class App extends React.Component {
     }
   }
 
-  initializeConfig() {
+  initalizeConfig() {
     this.props.dispatch(getGeneralConfigAsync());
     this.props.dispatch(getCSSConfigAsync());
   }

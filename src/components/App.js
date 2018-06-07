@@ -20,7 +20,7 @@ removeSelectedTaskAsync, updateTaskNameAsync, selectProjectAsync, updateProjectL
 addNewProjectAsync, removeProjectAsync, updateProjectNameAsync, removeTaskListAsync, updateTaskListSettingsAsync,
 updateTaskDueDateAsync, updateTaskPriority, openTaskListJumpMenu, closeTaskListJumpMenu, getGeneralConfigAsync,
 unSubscribeAccountConfigAsync, setIsAppSettingsOpen, gegtAccountConfigAsync, getCSSConfigAsync, setAppSettingsMenuPage,
-setMessageBox, subscribeToDatabaseAsync, unsubscribeFromDatabaseAsync, attachAuthListenerAsync
+setMessageBox, subscribeToDatabaseAsync, unsubscribeFromDatabaseAsync, attachAuthListenerAsync, postSnackbarMessage,
 } from 'pounder-redux/action-creators';
 
 class App extends React.Component {
@@ -64,6 +64,7 @@ class App extends React.Component {
     this.initializeConfig = this.initializeConfig.bind(this);
     this.handleAppSettingsButtonClick = this.handleAppSettingsButtonClick.bind(this);
     this.getAppSettingsMenuJSX = this.getAppSettingsMenuJSX.bind(this);
+    this.handleAccountIconClick = this.handleAccountIconClick.bind(this);
   }
 
   componentDidMount() {
@@ -71,8 +72,6 @@ class App extends React.Component {
     this.initializeConfig();
     // Attach an Authentication state listener. Will pull down database when Logged in.
     this.props.dispatch(attachAuthListenerAsync());
-
-    this.props.dispatch(setIsAppSettingsOpen(true));
   }
   
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -108,8 +107,9 @@ class App extends React.Component {
             <Sidebar className="Sidebar" projects={projects} selectedProjectId={this.props.selectedProjectId}
               onProjectSelectorClick={this.handleProjectSelectorClick} onAddProjectClick={this.handleAddProjectClick}
               onRemoveProjectClick={this.handleRemoveProjectClick} onProjectNameSubmit={this.handleProjectNameSubmit}
-              projectSelectorDueDateDisplays={this.props.projectSelectorDueDateDisplays}
-              favouriteProjectId={this.props.accountConfig.favoriteProjectId} onAppSettingsButtonClick={this.handleAppSettingsButtonClick}
+              projectSelectorDueDateDisplays={this.props.projectSelectorDueDateDisplays} isLoggedIn={this.props.isLoggedIn}
+              favouriteProjectId={this.props.accountConfig.favouriteProjectId} onAppSettingsButtonClick={this.handleAppSettingsButtonClick}
+              onAccountIconClick={this.handleAccountIconClick} isLoggingIn={this.props.isLoggingIn}
               />
           </div>
           <div className="ProjectContainer">
@@ -135,6 +135,11 @@ class App extends React.Component {
         </div>
       </div>
     );
+  }
+
+  handleAccountIconClick() {
+    this.props.dispatch(setIsAppSettingsOpen(true));
+    this.props.dispatch(setAppSettingsMenuPage("account"));
   }
 
   getAppSettingsMenuJSX() {
@@ -372,6 +377,8 @@ const mapStateToProps = state => {
     accountConfig: state.accountConfig,
     cssConfig: state.cssConfig,
     messageBox: state.messageBox,
+    isLoggedIn: state.isLoggedIn,
+    isLoggingIn: state.isLoggingIn,
   }
 }
 

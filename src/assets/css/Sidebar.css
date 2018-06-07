@@ -9,6 +9,27 @@
 
 .SidebarToolbarFlexContainer {
     display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    flex-wrap: nowrap;
+}
+
+.SidebarToolbarDivider {
+    flex-grow: 2;
+}
+
+.SidebarAccountIconContainer {
+    flex-shrink: 1;
+    width: 32px;
+    height: 32px;
+    margin-right: 20px;
+}
+
+.SidebarAccountIcon {
+    width: 100%;
+    height: 100%;
 }
 
 .SidebarVerticalFlexContainer {

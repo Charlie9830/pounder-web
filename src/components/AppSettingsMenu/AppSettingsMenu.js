@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from '../Button';
 import GeneralSettingsPage from './GeneralSettingsPage';
-import DatabaseSettingsPage from './DatabaseSettingsPage';
 import AccountSettingsPage from './AccountSettingsPage';
 import AppSettingsSidebar from './AppSettingsSidebar';
 import CenteringContainer from '../../containers/CenteringContainer';
@@ -25,12 +24,9 @@ class AppSettingsMenu extends React.Component {
         // Method Bindings.
         this.getPageJSX = this.getPageJSX.bind(this);
         this.handleSidebarItemClick = this.handleSidebarItemClick.bind(this);
-        this.handleGetDatabaseInfoClick = this.handleGetDatabaseInfoClick.bind(this);
-        this.handlePurgeCompletedTasksButtonClick = this.handlePurgeCompletedTasksButtonClick.bind(this);
         this.handleOkButtonClick = this.handleOkButtonClick.bind(this);
         this.handleFavouriteProjectSelectChange = this.handleFavouriteProjectSelectChange.bind(this);
         this.handleCSSPropertyChange = this.handleCSSPropertyChange.bind(this);
-        this.handlePurgeCompletedTasksButtonClick = this.handlePurgeCompletedTasksButtonClick.bind(this);
     }
 
     componentDidMount() {
@@ -43,7 +39,7 @@ class AppSettingsMenu extends React.Component {
             <div className="AppSettingsContainer">
                 <div className="AppSettingsMenuContainer">
                     <div className="AppSettingsMenuHeader">
-                        <div className="AppSettingsBackArrowContainer">
+                        <div className="AppSettingsBackArrowContainer" onClick={() => {this.props.dispatch(setIsAppSettingsOpen(false))}}>
                             <img className="AppSettingsBackArrow" src={BackArrow}/>
                         </div>
                     </div>
@@ -76,10 +72,6 @@ class AppSettingsMenu extends React.Component {
         this.props.dispatch(setIsAppSettingsOpen(false));
     }
 
-    handleGetDatabaseInfoClick() {
-        this.props.dispatch(getDatabaseInfoAsync());
-    }
-
     getPageJSX() {
         var menuPage = this.props.menuPage === "" ? "general" : this.props.menuPage;
 
@@ -102,27 +94,9 @@ class AppSettingsMenu extends React.Component {
                 )
             break;
 
-            case "database":
-                return (
-                    <DatabaseSettingsPage databaseInfo={this.props.databaseInfo} isDatabasePurging={this.props.isDatabasePurging} 
-                        onGetDatabaseInfoClick={this.handleGetDatabaseInfoClick}
-                        onPurgeCompletedTasksButtonClick={this.handlePurgeCompletedTasksButtonClick} isLoggedIn={this.props.isLoggedIn}
-                        />
-                )
-            break;
+            default: 
+                return (<div/>)
         }
-    }
-
-    handlePurgeCompletedTasksButtonClick() {
-        // Defer to Message Box for Confirmation.
-        this.props.dispatch(setMessageBox(true, "Are you sure?", MessageBoxTypes.STANDARD, null,
-            (result) => {
-                if (result === "ok") {
-                    this.props.dispatch(purgeCompleteTasksAsync());
-                }
-
-                this.props.dispatch(setMessageBox({}));
-            }))
     }
 
     handleFavouriteProjectSelectChange(projectId) {
@@ -138,8 +112,6 @@ const mapStateToProps = state => {
     return {
         projects: state.projects,
         menuPage: state.appSettingsMenuPage,
-        databaseInfo: state.databaseInfo,
-        isDatabasePurging: state.isDatabasePurging,
         generalConfig: state.generalConfig,
         accountConfig: state.accountConfig,
         cssConfig: state.cssConfig,

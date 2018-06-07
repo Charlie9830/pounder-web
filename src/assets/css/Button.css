@@ -11,6 +11,11 @@
     opacity: 0.75;
 }
 
+.ButtonContainer[data-size*="small"] {
+    height: 27px;
+    width: 48px;
+}
+
 .ButtonContainer:hover {
     opacity: 1;
 }

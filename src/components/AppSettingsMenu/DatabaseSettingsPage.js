@@ -17,14 +17,11 @@ class DatabaseSettingsPage extends React.Component {
         this.handleGetInfoButtonClick = this.handleGetInfoButtonClick.bind(this);
         this.getPurgeButtonJSX = this.getPurgeButtonJSX.bind(this);
         this.handlePurgeCompletedTasksButtonClick = this.handlePurgeCompletedTasksButtonClick.bind(this);
-        this.handleRestoreDatabaseButtonClick = this.handleRestoreDatabaseButtonClick.bind(this);
-        this.getRestoreButtonJSX = this.getRestoreButtonJSX.bind(this);
     }
 
     render() {
         var databaseInfoPaneJSX = this.getDatabaseInfoPaneJSX()
         var purgeButtonJSX = this.getPurgeButtonJSX();
-        var restoreButtonJSX = this.getRestoreButtonJSX();
 
         // Only render settings if Logged in.
         if (this.props.isLoggedIn) {
@@ -49,16 +46,6 @@ class DatabaseSettingsPage extends React.Component {
                             {purgeButtonJSX}
                         </span>
                     </div>
-
-                    {/* Restore Database from Disk */}
-                    <div className="AppSettingsVerticalFlexItem">
-                        <div className="AppSettingsHorizontalFlexItem">
-                            <div className="AppSettingsItemLabel"> Restore Database from Local backup </div>
-                        </div>
-                        <span className="AppSettingsHorizontalFlexItem">
-                            {restoreButtonJSX}
-                        </span>
-                    </div>
                 </div>
             )
         }
@@ -71,26 +58,6 @@ class DatabaseSettingsPage extends React.Component {
             )
         }
 
-    }
-
-    getRestoreButtonJSX() {
-        if (this.props.isDatabaseRestoring) {
-            return (
-                <div>
-                    <Spinner size="medium" />
-                </div>
-            )
-        }
-
-        else {
-            return (
-                <Button text="Restore" onClick={this.handleRestoreDatabaseButtonClick}/>
-            )
-        }
-    }
-
-    handleRestoreDatabaseButtonClick() {
-        this.props.onRestoreDatabaseButtonClick();
     }
 
     handlePurgeCompletedTasksButtonClick() {

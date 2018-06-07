@@ -100,7 +100,7 @@
 }
 
 .DatabaseSettingsPageInfoPane {
-    width: 500px;
+    width: 100%;
     min-height: 260px;
     margin: 10px 0px;
     resize: none;
@@ -124,6 +124,15 @@
 .FavouriteProjectSelect {
     background: var(--surface-color-alternate);
     color: #FFF;
+    width: 100%;
+}
+
+.ColorConfigHorizontalFlexItem {
+    flex-grow: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 5px 20px 5px 20px;
 }
 
 .AppSettingsAccountLogo {
@@ -142,7 +151,7 @@
     font-size: 10pt;
     height: 24px;
     color: gray;
-} 
+}
 
 .AppSettingsAccountEmailContainer {
     margin-top: 10px;
@@ -173,6 +182,9 @@
 .AppSettingsContainer {
     display: block;
     position: fixed;
+    overflow-y: scroll;
+    top: 0px;
+    left: 0px;
     background: rgba(0, 0, 0, 0.5);
     margin: 0px;
     padding: 0px;

@@ -27,13 +27,6 @@ html, body {
 }
 
 .SidebarProjectFlexContainer {
-  /*
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-  */
 }
 
 .SidebarContainer {

@@ -92,8 +92,6 @@ class Project extends React.Component {
         });
 
         var projectMessageDisplayJSX = this.getProjectMessageDisplayJSX(filteredTaskListWidgets.length);
-        // Determine if getProjectMesssageDisplayJSX() has come back with null, if so we can show the Project.
-        var taskListsContainerClassName = projectMessageDisplayJSX == null ? "TaskListsContainer" : "TaskListsContainerHidden";
 
         return (
             <div className="Project">
@@ -103,13 +101,13 @@ class Project extends React.Component {
                     taskLists={filteredTaskListWidgets} onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick}
                     onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick} isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen}/>
                 </div>
-                {projectMessageDisplayJSX}
-                <div className={taskListsContainerClassName}>
+                <div className="TaskListsContainer">
                     <div className="ProjectNameContainer">
                         <label className="ProjectName">
                             {this.props.projectName}
                         </label>
                     </div>
+                    {projectMessageDisplayJSX}
                     {taskListWidgets}
                 </div>
             </div>

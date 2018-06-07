@@ -14,7 +14,7 @@ class AppSettingsSidebar extends React.Component {
 
     render() {
         return (
-            <div className="AppSettingsSidebarFlexContainer" data-iscollapsed={this.state.isCollapsed}>
+            <div className="AppSettingsSidebarFlexContainer">
                 { /* General */}
                 <div className="AppSettingsSidebarItemContainer" onClick={() => this.handleItemClick("general")}>
                     <div>
@@ -29,15 +29,6 @@ class AppSettingsSidebar extends React.Component {
                     <div>
                         <label className="AppSettingsSidebarItemLabel" data-isselected={this.props.menuPage === "account"}>
                             Account
-                        </label>
-                    </div>
-                </div>
-
-                { /* Database */}
-                <div className="AppSettingsSidebarItemContainer" onClick={() => this.handleItemClick("database")}>
-                    <div>
-                        <label className="AppSettingsSidebarItemLabel" data-isselected={this.props.menuPage === "database"}>
-                            Database
                         </label>
                     </div>
                 </div>

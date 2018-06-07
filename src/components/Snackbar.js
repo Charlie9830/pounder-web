@@ -33,7 +33,7 @@ class Snackbar extends React.Component {
                          {this.props.snackbarMessage}
                           </div>
                     </div>
-                    
+                    {buttonJSX}
                 </div>
             </div>
         )

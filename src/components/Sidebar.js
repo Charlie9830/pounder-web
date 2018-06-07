@@ -6,6 +6,9 @@ import NewProjectIcon from '../assets/icons/NewProjectIcon.svg';
 import RemoveProjectIcon from '../assets/icons/RemoveProjectIcon.svg';
 import SettingsIcon from '../assets/icons/SettingsIcon.svg';
 import Button from './Button';
+import AccountIconLoggedIn from '../assets/icons/AccountIconLoggedIn.svg';
+import AccountIconLoggedOut from '../assets/icons/AccountIconLoggedOut.svg';
+import AccountIconLoggingIn from '../assets/icons/AccountIconLoggingIn.svg';
 
 class Sidebar extends React.Component{
     constructor(props) {
@@ -20,6 +23,7 @@ class Sidebar extends React.Component{
         this.handleSidebarCollapseButtonClick = this.handleSidebarCollapseButtonClick.bind(this);
         this.getSidebarToolbarJSX = this.getSidebarToolbarJSX.bind(this);
         this.getSidebarBottombarJSX = this.getSidebarBottombarJSX.bind(this);
+        this.getAccountIconSrc = this.getAccountIconSrc.bind(this);
 
         this.state = {
             openProjectSelectorInputId: -1,
@@ -36,11 +40,13 @@ class Sidebar extends React.Component{
             var isSelected = this.props.selectedProjectId === item.uid;
             var isInputOpen = item.uid === this.state.openProjectSelectorInputId;
             var dueDateDisplay = this.props.projectSelectorDueDateDisplays[item.uid];
+            var isFavouriteProject = this.props.favouriteProjectId === item.uid;
 
             return (
                 <ProjectSelector key={index} projectSelectorId={item.uid} projectName={item.projectName} isSelected={isSelected}
                     isInputOpen={isInputOpen} onClick={this.handleProjectSelectorClick} onInputOpen={this.handleProjectSelectorInputOpen}
-                    onProjectNameSubmit={this.handleProjectNameSubmit} dueDateDisplay={dueDateDisplay} />
+                    onProjectNameSubmit={this.handleProjectNameSubmit} dueDateDisplay={dueDateDisplay}
+                    isFavouriteProject={isFavouriteProject} />
             )
         })
 
@@ -70,14 +76,16 @@ class Sidebar extends React.Component{
 
     getSidebarToolbarJSX() {
         if (this.state.isCollapsed !== true) {
+            var accountIconSrc = this.getAccountIconSrc();
+
             return (
                 <div className="SidebarToolbar">
                     <div className="SidebarToolbarFlexContainer">
-                        <div className="ToolBarButtonContainer">
-                            <img className="ToolBarButton" src={NewProjectIcon} onClick={this.handleAddProjectClick} />
-                        </div>
-                        <div className="ToolBarButtonContainer">
-                            <img className="ToolBarButton" src={RemoveProjectIcon} onClick={this.handleRemoveProjectClick} />
+                        <Button iconSrc={NewProjectIcon} onClick={this.handleAddProjectClick}/>
+                        <Button iconSrc={RemoveProjectIcon} onClick={this.handleRemoveProjectClick}/>
+                        <div className="SidebarToolbarDivider"/>
+                        <div className="SidebarAccountIconContainer" onClick={() => {this.props.onAccountIconClick()}}>
+                            <img className="SidebarAccountIcon" src={accountIconSrc}/>
                         </div>
                     </div>
                 </div>
@@ -86,6 +94,16 @@ class Sidebar extends React.Component{
 
         else {
             return (<div/>)
+        }
+    }
+
+    getAccountIconSrc() {
+        if (this.props.isLoggingIn) {
+            return AccountIconLoggingIn;
+        }
+
+        else {
+            return this.props.isLoggedIn ? AccountIconLoggedIn : AccountIconLoggedOut;
         }
     }
 

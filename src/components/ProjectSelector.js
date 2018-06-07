@@ -1,6 +1,7 @@
 import React from 'react';
 import '../assets/css/ProjectSelector.css';
 import Hammer from 'hammerjs';
+import FavoriteIcon from '../assets/icons/HeartIcon.svg';
 
 class ProjectSelector extends React.Component {
     constructor(props) {
@@ -9,6 +10,7 @@ class ProjectSelector extends React.Component {
         this.handleClick = this.handleClick.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.getDueDateCountsJSX = this.getDueDateCountsJSX.bind(this);
+        this.getHeartJSX = this.getHeartJSX.bind(this);
     }
 
     componentDidMount() {
@@ -19,14 +21,15 @@ class ProjectSelector extends React.Component {
     }
 
     render(){
-        var currentClassName = this.props.isSelected ? "ProjectSelectorActiveStyle" : "ProjectSelectorInactiveStyle";
+        // var currentClassName = this.props.isSelected ? "ProjectSelectorActiveStyle" : "ProjectSelectorInactiveStyle";
         var projectLabelJSX = this.getProjectLabelJSX(this.props);
         var dueDateCounts = this.getDueDateCountsJSX(this.props);
+        var heartJSX = this.getHeartJSX();
 
         return (
-            <div className="ProjectSelectorContainer">
-                <div className={currentClassName} ref="projectSelector" onClick={this.handleClick}>
+            <div className="ProjectSelectorContainer" ref="projectSelector" onClick={this.handleClick}>
                     <div className="ProjectSelectorFlexContainer">
+                            {heartJSX}
                         <div className="ProjectSelectorLabelContainer">
                             {projectLabelJSX}
                         </div>
@@ -34,11 +37,20 @@ class ProjectSelector extends React.Component {
                             {dueDateCounts}
                         </div>
                     </div>
-                </div>
             </div>
         )
     }
 
+    getHeartJSX() {
+        if (this.props.isFavouriteProject) {
+            return (
+                <div className="ProjectSelectorHeartContainer">
+                    <img className="ProjectSelectorFavoriteIcon" src={FavoriteIcon} />
+                </div>
+            )
+        }
+    }
+    
     getDueDateCountsJSX(props) {
         // eslint-disable-next-line
         if (props.dueDateDisplay == undefined || props.dueDateDisplay == {}) {
@@ -72,7 +84,7 @@ class ProjectSelector extends React.Component {
 
         else {
             return (
-                <label className="ProjectSelectorText" data-isselected={this.props.isSelected}>{props.projectName}</label>
+                <div className="ProjectSelectorText" data-isselected={this.props.isSelected}>{props.projectName}</div>
             )
         }
     }

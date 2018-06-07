@@ -98,12 +98,12 @@ class GeneralSettingsPage extends React.Component {
             }
 
             return (
-                <div>
-                <div key={index} className="AppSettingsVerticalFlexItem">
-                    <span className="AppSettingsHorizontalFlexItem">
+                <div key={index}>
+                <div className="AppSettingsVerticalFlexItem">
+                    <span className="ColorConfigHorizontalFlexItem">
                         <div className="AppSettingsItemLabel">{item.property}</div>
                     </span>
-                    <span className="AppSettingsHorizontalFlexItem">
+                    <span className="ColorConfigHorizontalFlexItem">
                         <input className="AppSettingsItemInput" type="text" defaultValue={item.value}
                         onBlur={(e) => this.handleCSSPropertyInputBlur(e, item.property)}
                         onKeyPress={(e) => this.handleCSSPropertyInputKeyPress(e, item.property)}/>

@@ -35,4 +35,6 @@
   color: #FFF;
   background: var(--surface-color-alternate);
   border: 0px solid #FFF;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }

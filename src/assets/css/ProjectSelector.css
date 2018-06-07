@@ -6,7 +6,7 @@
     font-size: 16pt;
     -webkit-user-select: none;
     user-select: none;
-    line-height: 50px;
+    line-height: 20pt;
 }
 
 .ProjectSelectorText[data-isselected*="true"] {
@@ -14,10 +14,10 @@
 }
 
 .ProjectSelectorContainer {
-  height: 50px;
+  height: fit-content;
+  min-height: 50px;
+  display: flex;
 }
-
-
 
 .ProjectSelectorFlexContainer {
   display: flex;
@@ -25,10 +25,23 @@
   justify-content: space-between;
   align-items: center;
   align-content: center;
+  width: 100%;
 }
 
 .ProjectSelectorLabelContainer {
   flex: 3;
+}
+
+.ProjectSelectorHeartContainer {
+  flex-grow: 0;
+  padding-left: 5px;
+  width: 12px;
+  height: 16px;
+}
+
+.ProjectSelectorFavoriteIcon {
+  width: 100%;
+  height: 100%;
 }
 
 .ProjectSelectorIconContainer {

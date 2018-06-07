@@ -2,6 +2,7 @@ import React from 'react';
 import '../assets/css/ProjectSelector.css';
 import Hammer from 'hammerjs';
 import FavoriteIcon from '../assets/icons/HeartIcon.svg';
+import TextareaAutosize from 'react-autosize-textarea';
 
 class ProjectSelector extends React.Component {
     constructor(props) {
@@ -75,16 +76,17 @@ class ProjectSelector extends React.Component {
         )
     }
 
-    getProjectLabelJSX(props) {
+    getProjectLabelJSX() {
         if (this.props.isInputOpen) {
             return (
-                <input id="projectSelectorInput" type="text" defaultValue={props.projectName} onKeyPress={this.handleKeyPress}/>
+                <TextareaAutosize className="ProjectSelectorInput" innerRef={ref => this.textarea = ref} type='text' defaultValue={this.props.projectName}
+                onKeyPress={this.handleKeyPress}/>
             )
         }
 
         else {
             return (
-                <div className="ProjectSelectorText" data-isselected={this.props.isSelected}>{props.projectName}</div>
+                <div className="ProjectSelectorText" data-isselected={this.props.isSelected}>{this.props.projectName}</div>
             )
         }
     }
@@ -95,7 +97,7 @@ class ProjectSelector extends React.Component {
 
     handleKeyPress(e) {
         if (e.key === "Enter") {
-            this.props.onProjectNameSubmit(this.props.projectSelectorId, document.getElementById("projectSelectorInput").value);
+            this.props.onProjectNameSubmit(this.props.projectSelectorId, this.textarea.value);
         }
     }
 

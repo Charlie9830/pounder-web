@@ -119,17 +119,24 @@ class Project extends React.Component {
     }
 
     getProjectMessageDisplayJSX(taskListWidgetCount) {
+        // User not Logged in.
+        if (this.props.isLoggedIn === false) {
+            return (
+                <ProjectMessageDisplay message="You are logged out" />
+            )
+        }
+
         // No Project Selected.
         if (this.props.projectId === -1) {
             return (
-                <ProjectMessageDisplay message="No project selected"/>
+                <ProjectMessageDisplay message="No project selected" />
             )
         }
 
         // No Tasklists created.
         if (taskListWidgetCount === 0 || taskListWidgetCount == null) {
             return (
-                <ProjectMessageDisplay message="No Task Lists created"/>
+                <ProjectMessageDisplay message="No Task Lists created" />
             )
         }
     }

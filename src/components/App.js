@@ -61,7 +61,7 @@ class App extends React.Component {
     this.getSelectedProjectTasks = this.getSelectedProjectTasks.bind(this);
     this.handleTaskPriorityToggleClick = this.handleTaskPriorityToggleClick.bind(this);
     this.handleTaskListJumpMenuButtonClick = this.handleTaskListJumpMenuButtonClick.bind(this);
-    this.initializeConfig = this.initializeConfig.bind(this);
+    this.initializeLocalConfig = this.initializeLocalConfig.bind(this);
     this.handleAppSettingsButtonClick = this.handleAppSettingsButtonClick.bind(this);
     this.getAppSettingsMenuJSX = this.getAppSettingsMenuJSX.bind(this);
     this.handleAccountIconClick = this.handleAccountIconClick.bind(this);
@@ -69,7 +69,7 @@ class App extends React.Component {
 
   componentDidMount() {
     // Read and Apply Config values.
-    this.initializeConfig();
+    this.initializeLocalConfig();
     // Attach an Authentication state listener. Will pull down database when Logged in.
     this.props.dispatch(attachAuthListenerAsync());
   }
@@ -117,7 +117,7 @@ class App extends React.Component {
               movingTaskId={this.props.movingTaskId} focusedTaskListId={this.props.focusedTaskListId}
               projectId={this.props.selectedProjectId} onTaskListWidgetRemoveButtonClick={this.handleTaskListWidgetRemoveButtonClick}
               onTaskChanged={this.handleTaskChanged} onTaskListWidgetFocusChanged={this.handleTaskListWidgetFocusChange}
-              onTaskListWidgetHeaderChanged={this.handleTaskListWidgetHeaderChanged}
+              onTaskListWidgetHeaderChanged={this.handleTaskListWidgetHeaderChanged} isLoggedIn={this.props.isLoggedIn}
               onTaskCheckBoxClick={this.handleTaskCheckBoxClick} onTaskMoved={this.handleTaskMoved}
               onAddTaskButtonClick={this.handleAddTaskButtonClick} onRemoveTaskButtonClick={this.handleRemoveTaskButtonClick}
               onAddTaskListButtonClick={this.handleAddTaskListButtonClick} onRemoveTaskListButtonClick={this.handleRemoveTaskListButtonClick}
@@ -164,7 +164,7 @@ class App extends React.Component {
     }
   }
 
-  initializeConfig() {
+  initializeLocalConfig() {
     this.props.dispatch(getGeneralConfigAsync());
     this.props.dispatch(getCSSConfigAsync());
   }

@@ -17,6 +17,7 @@
   height: fit-content;
   min-height: 50px;
   display: flex;
+  padding-left: 10px;
 }
 
 .ProjectSelectorFlexContainer {

@@ -43,7 +43,7 @@
 
 .ProjectSelectorsFlexItemContainer {
     flex-grow: 1;
-    height: 100vh;
+    height: 90vh;
     background: var(--surface-color);
 }
 
@@ -74,5 +74,6 @@
     align-content: center;
     align-items: center;
     height: 100%;
+    padding-left: 15px;
 }
 

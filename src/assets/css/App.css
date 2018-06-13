@@ -26,19 +26,62 @@ html, body {
   min-height: 100%;
 }
 
-.SidebarProjectFlexContainer {
+/* Project Container Transitioning. Hide when covered by Sidebar */
+.ProjectContainer-exit-done {
+  display: none;
 }
 
-.SidebarContainer {
-  position: fixed;
-  float: left;
+.ProjectContainer-enter {
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+}
+
+/* Sidebar Container Transitioning. 
+enter, enter-active, enter-done, 
+exit, exit-active, exit-done.  */
+.SidebarContainer-enter {
+  position: absolute;
+  transform: translatex(-100%);
   z-index: 3;
   height: 100vh;
+  width: 100%;
 }
 
-.ProjectContainer {
-  float: right;
+.SidebarContainer-enter-active {
   position: absolute;
-  left: 25px;
-  width: 90vw;
+  transform: translatex(0%);
+  z-index: 3;
+  transition: transform 250ms ease-in;
+}
+
+.SidebarContainer-enter-done {
+  position: absolute;
+  transform: translatex(0%);
+  z-index: 3;
+  height: 100vh;
+  width: 100vw;
+}
+
+
+.SidebarContainer-exit {
+  position: absolute;
+  transform: translatex(0%);
+  z-index: 3;
+  height: 100vh;
+  width: 100vw;
+}
+
+.SidebarContainer-exit-active {
+  position: absolute;
+  transform: translatex(-100%);
+  transition: transform 200ms ease-in;
+  z-index: 3;
+}
+
+.SidebarContainer-exit-done {
+  position: absolute;
+  transform: translatex(-100%);
 }

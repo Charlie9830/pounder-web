@@ -4,6 +4,7 @@ import ProjectMessageDisplay from './ProjectMessageDisplay';
 import '../assets/css/Project.css';
 import ProjectToolBar from './ProjectToolBar';
 import scrollToComponent from 'react-scroll-to-component';
+import BackArrow from '../assets/icons/BackArrow.svg';
 
 class Project extends React.Component {
     constructor(props){
@@ -33,6 +34,7 @@ class Project extends React.Component {
         this.handleTaskListJumpMenuItemClick = this.handleTaskListJumpMenuItemClick.bind(this);
         this.handleTaskListJumpMenuButtonClick = this.handleTaskListJumpMenuButtonClick.bind(this);
         this.getProjectMessageDisplayJSX = this.getProjectMessageDisplayJSX.bind(this);
+        this.handleBackArrowClick = this.handleBackArrowClick.bind(this);
     }
     
     componentDidMount() {   
@@ -96,6 +98,11 @@ class Project extends React.Component {
         return (
             <div className="Project">
                 <div className="ProjectToolBar">
+                    <div className="ProjectHeaderContainer">
+                        <div className="ProjectHeaderBackArrowContainer" onClick={this.handleBackArrowClick}>
+                            <img className="ProjectHeaderBackArrow" src={BackArrow} />
+                        </div>
+                    </div>
                     <ProjectToolBar onAddTaskButtonClick={this.handleAddTaskButtonClick} onAddTaskListButtonClick={this.handleAddTaskListButtonClick}
                     onRemoveTaskButtonClick={this.handleRemoveTaskButtonClick} onRemoveTaskListButtonClick={this.handleRemoveTaskListButtonClick}
                     taskLists={filteredTaskListWidgets} onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick}
@@ -112,6 +119,10 @@ class Project extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    handleBackArrowClick() {
+        this.props.onBackArrowClick();
     }
 
     handleTaskListJumpMenuButtonClick() {
@@ -143,7 +154,7 @@ class Project extends React.Component {
 
     handleTaskListJumpMenuItemClick(taskListId) {
          // Offset here should be the Oppisite of .TaskListContainer padding-top.
-        scrollToComponent(this.refs[taskListId], {align: 'top', offset: -45, duration: 250});
+        scrollToComponent(this.refs[taskListId], {align: 'top', offset: -77, duration: 250});
         this.props.onTaskListWidgetFocusChanged(taskListId, (this.props.focusedTaskListId === taskListId));
 
         // Tell App to close the Menu.

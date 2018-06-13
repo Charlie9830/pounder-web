@@ -12,6 +12,8 @@ import '../assets/css/Sidebar.css';
 import '../assets/css/Project.css';
 import { connect } from 'react-redux';
 import { MessageBoxTypes } from 'pounder-redux';
+import { hot } from 'react-hot-loader';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { setFocusedTaskListId, selectTask, openTask, startTaskMove, getProjectsAsync, getTasksAsync,
 unsubscribeProjectsAsync, unsubscribeProjectLayoutsAsync, unsubscribeTaskListsAsync, unsubscribeTasksAsync,
 setOpenTaskListSettingsMenuId, openCalendar, addNewTaskListAsync, addNewTaskAsync,
@@ -21,7 +23,7 @@ addNewProjectAsync, removeProjectAsync, updateProjectNameAsync, removeTaskListAs
 updateTaskDueDateAsync, updateTaskPriority, openTaskListJumpMenu, closeTaskListJumpMenu, getGeneralConfigAsync,
 unSubscribeAccountConfigAsync, setIsAppSettingsOpen, gegtAccountConfigAsync, getCSSConfigAsync, setAppSettingsMenuPage,
 setMessageBox, subscribeToDatabaseAsync, unsubscribeFromDatabaseAsync, attachAuthListenerAsync, postSnackbarMessage,
-} from 'pounder-redux/action-creators';
+setIsSidebarOpen, } from 'pounder-redux/action-creators';
 
 class App extends React.Component {
   constructor(props) {
@@ -65,6 +67,9 @@ class App extends React.Component {
     this.handleAppSettingsButtonClick = this.handleAppSettingsButtonClick.bind(this);
     this.getAppSettingsMenuJSX = this.getAppSettingsMenuJSX.bind(this);
     this.handleAccountIconClick = this.handleAccountIconClick.bind(this);
+    this.getSidebarOrProjectJSX = this.getSidebarOrProjectJSX.bind(this);
+    this.handleRequestSidebarClose = this.handleRequestSidebarClose.bind(this);
+    this.handleBackArrowClick = this.handleBackArrowClick.bind(this);
   }
 
   componentDidMount() {
@@ -89,30 +94,51 @@ class App extends React.Component {
 
   componentWillUnmount(){
     // Stop listening to the Database.
-    this.unSubscribeFromDatabase();
   }
 
   render() {
-    var projects = this.props.projects == undefined ? [] : this.props.projects;
-    var projectName = this.getProjectName(this.props);
     var appSettingsMenuJSX = this.getAppSettingsMenuJSX();
+    var sidebarOrProjectJSX = this.getSidebarOrProjectJSX();
 
     return (
       <div>
       <VisibleSnackbar/>
       <MessageBox config={this.props.messageBox}/>
       {appSettingsMenuJSX}
-        <div className="SidebarProjectFlexContainer">
-          <div className="SidebarContainer">
+
+      {/* Sidebar / Project Transition Group */}
+      <TransitionGroup>
+        {sidebarOrProjectJSX}
+      </TransitionGroup>
+          
+      </div>
+    );
+  }
+
+  getSidebarOrProjectJSX() {
+    var projects = this.props.projects == undefined ? [] : this.props.projects;
+    if (this.props.isSidebarOpen) {
+      return (
+        <CSSTransition key={"sidebarContainer"} classNames="SidebarContainer" appear={true} timeout={250} in={this.props.isSidebarOpen}>
+          <div>
             <Sidebar className="Sidebar" projects={projects} selectedProjectId={this.props.selectedProjectId}
               onProjectSelectorClick={this.handleProjectSelectorClick} onAddProjectClick={this.handleAddProjectClick}
               onRemoveProjectClick={this.handleRemoveProjectClick} onProjectNameSubmit={this.handleProjectNameSubmit}
               projectSelectorDueDateDisplays={this.props.projectSelectorDueDateDisplays} isLoggedIn={this.props.isLoggedIn}
               favouriteProjectId={this.props.accountConfig.favouriteProjectId} onAppSettingsButtonClick={this.handleAppSettingsButtonClick}
               onAccountIconClick={this.handleAccountIconClick} isLoggingIn={this.props.isLoggingIn}
-              />
+              onRequestSidebarClose={this.handleRequestSidebarClose}
+            />
           </div>
-          <div className="ProjectContainer">
+        </CSSTransition>
+      )
+    }
+
+    else {
+      var projectName = this.getProjectName(this.props);
+      return (
+        <CSSTransition key={"projectContainer"} classNames="ProjectContainer" timeout={250} in={!this.props.isSidebarOpen}>
+          <div>
             <Project taskLists={this.props.taskLists} tasks={this.props.tasks} selectedTask={this.props.selectedTask}
               movingTaskId={this.props.movingTaskId} focusedTaskListId={this.props.focusedTaskListId}
               projectId={this.props.selectedProjectId} onTaskListWidgetRemoveButtonClick={this.handleTaskListWidgetRemoveButtonClick}
@@ -129,12 +155,20 @@ class App extends React.Component {
               openTaskListSettingsMenuId={this.props.openTaskListSettingsMenuId}
               onTaskPriorityToggleClick={this.handleTaskPriorityToggleClick}
               onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick}
-              isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen}
+              isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen} onBackArrowClick={this.handleBackArrowClick}
             />
           </div>
-        </div>
-      </div>
-    );
+        </CSSTransition>
+      )
+    }
+  }
+
+  handleBackArrowClick() {
+    this.props.dispatch(setIsSidebarOpen(true));
+  }
+
+  handleRequestSidebarClose() {
+    this.props.dispatch(setIsSidebarOpen(false));
   }
 
   handleAccountIconClick() {
@@ -379,9 +413,11 @@ const mapStateToProps = state => {
     messageBox: state.messageBox,
     isLoggedIn: state.isLoggedIn,
     isLoggingIn: state.isLoggingIn,
+    isSidebarOpen: state.isSidebarOpen,
   }
 }
 
 let VisibleApp = connect(mapStateToProps)(App);
-export default VisibleApp;
+export default hot(module)(VisibleApp);
+
 

@@ -102,18 +102,19 @@ class Project extends React.Component {
                         <div className="ProjectHeaderBackArrowContainer" onClick={this.handleBackArrowClick}>
                             <img className="ProjectHeaderBackArrow" src={BackArrow} />
                         </div>
+                        <div className="ProjectNameContainer">
+                            <div className="ProjectName">
+                                {this.props.projectName}
+                            </div>
+                        </div>
                     </div>
+                    
                     <ProjectToolBar onAddTaskButtonClick={this.handleAddTaskButtonClick} onAddTaskListButtonClick={this.handleAddTaskListButtonClick}
-                    onRemoveTaskButtonClick={this.handleRemoveTaskButtonClick} onRemoveTaskListButtonClick={this.handleRemoveTaskListButtonClick}
-                    taskLists={filteredTaskListWidgets} onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick}
-                    onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick} isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen}/>
+                        onRemoveTaskButtonClick={this.handleRemoveTaskButtonClick} onRemoveTaskListButtonClick={this.handleRemoveTaskListButtonClick}
+                        taskLists={filteredTaskListWidgets} onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick}
+                        onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick} isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen} />
                 </div>
                 <div className="TaskListsContainer">
-                    <div className="ProjectNameContainer">
-                        <label className="ProjectName">
-                            {this.props.projectName}
-                        </label>
-                    </div>
                     {projectMessageDisplayJSX}
                     {taskListWidgets}
                 </div>

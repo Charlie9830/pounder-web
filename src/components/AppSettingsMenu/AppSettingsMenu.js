@@ -36,7 +36,7 @@ class AppSettingsMenu extends React.Component {
         var contentsJSX = this.getPageJSX()
 
         return (
-            <div className="AppSettingsContainer">
+            <div>
                 <div className="AppSettingsMenuContainer">
                     <div className="AppSettingsMenuHeader">
                         <div className="AppSettingsBackArrowContainer" onClick={() => {this.props.dispatch(setIsAppSettingsOpen(false))}}>

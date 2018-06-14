@@ -1,5 +1,7 @@
 import React from 'react';
 import ProjectSelector from './ProjectSelector';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import VisibleAppSettingsMenu from './AppSettingsMenu/AppSettingsMenu';
 import '../assets/css/Sidebar.css';
 import '../assets/css/ToolBarButton.css';
 import NewProjectIcon from '../assets/icons/NewProjectIcon.svg';
@@ -23,6 +25,7 @@ class Sidebar extends React.Component{
         this.getSidebarToolbarJSX = this.getSidebarToolbarJSX.bind(this);
         this.getSidebarBottombarJSX = this.getSidebarBottombarJSX.bind(this);
         this.getAccountIconSrc = this.getAccountIconSrc.bind(this);
+        this.getAppSettingsJSX = this.getAppSettingsJSX.bind(this);
 
         this.state = {
             openProjectSelectorInputId: -1,
@@ -30,6 +33,8 @@ class Sidebar extends React.Component{
     }
 
     render() {
+        var appSettingsJSX = this.getAppSettingsJSX();
+
         var projectSelectorsJSX = this.props.projects.map((item, index) => {
             var isSelected = this.props.selectedProjectId === item.uid;
             var isInputOpen = item.uid === this.state.openProjectSelectorInputId;
@@ -49,6 +54,7 @@ class Sidebar extends React.Component{
 
         return (
             <div>
+                {appSettingsJSX}
                 <div>
                     {sidebarToolbarJSX}
                 </div>
@@ -62,6 +68,15 @@ class Sidebar extends React.Component{
                 </div>
             </div>
         )
+    }
+
+    getAppSettingsJSX() {
+            return (
+                <CSSTransition key={"appSettings"} classNames="AppSettingsContainer" in={this.props.isAppSettingsOpen} timeout={250}
+                mountOnEnter={true} unmountOnExit={true}>
+                    <VisibleAppSettingsMenu/>
+                </CSSTransition>
+            )
     }
 
     getSidebarToolbarJSX() {
@@ -130,3 +145,51 @@ class Sidebar extends React.Component{
 }
 
 export default Sidebar;
+
+
+// getSidebarOrAppSettingsJSX() {
+//     if (!this.props.isAppSettingsOpen) {
+//         var projectSelectorsJSX = this.props.projects.map((item, index) => {
+//             var isSelected = this.props.selectedProjectId === item.uid;
+//             var isInputOpen = item.uid === this.state.openProjectSelectorInputId;
+//             var dueDateDisplay = this.props.projectSelectorDueDateDisplays[item.uid];
+//             var isFavouriteProject = this.props.favouriteProjectId === item.uid;
+
+//             return (
+//                 <ProjectSelector key={index} projectSelectorId={item.uid} projectName={item.projectName} isSelected={isSelected}
+//                     isInputOpen={isInputOpen} onClick={this.handleProjectSelectorClick} onInputOpen={this.handleProjectSelectorInputOpen}
+//                     onProjectNameSubmit={this.handleProjectNameSubmit} dueDateDisplay={dueDateDisplay}
+//                     isFavouriteProject={isFavouriteProject} />
+//             )
+//         })
+
+//         var sidebarToolbarJSX = this.getSidebarToolbarJSX();
+//         var sidebarBottombarJSX = this.getSidebarBottombarJSX();
+
+//         return (
+//             <CSSTransition key={"sidebarContent"} classNames="SidebarContentContainer" timeout={250}>
+//                 <div>
+//                     <div>
+//                         {sidebarToolbarJSX}
+//                     </div>
+//                     <div className="SidebarVerticalFlexContainer">
+//                         <div className="ProjectSelectorsFlexItemContainer">
+//                             <div>
+//                                 {projectSelectorsJSX}
+//                             </div>
+//                         </div>
+//                         {sidebarBottombarJSX}
+//                     </div>
+//                 </div>
+//             </CSSTransition>
+//         )
+//     }
+
+//     else {
+//         return (
+//             <CSSTransition key={"appSettings"} classNames="AppSettingsContainer" timeout={250}>
+//                 <VisibleAppSettingsMenu/>
+//             </CSSTransition>
+//         )
+//     }
+// }

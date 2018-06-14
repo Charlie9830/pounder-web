@@ -65,7 +65,6 @@ class App extends React.Component {
     this.handleTaskListJumpMenuButtonClick = this.handleTaskListJumpMenuButtonClick.bind(this);
     this.initializeLocalConfig = this.initializeLocalConfig.bind(this);
     this.handleAppSettingsButtonClick = this.handleAppSettingsButtonClick.bind(this);
-    this.getAppSettingsMenuJSX = this.getAppSettingsMenuJSX.bind(this);
     this.handleAccountIconClick = this.handleAccountIconClick.bind(this);
     this.getSidebarOrProjectJSX = this.getSidebarOrProjectJSX.bind(this);
     this.handleRequestSidebarClose = this.handleRequestSidebarClose.bind(this);
@@ -97,14 +96,12 @@ class App extends React.Component {
   }
 
   render() {
-    var appSettingsMenuJSX = this.getAppSettingsMenuJSX();
     var sidebarOrProjectJSX = this.getSidebarOrProjectJSX();
 
     return (
       <div>
       <VisibleSnackbar/>
       <MessageBox config={this.props.messageBox}/>
-      {appSettingsMenuJSX}
 
       {/* Sidebar / Project Transition Group */}
       <TransitionGroup>
@@ -127,7 +124,7 @@ class App extends React.Component {
               projectSelectorDueDateDisplays={this.props.projectSelectorDueDateDisplays} isLoggedIn={this.props.isLoggedIn}
               favouriteProjectId={this.props.accountConfig.favouriteProjectId} onAppSettingsButtonClick={this.handleAppSettingsButtonClick}
               onAccountIconClick={this.handleAccountIconClick} isLoggingIn={this.props.isLoggingIn}
-              onRequestSidebarClose={this.handleRequestSidebarClose}
+              onRequestSidebarClose={this.handleRequestSidebarClose} isAppSettingsOpen={this.props.isAppSettingsOpen}
             />
           </div>
         </CSSTransition>
@@ -174,14 +171,6 @@ class App extends React.Component {
   handleAccountIconClick() {
     this.props.dispatch(setIsAppSettingsOpen(true));
     this.props.dispatch(setAppSettingsMenuPage("account"));
-  }
-
-  getAppSettingsMenuJSX() {
-    if (this.props.isAppSettingsOpen) {
-      return (
-        <VisibleAppSettingsMenu/>
-      )
-    }
   }
 
   handleAppSettingsButtonClick() {

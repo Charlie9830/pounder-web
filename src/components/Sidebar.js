@@ -54,7 +54,9 @@ class Sidebar extends React.Component{
 
         return (
             <div>
+                {/* App Settings */}
                 {appSettingsJSX}
+
                 <div>
                     {sidebarToolbarJSX}
                 </div>

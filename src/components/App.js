@@ -116,7 +116,8 @@ class App extends React.Component {
     var projects = this.props.projects == undefined ? [] : this.props.projects;
     if (this.props.isSidebarOpen) {
       return (
-        <CSSTransition key={"sidebarContainer"} classNames="SidebarContainer" appear={true} timeout={250} in={this.props.isSidebarOpen}>
+        <CSSTransition key={"sidebarContainer"} classNames="SidebarContainer" appear={true} 
+        timeout={{enter: 250, exit: 250}}>
           <div>
             <Sidebar className="Sidebar" projects={projects} selectedProjectId={this.props.selectedProjectId}
               onProjectSelectorClick={this.handleProjectSelectorClick} onAddProjectClick={this.handleAddProjectClick}
@@ -134,7 +135,7 @@ class App extends React.Component {
     else {
       var projectName = this.getProjectName(this.props);
       return (
-        <CSSTransition key={"projectContainer"} classNames="ProjectContainer" timeout={250} in={!this.props.isSidebarOpen}>
+        <CSSTransition key={"projectContainer"} classNames="ProjectContainer" timeout={250}>
           <div>
             <Project taskLists={this.props.taskLists} tasks={this.props.tasks} selectedTask={this.props.selectedTask}
               movingTaskId={this.props.movingTaskId} focusedTaskListId={this.props.focusedTaskListId}

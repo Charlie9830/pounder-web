@@ -2,10 +2,6 @@ import React from 'react';
 import '../assets/css/Containers/CenteringContainer.css';
 
 class CenteringContainer extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div className="CenteringContainerOuter">

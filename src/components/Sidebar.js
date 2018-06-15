@@ -1,6 +1,6 @@
 import React from 'react';
 import ProjectSelector from './ProjectSelector';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { CSSTransition } from 'react-transition-group';
 import VisibleAppSettingsMenu from './AppSettingsMenu/AppSettingsMenu';
 import '../assets/css/Sidebar.css';
 import '../assets/css/ToolBarButton.css';

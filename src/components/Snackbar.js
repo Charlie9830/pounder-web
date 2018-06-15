@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from './Button';
-import CenteringContainer from '../containers/CenteringContainer';
 import '../assets/css/Snackbar.css';
 import { connect } from 'react-redux';
 import { dismissSnackbar } from 'pounder-redux/action-creators';

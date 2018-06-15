@@ -1,20 +1,15 @@
 import React from 'react';
-import Button from '../Button';
 import GeneralSettingsPage from './GeneralSettingsPage';
 import AccountSettingsPage from './AccountSettingsPage';
 import AppSettingsSidebar from './AppSettingsSidebar';
-import CenteringContainer from '../../containers/CenteringContainer';
 import '../../assets/css/AppSettingsMenu/AppSettingsMenu.css';
 import '../../assets/css/ToolBarButton.css';
 import BackArrow from '../../assets/icons/BackArrow.svg';
 import { connect } from 'react-redux';
-import { setAppSettingsMenuPage, getDatabaseInfoAsync, purgeCompleteTasksAsync, setFavouriteProjectIdAsync,
-         setCSSConfigAsync, setMessageBox, 
-         setGeneralConfigAsync, setIsAppSettingsOpen, 
-         logInUserAsync, logOutUserAsync } from 'pounder-redux/action-creators';
-import { MessageBoxTypes } from 'pounder-redux';
-import MessageBox from '../MessageBox';
-import { getFirestore } from 'pounder-firebase';
+import {
+    setAppSettingsMenuPage, setFavouriteProjectIdAsync, setCSSConfigAsync, setIsAppSettingsOpen, logInUserAsync,
+    logOutUserAsync
+} from 'pounder-redux/action-creators';
 
 
 class AppSettingsMenu extends React.Component {
@@ -83,7 +78,6 @@ class AppSettingsMenu extends React.Component {
                     onFavouriteProjectSelectChange={this.handleFavouriteProjectSelectChange} accountConfig={this.props.accountConfig}
                     cssConfig={this.props.cssConfig} onCSSPropertyChange={this.handleCSSPropertyChange}/>
                 )
-            break;
 
             case "account":
                 return (
@@ -92,7 +86,6 @@ class AppSettingsMenu extends React.Component {
                     onLogInButtonClick={(email, password) => {this.props.dispatch(logInUserAsync(email,password))}}
                     onLogOutButtonClick={() => {this.props.dispatch(logOutUserAsync())}}/>
                 )
-            break;
 
             default: 
                 return (<div/>)

@@ -60,7 +60,6 @@ class TaskListSettingsMenu extends React.Component {
 
     getSelectableMenuItems(props) {
         var jsx = [];
-        var selectedClassSuffix = "IsSelected";
         
         // Sort by Completed.
         jsx.push((
@@ -85,8 +84,6 @@ class TaskListSettingsMenu extends React.Component {
        ))
 
        // Sort by Priority.
-       var priorityClassName = this.props.settings.sortBy === "priority" ?
-            "TaskListSettingsMenuItemContainer" + selectedClassSuffix : "TaskListSettingsMenuItemContainer";
         jsx.push((
             <div key="2" className="TaskListSettingsMenuItemContainer" onClick={this.handleSortByPriorityItemClick}>
                 <div className="TaskListSettingsMenuItemFlexContainer">
@@ -98,8 +95,6 @@ class TaskListSettingsMenu extends React.Component {
         ))
 
         // Sort by Date Added.
-        var dateAddedClassName = this.props.settings.sortBy === "date added" ?
-            "TaskListSettingsMenuItemContainer" + selectedClassSuffix : "TaskListSettingsMenuItemContainer";
         jsx.push((
             <div key="3" className="TaskListSettingsMenuItemContainer" onClick={this.handleSortByDateAddedItemClick}>
                 <div className="TaskListSettingsMenuItemFlexContainer">

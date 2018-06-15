@@ -1,11 +1,9 @@
 import React from 'react';
-import AppSettingsMenuSubtitle from './AppSettingsMenuSubtitle';
 import CenteringContainer from '../../containers/CenteringContainer';
 import Button from '../Button';
 import Spinner from '../Spinner';
 import '../../assets/css/AppSettingsMenu/AppSettingsMenu.css';
 import AccountIconLoggedIn from '../../assets/icons/AccountIconLoggedIn.svg';
-import AccountIconLoggedOut from '../../assets/icons/AccountIconLoggedOut.svg';
 
 class AccountSettingsPage extends React.Component {
     constructor(props) {

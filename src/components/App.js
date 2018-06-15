@@ -2,11 +2,8 @@ import '../assets/css/App.css';
 import React from 'react';
 import Sidebar from './Sidebar';
 import Project from './Project';
-import VisibleAppSettingsMenu from './AppSettingsMenu/AppSettingsMenu';
 import MessageBox from './MessageBox';
-import Button from './Button';
 import VisibleSnackbar from './Snackbar';
-import CenteringContainer from '../containers/CenteringContainer';
 import Hammer from 'hammerjs';
 import '../assets/css/TaskListWidget.css';
 import '../assets/css/Sidebar.css';
@@ -15,15 +12,14 @@ import { connect } from 'react-redux';
 import { MessageBoxTypes } from 'pounder-redux';
 import { hot } from 'react-hot-loader';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { setFocusedTaskListId, selectTask, openTask, startTaskMove, getProjectsAsync, getTasksAsync,
-unsubscribeProjectsAsync, unsubscribeProjectLayoutsAsync, unsubscribeTaskListsAsync, unsubscribeTasksAsync,
+import { selectTask, openTask, startTaskMove,
 setOpenTaskListSettingsMenuId, openCalendar, addNewTaskListAsync, addNewTaskAsync,
-changeFocusedTaskList, moveTaskAsync, updateTaskListWidgetHeaderAsync, getTaskListsAsync, getProjectLayoutsAsync,
-removeSelectedTaskAsync, updateTaskNameAsync, selectProjectAsync, updateProjectLayoutAsync, updateTaskCompleteAsync,
+changeFocusedTaskList, moveTaskAsync, updateTaskListWidgetHeaderAsync,
+removeSelectedTaskAsync, updateTaskNameAsync, selectProjectAsync, updateTaskCompleteAsync,
 addNewProjectAsync, removeProjectAsync, updateProjectNameAsync, removeTaskListAsync, updateTaskListSettingsAsync,
 updateTaskDueDateAsync, updateTaskPriority, openTaskListJumpMenu, closeTaskListJumpMenu, getGeneralConfigAsync,
-unSubscribeAccountConfigAsync, setIsAppSettingsOpen, gegtAccountConfigAsync, getCSSConfigAsync, setAppSettingsMenuPage,
-setMessageBox, subscribeToDatabaseAsync, unsubscribeFromDatabaseAsync, attachAuthListenerAsync, postSnackbarMessage,
+setIsAppSettingsOpen, getCSSConfigAsync, setAppSettingsMenuPage,
+setMessageBox, attachAuthListenerAsync,
 setIsSidebarOpen, } from 'pounder-redux/action-creators';
 
 class App extends React.Component {
@@ -133,6 +129,7 @@ class App extends React.Component {
   }
 
   getSidebarOrProjectJSX() {
+    // eslint-disable-next-line
     var projects = this.props.projects == undefined ? [] : this.props.projects;
     if (this.props.isSidebarOpen) {
       return (
@@ -265,7 +262,6 @@ class App extends React.Component {
   handleTaskClick(element, projectId, taskListWidgetId) {
     // TODO: Do you need to provide the entire Element as a parameter? Why not just the taskID?
     var selectedTask = this.props.selectedTask;
-    var openCalendarId = this.props.openCalendarId === element.props.taskId ? this.props.openCalendarId : -1; // Keep calendar Open if it already Open.
 
     // If a task is already moving, it's completion will be handled by the Task List Focus change. Letting the selecition handling runs
     // causes problems.

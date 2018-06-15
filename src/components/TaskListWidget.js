@@ -3,7 +3,6 @@ import TaskArea from '../components/TaskArea';
 import Task from '../components/Task';
 import ListToolbar from '../components/ListToolbar';
 import '../assets/css/TaskListWidget.css';
-import { TaskListSettingsStore } from 'pounder-stores';
 
 
 class TaskListWidget extends React.Component {
@@ -34,6 +33,7 @@ class TaskListWidget extends React.Component {
     render(){
         var builtTasks = [];
 
+        // eslint-disable-next-line
         if (this.props.tasks != undefined) {
             // Sort Tasks.
             var taskSorter = this.getTaskSorter(this.props)
@@ -51,6 +51,7 @@ class TaskListWidget extends React.Component {
             builtTasks = sortedTasks.map((item, index, array) => {
                 // Bail out if Task isn't meant to be Visible.
                 if (!this.props.settings.isCompleteTasksShown && item.isComplete) {
+                    // eslint-disable-next-line
                     return;
                 }
 
@@ -127,7 +128,7 @@ class TaskListWidget extends React.Component {
 
     handleKeyPress(e, taskId, newData) {
         // Enter Key.
-        if (e.key == "Enter") {
+        if (e.key === "Enter") {
             // Handle Data Changes.
             this.props.onTaskSubmit(this.props.taskListWidgetId, taskId, newData)
         }   

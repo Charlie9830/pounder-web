@@ -64,7 +64,7 @@ exit, exit-active, exit-done.  */
   position: absolute;
   transform: translatex(0%);
   z-index: 3;
-  transition: transform 250ms ease-in;
+  transition: transform 250ms ease-out;
 }
 
 .SidebarContainer-enter-done {

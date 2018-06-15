@@ -7,6 +7,7 @@ import MessageBox from './MessageBox';
 import Button from './Button';
 import VisibleSnackbar from './Snackbar';
 import CenteringContainer from '../containers/CenteringContainer';
+import Hammer from 'hammerjs';
 import '../assets/css/TaskListWidget.css';
 import '../assets/css/Sidebar.css';
 import '../assets/css/Project.css';
@@ -76,6 +77,25 @@ class App extends React.Component {
     this.initializeLocalConfig();
     // Attach an Authentication state listener. Will pull down database when Logged in.
     this.props.dispatch(attachAuthListenerAsync());
+
+    var hammer = new Hammer(document.getElementById('root'));
+    hammer.on('swipe', event => {
+      // Swipe Left.
+      if (event.velocityX < 0) {
+        // User is in the Sidebar.
+        if (this.props.isSidebarOpen === true) {
+          this.props.dispatch(setIsSidebarOpen(false));
+        }
+      }
+
+      // Swipe Right.
+      if (event.velocityX > 0) {
+        // User is in the Project.
+        if (this.props.isSidebarOpen === false) {
+          this.props.dispatch(setIsSidebarOpen(true));
+        }
+      }
+    })
   }
   
   componentDidUpdate(prevProps, prevState, snapshot) {

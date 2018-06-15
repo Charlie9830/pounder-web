@@ -179,7 +179,7 @@
 .AppSettingsContainer-enter {
     display: block;
     position: absolute;
-    transform: translatex(-100%);
+    transform: translatex(100%);
     overflow-y: scroll;
     top: 0px;
     left: 0px;
@@ -236,7 +236,7 @@
     display: block;
     position: absolute;
     overflow-y: scroll;
-    transform: translateX(-100%);
+    transform: translateX(100%);
     transition: transform 200ms ease;
     top: 0px;
     left: 0px;

@@ -8,13 +8,19 @@ import BackArrow from '../../assets/icons/BackArrow.svg';
 import { connect } from 'react-redux';
 import {
     setAppSettingsMenuPage, setFavouriteProjectIdAsync, setCSSConfigAsync, setIsAppSettingsOpen, logInUserAsync,
-    logOutUserAsync
+    logOutUserAsync, setAllColorsToDefaultAsync, setMessageBox,
 } from 'pounder-redux/action-creators';
+import { MessageBoxTypes } from 'pounder-redux';
 
 
 class AppSettingsMenu extends React.Component {
     constructor(props) {
         super(props);
+
+        // State.
+        this.state = {
+            openColorPickerIndex: -1,
+        }
 
         // Method Bindings.
         this.getPageJSX = this.getPageJSX.bind(this);
@@ -22,6 +28,10 @@ class AppSettingsMenu extends React.Component {
         this.handleOkButtonClick = this.handleOkButtonClick.bind(this);
         this.handleFavouriteProjectSelectChange = this.handleFavouriteProjectSelectChange.bind(this);
         this.handleCSSPropertyChange = this.handleCSSPropertyChange.bind(this);
+        this.handleColorPickerCloseButtonClick = this.handleColorPickerCloseButtonClick.bind(this);
+        this.handleDefaultAllColorsButtonClick = this.handleDefaultAllColorsButtonClick.bind(this);
+        this.handleAppSettingsMenuContainerClick = this.handleAppSettingsMenuContainerClick.bind(this);
+        this.handleColorPickerClick = this.handleColorPickerClick.bind(this);
     }
 
     componentDidMount() {
@@ -29,10 +39,10 @@ class AppSettingsMenu extends React.Component {
 
     render() {
         var contentsJSX = this.getPageJSX()
-
+        
         return (
             <div>
-                <div className="AppSettingsMenuContainer">
+                <div className="AppSettingsMenuContainer" onClick={this.handleAppSettingsMenuContainerClick}>
                     <div className="AppSettingsMenuHeader">
                         <div className="AppSettingsBackArrowContainer" onClick={() => {this.props.dispatch(setIsAppSettingsOpen(false))}}>
                             <img className="AppSettingsBackArrow" src={BackArrow}/>
@@ -54,6 +64,12 @@ class AppSettingsMenu extends React.Component {
         )
     }
 
+    handleAppSettingsMenuContainerClick() {
+        // Close Color Picker if it's open.
+        if (this.state.openColorPickerIndex !== -1) {
+            this.setState({openColorPickerIndex: -1});
+        }
+    }
     
 
     handleCSSPropertyChange(propertyName, value) {
@@ -61,6 +77,11 @@ class AppSettingsMenu extends React.Component {
         newConfig[propertyName] = value;
 
         this.props.dispatch(setCSSConfigAsync(newConfig));
+    }
+
+    handleColorPickerCloseButtonClick() {
+        // Close Color Picker.
+        this.setState({ openColorPickerIndex: -1 });
     }
 
     handleOkButtonClick() {
@@ -76,7 +97,10 @@ class AppSettingsMenu extends React.Component {
                     <GeneralSettingsPage projects={this.props.projects} generalConfig={this.props.generalConfig}
                     onStartInFullscreenChange={this.handleStartInFullscreenChange} onStartLockedChange={this.handleStartLockedChange}
                     onFavouriteProjectSelectChange={this.handleFavouriteProjectSelectChange} accountConfig={this.props.accountConfig}
-                    cssConfig={this.props.cssConfig} onCSSPropertyChange={this.handleCSSPropertyChange}/>
+                    cssConfig={this.props.cssConfig} onCSSPropertyChange={this.handleCSSPropertyChange}
+                    onColorPickerClick={this.handleColorPickerClick} openColorPickerIndex={this.state.openColorPickerIndex}
+                    onColorPickerCloseButtonClick={this.handleColorPickerCloseButtonClick}
+                    onDefaultAllColorsButtonClick={this.handleDefaultAllColorsButtonClick}/>
                 )
 
             case "account":
@@ -92,6 +116,23 @@ class AppSettingsMenu extends React.Component {
         }
     }
 
+    handleDefaultAllColorsButtonClick() {
+        this.props.dispatch(setMessageBox(true, "Are you Sure? A restart will be required to apply changes.", MessageBoxTypes.STANDARD,
+            null, result => {
+                if (result === "ok") {
+                    this.props.dispatch(setMessageBox({}));
+                    this.props.dispatch(setAllColorsToDefaultAsync());
+                }
+
+                else {
+                    this.props.dispatch(setMessageBox({}));
+                }
+            }))
+    }
+
+    handleColorPickerClick(index) {
+        this.setState({openColorPickerIndex: index});
+    }
     handleFavouriteProjectSelectChange(projectId) {
         this.props.dispatch(setFavouriteProjectIdAsync(projectId));
     }

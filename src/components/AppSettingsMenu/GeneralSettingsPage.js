@@ -1,6 +1,8 @@
 import React from 'react';
 import AppSettingsMenuSubtitle from './AppSettingsMenuSubtitle';
+import ThemeSettings from './ThemeSettings';
 import '../../assets/css/AppSettingsMenu/AppSettingsMenu.css';
+
 
 class GeneralSettingsPage extends React.Component {
     constructor(props) {
@@ -8,17 +10,16 @@ class GeneralSettingsPage extends React.Component {
         
         // Method Bindings.
         this.getFavouriteProjectSelectorJSX = this.getFavouriteProjectSelectorJSX.bind(this);
-        this.getColorPropertiesJSX = this.getColorPropertiesJSX.bind(this);
         this.handleStartInFullscreenChange = this.handleStartInFullscreenChange.bind(this);
         this.handleStartLockedChange = this.handleStartLockedChange.bind(this);
         this.handleFavouriteProjectSelectChange = this.handleFavouriteProjectSelectChange.bind(this);
-        this.handleCSSPropertyInputBlur = this.handleCSSPropertyInputBlur.bind(this);
-        this.handleCSSPropertyInputKeyPress = this.handleCSSPropertyInputKeyPress.bind(this);
+        this.handleColorPickerClick = this.handleColorPickerClick.bind(this);
+        this.handleColorPickerCloseButtonClick = this.handleColorPickerCloseButtonClick.bind(this);
+        this.handleDefaultAllColorsButtonClick = this.handleDefaultAllColorsButtonClick.bind(this);
     }
 
     render() {
         var favoriteProjectSelectorJSX = this.getFavouriteProjectSelectorJSX();
-        var colorPropertiesJSX = this.getColorPropertiesJSX();
 
         return (
             <div className="AppSettingsVerticalFlexContainer">
@@ -34,13 +35,32 @@ class GeneralSettingsPage extends React.Component {
 
                 {/* Color Selection Title */}
                 <div className="AppSettingsVerticalFlexItem">
-                    <AppSettingsMenuSubtitle text="Application Colours"/>
+                    <AppSettingsMenuSubtitle text="Application Color Selection"/>
                 </div>
 
                 {/* Color Selection Properties and Inputs */}
-                {colorPropertiesJSX}
+                <div className="AppSettingsVerticalFlexItem">
+                    <ThemeSettings cssConfig={this.props.cssConfig}
+                    onCSSPropertyChange={(propertyName, value) => {this.props.onCSSPropertyChange(propertyName, value)}}
+                    onColorPickerClick={this.handleColorPickerClick} openColorPickerIndex={this.props.openColorPickerIndex}
+                    onColorPickerCloseButtonClick={this.handleColorPickerCloseButtonClick}
+                    onDefaultAllColorsButtonClick={this.handleDefaultAllColorsButtonClick}
+                    />
+                </div>
             </div>
         )
+    }
+
+    handleDefaultAllColorsButtonClick() {
+        this.props.onDefaultAllColorsButtonClick();
+    }
+
+    handleColorPickerCloseButtonClick() {
+        this.props.onColorPickerCloseButtonClick();
+    }
+
+    handleColorPickerClick(index) {
+        this.props.onColorPickerClick(index);
     }
 
     handleStartLockedChange() {

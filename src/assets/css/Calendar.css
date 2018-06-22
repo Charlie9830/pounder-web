@@ -3,7 +3,7 @@
     top: 5px;
     right: 5px;
     z-index: 2;
-    background: rgba(37,37,37,255);
+    background: var(--surface-color-alternate);
     width: 280px;
     height: auto;
     margin: 0px;
@@ -24,7 +24,7 @@
 }
 
 .PriorityToggle[data-ishighpriority*=true] {
-    color: rgb(255,150,0);
+    color: var(--important-color);
     font-weight: 600;
 }
 
@@ -39,7 +39,6 @@
 .PriorityToggleContainer:hover {
     background: rgba(52,52,52,255);
 }
-
 
 /* Keep the same as .CalenderPopupContainer .ShortcutItemContainerIsSelected */
 .CalendarPopupContainer .ShortcutItemContainer, #DateLabelContainer { 

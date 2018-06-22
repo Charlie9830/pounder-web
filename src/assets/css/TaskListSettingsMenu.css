@@ -5,7 +5,7 @@
     width: 200px;
     height: fit-content;
     z-index: 2;
-    background: var(--surface-color);
+    background: var(--surface-color-alternate);
     border: 1px solid white;
     
     box-shadow: 5px 5px 10px 0px #111;
@@ -66,7 +66,7 @@
     font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
     font-size: 10pt;
     font-weight: 400;
-    color: #FFF;
+    color: var(--primary-active-text-color);
     padding: 0px;
     text-align: left;
     line-height: 30px;

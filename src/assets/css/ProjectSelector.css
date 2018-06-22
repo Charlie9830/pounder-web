@@ -1,6 +1,6 @@
 
 .ProjectSelectorText {
-    color: gray;
+  color: var(--primary-inactive-text-color);
     margin: 5px;
     font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
     font-size: 16pt;
@@ -10,7 +10,7 @@
 }
 
 .ProjectSelectorText[data-isselected*="true"] {
-  color: #FFF;
+  color: var(--primary-active-text-color);
 }
 
 .ProjectSelectorContainer {
@@ -58,19 +58,19 @@
 }
 
 .ProjectSelectorIcon[data-colour*="Red"] {
-  background: #F00;
+  background: var(--overdue-color);
 }
 
 .ProjectSelectorIcon[data-colour*="Blue"] {
-  background: #01D;
+  background: var(--today-color);
 }
 
 .ProjectSelectorIcon[data-colour*="Yellow"] {
-  background: #FF9300;
+  background: var(--soon-color);
 }
 
 .ProjectSelectorIcon[data-colour*="Green"] {
-  background: #22B30B;
+  background: var(--later-color);
 }
 
 .ProjectSelectorIcon[data-count*="0"] {
@@ -81,18 +81,18 @@
   display: block;
   font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
   font-size: 12pt;
-  color: #FFF;
+  color: var(--due-date-text-color);
   text-align: center;
   line-height: 24px;
   margin: 0px auto;
 }
 
 .ProjectSelectorInput {
-  color: #FFF;
+  color: var(--primary-active-text-color);
   margin: auto 5px;
   font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
   font-size: 16pt;
-  background: rgba(100,100,100,255);
+  background: var(--surface-color-alternate);
   border: 0px solid #FFF;
   width: 85%;
 }

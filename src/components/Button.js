@@ -38,7 +38,7 @@ class Button extends React.Component {
         if (this.props.text !== undefined) {
             return (
                 <div className="ButtonContentFlexItemContainer">
-                    <div className="ButtonText"> {this.props.text} </div>
+                    <div className="ButtonText" data-size={this.props.size}> {this.props.text} </div>
                 </div>
             )
         }

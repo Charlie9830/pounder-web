@@ -9,6 +9,6 @@
 .ProjectMessageDisplayMessage {
     font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
     font-size: 14pt;
-    color: #AAA;
+    color: var(--alternative-active-text-color);
     text-align: center;
 }

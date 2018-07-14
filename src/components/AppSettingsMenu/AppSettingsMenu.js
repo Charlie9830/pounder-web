@@ -2,14 +2,15 @@ import React from 'react';
 import GeneralSettingsPage from './GeneralSettingsPage';
 import AccountSettingsPage from './AccountSettingsPage';
 import AppSettingsSidebar from './AppSettingsSidebar';
+import MenuHeader from '../MenuHeader';
 import '../../assets/css/AppSettingsMenu/AppSettingsMenu.css';
 import '../../assets/css/ToolBarButton.css';
-import BackArrow from '../../assets/icons/BackArrow.svg';
 import { connect } from 'react-redux';
-import {
-    setAppSettingsMenuPage, setFavouriteProjectIdAsync, setCSSConfigAsync, setIsAppSettingsOpen, logInUserAsync,
-    logOutUserAsync, setAllColorsToDefaultAsync, setMessageBox,
-} from 'pounder-redux/action-creators';
+import { setAppSettingsMenuPage, setFavouriteProjectIdAsync,
+    setCSSConfigAsync, setMessageBox, 
+    setGeneralConfigAsync, setIsAppSettingsOpen, setAllColorsToDefaultAsync,
+    logInUserAsync, logOutUserAsync, registerNewUserAsync, postSnackbarMessage, unsubscribeFromDatabaseAsync,
+    subscribeToDatabaseAsync, selectProject, sendPasswordResetEmailAsync, setAuthStatusMessage } from 'pounder-redux/action-creators';
 import { MessageBoxTypes } from 'pounder-redux';
 
 
@@ -22,6 +23,7 @@ class AppSettingsMenu extends React.Component {
             openColorPickerIndex: -1,
         }
 
+
         // Method Bindings.
         this.getPageJSX = this.getPageJSX.bind(this);
         this.handleSidebarItemClick = this.handleSidebarItemClick.bind(this);
@@ -32,6 +34,10 @@ class AppSettingsMenu extends React.Component {
         this.handleDefaultAllColorsButtonClick = this.handleDefaultAllColorsButtonClick.bind(this);
         this.handleAppSettingsMenuContainerClick = this.handleAppSettingsMenuContainerClick.bind(this);
         this.handleColorPickerClick = this.handleColorPickerClick.bind(this);
+        this.handleRegisterButtonClick = this.handleRegisterButtonClick.bind(this);
+        this.handleDisableAnimationsChange = this.handleDisableAnimationsChange.bind(this);
+        this.handlePasswordResetButtonClick = this.handlePasswordResetButtonClick.bind(this);
+        this.handleIsFirstTimeBootChange = this.handleIsFirstTimeBootChange.bind(this);
     }
 
     componentDidMount() {
@@ -43,11 +49,7 @@ class AppSettingsMenu extends React.Component {
         return (
             <div>
                 <div className="AppSettingsMenuContainer" onClick={this.handleAppSettingsMenuContainerClick}>
-                    <div className="AppSettingsMenuHeader">
-                        <div className="AppSettingsBackArrowContainer" onClick={() => {this.props.dispatch(setIsAppSettingsOpen(false))}}>
-                            <img className="AppSettingsBackArrow" src={BackArrow}/>
-                        </div>
-                    </div>
+                    <MenuHeader onBackButtonClick={() => {this.props.dispatch(setIsAppSettingsOpen(false))}}/>
                     <div className="AppSettingsMenuSidebarContentFlexContainer">
                         {/* Sidebar */}
                         <div className="AppSettingsMenuSidebarContainer">
@@ -88,6 +90,10 @@ class AppSettingsMenu extends React.Component {
         this.props.dispatch(setIsAppSettingsOpen(false));
     }
 
+    handleRegisterButtonClick(email, password, displayName) {
+        this.props.dispatch(registerNewUserAsync(email, password, displayName));
+    }
+
     getPageJSX() {
         var menuPage = this.props.menuPage === "" ? "general" : this.props.menuPage;
 
@@ -100,7 +106,9 @@ class AppSettingsMenu extends React.Component {
                     cssConfig={this.props.cssConfig} onCSSPropertyChange={this.handleCSSPropertyChange}
                     onColorPickerClick={this.handleColorPickerClick} openColorPickerIndex={this.state.openColorPickerIndex}
                     onColorPickerCloseButtonClick={this.handleColorPickerCloseButtonClick}
-                    onDefaultAllColorsButtonClick={this.handleDefaultAllColorsButtonClick}/>
+                    onDefaultAllColorsButtonClick={this.handleDefaultAllColorsButtonClick}
+                    onDisableAnimationsChange={this.handleDisableAnimationsChange}
+                    />
                 )
 
             case "account":
@@ -108,12 +116,29 @@ class AppSettingsMenu extends React.Component {
                     <AccountSettingsPage authStatusMessage={this.props.authStatusMessage} isLoggingIn={this.props.isLoggingIn}
                     isLoggedIn={this.props.isLoggedIn} userEmail={this.props.userEmail}
                     onLogInButtonClick={(email, password) => {this.props.dispatch(logInUserAsync(email,password))}}
-                    onLogOutButtonClick={() => {this.props.dispatch(logOutUserAsync())}}/>
+                    onLogOutButtonClick={() => {this.props.dispatch(logOutUserAsync())}} displayName={this.props.displayName}
+                    onPasswordResetButtonClick={this.handlePasswordResetButtonClick} 
+                    isFirstTimeBoot={this.props.generalConfig.isFirstTimeBoot} onIsFirstTimeBootChange={this.handleIsFirstTimeBootChange}
+                    />
                 )
 
             default: 
                 return (<div/>)
         }
+    }
+
+    handleIsFirstTimeBootChange(value) {
+        var generalConfig = this.props.generalConfig;
+        generalConfig.isFirstTimeBoot = false;
+        this.props.dispatch(setGeneralConfigAsync(generalConfig));
+    }
+
+    handlePasswordResetButtonClick() {
+        this.props.dispatch(sendPasswordResetEmailAsync());
+    }
+
+    handleDisableAnimationsChange(newValue) {
+        this.props.dispatch(setGeneralConfigAsync({...this.props.generalConfig, disableAnimations: newValue}));
     }
 
     handleDefaultAllColorsButtonClick() {
@@ -153,6 +178,7 @@ const mapStateToProps = state => {
         isLoggingIn: state.isLoggingIn,
         isLoggedIn: state.isLoggedIn,
         userEmail: state.userEmail,
+        displayName: state.displayName,
     }
 }
 

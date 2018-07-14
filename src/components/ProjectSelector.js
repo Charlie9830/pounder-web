@@ -8,19 +8,40 @@ class ProjectSelector extends React.Component {
     constructor(props) {
         super(props);
 
+        this.hammer = {};
+
+        // Refs.
+        this.containerRef = React.createRef();
         this.handleClick = this.handleClick.bind(this);
+        this.handleDoubleClick = this.handleDoubleClick.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.getDueDateCountsJSX = this.getDueDateCountsJSX.bind(this);
         this.getHeartJSX = this.getHeartJSX.bind(this);
+        this.handleInputBlur = this.handleInputBlur.bind(this);
     }
 
     componentDidMount() {
-        var hammer = new Hammer(this.refs.projectSelector);
-        hammer.on('press', ev => {
-            this.props.onInputOpen(this.props.projectSelectorId);
-        })
+        if (this.props.isInputOpen) {
+            this.textarea.focus();
+        }
+
+        this.hammer = new Hammer(this.containerRef.current);
+        this.hammer.on('tap', this.handleDoubleClick);
+        this.hammer.get('tap').set({taps: 2});
     }
 
+
+    componentWillUnmount() {
+        this.hammer.off('tap', this.containerRef.current, this.handleDoubleClick);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.isInputOpen !== this.props.isInputOpen) {
+            if (this.props.isInputOpen) {
+                this.textarea.focus();
+            }
+        }
+    }
     render(){
         // var currentClassName = this.props.isSelected ? "ProjectSelectorActiveStyle" : "ProjectSelectorInactiveStyle";
         var projectLabelJSX = this.getProjectLabelJSX(this.props);
@@ -28,7 +49,7 @@ class ProjectSelector extends React.Component {
         var heartJSX = this.getHeartJSX();
 
         return (
-            <div className="ProjectSelectorContainer" ref="projectSelector" onClick={this.handleClick}>
+            <div className="ProjectSelectorContainer" ref="projectSelector" ref={this.containerRef} onClick={this.handleClick} onDoubleClick={this.handleDoubleClick}>
                     <div className="ProjectSelectorFlexContainer">
                             {heartJSX}
                         <div className="ProjectSelectorLabelContainer">
@@ -80,7 +101,7 @@ class ProjectSelector extends React.Component {
         if (this.props.isInputOpen) {
             return (
                 <TextareaAutosize className="ProjectSelectorInput" innerRef={ref => this.textarea = ref} type='text' defaultValue={this.props.projectName}
-                onKeyPress={this.handleKeyPress}/>
+                onKeyPress={this.handleKeyPress} onBlur={this.handleInputBlur}/>
             )
         }
 
@@ -95,12 +116,20 @@ class ProjectSelector extends React.Component {
         this.props.onClick(e, this.props.projectSelectorId);
     }
 
+    handleDoubleClick(e) {
+        this.props.onDoubleClick(e, this.props.projectSelectorId);
+    }
+
     handleKeyPress(e) {
         if (e.key === "Enter") {
             this.props.onProjectNameSubmit(this.props.projectSelectorId, this.textarea.value);
         }
     }
 
+    handleInputBlur() {
+        this.props.onProjectNameSubmit(this.props.projectSelectorId, this.textarea.value);
+    }
+    
 
 }
 

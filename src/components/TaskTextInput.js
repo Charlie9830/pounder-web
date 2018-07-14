@@ -7,9 +7,12 @@ class TaskTextInput extends React.Component {
         super(props);
 
         this.hasEnterKeyBeenPressed = false;
+        this.isEscaping = false;
 
         // Method Bindings
         this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleInputBlur = this.handleInputBlur.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
     }
 
     componentDidMount() {
@@ -18,16 +21,16 @@ class TaskTextInput extends React.Component {
     }
 
     componentWillUnmount() {
-        if (this.hasEnterKeyBeenPressed === false) {
+        if (this.hasEnterKeyBeenPressed === false && this.isEscaping === false) {
             // Ensure the new data will be forwarded when the user elects to Click away from the input as opposed to pressing Enter.
-            this.props.onComponentUnmounting(this.textarea.value);
+            this.props.onComponentUnmounting(this.textarea.value); 
         }
     }
 
     render() {
         return (
             <TextareaAutosize className="TaskTextInput" innerRef={ref => this.textarea = ref} type='text' defaultValue={this.props.defaultValue}
-             onKeyPress={this.handleKeyPress}/>
+            onKeyPress={this.handleKeyPress} onBlur={this.handleInputBlur} onKeyDown={this.handleKeyDown}/>
         )
     }
 
@@ -39,6 +42,16 @@ class TaskTextInput extends React.Component {
         this.props.onKeyPress(e, this.textarea.value);
     }
 
+    handleKeyDown(e) {
+        if (e.key === "Escape") {
+            this.isEscaping = true;
+            this.props.onComponentUnmounting(this.props.defaultValue);
+        }
+    } 
+
+    handleInputBlur() {
+        this.props.onComponentUnmounting(this.textarea.value);
+    }
 
 }
 

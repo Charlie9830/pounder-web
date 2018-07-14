@@ -2,13 +2,18 @@ html, body {
   min-height: 100%;
   height: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
+
 }
 
-#root {
-  height: 100%;
-  min-height: 100%;
-  background: rgba(0,0,0,255);
+body {
+  /* Font Size Toggle */
+  --task-font-size: 11pt;
+  --task-assignee-font-size: 10pt;
+  --task-list-header-font-size: 12pt;
+  --project-selector-font-size: 11pt;
+
 
   /* Colors */
   /* *** MAKE SURE THAT ANYTHING YOU CHANGE HERE IS ALSO REFLECTED IN THE FALLBACK CSS CONFIG *** */
@@ -26,6 +31,8 @@ html, body {
   --alternate-inactive-text-color: #777;
   --loading-spinner-primary-color: #a9a9a9;
   --loading-spinner-secondary-color: #ffffff;
+  --button-background-top-color: #333333;
+  --button-background-bottom-color: #2d2d2d;
 
   /* Task */
   --task-checkbox-color: #FFF;
@@ -42,15 +49,27 @@ html, body {
   --important-color: #FF9300;
   --due-date-text-color: #FFF;
   --due-date-circle-color: #777;
+  --assignee-background-color: #236c76;
+  --assignee-text-color: #FFF;
 
   /* Task List */
   --task-list-header-text-color: #FFF;
-  --task-list-selected-border-color: #FFF;
-  --task-list-selected-header-color: #2a2a2a;
+  --task-list-header-selected-text-color: #FFF;   /* NEW */
+  --task-list-header-selected-border-color: #FFF; /* REMOVE */
+  --task-list-header-background-color: #332d38;      /* NEW */
+  --task-list-header-background-selected-color: #665b70; /* CHANGED */
 
   /* Database */
   --database-synced-color: #008000;
   --database-updates-pending-color: #FF9300;
+
+  background: var(--primary-color);
+}
+
+#root {
+  height: 100%;
+  min-height: 100%;
+  background: rgba(0,0,0,255);
 
   /* Layout */
   --back-arrow-margin-left: 14px;

@@ -11,7 +11,7 @@
   font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
   width: 100%;
   color: var(--task-text-color);
-  font-Size: 12pt;
+  font-Size: var(--task-font-size);
   margin-left: 8px;
   margin-right: 8px;
   margin-bottom: 3px;
@@ -30,11 +30,12 @@
   margin: 10px 0px;
   resize: none;
   vertical-align: middle;
-  font-size: 12pt;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  padding-left: 4px;
+  font-size: var(--task-font-size);
   font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
   color: var(--task-text-color);
   background: var(--surface-color-alternate);
   border: 0px solid #FFF;
-  padding-top: 5px;
-  padding-bottom: 5px;
 }

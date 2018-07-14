@@ -1,45 +1,89 @@
-#ListToolbarSettingsIcon {
-    width: 22px;
-    height: 22px;
+.ListToolbar {
+    height: 30px;
+    background: var(--task-list-header-background-color);
+    width: 100%;
+    margin: 0px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
 }
 
-.SettingsMenu {
-    position: relative;
-    color: #FFF;
-    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
-    font-weight: 500;
-    font-size: 8pt;
-    flex-grow: 0.5;
-    height: 36px;
-    line-height: 52px;
-    text-align: left;
-    padding-left: 10px;
-    -webkit-user-select: none;
-    white-space: nowrap;
-    user-select: none;
-    
+.ListToolbar[data-isfocused*="true"] {
+    background: var(--task-list-header-background-selected-color);
+}
+
+.ListToolbarSettingsMenuContainer {
+    flex-shrink: 1;
+    height: 100%;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+}
+
+.ListToolbarHeaderContainer {
+    flex-shrink: 1;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.ListToolbarDeleteButtonContainer {
+    flex-shrink: 1;
+    height: 100%;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+}
+
+.ListToolbarSettingsIcon {
+    flex-shrink: 1;
+    width: 14px;
+    height: 14px;
+    padding-left: 3px;
+    opacity: 0.75;
 }
 
 .ListToolbarHeader {
+    flex-shrink: 1;
     color: var(--task-list-header-text-color);
     font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
-    font-size: 14pt;
+    font-size: var(--task-list-header-font-size);
+    min-height: 30px;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     text-align: center;
-    flex-grow: 4;
     white-space: nowrap;
     -webkit-user-select: none;
     user-select: none;   
     line-height: 30px;
 }
 
+.ListToolbarHeader[data-isfocused*="true"] {
+    color: var(--task-list-header-selected-text-color);
+}
+
 .ListToolbarHeaderInput {
-    olor: var(--task-list-header-text-color);
+    color: var(--task-list-header-text-color);
     font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
-    font-size: 14pt;
+    font-size: var(--task-list-header-font-size);
+    width: 100%;
     overflow: hidden;
     text-align: center;
-    flex-grow: 4;
+    flex-shrink: 1;
     white-space: nowrap;
     background: var(--surface-color-alternate);
     border: 0px solid #FFF;
@@ -47,32 +91,15 @@
 
 .DeleteButton {
     color: #FFF;
+    flex-shrink: 1;
+    opacity: 0.50;
     font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
-    flex-grow: 0.5;
-    font-size: 14pt;
-    height: 48px;
-    line-height: 48px;
-    text-align: right;
-    padding-right: 10px;
+    height: 22px;
+    width: 22px;
     -webkit-user-select: none;
     user-select: none;
 }
 
 .DeleteButton:hover {
     cursor: pointer;
-}
-
-
-.ListToolbar {
-    height: 36px;
-    background: var(--primary-color);
-    width: 100%;
-    margin: 0px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-.ListToolbar[data-isfocused*="true"] {
-    background: var(--task-list-selected-header-color);
 }

@@ -12,22 +12,21 @@ class TaskListSettingsMenu extends React.Component {
         this.handleSortByDateAddedItemClick = this.handleSortByDateAddedItemClick.bind(this);
         this.handleSortByDueDateItemClick = this.handleSortByDueDateItemClick.bind(this);
         this.handleSortByPriorityItemClick = this.handleSortByPriorityItemClick.bind(this);
+        this.handleSortByAssigneeItemClick = this.handleSortByAssigneeItemClick.bind(this);
     }
 
     render() {
         var selectableItems = this.getSelectableMenuItems(this.props);
 
         return (
-            <div className="TaskListSettingsMenuPopup">
-                <div className="TaskListSettingMenuContainer">
-                    <div className="ShowCompletedTasksSelection">
-                        <input className="ShowCompletedTasksCheckBox" ref="showCompleteTasksCheckbox" type="checkbox"
-                            defaultChecked={this.props.settings.isCompleteTasksShown}
-                            onClick={this.handleShowCompletedTasksCheckboxClick} />
-                        <label className="ShowCompletedTasksLabel"> Show Completed Tasks </label>
-                    </div>
-                    {selectableItems}
+            <div className="TaskListSettingsMenuContainer">
+                <div className="ShowCompletedTasksSelection">
+                    <input className="ShowCompletedTasksCheckBox" ref="showCompleteTasksCheckbox" type="checkbox"
+                        defaultChecked={this.props.settings.isCompleteTasksShown}
+                        onClick={this.handleShowCompletedTasksCheckboxClick} />
+                    <label className="ShowCompletedTasksLabel"> Show Completed Tasks </label>
                 </div>
+                {selectableItems}
             </div>
         )
     }
@@ -56,6 +55,11 @@ class TaskListSettingsMenu extends React.Component {
     handleSortByPriorityItemClick(e) {
         var isCompleteTasksShown = this.refs.showCompleteTasksCheckbox.checked;
         this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "priority"));
+    }
+
+    handleSortByAssigneeItemClick() {
+        var isCompleteTasksShown = this.refs.showCompleteTasksCheckbox.checked;
+        this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "assignee"));
     }
 
     getSelectableMenuItems(props) {
@@ -101,6 +105,17 @@ class TaskListSettingsMenu extends React.Component {
                     <div className="TaskListSettingsMenuSelectedItemChit"  data-isselected={ this.props.settings.sortBy === "date added" } />
                     <label className="TaskListSettingsMenuItemLabel"> Sort by Date Added </label>
                 </div>
+                <div className="TaskListSettingsMenuItemBottomBorder" />
+                </div>
+            ))
+    
+            // Sort by Date Added.
+            jsx.push((
+                <div key="4" className="TaskListSettingsMenuItemContainer" onClick={this.handleSortByAssigneeItemClick}>
+                    <div className="TaskListSettingsMenuItemFlexContainer">
+                        <div className="TaskListSettingsMenuSelectedItemChit"  data-isselected={ this.props.settings.sortBy === "assignee" } />
+                        <label className="TaskListSettingsMenuItemLabel"> Sort by Assignee </label>
+                    </div>
                 {/* No Bottom Border here because it's the bottom of the Menu */}
             </div>
         ))

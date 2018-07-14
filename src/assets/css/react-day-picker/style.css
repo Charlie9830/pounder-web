@@ -5,6 +5,7 @@ div {
 
 .DayPicker {
   display: inline-block;
+  width: 100%;
 }
 
 .DayPicker-wrapper {

@@ -14,7 +14,7 @@ class ProjectToolBar extends React.Component {
         this.handleAddTaskButtonClick = this.handleAddTaskButtonClick.bind(this);
         this.handleRemoveTaskButtonClick = this.handleRemoveTaskButtonClick.bind(this);
         this.handleAddTaskListButtonClick = this.handleAddTaskListButtonClick.bind(this);
-        this.handleRemoveTaskListButtonCLick = this.handleRemoveTaskListButtonCLick.bind(this);
+        this.handleRemoveTaskListButtonClick = this.handleRemoveTaskListButtonClick.bind(this);
         this.handleTaskListJumpMenuItemClick = this.handleTaskListJumpMenuItemClick.bind(this);
         this.handleTaskListJumpMenuButtonClick = this.handleTaskListJumpMenuButtonClick.bind(this);
     }
@@ -33,7 +33,7 @@ class ProjectToolBar extends React.Component {
                     </div>
                     <div className="ToolbarPairsFlexContainer">
                         <Button iconSrc={NewTaskListIcon} size="small" onClick={this.handleAddTaskListButtonClick}/>
-                        <Button iconSrc={RemoveTaskListIcon} size="small" onClick={this.handleRemoveTaskListButtonCLick}/>
+                        <Button iconSrc={RemoveTaskListIcon} size="small" onClick={this.handleRemoveTaskListButtonClick}/>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@ class ProjectToolBar extends React.Component {
         this.props.onAddTaskListButtonClick();
     }
 
-    handleRemoveTaskListButtonCLick(e) {
+    handleRemoveTaskListButtonClick(e) {
         this.props.onRemoveTaskListButtonClick();
     } 
 }

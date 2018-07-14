@@ -1,5 +1,5 @@
 import React from 'react';
-import AppSettingsMenuSubtitle from './AppSettingsMenuSubtitle';
+import MenuSubtitle from '../MenuSubtitle';
 import ThemeSettings from './ThemeSettings';
 import '../../assets/css/AppSettingsMenu/AppSettingsMenu.css';
 
@@ -8,6 +8,8 @@ class GeneralSettingsPage extends React.Component {
     constructor(props) {
         super(props);
         
+        // Refs.
+        this.disableAnimationsCheckboxRef = React.createRef();
         // Method Bindings.
         this.getFavouriteProjectSelectorJSX = this.getFavouriteProjectSelectorJSX.bind(this);
         this.handleStartInFullscreenChange = this.handleStartInFullscreenChange.bind(this);
@@ -16,13 +18,25 @@ class GeneralSettingsPage extends React.Component {
         this.handleColorPickerClick = this.handleColorPickerClick.bind(this);
         this.handleColorPickerCloseButtonClick = this.handleColorPickerCloseButtonClick.bind(this);
         this.handleDefaultAllColorsButtonClick = this.handleDefaultAllColorsButtonClick.bind(this);
+        this.handleDisableAnimationsChange = this.handleDisableAnimationsChange.bind(this);
     }
 
     render() {
         var favoriteProjectSelectorJSX = this.getFavouriteProjectSelectorJSX();
 
+        // Zero Fill any undefined values.
+        var disableAnimations = this.props.generalConfig.disableAnimations === undefined ?
+            false : this.props.generalConfig.disableAnimations;
         return (
             <div className="AppSettingsVerticalFlexContainer">
+            {/* Disable Animations */}
+            <div className="AppSettingsVerticalFlexItem">
+            <input className="AppSettingsHorizontalFlexItem" type="checkbox" ref={this.disableAnimationsCheckboxRef}
+                onChange={this.handleDisableAnimationsChange} checked={disableAnimations} />
+            <span className="AppSettingsHorizontalFlexItem">
+                <div className="AppSettingsItemLabel"> Disable animations </div>
+            </span>
+        </div>
                 {/* Faviourte Project Selection */}
                 <div className="AppSettingsVerticalFlexItem">
                     <span className="AppSettingsHorizontalFlexItem">
@@ -35,7 +49,7 @@ class GeneralSettingsPage extends React.Component {
 
                 {/* Color Selection Title */}
                 <div className="AppSettingsVerticalFlexItem">
-                    <AppSettingsMenuSubtitle text="Application Color Selection"/>
+                    <MenuSubtitle text="Application Color Selection"/>
                 </div>
 
                 {/* Color Selection Properties and Inputs */}
@@ -63,6 +77,11 @@ class GeneralSettingsPage extends React.Component {
         this.props.onColorPickerClick(index);
     }
 
+    handleDisableAnimationsChange() {
+        var value = this.disableAnimationsCheckboxRef.current.checked;
+        this.props.onDisableAnimationsChange(value);
+    }
+
     handleStartLockedChange() {
         var value = this.refs.startLockedCheckbox.checked;
         this.props.onStartLockedChange(value);
@@ -75,7 +94,7 @@ class GeneralSettingsPage extends React.Component {
 
     getFavouriteProjectSelectorJSX() {
         // Build Projects into HTML Option Elements.
-        var optionsJSX = this.props.projects.map((project,index) => {
+        var optionsJSX = this.props.projects.map((project, index) => {
             return (
                 <option key={index + 1} value={project.uid}> {project.projectName} </option>
             )
@@ -96,58 +115,6 @@ class GeneralSettingsPage extends React.Component {
     handleFavouriteProjectSelectChange() {
         var id = this.refs.favourteProjectSelect.value;
         this.props.onFavouriteProjectSelectChange(id);
-    }
-
-    getColorPropertiesJSX() {
-        // Parse the cssConfig object into a "Zero Filled" object. Blanks replaced by current Computed Values.
-        var computedStyle = window.getComputedStyle(document.getElementById('root'));
-        var filledCSSVariables = [];
-
-        for (var property in this.props.cssConfig) {
-            var value = this.props.cssConfig[property];
-            var filledValue = value === "" ? computedStyle.getPropertyValue(property) : value;
-            filledCSSVariables.push({property: property, value: filledValue});
-        }
-
-        var jsx = filledCSSVariables.map((item,index) => {
-            var colorDisplayStyle = {
-                height: '10px',
-                width: '100%',
-                background: item.value,
-                border: 'gray 1px solid'
-            }
-
-            return (
-                <div key={index}>
-                <div className="AppSettingsVerticalFlexItem">
-                    <span className="ColorConfigHorizontalFlexItem">
-                        <div className="AppSettingsItemLabel">{item.property}</div>
-                    </span>
-                    <span className="ColorConfigHorizontalFlexItem">
-                        <input className="AppSettingsItemInput" type="text" defaultValue={item.value}
-                        onBlur={(e) => this.handleCSSPropertyInputBlur(e, item.property)}
-                        onKeyPress={(e) => this.handleCSSPropertyInputKeyPress(e, item.property)}/>
-                    </span>
-                    
-                </div>
-                        <div style={colorDisplayStyle}>
-                        </div>
-                </div>
-            )
-        })
-
-        return jsx;
-    }
-
-    handleCSSPropertyInputKeyPress(e, propertyName) {
-        if (e.key === "Enter") {
-            this.props.onCSSPropertyChange(propertyName, e.target.value);
-        }
-
-    }
-
-    handleCSSPropertyInputBlur(e, propertyName) {
-        this.props.onCSSPropertyChange(propertyName, e.target.value);
     }
 }
 

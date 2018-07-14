@@ -1,37 +1,174 @@
-/* TODO: Clean up these Selectors, shift the Position and Sizing up to .TaskContainer */
 .TaskContainer {
   height: auto;
+  position: relative; 
   overflow: visible;
   min-height: 40px;
   max-height: 240px; /* Same as .TaskClickContainer max-height */
   display: flex;
   flex-direction: column;
-  margin-bottom: 0px;
 }
 
-.TaskInactiveStyle {
-  background: rgba(0,0,0,0);
-  color: #FFF;
-  width: 100%;
+.TaskContainer[data-ismetadataopen*="true"] {
+  height: auto;
+  position: relative; 
+  overflow: visible;
+  min-height: 176px;
+  max-height: 240px; /* Same as .TaskClickContainer max-height */
+  transition: min-height 250ms ease, max-height 250ms ease;
   display: flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  flex-grow: 1;
-}
-  
-.TaskBottomBorder {
-  margin-left: 30px;
-  height: 0px;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: var(--task-divider-color);
+  flex-direction: column;
 }
 
-
-.TaskActiveStyle {
+.TaskContainer[data-isselected*="true"] {
   background: var(--task-selected-color);
+}
+
+.TaskContainer[data-ismoving*="true"] {
+  background: rgba(63,63,180,255);
+  animation: PingMovingTask 0.25s linear 1;
+}
+
+@keyframes PingMovingTask {
+  100% { background: rgba(63,63,220,255)}
+}
+
+.TaskContainer-enter {
+  min-height: 0px;
+  max-height: 0px;
+  opacity: 0.01;
+  overflow: hidden;
+}
+
+.TaskContainer-enter-active {
+  min-height: 40px;
+  max-height: 240px;
+  opacity: 1;
+  overflow: hidden;
+  transition: min-height 500ms ease, max-height 500ms ease, opacity 250ms ease;
+}
+
+.TaskContainer-enter-done {
+  height: auto;
+  position: relative; 
+  overflow: visible;
+  min-height: 40px;
+  max-height: 240px; /* Same as .TaskClickContainer max-height */
+  display: flex;
+  flex-direction: column;
+}
+
+.TaskContainer-exit {
+  height: auto;
+  position: relative; 
+  overflow: visible;
+  min-height: 40px;
+  max-height: 240px; /* Same as .TaskClickContainer max-height */
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.TaskContainer-exit-active {
+  min-height: 0px;
+  max-height: 0px;
+  opacity: 0.01;
+  overflow: hidden;
+  transition: min-height 350ms ease, max-height 350ms ease, opacity 150ms ease;
+}
+
+.TaskContainer-exit-done {
+  min-height: 0px;
+  max-height: 0px;
+}
+
+.TaskAssigneeContainer {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  align-content: center;
+  align-items: center;
+}
+
+.TaskAssigneeContainer[data-ishighpriority*="true"] {
+  border-left-width: 6px;
+  border-left-style: solid;
+  border-left-color: var(--important-color);
+  box-sizing: border-box;
+}
+
+.TaskAssignee {
+  flex-shrink: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding: 2px 8px 2px 8px;
+  background: var(--assignee-background-color);
+}
+
+.TaskAssigneeDisplayName {
+  flex-shrink: 1;
+  color: var(--assignee-text-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: var(--task-assignee-font-size);
+  text-align: right;
+  cursor: default;
+}
+
+.TaskTransitionArea {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.MetadataTransitionItem-enter {
+  position: absolute;
+  top: -100%;
+  opacity: 0.01;
+  width: 100%;
+  z-index: 5;
+}
+
+.MetadataTransitionItem-enter-active {
+  position: absolute;
+  top: 0px;
+  opacity: 1;
+  width: 100%;
+  transition: top 250ms ease, opacity 200ms ease;
+  z-index: 5;
+}
+
+.MetadataTransitionItem-enter-done {
+  position: static;
+  width: 100%;
+}
+
+.MetadataTransitionItem-exit {
+  position: absolute;
+  top: 0px;
+  opacity: 1;
+  width: 100%;
+  z-index: 5;
+}
+
+.MetadataTransitionItem-exit-active {
+  position: absolute;
+  top: -100%;
+  opacity: 0.01;
+  width: 100%;
+  z-index: 5;
+  transition: top 250ms ease, opacity 200ms ease;
+}
+
+.MetadataTransitionItem-exit-done {
+  display: none;
+}
+
+
+.Task {
   color: #FFF;
   width: 100%;
   display: flex;
@@ -41,6 +178,18 @@
   align-items: center;
   flex-grow: 1;
 }
+
+.Task[data-ishighpriority*="true"] {
+  box-sizing: border-box;
+  border-left-width: 6px;
+  border-left-style: solid;
+  border-left-color: var(--important-color);
+}
+
+.Task[data-ishighpriority*="true"][data-iscomplete*="true"] {
+  border-left: #282828 6px solid;
+}
+
 
 
 /* Active and Inactive Tasks set to highPriority */
@@ -56,21 +205,15 @@
 .TaskInactiveStyle[data-ishighpriority*="true"].TaskInactiveStyle[data-iscomplete*="true"] {
   border-left: #282828 6px solid;
 }
-.TaskMovingStyle {
-  background: rgba(63,63,180,255);
-  color: #FFF;
-  width: 100%;
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  flex-grow: 1;
-  animation: PingMovingTask 0.25s linear 1;
-}
 
-@keyframes PingMovingTask {
-  100% { background: rgba(63,63,220,255)}
+.TaskBottomBorder {
+  width: 100%;
+  margin-left: 27px;
+  margin-bottom: -1px;
+  height: 0px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--task-divider-color);
 }
 
 .TaskClickContainer {
@@ -83,7 +226,6 @@
   min-height: 40px;
   max-height: 240px;  /* Same as .TaskContainer max-height */
   overflow: hidden;
-  
 }
 
 

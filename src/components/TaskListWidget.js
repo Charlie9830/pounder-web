@@ -3,6 +3,8 @@ import TaskArea from '../components/TaskArea';
 import Task from '../components/Task';
 import ListToolbar from '../components/ListToolbar';
 import '../assets/css/TaskListWidget.css';
+import { TaskMetadataStore } from 'pounder-stores';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 
 class TaskListWidget extends React.Component {
@@ -14,6 +16,7 @@ class TaskListWidget extends React.Component {
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleWidgetClick = this.handleWidgetClick.bind(this);
         this.handleHeaderPress = this.handleHeaderPress.bind(this);
+        this.handleHeaderDoubleClick = this.handleHeaderDoubleClick.bind(this);
         this.handleTaskListHeaderSubmit = this.handleTaskListHeaderSubmit.bind(this);
         this.handleTaskCheckBoxClick = this.handleTaskCheckBoxClick.bind(this);
         this.handleRemoveButtonClick = this.handleRemoveButtonClick.bind(this);
@@ -24,13 +27,17 @@ class TaskListWidget extends React.Component {
         this.handleTaskListSettingsChanged = this.handleTaskListSettingsChanged.bind(this);
         this.handleSettingsButtonClick = this.handleSettingsButtonClick.bind(this);
         this.handleTaskPriorityToggleClick = this.handleTaskPriorityToggleClick.bind(this);
+        this.handleTaskMetadataCloseButtonClick = this.handleTaskMetadataCloseButtonClick.bind(this);
+        this.handleTaskMetadataOpen = this.handleTaskMetadataOpen.bind(this);
+        this.handleAssignToMember = this.handleAssignToMember.bind(this);
+        this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
     }
 
     componentDidMount(){
     }
     
 
-    render(){
+    render() {
         var builtTasks = [];
 
         // eslint-disable-next-line
@@ -44,7 +51,7 @@ class TaskListWidget extends React.Component {
                 return item.isNewTask === true;
             })
 
-            if (newTaskIndex > 0) { // Catches -1 and 0 (not Promotion Required)
+            if (newTaskIndex > 0) { // Catches -1 and 0 (no Promotion Required)
                 sortedTasks.unshift(sortedTasks.splice(newTaskIndex, 1)[0]);
             }
 
@@ -60,17 +67,25 @@ class TaskListWidget extends React.Component {
                 var isTaskInputOpen = item.uid === this.props.openTaskInputId;
                 var isTaskMoving = item.uid === this.props.movingTaskId;
                 var isCalendarOpen = item.uid === this.props.openCalendarId;
+                var isMetadataOpen = item.uid === this.props.openMetadataId;
                 var renderBottomBorder = array.length !== 1 && index !== array.length - 1;
+                var metadata = item.metadata === undefined ? Object.assign({}, new TaskMetadataStore("", "", "", "", "")) 
+                : item.metadata; 
+                var assignedTo = item.assignedTo === undefined ? -1 : item.assignedTo;
 
                 return (
-                    <Task key={index} taskId={item.uid} text={item.taskName} dueDate={item.dueDate}
-                    isSelected={isTaskSelected} isInputOpen={isTaskInputOpen} isComplete={item.isComplete} isMoving={isTaskMoving}
-                    handleClick={this.handleTaskClick} onTaskCheckBoxClick={this.handleTaskCheckBoxClick}
-                    OnKeyPress={this.handleKeyPress} onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch}
-                    onInputUnmounting={this.handleTaskInputUnmounting} onDueDateClick={this.handleDueDateClick}
-                    isCalendarOpen={isCalendarOpen} onNewDateSubmit={this.handleNewDateSubmit}
-                    onPriorityToggleClick={this.handleTaskPriorityToggleClick}
-                    isHighPriority={item.isHighPriority} renderBottomBorder={renderBottomBorder}/>
+                    <CSSTransition key={item.uid} classNames="TaskContainer" timeout={500} mountOnEnter={true}>
+                            <Task key={index} taskId={item.uid} text={item.taskName} dueDate={item.dueDate} isMetadataOpen={isMetadataOpen}
+                                isSelected={isTaskSelected} isInputOpen={isTaskInputOpen} isComplete={item.isComplete} isMoving={isTaskMoving}
+                                handleClick={this.handleTaskClick} onTaskCheckBoxClick={this.handleTaskCheckBoxClick}
+                                onKeyPress={this.handleKeyPress} onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch}
+                                onInputUnmounting={this.handleTaskInputUnmounting} onDueDateClick={this.handleDueDateClick}
+                                isCalendarOpen={isCalendarOpen} onNewDateSubmit={this.handleNewDateSubmit} onMetadataOpen={this.handleTaskMetadataOpen}
+                                isHighPriority={item.isHighPriority} onTaskMetadataCloseButtonClick={this.handleTaskMetadataCloseButtonClick}
+                                onPriorityToggleClick={this.handleTaskPriorityToggleClick} renderBottomBorder={renderBottomBorder}
+                                metadata={metadata} disableAnimations={this.props.disableAnimations} projectMembers={this.props.projectMembers}
+                                onAssignToMember={this.handleAssignToMember} assignedTo={assignedTo} />
+                    </CSSTransition>
                 )
             })
         }
@@ -80,20 +95,38 @@ class TaskListWidget extends React.Component {
         return (
             <div className={style} onClick={this.handleWidgetClick}>
                 <ListToolbar headerText={this.props.taskListName} isHeaderOpen={this.props.isHeaderOpen}
-                 onHeaderPress={this.handleHeaderPress} onHeaderSubmit={this.handleTaskListHeaderSubmit}
+                 onHeaderPress={this.handleHeaderPress}
+                 onHeaderDoubleClick={this.handleHeaderDoubleClick} onHeaderSubmit={this.handleTaskListHeaderSubmit}
                  onRemoveButtonClick={this.handleRemoveButtonClick} isSettingsMenuOpen={isSettingsMenuOpen}
                  onTaskListSettingsChanged={this.handleTaskListSettingsChanged}
                  settings={this.props.settings} onSettingsButtonClick={this.handleSettingsButtonClick}
-                 isFocused={this.props.isFocused}/>
-                <TaskArea>
-                    {builtTasks}
-                </TaskArea>
+                 isFocused={this.props.isFocused} onSettingsMenuClose={this.handleSettingsMenuClose}/>
+                 <TaskArea>
+                 <TransitionGroup enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
+                     {builtTasks}
+                 </TransitionGroup>
+             </TaskArea>
             </div>
         )
     }
+    handleSettingsMenuClose() {
+        this.props.onSettingsMenuClose();
+    }
 
-    handleTaskPriorityToggleClick(taskId, newValue) {
-        this.props.onTaskPriorityToggleClick(taskId, newValue);
+    handleAssignToMember(userId, taskId) {
+        this.props.onAssignToMember(userId, taskId);
+    }
+
+    handleTaskMetadataOpen(taskId) {
+        this.props.onTaskMetadataOpen(this.props.taskListWidgetId, taskId);
+    }
+
+    handleTaskMetadataCloseButtonClick() {
+        this.props.onTaskMetadataCloseButtonClick();
+    }
+
+    handleTaskPriorityToggleClick(taskId, newValue, currentMetadata) {
+        this.props.onTaskPriorityToggleClick(taskId, newValue, currentMetadata);
     }
 
     handleSettingsButtonClick() {
@@ -108,10 +141,10 @@ class TaskListWidget extends React.Component {
         this.props.onDueDateClick(this.props.taskListWidgetId, taskId);
     }
 
-    handleTaskInputUnmounting(data, taskId) {
+    handleTaskInputUnmounting(data, taskId, currentMetadata) {
         // A TaskTextInput is Unmounting. Meaning that the Task has lost focus whilst text was still pending inside an open
         // input. Handle Data Changes.
-        this.props.onTaskSubmit(this.props.taskListWidgetId, taskId, data);
+        this.props.onTaskSubmit(this.props.taskListWidgetId, taskId, data, currentMetadata);
     }
 
     handleTaskTwoFingerTouch(taskId) {
@@ -126,12 +159,16 @@ class TaskListWidget extends React.Component {
         this.props.onTaskClick(element, this.props.taskListWidgetId);
     }
 
-    handleKeyPress(e, taskId, newData) {
+    handleKeyPress(e, taskId, newData, currentMetadata) {
         // Enter Key.
-        if (e.key === "Enter") {
+        if (e.key == "Enter") {
             // Handle Data Changes.
-            this.props.onTaskSubmit(this.props.taskListWidgetId, taskId, newData)
+            this.props.onTaskSubmit(this.props.taskListWidgetId, taskId, newData, currentMetadata)
         }   
+    }
+
+    handleHeaderDoubleClick() {
+        this.props.onHeaderDoubleClick(this.props.taskListWidgetId);
     }
 
     handleHeaderPress() {
@@ -142,8 +179,8 @@ class TaskListWidget extends React.Component {
         this.props.onHeaderSubmit(this.props.taskListWidgetId, newData);
     }
 
-    handleTaskCheckBoxClick(e, taskId, incomingValue) {
-        this.props.onTaskCheckBoxClick(e, this.props.taskListWidgetId, taskId, incomingValue);
+    handleTaskCheckBoxClick(e, taskId, incomingValue, currentMetadata) {
+        this.props.onTaskCheckBoxClick(e, this.props.taskListWidgetId, taskId, incomingValue, currentMetadata);
     }
 
     handleRemoveButtonClick(e) {
@@ -170,6 +207,14 @@ class TaskListWidget extends React.Component {
         return dateAddedA - dateAddedB;
     }
 
+    taskSortAssigneeHelper(a,b) {
+        var a = a.assignedTo === undefined || a.assignedTo === -1 ? "z".charCodeAt(0) : a.assignedTo.charCodeAt(0);
+        var b = b.assignedTo === undefined || b.assignedTo === -1 ? "z".charCodeAt(0) : b.assignedTo.charCodeAt(0);
+
+        return a - b;
+        
+    }
+
     getTaskSorter(props) {
         var sortBy = props.settings.sortBy;
         if (sortBy === "completed") {
@@ -187,10 +232,14 @@ class TaskListWidget extends React.Component {
         if (sortBy === "priority") {
             return this.taskSortPriorityHelper;
         }
+
+        if (sortBy === "assignee") {
+            return this.taskSortAssigneeHelper;
+        }
     } 
 
-    handleNewDateSubmit(taskId, newDate) {
-        this.props.onNewDateSubmit(this.props.taskListWidgetId, taskId, newDate);
+    handleNewDateSubmit(taskId, newDate, currentMetadata) {
+        this.props.onNewDateSubmit(this.props.taskListWidgetId, taskId, newDate, currentMetadata);
     }
 
 }

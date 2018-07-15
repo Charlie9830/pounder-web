@@ -1,6 +1,6 @@
 /* Transition */
 .CalendarTransition-enter {
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0px;
     display: block;
@@ -9,7 +9,7 @@
 }
 
 .CalendarTransition-enter-active {
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0px;
     right: 0px;
@@ -21,7 +21,7 @@
 }
 
 .CalendarTransition-enter-done {
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0px;
     z-index: 5;
@@ -29,7 +29,7 @@
 }
 
 .CalendarTransition-exit {
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0px;
     display: block;
@@ -38,7 +38,7 @@
 }
 
 .CalendarTransition-exit-active {
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0px;
     right: 0px;

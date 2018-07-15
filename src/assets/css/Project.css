@@ -43,14 +43,14 @@
 }   
 
 
-.ProjectHeaderBackArrowContainer {
+.ProjectHeaderBurgerButtonContainer {
     position: absolute; /* Allows it to clip the first portion of the Header Container */
     width: 32px;
     height: 32px;
     margin-left: var(--back-arrow-margin-left);
 }
 
-.ProjectHeaderBackArrow {
+.ProjectHeaderBurgerButton {
     height: 100%;
     width: 100%;
     opacity: 0.5;

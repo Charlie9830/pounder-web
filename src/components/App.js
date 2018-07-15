@@ -4,7 +4,6 @@ import Sidebar from './Sidebar';
 import Project from './Project';
 import MessageBox from './MessageBox';
 import VisibleSnackbar from './Snackbar';
-import Hammer from 'hammerjs';
 import '../assets/css/TaskListWidget.css';
 import '../assets/css/Sidebar.css';
 import '../assets/css/Project.css';
@@ -19,8 +18,8 @@ removeSelectedTaskAsync, updateTaskNameAsync, updateTaskCompleteAsync,
 addNewProjectAsync, removeProjectAsync, updateProjectNameAsync, removeTaskListAsync, updateTaskListSettingsAsync,
 updateTaskDueDateAsync, updateTaskPriority, openTaskListJumpMenu, closeTaskListJumpMenu, getGeneralConfigAsync,
 setIsAppSettingsOpen, getCSSConfigAsync, setAppSettingsMenuPage,setOpenProjectSelectorId, setIsShareMenuOpen,
-setMessageBox, attachAuthListenerAsync, denyProjectInviteAsync, postSnackbarMessage,
-selectProject,
+setMessageBox, attachAuthListenerAsync, denyProjectInviteAsync, postSnackbarMessage, removeTaskAsync,
+selectProject, setOpenTaskOptionsId,
 setOpenTaskListWidgetHeaderId, updateTaskAssignedToAsync, closeMetadata,
 
 setIsSidebarOpen,
@@ -77,6 +76,12 @@ class App extends React.Component {
     this.handleTaskMetadataOpen = this.handleTaskMetadataOpen.bind(this);
     this.getProjectMembers = this.getProjectMembers.bind(this);
     this.handleAssignToMember = this.handleAssignToMember.bind(this);
+    this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
+    this.handleTaskOptionsOpen = this.handleTaskOptionsOpen.bind(this);
+    this.handleTaskOptionsClose = this.handleTaskOptionsClose.bind(this);
+    this.handleTaskListWidgetHeaderDoubleClick = this.handleTaskListWidgetHeaderDoubleClick.bind(this);
+    this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
+    this.handleProjectSelectorInputDoubleClick = this.handleProjectSelectorInputDoubleClick.bind(this);
     
   }
 
@@ -85,25 +90,6 @@ class App extends React.Component {
     this.initializeLocalConfig();
     // Attach an Authentication state listener. Will pull down database when Logged in.
     this.props.dispatch(attachAuthListenerAsync());
-
-    var hammer = new Hammer(document.getElementById('root'));
-    hammer.on('swipe', event => {
-      // Swipe Left.
-      if (event.velocityX < 0) {
-        // User is in the Sidebar.
-        if (this.props.isSidebarOpen === true) {
-          this.props.dispatch(setIsSidebarOpen(false));
-        }
-      }
-
-      // Swipe Right.
-      if (event.velocityX > 0) {
-        // User is in the Project.
-        if (this.props.isSidebarOpen === false) {
-          this.props.dispatch(setIsSidebarOpen(true));
-        }
-      }
-    })
   }
   
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -196,11 +182,27 @@ class App extends React.Component {
               projectMembers={projectMembers} onAssignToMember={this.handleAssignToMember} 
               openTaskListWidgetHeaderId={this.props.openTaskListWidgetHeaderId}
               onTaskListWidgetHeaderDoubleClick={this.handleTaskListWidgetHeaderDoubleClick}
+              onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
+              onTaskOptionsOpen={this.handleTaskOptionsOpen} openTaskOptionsId={this.props.openTaskOptionsId}
+              onTaskOptionsClose={this.handleTaskOptionsClose} onSettingsMenuClose={this.handleSettingsMenuClose}
             />
           </div>
         </CSSTransition>
       )
     }
+  }
+
+  handleTaskOptionsClose() {
+    this.props.dispatch(setOpenTaskOptionsId(-1));
+  }
+
+  handleTaskOptionsOpen(taskId) {
+    this.props.dispatch(setOpenTaskOptionsId(taskId));
+  } 
+
+  handleTaskOptionsDeleteButtonClick(taskId) {
+    this.props.dispatch(removeTaskAsync(taskId));
+    this.props.dispatch(setOpenTaskOptionsId(-1));
   }
 
   handleSettingsMenuClose() {
@@ -339,32 +341,19 @@ class App extends React.Component {
   }
 
   handleTaskClick(element, projectId, taskListWidgetId) {
-    // TODO: Do you need to provide the entire Element as a parameter? Why not just the taskID?
-    var selectedTask = this.props.selectedTask;
-    var openCalendarId = this.props.openCalendarId === element.props.taskId ? this.props.openCalendarId : -1; // Keep calendar Open if it already Open.
-
-      if (this.isShiftKeyDown) {
-        this.props.dispatch(startTaskMove(element.props.taskId, taskListWidgetId));
-      }
-
       // If a task is already moving, it's completion will be handled by the Task List Focus change. Letting the selecition handling runs
       // causes problems.
-      else if (this.props.isATaskMoving === false) {
-        if (selectedTask.taskListWidgetId === taskListWidgetId &&
-          selectedTask.taskId === element.props.taskId && this.isModKeyDown !== true) { // If task is already selected and the Mod Key isn't down.
-
-            // Task Already Selected. Exclusively open it's Text Input.
-            this.props.dispatch(openTask(taskListWidgetId, element.props.taskId));          
-        }
-
-        else {
-          // Otherwise just Select it.
-          this.props.dispatch(selectTask(taskListWidgetId, element.props.taskId, this.isModKeyDown));
-        }
-      }
+    if (this.props.isATaskMoving === false) {
+      this.props.dispatch(selectTask(taskListWidgetId, element.props.taskId, this.isModKeyDown));
+      this.props.dispatch(openTask(taskListWidgetId, element.props.taskId));
+    }
   }
 
   handleTaskTwoFingerTouch(taskListWidgetId, taskId) {
+    if (this.props.openTaskOptionsId !== -1) {
+      this.props.dispatch(setOpenTaskOptionsId(-1));
+    }
+
     this.props.dispatch(startTaskMove(taskId, taskListWidgetId));
   }
 
@@ -513,6 +502,7 @@ const mapStateToProps = state => {
     updatingInviteIds: state.updatingInviteIds,
     members: state.members,
     remoteProjectIds: state.remoteProjectIds,
+    openTaskOptionsId: state.openTaskOptionsId,
   }
 }
 

@@ -4,7 +4,7 @@ import ProjectMessageDisplay from './ProjectMessageDisplay';
 import '../assets/css/Project.css';
 import ProjectToolBar from './ProjectToolBar';
 import scrollToComponent from 'react-scroll-to-component';
-import BackArrow from '../assets/icons/BackArrow.svg';
+import BurgerIcon from '../assets/icons/BurgerIcon.svg';
 
 class Project extends React.Component {
     constructor(props){
@@ -13,15 +13,13 @@ class Project extends React.Component {
 
         this.handleTaskSubmit = this.handleTaskSubmit.bind(this);
         this.handleWidgetClick = this.handleWidgetClick.bind(this);
-        // this.handleWidgetHeaderPress = this.handleWidgetHeaderPress.bind(this);
+        this.handleWidgetHeaderPress = this.handleWidgetHeaderPress.bind(this);
         this.handleTaskListWidgetHeaderSubmit = this.handleTaskListWidgetHeaderSubmit.bind(this);
         this.handleTaskClick = this.handleTaskClick.bind(this);
         this.handleTaskCheckBoxClick = this.handleTaskCheckBoxClick.bind(this);
         this.handleTaskListWidgetRemoveButtonClick = this.handleTaskListWidgetRemoveButtonClick.bind(this);
         this.handleAddTaskButtonClick = this.handleAddTaskButtonClick.bind(this);
-        this.handleRemoveTaskButtonClick = this.handleRemoveTaskButtonClick.bind(this);
         this.handleAddTaskListButtonClick = this.handleAddTaskListButtonClick.bind(this);
-        this.handleRemoveTaskListButtonClick = this.handleRemoveTaskListButtonClick.bind(this);
         this.handleTaskTwoFingerTouch = this.handleTaskTwoFingerTouch.bind(this);
         this.handleTaskListSettingsChanged = this.handleTaskListSettingsChanged.bind(this);
         this.handleDueDateClick = this.handleDueDateClick.bind(this);
@@ -36,6 +34,9 @@ class Project extends React.Component {
         this.handleTaskMetadataOpen = this.handleTaskMetadataOpen.bind(this);
         this.handleAssignToMember = this.handleAssignToMember.bind(this);
         this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
+        this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
+        this.handleTaskOptionsOpen = this.handleTaskOptionsOpen.bind(this);
+        this.handleTaskOptionsClose = this.handleTaskOptionsClose.bind(this);
     }
     
     componentDidMount() {   
@@ -97,7 +98,11 @@ class Project extends React.Component {
                         openTaskListSettingsMenuId={this.props.openTaskListSettingsMenuId} projectMembers={this.props.projectMembers}
                         onTaskMetadataOpen={this.handleTaskMetadataOpen} disableAnimations={this.props.disableAnimations}
                         onTaskPriorityToggleClick={this.handleTaskPriorityToggleClick}
-                        onAssignToMember={this.handleAssignToMember} onSettingsMenuClose={this.handleSettingsMenuClose} />
+                        onAssignToMember={this.handleAssignToMember} onSettingsMenuClose={this.handleSettingsMenuClose}
+                        onTaskMetadataCloseButtonClick={this.handleTaskMetadataCloseButtonClick}
+                        onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
+                        onTaskOptionsOpen={this.handleTaskOptionsOpen} openTaskOptionsId={this.props.openTaskOptionsId} 
+                        onTaskOptionsClose={this.handleTaskOptionsClose}/>
                 </div>
                 
             )
@@ -109,8 +114,8 @@ class Project extends React.Component {
             <div className="Project">
                 <div className="ProjectToolBar">
                     <div className="ProjectHeaderContainer">
-                        <div className="ProjectHeaderBackArrowContainer" onClick={this.handleBackArrowClick}>
-                            <img className="ProjectHeaderBackArrow" src={BackArrow} />
+                        <div className="ProjectHeaderBurgerButtonContainer" onClick={this.handleBackArrowClick}>
+                            <img className="ProjectHeaderBurgerButton" src={BurgerIcon} />
                         </div>
                         <div className="ProjectNameContainer">
                             <div className="ProjectName">
@@ -120,7 +125,6 @@ class Project extends React.Component {
                     </div>
                     
                     <ProjectToolBar onAddTaskButtonClick={this.handleAddTaskButtonClick} onAddTaskListButtonClick={this.handleAddTaskListButtonClick}
-                        onRemoveTaskButtonClick={this.handleRemoveTaskButtonClick} onRemoveTaskListButtonClick={this.handleRemoveTaskListButtonClick}
                         taskLists={filteredTaskListWidgets} onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick}
                         onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick} isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen} />
                 </div>
@@ -130,6 +134,22 @@ class Project extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    handleSettingsMenuClose() {
+        this.props.onSettingsMenuClose();
+    }
+
+    handleTaskOptionsClose() {
+        this.props.onTaskOptionsClose();
+    }
+
+    handleTaskOptionsOpen(taskId) {
+        this.props.onTaskOptionsOpen(taskId);
+    }
+
+    handleTaskOptionsDeleteButtonClick(taskId) {
+        this.props.onTaskOptionsDeleteButtonClick(taskId);
     }
 
     handleBackArrowClick() {
@@ -206,9 +226,6 @@ class Project extends React.Component {
         this.props.onTaskTwoFingerTouch(taskListWidgetId, taskId);
     }
 
-    handleRemoveTaskListButtonClick() {
-        this.props.onRemoveTaskListButtonClick();
-    }
 
     handleAddTaskListButtonClick() {
         this.props.onAddTaskListButtonClick();
@@ -216,10 +233,6 @@ class Project extends React.Component {
 
     handleAddTaskButtonClick() {
         this.props.onAddTaskButtonClick();
-    }
-
-    handleRemoveTaskButtonClick() {
-        this.props.onRemoveTaskButtonClick();
     }
 
     handleTaskSubmit(taskListWidgetId, taskId, newData, currentMetadata) {
@@ -231,6 +244,10 @@ class Project extends React.Component {
     }
 
     handleWidgetHeaderDoubleClick(taskListWidgetId) {
+        this.props.onTaskListWidgetHeaderDoubleClick(taskListWidgetId);
+    }
+
+    handleWidgetHeaderPress(taskListWidgetId) {
         this.props.onTaskListWidgetHeaderDoubleClick(taskListWidgetId);
     }
 

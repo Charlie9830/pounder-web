@@ -5,30 +5,23 @@ import TaskListSettingsMenu from './TaskListSettingsMenu';
 import Hammer from 'hammerjs';
 import TaskListSettingsIcon from '../assets/icons/SettingsIcon.svg';
 import DeleteTaskListIcon from '../assets/icons/DeleteTaskListIcon.svg';
+import FloatingTextInput from './FloatingTextInput';
 
 class ListToolbar extends React.Component{
     constructor(props) {
         super(props);
 
         // Refs.
-        this.headerInputRef = React.createRef();
         this.headerContainerRef = React.createRef();
         
         // Method Bindings.
-        this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleRemoveButtonClick = this.handleRemoveButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.handleTaskListSettingsChanged = this.handleTaskListSettingsChanged.bind(this);
-        // this.handleHeaderPress = this.handleHeaderPress.bind(this);
-        this.handleDoubleTap = this.handleDoubleTap.bind(this);
-        this.handleHeaderInputBlur = this.handleHeaderInputBlur.bind(this);
-    }
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps.isHeaderOpen !== this.props.isHeaderOpen) {
-            if (this.props.isHeaderOpen) {
-                this.headerInputRef.current.focus();
-            }
-        }
+        this.handlePress = this.handlePress.bind(this);
+        this.handleHeaderInputSubmit = this.handleHeaderInputSubmit.bind(this);
+        this.handleHeaderInputCancel = this.handleHeaderInputCancel.bind(this);
+        this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
     }
 
     componentDidMount() {
@@ -37,45 +30,50 @@ class ListToolbar extends React.Component{
         }
 
         this.hammer = new Hammer(this.headerContainerRef.current);
-        this.hammer.on('tap', this.handleDoubleTap);
-        this.hammer.get('tap').set({taps: 2});
+        this.hammer.on('press', this.handlePress);
     }
 
     componentWillUnmount() {
-        this.hammer.off('tap', this.headerContainerRef.current, this.handleDoubleTap);
+        this.hammer.off('press', this.headerContainerRef.current, this.handlePress);
     }
 
     render() {
-        var listToolbarHeader = this.getListToolbarHeader(this.props);
         var settingsMenu = this.getSettingsMenu(this.props);
+        var headerInputJSX = this.getHeaderInputJSX(this.props);
 
         return (
             <div className="ListToolbar" data-isfocused={this.props.isFocused}>
-            <div className="ListToolbarSettingsMenuContainer" onClick={this.handleSettingsClick}>
-            <img className="ListToolbarSettingsIcon" src={TaskListSettingsIcon} />
-            {settingsMenu}
-        </div>
+                <div className="ListToolbarSettingsMenuContainer" onClick={this.handleSettingsClick}>
+                    <img className="ListToolbarSettingsIcon" src={TaskListSettingsIcon} />
+                    {settingsMenu}
+                </div>
 
-        <div className="ListToolbarHeaderContainer" ref={this.headerContainerRef}>
-            {listToolbarHeader}
-        </div>
+                <div className="ListToolbarHeaderContainer" ref={this.headerContainerRef}>
+                    {headerInputJSX}
+                    <label className="ListToolbarHeader" data-isfocused={this.props.isFocused} onDoubleClick={this.handleDoubleClick} ref={this.headerLabelRef}>
+                        {this.props.headerText}
+                    </label>
+                </div>
 
-        <div className="ListToolbarDeleteButtonContainer" onClick={this.handleRemoveButtonClick}>
-            <img className="DeleteButton" src={DeleteTaskListIcon} />
-        </div>
+                <div className="ListToolbarDeleteButtonContainer" onClick={this.handleRemoveButtonClick}>
+                    <img className="DeleteButton" src={DeleteTaskListIcon} />
+                </div>
             </div>
         )
     }
 
-    handleDoubleTap(event) {
-        this.props.onHeaderDoubleClick();
+    handleSettingsMenuClose() {
+        this.props.onSettingsMenuClose();
+    }
+
+    handlePress(event) {
+        this.props.onHeaderPress();
     }
 
     getSettingsMenu(props) {
         if (props.isSettingsMenuOpen) {
             return (
-                <OverlayMenuContainer offsetX={this.state.lastSettingsClickPos.x} offsetY={this.state.lastSettingsClickPos.y}
-                onOutsideChildBoundsClick={this.handleContextMenuOutsideChildBoundsClick}>
+                <OverlayMenuContainer onOutsideChildBoundsClick={this.handleSettingsMenuClose}>
                     <TaskListSettingsMenu settings={this.props.settings}
                     onSettingsChanged={this.handleTaskListSettingsChanged}/>
                 </OverlayMenuContainer>
@@ -91,19 +89,11 @@ class ListToolbar extends React.Component{
         this.props.onSettingsButtonClick();
     }
 
-    getListToolbarHeader(props) {
+    getHeaderInputJSX(props) {
         if (props.isHeaderOpen) {
             return (
-                <input id="headerInput" className="ListToolbarHeaderInput nonDraggable" ref={this.headerInputRef}
-                 type='text' defaultValue={props.headerText} onKeyPress={this.handleKeyPress} onBlur={this.handleHeaderInputBlur}/>
-            )
-        }
-
-        else {
-            return (
-                <label className="ListToolbarHeader" data-isfocused={this.props.isFocused} onDoubleClick={this.handleDoubleClick} ref={this.headerLabelRef}>
-                    {this.props.headerText}  
-                 </label>
+                <FloatingTextInput onTextSubmit={this.handleHeaderInputSubmit} onCancel={this.handleHeaderInputCancel}
+                defaultValue={props.headerText}/>
             )
         }
     }
@@ -112,14 +102,12 @@ class ListToolbar extends React.Component{
         this.props.onRemoveButtonClick(e);
     }
 
-    handleKeyPress(e) {
-        if (e.key === "Enter") {
-            this.props.onHeaderSubmit(document.getElementById('headerInput').value);
-        }
+    handleHeaderInputCancel() {
+        this.props.onHeaderSubmit(this.props.headerText);
     }
-    
-    handleHeaderInputBlur() {
-        this.props.onHeaderSubmit(document.getElementById('headerInput').value);
+
+    handleHeaderInputSubmit(value) {
+        this.props.onHeaderSubmit(value);
     }
 }
 

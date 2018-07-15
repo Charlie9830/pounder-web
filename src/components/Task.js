@@ -13,18 +13,17 @@ class Task extends React.Component {
     constructor(props){
         super(props);
 
+        this.state = {
+            showOptions: false,
+        }
+
         // Refs.
         this.taskContainerRef = React.createRef();
 
-        // Hammer.
-        this.hammer = null;
-
         // Method Bindings.
         this.forwardOnTaskClick = this.forwardOnTaskClick.bind(this);
-        this.forwardKeyPress = this.forwardKeyPress.bind(this);
         this.handleCheckBoxClick = this.handleCheckBoxClick.bind(this);
         this.handleTaskTouchStart = this.handleTaskTouchStart.bind(this);
-        this.handleInputUnmounting = this.handleInputUnmounting.bind(this);
         this.handleDueDateClick = this.handleDueDateClick.bind(this);
         this.handleNewDateSubmit = this.handleNewDateSubmit.bind(this);
         this.handlePriorityToggleClick = this.handlePriorityToggleClick.bind(this);
@@ -34,10 +33,17 @@ class Task extends React.Component {
         this.getTaskAssigneeJSX = this.getTaskAssigneeJSX.bind(this);
         this.getAssigneeDisplayName = this.getAssigneeDisplayName.bind(this);
         this.handleTaskAssigneeClick = this.handleTaskAssigneeClick.bind(this);
+        this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
+        this.handleTaskOptionsCancelButtonClick = this.handleTaskOptionsCancelButtonClick.bind(this);
+        this.handleTaskOptionsMoveButtonClick = this.handleTaskOptionsMoveButtonClick.bind(this);
+        this.handleTaskTouchEnd = this.handleTaskTouchEnd.bind(this);
+        this.handleTaskTextSubmit = this.handleTaskTextSubmit.bind(this);
     }
 
     componentDidMount() {
         var hammer = new Hammer(this.taskContainerRef.current, { domEvents: true });
+
+        // Press
         hammer.on('press', event => {
                 if (this.props.isMetadataOpen === false) {
                     // Open Metadata.
@@ -49,10 +55,20 @@ class Task extends React.Component {
                     this.props.onTaskMetadataCloseButtonClick();
                 }
         })
+
+        // Swipe
+        hammer.on('swipe', event => {
+            if (event.deltaX > 0 && event.deltaTime > 100) {
+                // Swipe Right
+                this.props.onTaskOptionsOpen(this.props.taskId);
+            }
+        })
+        
     }
 
     componentWillUnmount() {
         Hammer.off(this.taskContainerRef.current, 'press');
+        Hammer.off(this.taskContainerRef.current, 'swipe')
     }
 
     render() {
@@ -60,11 +76,13 @@ class Task extends React.Component {
 
         return (
             <div ref={this.taskContainerRef} className="TaskContainer" data-isselected={this.props.isSelected} data-ismoving={this.props.isMoving}
-             data-ismetadataopen={this.props.isMetadataOpen}>
+                data-ismetadataopen={this.props.isMetadataOpen}>
                 <div className="TaskTransitionArea">
+
                     <TransitionGroup enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
                         {taskOrMetadata}
                     </TransitionGroup>
+                
                 </div>
                 {this.getBottomBorderJSX(this.props)}
             </div>
@@ -97,7 +115,31 @@ class Task extends React.Component {
     }
 
     getTaskOrMetadata() {
-        if (this.props.isMetadataOpen !== true) {
+        if (this.props.isOptionsOpen) {
+            return (
+                <CSSTransition classNames="OptionsTransitionItem" timeout={150} mountOnEnter={true} unmountOnExit={true}
+                key="options">
+                    <div>
+                        <div className="TaskOptionsOverlay" onClick={() => {this.setState({showOptions: false})}}>
+                            <div className="TaskOptionsDeleteButton" onClick={this.handleTaskOptionsDeleteButtonClick}>
+                                <div className="TaskOptionsDeleteButtonText"> Delete </div>
+                            </div>
+
+                            <div className="TaskOptionsCancelButton" onClick={this.handleTaskOptionsCancelButtonClick}>
+                                <div className="TaskOptionsCancelButtonText"> Cancel </div>
+                            </div>
+
+                            <div className="TaskOptionsMoveButton" onClick={this.handleTaskOptionsMoveButtonClick}>
+                                <div className="TaskOptionsMoveButtonText"> Move </div>
+                            </div>
+                        </div>
+                    </div>
+                </CSSTransition>
+            )
+            
+        }
+
+        else if (this.props.isMetadataOpen !== true) {
             var taskAssigneeJSX = this.getTaskAssigneeJSX();
 
             return (
@@ -109,10 +151,11 @@ class Task extends React.Component {
                             <TaskCheckBox isChecked={this.props.isComplete} onCheckBoxClick={this.handleCheckBoxClick}
                             disableAnimations={this.props.disableAnimations} />
                         </div>
-                        <div className="TaskClickContainer" onClick={this.forwardOnTaskClick} onTouchStart={this.handleTaskTouchStart}>
+                        <div className="TaskClickContainer" onClick={this.forwardOnTaskClick} onTouchStart={this.handleTaskTouchStart}
+                        onTouchEnd={this.handleTaskTouchEnd}>
                             <div className="TaskTextContainer">
                                 <TaskText text={this.props.text} isInputOpen={this.props.isInputOpen} isComplete={this.props.isComplete}
-                                    onKeyPress={this.forwardKeyPress} onInputUnmounting={this.handleInputUnmounting}
+                                onTaskTextSubmit={this.handleTaskTextSubmit}
                                 />
                             </div>
                         </div>
@@ -140,6 +183,24 @@ class Task extends React.Component {
                 </CSSTransition>
             )
         }
+    }
+
+    handleTaskTouchEnd(touchEvent) {
+        if (touchEvent.touches.length === 1) {
+            this.forwardOnTaskClick(touchEvent);
+        }
+    }
+
+    handleTaskOptionsMoveButtonClick() {
+        this.props.onTaskTwoFingerTouch(this.props.taskId);
+    }
+
+    handleTaskOptionsCancelButtonClick() {
+        this.props.onTaskOptionsClose();
+    }
+
+    handleTaskOptionsDeleteButtonClick() {
+        this.props.onTaskOptionsDeleteButtonClick(this.props.taskId);
     }
 
     handleTaskAssigneeClick(e) {
@@ -171,10 +232,6 @@ class Task extends React.Component {
         this.props.onDueDateClick(this.props.taskId);
     } 
 
-    handleInputUnmounting(data) {
-        this.props.onInputUnmounting(data, this.props.taskId, this.props.metadata);
-    }
-    
     handleTaskTouchStart(touchEvent) {
         if (touchEvent.touches.length === 2) {
             this.props.onTaskTwoFingerTouch(this.props.taskId);
@@ -185,8 +242,8 @@ class Task extends React.Component {
         this.props.handleClick(this);
     }
 
-    forwardKeyPress(e, newData) {
-        this.props.onKeyPress(e, this.props.taskId, newData, this.props.metadata);
+    handleTaskTextSubmit(newData) {
+        this.props.onTaskTextSubmit(this.props.taskId, newData, this.props.metadata);
     }
 
     handleCheckBoxClick(e, incomingValue) {

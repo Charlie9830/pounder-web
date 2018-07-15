@@ -13,7 +13,7 @@ class TaskListWidget extends React.Component {
 
         // Method Bindings.
         this.handleTaskClick = this.handleTaskClick.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleTaskTextSubmit = this.handleTaskTextSubmit.bind(this);
         this.handleWidgetClick = this.handleWidgetClick.bind(this);
         this.handleHeaderPress = this.handleHeaderPress.bind(this);
         this.handleHeaderDoubleClick = this.handleHeaderDoubleClick.bind(this);
@@ -31,6 +31,9 @@ class TaskListWidget extends React.Component {
         this.handleTaskMetadataOpen = this.handleTaskMetadataOpen.bind(this);
         this.handleAssignToMember = this.handleAssignToMember.bind(this);
         this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
+        this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
+        this.handleTaskOptionsOpen = this.handleTaskOptionsOpen.bind(this);
+        this.handleTaskOptionsClose = this.handleTaskOptionsClose.bind(this);
     }
 
     componentDidMount(){
@@ -72,35 +75,38 @@ class TaskListWidget extends React.Component {
                 var metadata = item.metadata === undefined ? Object.assign({}, new TaskMetadataStore("", "", "", "", "")) 
                 : item.metadata; 
                 var assignedTo = item.assignedTo === undefined ? -1 : item.assignedTo;
+                var isOptionsOpen = item.uid === this.props.openTaskOptionsId;
 
                 return (
                     <CSSTransition key={item.uid} classNames="TaskContainer" timeout={500} mountOnEnter={true}>
                             <Task key={index} taskId={item.uid} text={item.taskName} dueDate={item.dueDate} isMetadataOpen={isMetadataOpen}
                                 isSelected={isTaskSelected} isInputOpen={isTaskInputOpen} isComplete={item.isComplete} isMoving={isTaskMoving}
                                 handleClick={this.handleTaskClick} onTaskCheckBoxClick={this.handleTaskCheckBoxClick}
-                                onKeyPress={this.handleKeyPress} onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch}
+                                onTaskTextSubmit={this.handleTaskTextSubmit} onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch}
                                 onInputUnmounting={this.handleTaskInputUnmounting} onDueDateClick={this.handleDueDateClick}
                                 isCalendarOpen={isCalendarOpen} onNewDateSubmit={this.handleNewDateSubmit} onMetadataOpen={this.handleTaskMetadataOpen}
                                 isHighPriority={item.isHighPriority} onTaskMetadataCloseButtonClick={this.handleTaskMetadataCloseButtonClick}
                                 onPriorityToggleClick={this.handleTaskPriorityToggleClick} renderBottomBorder={renderBottomBorder}
                                 metadata={metadata} disableAnimations={this.props.disableAnimations} projectMembers={this.props.projectMembers}
-                                onAssignToMember={this.handleAssignToMember} assignedTo={assignedTo} />
+                                onAssignToMember={this.handleAssignToMember} assignedTo={assignedTo}
+                                onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
+                                onTaskOptionsOpen={this.handleTaskOptionsOpen} isOptionsOpen={isOptionsOpen}
+                                onTaskOptionsClose={this.handleTaskOptionsClose} />
                     </CSSTransition>
                 )
             })
         }
 
-        var style = this.props.isFocused ? "IsFocused" : "IsNotFocused";
         var isSettingsMenuOpen = this.props.openTaskListSettingsMenuId === this.props.taskListWidgetId;
         return (
-            <div className={style} onClick={this.handleWidgetClick}>
+            <div className="IsNotFocused" onClick={this.handleWidgetClick}>
                 <ListToolbar headerText={this.props.taskListName} isHeaderOpen={this.props.isHeaderOpen}
                  onHeaderPress={this.handleHeaderPress}
                  onHeaderDoubleClick={this.handleHeaderDoubleClick} onHeaderSubmit={this.handleTaskListHeaderSubmit}
                  onRemoveButtonClick={this.handleRemoveButtonClick} isSettingsMenuOpen={isSettingsMenuOpen}
                  onTaskListSettingsChanged={this.handleTaskListSettingsChanged}
                  settings={this.props.settings} onSettingsButtonClick={this.handleSettingsButtonClick}
-                 isFocused={this.props.isFocused} onSettingsMenuClose={this.handleSettingsMenuClose}/>
+                 onSettingsMenuClose={this.handleSettingsMenuClose}/>
                  <TaskArea>
                  <TransitionGroup enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
                      {builtTasks}
@@ -109,6 +115,19 @@ class TaskListWidget extends React.Component {
             </div>
         )
     }
+
+    handleTaskOptionsClose() {
+        this.props.onTaskOptionsClose();
+    }
+
+    handleTaskOptionsOpen(taskId) {
+        this.props.onTaskOptionsOpen(taskId);
+    }
+
+    handleTaskOptionsDeleteButtonClick(taskId) {
+        this.props.onTaskOptionsDeleteButtonClick(taskId);
+    }
+
     handleSettingsMenuClose() {
         this.props.onSettingsMenuClose();
     }
@@ -159,12 +178,8 @@ class TaskListWidget extends React.Component {
         this.props.onTaskClick(element, this.props.taskListWidgetId);
     }
 
-    handleKeyPress(e, taskId, newData, currentMetadata) {
-        // Enter Key.
-        if (e.key == "Enter") {
-            // Handle Data Changes.
-            this.props.onTaskSubmit(this.props.taskListWidgetId, taskId, newData, currentMetadata)
-        }   
+    handleTaskTextSubmit(taskId, newData, currentMetadata) {
+            this.props.onTaskSubmit(this.props.taskListWidgetId, taskId, newData, currentMetadata) 
     }
 
     handleHeaderDoubleClick() {

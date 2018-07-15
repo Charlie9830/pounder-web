@@ -2,7 +2,7 @@ import React from 'react';
 import '../assets/css/ProjectSelector.css';
 import Hammer from 'hammerjs';
 import FavoriteIcon from '../assets/icons/HeartIcon.svg';
-import TextareaAutosize from 'react-autosize-textarea';
+import FloatingTextInput from './FloatingTextInput';
 
 class ProjectSelector extends React.Component {
     constructor(props) {
@@ -13,47 +13,38 @@ class ProjectSelector extends React.Component {
         // Refs.
         this.containerRef = React.createRef();
         this.handleClick = this.handleClick.bind(this);
-        this.handleDoubleClick = this.handleDoubleClick.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handlePress = this.handlePress.bind(this);
         this.getDueDateCountsJSX = this.getDueDateCountsJSX.bind(this);
         this.getHeartJSX = this.getHeartJSX.bind(this);
-        this.handleInputBlur = this.handleInputBlur.bind(this);
+        this.getInputJSX = this.getInputJSX.bind(this);
+        this.handleInputCancel = this.handleInputCancel.bind(this);
+        this.handleInputSubmit = this.handleInputSubmit.bind(this);
     }
 
     componentDidMount() {
-        if (this.props.isInputOpen) {
-            this.textarea.focus();
-        }
-
         this.hammer = new Hammer(this.containerRef.current);
-        this.hammer.on('tap', this.handleDoubleClick);
-        this.hammer.get('tap').set({taps: 2});
+        this.hammer.on('press', this.handlePress);
     }
 
 
     componentWillUnmount() {
-        this.hammer.off('tap', this.containerRef.current, this.handleDoubleClick);
+        this.hammer.off('press', this.containerRef.current, this.handlePress);
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps.isInputOpen !== this.props.isInputOpen) {
-            if (this.props.isInputOpen) {
-                this.textarea.focus();
-            }
-        }
-    }
     render(){
-        // var currentClassName = this.props.isSelected ? "ProjectSelectorActiveStyle" : "ProjectSelectorInactiveStyle";
-        var projectLabelJSX = this.getProjectLabelJSX(this.props);
+        var inputJSX = this.getInputJSX();
         var dueDateCounts = this.getDueDateCountsJSX(this.props);
         var heartJSX = this.getHeartJSX();
 
         return (
-            <div className="ProjectSelectorContainer" ref="projectSelector" ref={this.containerRef} onClick={this.handleClick} onDoubleClick={this.handleDoubleClick}>
+            <div className="ProjectSelectorContainer" ref={this.containerRef} onClick={this.handleClick} onDoubleClick={this.handlePress}>
                     <div className="ProjectSelectorFlexContainer">
                             {heartJSX}
                         <div className="ProjectSelectorLabelContainer">
-                            {projectLabelJSX}
+                            {inputJSX}
+                            <div className="ProjectSelectorText" data-isselected={this.props.isSelected}>
+                                {this.props.projectName}
+                            </div>
                         </div>
                         <div className="ProjectSelectorIconContainer">
                             {dueDateCounts}
@@ -97,17 +88,11 @@ class ProjectSelector extends React.Component {
         )
     }
 
-    getProjectLabelJSX() {
+    getInputJSX() {
         if (this.props.isInputOpen) {
             return (
-                <TextareaAutosize className="ProjectSelectorInput" innerRef={ref => this.textarea = ref} type='text' defaultValue={this.props.projectName}
-                onKeyPress={this.handleKeyPress} onBlur={this.handleInputBlur}/>
-            )
-        }
-
-        else {
-            return (
-                <div className="ProjectSelectorText" data-isselected={this.props.isSelected}>{this.props.projectName}</div>
+                <FloatingTextInput defaultValue={this.props.projectName} onTextSubmit={this.handleInputSubmit}
+                onCancel={this.handleInputCancel}/>
             )
         }
     }
@@ -116,19 +101,18 @@ class ProjectSelector extends React.Component {
         this.props.onClick(e, this.props.projectSelectorId);
     }
 
-    handleDoubleClick(e) {
+    handlePress(e) {
         this.props.onDoubleClick(e, this.props.projectSelectorId);
     }
 
-    handleKeyPress(e) {
-        if (e.key === "Enter") {
-            this.props.onProjectNameSubmit(this.props.projectSelectorId, this.textarea.value);
-        }
+    handleInputCancel() {
+        this.props.onProjectNameSubmit(this.props.projectSelectorId, this.props.projectName);
     }
 
-    handleInputBlur() {
-        this.props.onProjectNameSubmit(this.props.projectSelectorId, this.textarea.value);
+    handleInputSubmit(value) {
+        this.props.onProjectNameSubmit(this.props.projectSelectorId, value);
     }
+
     
 
 }

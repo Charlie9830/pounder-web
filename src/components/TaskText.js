@@ -1,43 +1,47 @@
 import React from 'react';
-import TaskTextInput from "../components/TaskTextInput";
+import FloatingTextInput from "../components/FloatingTextInput";
 import '../assets/css/TaskText.css';
 
 class TaskText extends React.Component {
     constructor(props){
         super(props);
 
-        this.forwardKeyPress = this.forwardKeyPress.bind(this);
-        this.handleInputUnmounting = this.handleInputUnmounting.bind(this);
+        // Method Bindings.
+        this.handleInputSubmit = this.handleInputSubmit.bind(this);
+        this.handleInputCancel = this.handleInputCancel.bind(this);
+        this.getTaskTextInputJSX = this.getTaskTextInputJSX.bind(this);
     }
 
 
     render() {
+        var currentClassName = this.props.isComplete ? "TaskText Fade" : "TaskText";
+        var taskTextInputJSX = this.getTaskTextInputJSX();
+
+        return (
+            <div className={currentClassName} data-ishighpriority={this.props.isHighPriority}>
+                {taskTextInputJSX}
+                <label>{this.props.text}</label>
+            </div>
+        )
+    }
+
+    getTaskTextInputJSX() {
         if (this.props.isInputOpen) {
             return (
                 <div className='TaskText'>
-                    <TaskTextInput defaultValue={this.props.text} onKeyPress={this.forwardKeyPress}
-                    onComponentUnmounting={this.handleInputUnmounting} onCancel={this.handleInputCancel}/>  
+                    <FloatingTextInput defaultValue={this.props.text} onCancel={this.handleInputCancel}
+                    onTextSubmit={this.handleInputSubmit}/>  
                 </div>
             )
         }
-
-        else {
-            var currentClassName = this.props.isComplete ? "TaskText Fade" : "TaskText";
-
-            return (
-                <div className={currentClassName} data-ishighpriority={this.props.isHighPriority}>
-                    <label>{this.props.text}</label>
-                </div>
-            )
-        }    
     }
 
-    handleInputUnmounting(data) {
-        this.props.onInputUnmounting(data);
+    handleInputSubmit(value) {
+        this.props.onTaskTextSubmit(value);
     }
 
-    forwardKeyPress(e, newData) {
-        this.props.onKeyPress(e, newData);
+    handleInputCancel() {
+        
     }
 }
 

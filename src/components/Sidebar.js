@@ -119,7 +119,7 @@ class Sidebar extends React.Component{
     getShareMenuJSX() {
         if (this.props.isShareMenuOpen) {
           return (
-              <VisibleShareMenu />
+            <VisibleShareMenu />
           )
         }
       }

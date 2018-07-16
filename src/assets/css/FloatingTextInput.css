@@ -32,7 +32,7 @@
     resize: none;
     vertical-align: middle;
     font-size: var(--task-font-size);
-    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
     color: var(--task-text-color);
     background: var(--surface-color);
     border: 1px solid #FFF;

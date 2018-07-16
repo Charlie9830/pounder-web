@@ -1,5 +1,5 @@
 .SidebarToolbar {
-    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
     font-Size: 16pt;
     color: #FFF;
     cursor: pointer;
@@ -211,14 +211,14 @@
 .InviteProjectName {
     flex-shrink: 1;
     color: var(--primary-active-text-color);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
     font-size: 10pt;
 }
 
 .InviteDisplayName {
     flex-shrink: 1;
     color: var(--alternate-inactive-text-color);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
     font-size: 10pt;
 }
 

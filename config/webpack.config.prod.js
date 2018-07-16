@@ -13,6 +13,8 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 
+const TYPEFACE_OPEN_SANS_DIR = path.resolve(__dirname, 'node_modules', 'typeface-open-sans');
+
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
 const publicPath = paths.servedPath;
@@ -167,6 +169,7 @@ module.exports = {
           // in the main CSS file.
           {
             test: /\.css$/,
+            include: [paths.appSrc, TYPEFACE_OPEN_SANS_DIR],
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {

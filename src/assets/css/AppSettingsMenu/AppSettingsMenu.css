@@ -77,21 +77,21 @@
 
 .AppSettingsItemLabel {
     color: var(--primary-active-text-color);
-    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
     font-size: 10pt;
     line-height: 10pt;
 }
 
 .AppSettingsItemHint {
     color: var(--alternate-active-text-color);
-    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
     font-size: 10pt;
     line-height: 10pt;
 }
 
 .AppSettingsItemInput {
     margin: 0px;
-    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
     background: var(--surface-color-alternate);
     color: var(--primary-active-text-color);
     border: gray 1px solid;
@@ -100,7 +100,7 @@
 
 .AppSettingsAccountInput {
     margin-top: 5px;
-    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
     background: var(--surface-color-alternate);
     color: var(--alternate-active-text-color);
     border: gray 1px solid;
@@ -115,7 +115,7 @@
     resize: none;
     vertical-align: middle;
     font-size: 9pt;
-    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
     color: var(--primary-active-text-color);
     background: var(--surface-color-alternate);
     border: 0px solid #FFF;
@@ -150,13 +150,13 @@
 }
 
 .AppSettingsAccountStatus {
-    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
     height: 24px;
     color: var(--alternate-active-text-color);
 }
 
 .AppSettingsAccountDisplayName {
-    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
     font-size: 10pt;
     margin-top: 10px;
     height: 20px;
@@ -164,7 +164,7 @@
 }
 
 .AppSettingsAccountEmailDisplay {
-    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
     font-size: 10pt;
     height: 24px;
     color: var(--alternate-active-text-color);
@@ -184,7 +184,7 @@
 
 .AppSettingsAccountItemLabel {
     color: var(--alternate-active-text-color);
-    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
     font-size: 10pt;
     line-height: 10pt;
 }

@@ -6,6 +6,8 @@ import { Provider } from 'react-redux';
 import { setupBackend ,appStore } from 'pounder-redux';
 import registerServiceWorker from './registerServiceWorker';
 
+require('typeface-open-sans');
+
 setupBackend("development", "mobile");
 
 ReactDOM.render(<Provider store={appStore}><VisibleApp /></Provider>, document.getElementById('root'));

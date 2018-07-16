@@ -57,7 +57,7 @@
     color: #FFF;
     text-align: center;
     line-height: 27px; /* Keeps text Vertically Centered on Chrome Mobile */
-    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
 }
 
 .ButtonText[data-size*="small"] {

@@ -8,6 +8,10 @@ html, body {
 }
 
 body {
+    /* Font */
+    --primary-font-family: 'Open Sans';
+
+
   /* Font Size Toggle */
   --task-font-size: 11pt;
   --task-assignee-font-size: 10pt;

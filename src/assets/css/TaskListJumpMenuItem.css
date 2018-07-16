@@ -5,5 +5,5 @@
 .TaskListJumpMenuItem {
     color: #DDD;
     font-size: 14pt;
-    font-family: 'Segoe UI', Lucinda Grande, Geneva, Verdana, sans-serif;
+    font-family: var(--primary-font-family);
 }

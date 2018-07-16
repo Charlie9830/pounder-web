@@ -11,6 +11,7 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
+const TYPEFACE_OPEN_SANS_DIR = path.resolve(__dirname, 'node_modules', 'typeface-open-sans');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -161,6 +162,7 @@ module.exports = {
           // in development "style" loader enables hot editing of CSS.
           {
             test: /\.css$/,
+            include: [paths.appSrc, TYPEFACE_OPEN_SANS_DIR],
             use: [
               require.resolve('style-loader'),
               {

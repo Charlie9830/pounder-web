@@ -64,6 +64,7 @@ class Sidebar extends React.Component{
         var sidebarToolbarJSX = this.getSidebarToolbarJSX();
         var shareMenuJSX = this.getShareMenuJSX();
 
+
         return (
             <div className={sidebarClassName} data-disableanimations={this.props.disableAnimations} onClick={this.handleSidebarClick}>
 
@@ -239,7 +240,8 @@ class Sidebar extends React.Component{
     getAppSettingsJSX() {
             return (
                 <CSSTransition key={"appSettings"} classNames="AppSettingsContainer" in={this.props.isAppSettingsOpen} timeout={250}
-                mountOnEnter={true} unmountOnExit={true}>
+                mountOnEnter={true} unmountOnExit={true}
+                enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
                     <VisibleAppSettingsMenu/>
                 </CSSTransition>
             )

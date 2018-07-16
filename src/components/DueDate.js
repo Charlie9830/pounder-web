@@ -26,7 +26,7 @@ class DueDate extends React.Component {
     return (
       <div className={className} onClick={this.handleClick}>
         <label className="DueDateText"> {text} </label>
-        <TransitionGroup>
+        <TransitionGroup enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
         {calendarMenu}
         </TransitionGroup>
       </div>

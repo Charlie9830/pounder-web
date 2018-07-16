@@ -112,13 +112,15 @@ class App extends React.Component {
 
   render() {
     var sidebarOrProjectJSX = this.getSidebarOrProjectJSX();
+    var disableAnimations = this.props.generalConfig.disableAnimations === undefined ? false :
+     this.props.generalConfig.disableAnimations;
 
     return (
       <div>
       <VisibleSnackbar/>
       <MessageBox config={this.props.messageBox}/>
       {/* Sidebar / Project Transition Group */}
-      <TransitionGroup>
+      <TransitionGroup enter={!disableAnimations} exit={!disableAnimations}>
         {sidebarOrProjectJSX}
       </TransitionGroup>
           

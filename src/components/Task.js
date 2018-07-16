@@ -164,7 +164,7 @@ class Task extends React.Component {
                                 isCalendarOpen={this.props.isCalendarOpen} onNewDateSubmit={this.handleNewDateSubmit}
                                 projectMembers={this.props.projectMembers} onAssignToMember={this.handleAssignToMember}
                                 onPriorityToggleClick={this.handlePriorityToggleClick} isHighPriority={this.props.isHighPriority}
-                                assignedTo={this.props.assignedTo} />
+                                assignedTo={this.props.assignedTo} disableAnimations={this.props.disableAnimations} />
                         </div>
                     </div>
                     {taskAssigneeJSX}

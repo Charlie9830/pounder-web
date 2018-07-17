@@ -5,6 +5,7 @@ import '../assets/css/Project.css';
 import ProjectToolBar from './ProjectToolBar';
 import scrollToComponent from 'react-scroll-to-component';
 import BurgerIcon from '../assets/icons/BurgerIcon.svg';
+import { getUserUid } from 'pounder-firebase';
 
 class Project extends React.Component {
     constructor(props){
@@ -37,6 +38,7 @@ class Project extends React.Component {
         this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
         this.handleTaskOptionsOpen = this.handleTaskOptionsOpen.bind(this);
         this.handleTaskOptionsClose = this.handleTaskOptionsClose.bind(this);
+        this.handleShowOnlySelfTasksChanged = this.handleShowOnlySelfTasksChanged.bind(this);
     }
     
     componentDidMount() {   
@@ -59,9 +61,21 @@ class Project extends React.Component {
             var taskListSettings = item.settings;    
 
             // Task Layer.
-            var tasks = this.props.tasks.filter(task => {
-                return task.taskList === item.uid;
-            })
+            var tasks = [];
+            if (this.props.showOnlySelfTasks !== true) {
+                // Standard Task Filtering.
+                tasks = this.props.tasks.filter(task => {
+                    return task.taskList === item.uid;
+                })
+            }
+
+            else {
+                // Filter out Tasks not assigned to the current User.
+                tasks = this.props.tasks.filter(task => {
+                    return task.taskList === item.uid && task.assignedTo === getUserUid();
+                })
+            }
+            
 
             var selectedTaskId = -1;
             var openTaskInputId = -1;
@@ -126,7 +140,9 @@ class Project extends React.Component {
                     
                     <ProjectToolBar onAddTaskButtonClick={this.handleAddTaskButtonClick} onAddTaskListButtonClick={this.handleAddTaskListButtonClick}
                         taskLists={filteredTaskListWidgets} onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick}
-                        onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick} isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen} />
+                        onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick} isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen}
+                        onShowOnlySelfTasksChanged={this.handleShowOnlySelfTasksChanged}
+                        showOnlySelfTasks={this.props.showOnlySelfTasks} />
                 </div>
                 <div className="TaskListsContainer">
                     {projectMessageDisplayJSX}
@@ -134,6 +150,10 @@ class Project extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    handleShowOnlySelfTasksChanged(newValue) {
+        this.props.onShowOnlySelfTasksChanged(newValue);
     }
 
     handleSettingsMenuClose() {

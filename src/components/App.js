@@ -19,7 +19,7 @@ addNewProjectAsync, removeProjectAsync, updateProjectNameAsync, removeTaskListAs
 updateTaskDueDateAsync, updateTaskPriority, openTaskListJumpMenu, closeTaskListJumpMenu, getGeneralConfigAsync,
 setIsAppSettingsOpen, getCSSConfigAsync, setAppSettingsMenuPage,setOpenProjectSelectorId, setIsShareMenuOpen,
 setMessageBox, attachAuthListenerAsync, denyProjectInviteAsync, postSnackbarMessage, removeTaskAsync,
-selectProject, setOpenTaskOptionsId,
+selectProject, setOpenTaskOptionsId, setShowOnlySelfTasks,
 setOpenTaskListWidgetHeaderId, updateTaskAssignedToAsync, closeMetadata,
 
 setIsSidebarOpen,
@@ -82,6 +82,7 @@ class App extends React.Component {
     this.handleTaskListWidgetHeaderDoubleClick = this.handleTaskListWidgetHeaderDoubleClick.bind(this);
     this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
     this.handleProjectSelectorInputDoubleClick = this.handleProjectSelectorInputDoubleClick.bind(this);
+    this.handleShowOnlySelfTasksChanged = this.handleShowOnlySelfTasksChanged.bind(this);
     
   }
 
@@ -187,11 +188,17 @@ class App extends React.Component {
               onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
               onTaskOptionsOpen={this.handleTaskOptionsOpen} openTaskOptionsId={this.props.openTaskOptionsId}
               onTaskOptionsClose={this.handleTaskOptionsClose} onSettingsMenuClose={this.handleSettingsMenuClose}
+              onShowOnlySelfTasksChanged={this.handleShowOnlySelfTasksChanged}
+              showOnlySelfTasks={this.props.showOnlySelfTasks}
             />
           </div>
         </CSSTransition>
       )
     }
+  }
+
+  handleShowOnlySelfTasksChanged(newValue) {
+    this.props.dispatch(setShowOnlySelfTasks(newValue))
   }
 
   handleTaskOptionsClose() {
@@ -505,6 +512,7 @@ const mapStateToProps = state => {
     members: state.members,
     remoteProjectIds: state.remoteProjectIds,
     openTaskOptionsId: state.openTaskOptionsId,
+    showOnlySelfTasks: state.showOnlySelfTasks,
   }
 }
 

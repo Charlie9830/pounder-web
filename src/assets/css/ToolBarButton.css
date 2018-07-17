@@ -37,10 +37,22 @@
     width: 100%;
 }
 
+.AssignedToSelfToggleContainer {
+    flex-shrink: 1;
+    width: fit-content;
+    height: fit-content;
+}
+
 .ToolbarPairsFlexContainer {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
+    align-content: center;
+}
+
+.ToggleIcon {
+    width: 100%;
+    height: 100%;
 }

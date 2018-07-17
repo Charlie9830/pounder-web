@@ -8,7 +8,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 require('typeface-open-sans');
 
-setupBackend("production", "mobile");
+setupBackend("development", "mobile");
 
 ReactDOM.render(<Provider store={appStore}><VisibleApp /></Provider>, document.getElementById('root'));
 registerServiceWorker();

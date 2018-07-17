@@ -89,14 +89,7 @@
 }
 
 .Sidebar {
-    z-index: 3;
-    position: relative; /* So .SidebarCollapseButtonContainer absolute position Works */
-    background: var(--primary-color);
-    width: 100vw;
-    height: 100vh;
-    float: left;
-    -webkit-user-select: none;
-    user-select: none;
+    height: 100%;
 }
 
 .ProjectInvitesContainer {

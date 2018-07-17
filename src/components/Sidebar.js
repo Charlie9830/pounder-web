@@ -48,7 +48,6 @@ class Sidebar extends React.Component{
         var appSettingsJSX = this.getAppSettingsJSX();
         var sidebarBottombarJSX = this.getSidebarBottombarJSX();
 
-        var sidebarClassName = this.props.isOpen ? "SidebarOpen" : "SidebarCollapsed";
         var splitProjects = this.getSplitProjects();
         var localProjectsCount = splitProjects.localProjects.length;
         var remoteProjectsCount = splitProjects.remoteProjects.length;
@@ -66,7 +65,7 @@ class Sidebar extends React.Component{
 
 
         return (
-            <div className={sidebarClassName} data-disableanimations={this.props.disableAnimations} onClick={this.handleSidebarClick}>
+            <div className="Sidebar" data-disableanimations={this.props.disableAnimations} onClick={this.handleSidebarClick}>
 
                 {/* App Settings  */} 
                 {appSettingsJSX}   

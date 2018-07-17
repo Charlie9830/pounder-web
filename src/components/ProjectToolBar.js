@@ -37,9 +37,12 @@ class ProjectToolBar extends React.Component {
         this.handleTaskListJumpMenuItemClick = this.handleTaskListJumpMenuItemClick.bind(this);
         this.handleTaskListJumpMenuButtonClick = this.handleTaskListJumpMenuButtonClick.bind(this);
         this.handleShowOnlySelfTasksChange = this.handleShowOnlySelfTasksChange.bind(this);
+        this.getShowOnlySelfTasksSwitchJSX = this.getShowOnlySelfTasksSwitchJSX.bind(this);
     }
 
     render() {
+        var showOnlySelfTasksSwitchJSX = this.getShowOnlySelfTasksSwitchJSX();
+
         return (
             <div>
                 <div className="ProjectToolbarFlexContainer">
@@ -51,20 +54,27 @@ class ProjectToolBar extends React.Component {
                             onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick} />
                     </div>
 
-                    <div className="ToolbarPairsFlexContainer">
-                        <div className="AssignedToSelfToggleContainer">
-                            <Toggle icons={{checked: <ShowOnlySelfTasks/>, unchecked: <ShowAllTasks/>}}
-                            onChange={this.handleShowOnlySelfTasksChange} checked={this.props.showOnlySelfTasks}/>
-                        </div>
-                            
-                    </div>
-
+                    {showOnlySelfTasksSwitchJSX}
+                    
                     <div className="ToolbarPairsFlexContainer">
                         <Button iconSrc={NewTaskListIcon} size="small" onClick={this.handleAddTaskListButtonClick}/>
                     </div>
                 </div>
             </div>
         )
+    }
+
+    getShowOnlySelfTasksSwitchJSX() {
+        if (this.props.isRemote) {
+            return (
+                <div className="ToolbarPairsFlexContainer">
+                    <div className="AssignedToSelfToggleContainer">
+                        <Toggle icons={{ checked: <ShowOnlySelfTasks />, unchecked: <ShowAllTasks /> }}
+                            onChange={this.handleShowOnlySelfTasksChange} checked={this.props.showOnlySelfTasks} />
+                    </div>
+                </div>
+            )
+        }
     }
 
     handleShowOnlySelfTasksChange(e) {

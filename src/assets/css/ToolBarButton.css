@@ -39,6 +39,7 @@
 
 .AssignedToSelfToggleContainer {
     flex-shrink: 1;
+    padding-top: 4px;
     width: fit-content;
     height: fit-content;
 }

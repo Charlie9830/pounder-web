@@ -142,7 +142,8 @@ class Project extends React.Component {
                         taskLists={filteredTaskListWidgets} onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick}
                         onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick} isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen}
                         onShowOnlySelfTasksChanged={this.handleShowOnlySelfTasksChanged}
-                        showOnlySelfTasks={this.props.showOnlySelfTasks} />
+                        showOnlySelfTasks={this.props.showOnlySelfTasks}
+                        isRemote={this.props.isRemote} />
                 </div>
                 <div className="TaskListsContainer">
                     {projectMessageDisplayJSX}

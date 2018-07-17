@@ -190,6 +190,7 @@ class App extends React.Component {
               onTaskOptionsClose={this.handleTaskOptionsClose} onSettingsMenuClose={this.handleSettingsMenuClose}
               onShowOnlySelfTasksChanged={this.handleShowOnlySelfTasksChanged}
               showOnlySelfTasks={this.props.showOnlySelfTasks}
+              isRemote={this.props.isSelectedProjectRemote}
             />
           </div>
         </CSSTransition>

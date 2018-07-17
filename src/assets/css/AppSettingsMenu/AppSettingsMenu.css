@@ -99,13 +99,13 @@
 }
 
 .AppSettingsAccountInput {
-    margin-top: 5px;
+    width: 90%;
+    font-size: 14pt;
     font-family: var(--primary-font-family);
     background: var(--surface-color-alternate);
     color: var(--alternate-active-text-color);
     border: gray 1px solid;
     padding: 1px;
-    width: 180px;
 }
 
 .DatabaseSettingsPageInfoPane {
@@ -171,6 +171,12 @@
 }
 
 .AppSettingsAccountEmailContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center;
+    width: 100%;
     margin-top: 25px;
 }
 

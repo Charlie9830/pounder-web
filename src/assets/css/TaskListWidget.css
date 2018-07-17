@@ -1,4 +1,4 @@
-.IsNotFocused {
+.TaskListWidget {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -9,14 +9,8 @@
     padding: 0px;
 }
 
-.IsFocused {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    border-color: var(--task-list-selected-border-color);
+.TaskListWidget[data-isfocused*="true"] {
+    border-color: #FFF;
     border-width: 1px;
     border-style: solid;
-    margin: 0px;
-    padding: 0px;
-
 }

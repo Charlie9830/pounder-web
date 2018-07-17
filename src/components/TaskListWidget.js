@@ -99,9 +99,9 @@ class TaskListWidget extends React.Component {
 
         var isSettingsMenuOpen = this.props.openTaskListSettingsMenuId === this.props.taskListWidgetId;
         return (
-            <div className="IsNotFocused" onClick={this.handleWidgetClick}>
+            <div className="TaskListWidget" data-isfocused={this.props.isFocused} onClick={this.handleWidgetClick}>
                 <ListToolbar headerText={this.props.taskListName} isHeaderOpen={this.props.isHeaderOpen}
-                 onHeaderPress={this.handleHeaderPress}
+                 onHeaderPress={this.handleHeaderPress} isFocused={this.props.isFocused}
                  onHeaderDoubleClick={this.handleHeaderDoubleClick} onHeaderSubmit={this.handleTaskListHeaderSubmit}
                  onRemoveButtonClick={this.handleRemoveButtonClick} isSettingsMenuOpen={isSettingsMenuOpen}
                  onTaskListSettingsChanged={this.handleTaskListSettingsChanged}

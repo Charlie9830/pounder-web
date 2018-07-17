@@ -20,9 +20,9 @@
   flex-direction: column;
 }
 
-/* .TaskContainer[data-isselected*="true"] {
+.TaskContainer[data-isselected*="true"] {
   background: var(--task-selected-color);
-} */
+}
 
 .TaskContainer[data-ismoving*="true"] {
   background: rgba(63,63,180,255);

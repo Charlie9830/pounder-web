@@ -350,12 +350,28 @@ class App extends React.Component {
   }
 
   handleTaskClick(element, projectId, taskListWidgetId) {
+    // Ye now be venturing into the crypts of Pounder! She be a bit rough, but she holds her keep, yoho.
+    var selectedTask = this.props.selectedTask;
+
+      if (this.isShiftKeyDown) {
+        this.props.dispatch(startTaskMove(element.props.taskId, taskListWidgetId));
+      }
+
       // If a task is already moving, it's completion will be handled by the Task List Focus change. Letting the selecition handling runs
       // causes problems.
-    if (this.props.isATaskMoving === false) {
-      this.props.dispatch(selectTask(taskListWidgetId, element.props.taskId, this.isModKeyDown));
-      this.props.dispatch(openTask(taskListWidgetId, element.props.taskId));
-    }
+      else if (this.props.isATaskMoving === false) {
+        if (selectedTask.taskListWidgetId === taskListWidgetId &&
+          selectedTask.taskId === element.props.taskId && this.isModKeyDown !== true) { // If task is already selected and the Mod Key isn't down.
+
+            // Task Already Selected. Exclusively open it's Text Input.
+            this.props.dispatch(openTask(taskListWidgetId, element.props.taskId));          
+        }
+
+        else {
+          // Otherwise just Select it.
+          this.props.dispatch(selectTask(taskListWidgetId, element.props.taskId, this.isModKeyDown));
+        }
+      }
   }
 
   handleTaskTwoFingerTouch(taskListWidgetId, taskId) {

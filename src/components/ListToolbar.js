@@ -25,10 +25,6 @@ class ListToolbar extends React.Component{
     }
 
     componentDidMount() {
-        if (this.props.isHeaderOpen) {
-            this.headerInputRef.current.focus();
-        }
-
         this.hammer = new Hammer(this.headerContainerRef.current);
         this.hammer.on('press', this.handlePress);
     }
@@ -50,7 +46,7 @@ class ListToolbar extends React.Component{
 
                 <div className="ListToolbarHeaderContainer" ref={this.headerContainerRef}>
                     {headerInputJSX}
-                    <label className="ListToolbarHeader" data-isfocused={this.props.isFocused} onDoubleClick={this.handleDoubleClick} ref={this.headerLabelRef}>
+                    <label className="ListToolbarHeader" data-isfocused={this.props.isFocused} onDoubleClick={this.handleDoubleClick}>
                         {this.props.headerText}
                     </label>
                 </div>

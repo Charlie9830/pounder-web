@@ -132,7 +132,7 @@ class AccountSettingsPage extends React.Component {
         if (this.props.isLoggedIn === false) {
             var displayNameInputJSX = this.getDisplayNameInputJSX();
             return (
-                <div>
+                <React.Fragment>
                     {/* Email */}
                     <div className="AppSettingsAccountEmailContainer">
                         <div className="AppSettingsAccountItemLabel"> Email </div>
@@ -149,16 +149,16 @@ class AccountSettingsPage extends React.Component {
                         <input className="AppSettingsAccountInput" type="password" ref="passwordInput"
                         onKeyPress={this.handleInputKeyPress} />
                     </div>
-                </div>
+                </React.Fragment>
             )
         }
 
         else {
             return (
-                <div>
+                <React.Fragment>
                     <div className="AppSettingsAccountDisplayName"> {this.props.displayName} </div>
                     <div className="AppSettingsAccountEmailDisplay"> {this.props.userEmail} </div>
-                </div>
+                </React.Fragment>
             )
         }
     }

@@ -1,6 +1,6 @@
 .ButtonContainer {
     flex-grow: 0;
-    height: 27px;
+    height: 32px;
     width: 62px;
     margin: 4px;
     padding: 4px;
@@ -17,7 +17,7 @@
 }
 
 .ButtonContainer[data-size*="small"] {
-    height: 27px;
+    height: 32px;
     width: 55px;
     padding: 2px;
 }
@@ -48,8 +48,8 @@
     justify-content: center;
     align-items: center;
     align-content: center;
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 80%;
 }
 
 .ButtonIcon {
@@ -63,7 +63,7 @@
     flex-shrink: 1;
     width: 100%;
     color: #FFF;
-    font-size: 11pt;
+    font-size: 9pt;
     text-align: center;
     font-family: var(--primary-font-family);
 }

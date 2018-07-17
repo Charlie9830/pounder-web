@@ -1,3 +1,5 @@
+
+/* Transitioning */
 .ProjectSelectorContainer {
   padding-top: 4px;
   padding-bottom: 4px;
@@ -48,15 +50,18 @@
   max-height: 0px;
 }
 
+
+/* Content */
+
 .ProjectSelectorContainer:hover {
   background: var(--primary-hover-color);
 }
 
 .ProjectSelectorText {
-  color: var(--primary-inactive-text-color);
+    color: var(--primary-inactive-text-color);
     margin: 5px;
     font-family: var(--primary-font-family);
-    font-size: 16pt;
+    font-size: 12pt;
     -webkit-user-select: none;
     user-select: none;
     line-height: 20pt;
@@ -68,8 +73,7 @@
 
 .ProjectSelectorContainer {
   height: fit-content;
-  min-height: 50px;
-  display: flex;
+  min-height: 30px;
   padding-left: 5px;
 }
 
@@ -99,7 +103,6 @@
 
 .ProjectSelectorIconContainer {
   flex-grow: 0;
-  height: 16px;
 }
 
 .ProjectSelectorIcon {

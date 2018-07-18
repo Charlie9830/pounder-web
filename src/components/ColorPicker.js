@@ -6,6 +6,7 @@ import '../assets/css/ColorPicker.css';
 import '../assets/css/rc-slider/index.css';
 import LightenIcon from '../assets/icons/LightenIcon.svg';
 import DarkenIcon from '../assets/icons/DarkenIcon.svg';
+import { DisableBodyScroll, EnableBodyScroll } from '../utilities/DOMHelpers';
 
 let railStyle = {
     background: 'gray',
@@ -61,6 +62,14 @@ class ColorPicker extends React.Component {
         this.handleOkButtonClick = this.handleOkButtonClick.bind(this);
         this.handleDarkenButtonClick = this.handleDarkenButtonClick.bind(this);
         this.handleLightenButtonClick = this.handleLightenButtonClick.bind(this);
+    }
+
+    componentDidMount() {
+        DisableBodyScroll();
+    }
+
+    componentWillUnmount() {
+        EnableBodyScroll();
     }
 
     render() {

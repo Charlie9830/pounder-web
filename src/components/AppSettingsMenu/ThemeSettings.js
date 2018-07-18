@@ -78,9 +78,9 @@ class ThemeSettings extends React.Component {
         // Determine default Value. Instead of having to deal directly with the CSS Stylesheet from here. We just remove the
         // rule (which removes it from the inline style), then read the Computed Style. This means the browser does the work of
         // falling back to the Stylesheet for us.
-        var appRoot = document.getElementById('root')
-        appRoot.style.removeProperty(propertyName);
-        var value = window.getComputedStyle(appRoot).getPropertyValue(propertyName);
+        var body = document.getElementsByTagName('body')[0];
+        body.style.removeProperty(propertyName);
+        var value = window.getComputedStyle(body).getPropertyValue(propertyName);
 
         this.props.onCSSPropertyChange(propertyName, value);
     }

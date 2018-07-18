@@ -1,14 +1,74 @@
+/* Transitioning */
+/* In */
+.FloatingTextInputTransition-enter {
+  width: 100%;
+  transform: translateY(-100%);
+}
+
+.FloatingTextInputTransition-enter-active {
+  width: 100%;
+  transform: translateY(0%);
+  transition: transform 250ms ease;
+}
+
+.FloatingTextInputTransition-done {
+  width: 100%;
+}
+
+/* Out */
+.FloatingTextInputTransition-exit {
+  width: 100%;
+  transform: translateY(0%);
+}
+
+.FloatingTextInputTransition-exit-active {
+  width: 100%;
+  transform: translateY(-100%);
+  transition: transform 250ms ease;
+}
+
+.FloatingTextInputTransition-exit-done {
+  width: 100%;
+}
+
+
+/* Content */
+
 .FloatingTextInputPopupContainer {
   position: fixed;
-  left: 10%;
-  right: 10%;
-  top: 45%;
+  left: 0%;
+  right: 0%;
+  top: 0%;
   background: var(--primary-color);
   display: grid;
-  grid-template-rows: [Input] max-content [Footer] auto; 
+  grid-template-rows: [Header] max-content [Title]max-content [Input] max-content [Footer] auto; 
   padding-top: 10px;
-  border: 1px solid white;
 }
+
+.FloatingTextInputHeader {
+  grid-row: Header;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-content: center;
+}
+
+.FloatingTextInputTitleContainer {
+  grid-row: Title;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-content: center;
+  margin-left: 10%;
+  margin-top: 10px;
+}
+
+.FloatingTextInputTitle {
+  font-family: var(--primary-font-family);
+  color: #AAA;
+  font-size: 10pt;
+}
+
 
 .FloatingTextInputTextAreaContainer {
   grid-row: Input;
@@ -34,12 +94,19 @@
     font-size: var(--task-font-size);
     font-family: var(--primary-font-family);
     color: var(--task-text-color);
-    background: var(--surface-color);
-    border: 1px solid #FFF;
+    background: transparent;
+    border: 0px solid #FFF;
+  }
+
+  .FloatingTextInputTextArea:focus {
+    outline: none;
   }
 
   .FloatingTextInputFooter {
+    display: none;
     grid-row: Footer;
+    justify-self: end;
+    align-self: start;
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-start;

@@ -3,7 +3,7 @@ import '../assets/css/FloatingTextInput.css'
 import TextareaAutosize from 'react-autosize-textarea';
 import OverlayMenuContainer from '../containers/OverlayMenuContainer';
 import Button from './Button';
-import { CSSTransition } from 'react-transition-group';
+import MenuHeader from './MenuHeader';
 
 class FloatingTextInput extends React.Component {
     constructor(props) {
@@ -26,13 +26,17 @@ class FloatingTextInput extends React.Component {
         return (
             <OverlayMenuContainer onOutsideChildBoundsClick={this.handleOutsideChildBoundsClick}>
                     <div className="FloatingTextInputPopupContainer" onClick={this.handleContainerClick}>
+                        <MenuHeader onBackButtonClick={this.handleCancelButtonClick}/>
+                        <div className="FloatingTextInputTitleContainer">
+                            <div className="FloatingTextInputTitle"> Name </div>
+                        </div>
+
                         <div className="FloatingTextInputTextAreaContainer">
                             <TextareaAutosize className="FloatingTextInputTextArea" innerRef={ref => this.textarea = ref} type='text' defaultValue={this.props.defaultValue}
                                 onKeyDown={this.handleKeyDown} onKeyPress={this.handleKeyPress} />
                         </div>
                         <div className="FloatingTextInputFooter">
                             <Button text="Ok" size="small" onClick={this.handleOkButtonClick} />
-                            <Button text="Cancel" size="small" onClick={this.handleCancelButtonClick} />
                         </div>
                     </div>
             </OverlayMenuContainer>

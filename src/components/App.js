@@ -115,7 +115,7 @@ class App extends React.Component {
     var sidebarOrProjectJSX = this.getSidebarOrProjectJSX();
     var disableAnimations = this.props.generalConfig.disableAnimations === undefined ? false :
      this.props.generalConfig.disableAnimations;
-    var floatingTextInputJSX = this.getFloatingTextInputJSX();
+    var floatingTextInputJSX = this.getFloatingTextInputJSX(disableAnimations);
     
 
     return (
@@ -204,16 +204,17 @@ class App extends React.Component {
     }
   }
 
-  getFloatingTextInputJSX() {
-    if (this.props.floatingTextInput.isOpen === true) {
-      var floatingTextInput = this.props.floatingTextInput;
-      return (
-        <FloatingTextInput defaultValue={floatingTextInput.currentText}
-        onTextSubmit={(newValue) => this.handleFloatingTextInputSubmit(newValue, floatingTextInput.targetType, floatingTextInput.targetId)}
-        onCancel={() => {this.props.dispatch(setFloatingTextInput(false))}}
-        />
-      )
-    }
+  getFloatingTextInputJSX(disableAnimations) {
+    var floatingTextInput = this.props.floatingTextInput;
+
+    return (
+      <CSSTransition classNames="FloatingTextInputTransition" timeout={250} in={floatingTextInput.isOpen}
+        mountOnEnter={true} unmountOnExit={true} appear={true} enter={!disableAnimations} exit={disableAnimations}>
+          <FloatingTextInput defaultValue={floatingTextInput.currentText}
+            onTextSubmit={(newValue) => this.handleFloatingTextInputSubmit(newValue, floatingTextInput.targetType, floatingTextInput.targetId)}
+            onCancel={() => { this.props.dispatch(setFloatingTextInput(false)) }} />
+      </CSSTransition>
+    )
   }
 
   handleFloatingTextInputSubmit(newValue, targetType, targetId) {
@@ -255,6 +256,7 @@ class App extends React.Component {
         // Update existing Project.
         this.props.dispatch(updateProjectNameAsync(targetId, newValue));
       }
+      break;
 
       default:
         break;

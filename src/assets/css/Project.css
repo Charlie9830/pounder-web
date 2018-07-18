@@ -46,9 +46,11 @@
 
 .ProjectHeaderBurgerButtonContainer {
     position: absolute; /* Allows it to clip the first portion of the Header Container */
-    width: 32px;
-    height: 32px;
-    margin-left: var(--back-arrow-margin-left);
+    width: 36px;
+    height: 36px;
+    padding-top: 3px;
+    padding-left: var(--back-arrow-margin-left);
+    padding-right: 8px;
 }
 
 .ProjectHeaderBurgerButton {

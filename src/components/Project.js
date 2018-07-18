@@ -11,11 +11,8 @@ class Project extends React.Component {
     constructor(props){
         super(props);
 
-
-        this.handleTaskSubmit = this.handleTaskSubmit.bind(this);
         this.handleWidgetClick = this.handleWidgetClick.bind(this);
         this.handleWidgetHeaderPress = this.handleWidgetHeaderPress.bind(this);
-        this.handleTaskListWidgetHeaderSubmit = this.handleTaskListWidgetHeaderSubmit.bind(this);
         this.handleTaskClick = this.handleTaskClick.bind(this);
         this.handleTaskCheckBoxClick = this.handleTaskCheckBoxClick.bind(this);
         this.handleTaskListWidgetRemoveButtonClick = this.handleTaskListWidgetRemoveButtonClick.bind(this);
@@ -57,7 +54,6 @@ class Project extends React.Component {
         var taskListWidgets = filteredTaskListWidgets.map((item, index) => {
             // Widget Layer.
             var isFocused = this.props.focusedTaskListId === item.uid;
-            var isHeaderOpen = this.props.openTaskListWidgetHeaderId === item.uid;
             var taskListSettings = item.settings;    
 
             // Task Layer.
@@ -99,10 +95,10 @@ class Project extends React.Component {
                 <div key={index} className="TaskListWidgetContainer">
                     <TaskListWidget ref={item.uid}
                         taskListWidgetId={item.uid} isFocused={isFocused} taskListName={item.taskListName}
-                        tasks={tasks} isHeaderOpen={isHeaderOpen} selectedTaskId={selectedTaskId} openTaskInputId={openTaskInputId}
-                        onTaskSubmit={this.handleTaskSubmit} onWidgetClick={this.handleWidgetClick} movingTaskId={movingTaskId}
+                        tasks={tasks} selectedTaskId={selectedTaskId} openTaskInputId={openTaskInputId}
+                        onWidgetClick={this.handleWidgetClick} movingTaskId={movingTaskId}
                         onRemoveButtonClick={this.handleTaskListWidgetRemoveButtonClick} openMetadataId={openMetadataId}
-                        onHeaderPress={this.handleWidgetHeaderPress} onHeaderSubmit={this.handleTaskListWidgetHeaderSubmit}
+                        onHeaderPress={this.handleWidgetHeaderPress}
                         onHeaderDoubleClick={this.handleWidgetHeaderDoubleClick}
                         onTaskClick={this.handleTaskClick} onTaskCheckBoxClick={this.handleTaskCheckBoxClick}
                         onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch} settings={taskListSettings}
@@ -256,10 +252,6 @@ class Project extends React.Component {
         this.props.onAddTaskButtonClick();
     }
 
-    handleTaskSubmit(taskListWidgetId, taskId, newData, currentMetadata) {
-        this.props.onTaskChanged(this.props.projectId, taskListWidgetId, taskId, newData, currentMetadata)
-    }
-
     handleWidgetClick(taskListWidgetId, isFocused) {
         this.props.onTaskListWidgetFocusChanged(taskListWidgetId, isFocused);
     }
@@ -268,13 +260,8 @@ class Project extends React.Component {
         this.props.onTaskListWidgetHeaderDoubleClick(taskListWidgetId);
     }
 
-    handleWidgetHeaderPress(taskListWidgetId) {
-        this.props.onTaskListWidgetHeaderDoubleClick(taskListWidgetId);
-    }
-
-    handleTaskListWidgetHeaderSubmit(taskListWidgetId, newData) {
-        // Raise it up to Parent.
-        this.props.onTaskListWidgetHeaderChanged(taskListWidgetId, newData);
+    handleWidgetHeaderPress(taskListWidgetId, currentData) {
+        this.props.onTaskListWidgetHeaderDoubleClick(taskListWidgetId, currentData);
     }
 
     handleTaskClick(element, taskListWidgetId) {

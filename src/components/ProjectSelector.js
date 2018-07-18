@@ -2,7 +2,6 @@ import React from 'react';
 import '../assets/css/ProjectSelector.css';
 import Hammer from 'hammerjs';
 import FavoriteIcon from '../assets/icons/HeartIcon.svg';
-import FloatingTextInput from './FloatingTextInput';
 
 class ProjectSelector extends React.Component {
     constructor(props) {
@@ -16,9 +15,6 @@ class ProjectSelector extends React.Component {
         this.handlePress = this.handlePress.bind(this);
         this.getDueDateCountsJSX = this.getDueDateCountsJSX.bind(this);
         this.getHeartJSX = this.getHeartJSX.bind(this);
-        this.getInputJSX = this.getInputJSX.bind(this);
-        this.handleInputCancel = this.handleInputCancel.bind(this);
-        this.handleInputSubmit = this.handleInputSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -32,7 +28,6 @@ class ProjectSelector extends React.Component {
     }
 
     render(){
-        var inputJSX = this.getInputJSX();
         var dueDateCounts = this.getDueDateCountsJSX(this.props);
         var heartJSX = this.getHeartJSX();
 
@@ -41,7 +36,6 @@ class ProjectSelector extends React.Component {
                     <div className="ProjectSelectorFlexContainer">
                             {heartJSX}
                         <div className="ProjectSelectorLabelContainer">
-                            {inputJSX}
                             <div className="ProjectSelectorText" data-isselected={this.props.isSelected}>
                                 {this.props.projectName}
                             </div>
@@ -88,33 +82,14 @@ class ProjectSelector extends React.Component {
         )
     }
 
-    getInputJSX() {
-        if (this.props.isInputOpen) {
-            return (
-                <FloatingTextInput defaultValue={this.props.projectName} onTextSubmit={this.handleInputSubmit}
-                onCancel={this.handleInputCancel}/>
-            )
-        }
-    }
 
     handleClick(e) {
         this.props.onClick(e, this.props.projectSelectorId);
     }
 
     handlePress(e) {
-        this.props.onDoubleClick(e, this.props.projectSelectorId);
+        this.props.onDoubleClick(e, this.props.projectSelectorId, this.props.projectName);
     }
-
-    handleInputCancel() {
-        this.props.onProjectNameSubmit(this.props.projectSelectorId, this.props.projectName);
-    }
-
-    handleInputSubmit(value) {
-        this.props.onProjectNameSubmit(this.props.projectSelectorId, value);
-    }
-
-    
-
 }
 
 export default ProjectSelector;

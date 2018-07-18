@@ -4,6 +4,7 @@ import Sidebar from './Sidebar';
 import Project from './Project';
 import MessageBox from './MessageBox';
 import VisibleSnackbar from './Snackbar';
+import FloatingTextInput from './FloatingTextInput';
 import '../assets/css/TaskListWidget.css';
 import '../assets/css/Sidebar.css';
 import '../assets/css/Project.css';
@@ -12,16 +13,15 @@ import { MessageBoxTypes } from 'pounder-redux';
 import { hot } from 'react-hot-loader';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { selectTask, openTask, startTaskMove,
-setOpenTaskListSettingsMenuId, openCalendar, addNewTaskListAsync, addNewTaskAsync,
+setOpenTaskListSettingsMenuId, openCalendar, addNewTaskListAsync, addNewTaskAsync, addNewTaskListWithNameAsync,
 changeFocusedTaskList, moveTaskAsync, updateTaskListWidgetHeaderAsync, acceptProjectInviteAsync,
-removeSelectedTaskAsync, updateTaskNameAsync, updateTaskCompleteAsync,
+removeSelectedTaskAsync, updateTaskNameAsync, updateTaskCompleteAsync, setFloatingTextInput,
 addNewProjectAsync, removeProjectAsync, updateProjectNameAsync, removeTaskListAsync, updateTaskListSettingsAsync,
 updateTaskDueDateAsync, updateTaskPriority, openTaskListJumpMenu, closeTaskListJumpMenu, getGeneralConfigAsync,
 setIsAppSettingsOpen, getCSSConfigAsync, setAppSettingsMenuPage,setOpenProjectSelectorId, setIsShareMenuOpen,
 setMessageBox, attachAuthListenerAsync, denyProjectInviteAsync, postSnackbarMessage, removeTaskAsync,
-selectProject, setOpenTaskOptionsId, setShowOnlySelfTasks,
-setOpenTaskListWidgetHeaderId, updateTaskAssignedToAsync, closeMetadata,
-
+selectProject, setOpenTaskOptionsId, setShowOnlySelfTasks, addNewTaskWithNameAsync,
+setOpenTaskListWidgetHeaderId, updateTaskAssignedToAsync, closeMetadata, addNewProjectWithNameAsync,
 setIsSidebarOpen,
 unsubscribeFromDatabaseAsync, } from 'pounder-redux/action-creators';
 
@@ -39,14 +39,11 @@ class App extends React.Component {
     this.isCtrlKeyDown = false;
     
     // Method Bindings.
-    this.handleTaskChanged = this.handleTaskChanged.bind(this);
     this.handleTaskListWidgetFocusChange = this.handleTaskListWidgetFocusChange.bind(this);
-    this.handleTaskListWidgetHeaderChanged = this.handleTaskListWidgetHeaderChanged.bind(this);
     this.handleProjectSelectorClick = this.handleProjectSelectorClick.bind(this);
     this.handleTaskCheckBoxClick = this.handleTaskCheckBoxClick.bind(this);
     this.handleAddProjectClick = this.handleAddProjectClick.bind(this);
     this.handleRemoveProjectClick = this.handleRemoveProjectClick.bind(this);
-    this.handleProjectNameSubmit = this.handleProjectNameSubmit.bind(this);
     this.handleTaskListWidgetRemoveButtonClick = this.handleTaskListWidgetRemoveButtonClick.bind(this);
     this.handleAddTaskButtonClick = this.handleAddTaskButtonClick.bind(this);
     this.addNewTask = this.addNewTask.bind(this);
@@ -83,6 +80,9 @@ class App extends React.Component {
     this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
     this.handleProjectSelectorInputDoubleClick = this.handleProjectSelectorInputDoubleClick.bind(this);
     this.handleShowOnlySelfTasksChanged = this.handleShowOnlySelfTasksChanged.bind(this);
+    this.getFloatingTextInputJSX = this.getFloatingTextInputJSX.bind(this);
+    this.handleFloatingTextInputSubmit = this.handleFloatingTextInputSubmit.bind(this);
+    this.extractMetadata = this.extractMetadata.bind(this);
     
   }
 
@@ -115,16 +115,22 @@ class App extends React.Component {
     var sidebarOrProjectJSX = this.getSidebarOrProjectJSX();
     var disableAnimations = this.props.generalConfig.disableAnimations === undefined ? false :
      this.props.generalConfig.disableAnimations;
+    var floatingTextInputJSX = this.getFloatingTextInputJSX();
+    
 
     return (
       <div>
-      <VisibleSnackbar/>
-      <MessageBox config={this.props.messageBox}/>
-      {/* Sidebar / Project Transition Group */}
-      <TransitionGroup enter={!disableAnimations} exit={!disableAnimations}>
-        {sidebarOrProjectJSX}
-      </TransitionGroup>
-          
+        <VisibleSnackbar />
+
+        {floatingTextInputJSX}
+
+        <MessageBox config={this.props.messageBox} />
+
+        {/* Sidebar / Project Transition Group */}
+        <TransitionGroup enter={!disableAnimations} exit={!disableAnimations}>
+          {sidebarOrProjectJSX}
+        </TransitionGroup>
+
       </div>
     );
   }
@@ -166,8 +172,8 @@ class App extends React.Component {
             <Project taskLists={this.props.taskLists} tasks={this.props.tasks} selectedTask={this.props.selectedTask}
               movingTaskId={this.props.movingTaskId} focusedTaskListId={this.props.focusedTaskListId}
               projectId={this.props.selectedProjectId} onTaskListWidgetRemoveButtonClick={this.handleTaskListWidgetRemoveButtonClick}
-              onTaskChanged={this.handleTaskChanged} onTaskListWidgetFocusChanged={this.handleTaskListWidgetFocusChange}
-              onTaskListWidgetHeaderChanged={this.handleTaskListWidgetHeaderChanged} isLoggedIn={this.props.isLoggedIn}
+              onTaskListWidgetFocusChanged={this.handleTaskListWidgetFocusChange}
+              isLoggedIn={this.props.isLoggedIn}
               onTaskCheckBoxClick={this.handleTaskCheckBoxClick} onTaskMoved={this.handleTaskMoved}
               onAddTaskButtonClick={this.handleAddTaskButtonClick} onRemoveTaskButtonClick={this.handleRemoveTaskButtonClick}
               onAddTaskListButtonClick={this.handleAddTaskListButtonClick} onRemoveTaskListButtonClick={this.handleRemoveTaskListButtonClick}
@@ -198,6 +204,73 @@ class App extends React.Component {
     }
   }
 
+  getFloatingTextInputJSX() {
+    if (this.props.floatingTextInput.isOpen === true) {
+      var floatingTextInput = this.props.floatingTextInput;
+      return (
+        <FloatingTextInput defaultValue={floatingTextInput.currentText}
+        onTextSubmit={(newValue) => this.handleFloatingTextInputSubmit(newValue, floatingTextInput.targetType, floatingTextInput.targetId)}
+        onCancel={() => {this.props.dispatch(setFloatingTextInput(false))}}
+        />
+      )
+    }
+  }
+
+  handleFloatingTextInputSubmit(newValue, targetType, targetId) {
+    switch (targetType) {
+      case "task":
+        if (targetId === '') {
+          // New Task.
+          this.props.dispatch(addNewTaskWithNameAsync(newValue));
+        }
+
+        else {
+          // Update Existing Task List.
+          this.props.dispatch(updateTaskNameAsync(
+            this.props.taskListWidgetId,
+            targetId,
+            newValue, this.extractMetadata(targetId)))
+        }
+        break;
+
+      case "tasklist":
+        if (targetId === '') {
+          // New Task List.
+          this.props.dispatch(addNewTaskListWithNameAsync(newValue));
+        }
+
+        else {
+          // Update existing Task List.
+          this.props.dispatch(updateTaskListWidgetHeaderAsync(targetId, newValue));
+        }
+        break;
+
+      case 'project':
+      if (targetId === '') {
+        // New Project.
+        this.props.dispatch(addNewProjectWithNameAsync(newValue));
+      }
+
+      else {
+        // Update existing Project.
+        this.props.dispatch(updateProjectNameAsync(targetId, newValue));
+      }
+
+      default:
+        break;
+    }
+  }
+
+  extractMetadata(taskId) {
+    var task = this.props.tasks.find(item => {
+      return item.uid === taskId;
+    })
+
+    if (task !== undefined) {
+      return task.metadata;
+    }
+  }
+
   handleShowOnlySelfTasksChanged(newValue) {
     this.props.dispatch(setShowOnlySelfTasks(newValue))
   }
@@ -223,8 +296,8 @@ class App extends React.Component {
     this.props.dispatch(setIsSidebarOpen(true));
   }
 
-  handleProjectSelectorInputDoubleClick(projectSelectorId) {
-    this.props.dispatch(setOpenProjectSelectorId(projectSelectorId));
+  handleProjectSelectorInputDoubleClick(projectSelectorId, currentData) {
+    this.props.dispatch(setFloatingTextInput(true, currentData, 'project', projectSelectorId));
   }
 
   handleAssignToMember(userId, taskId) {
@@ -248,8 +321,8 @@ class App extends React.Component {
     }
   }
 
-  handleTaskListWidgetHeaderDoubleClick(taskListWidgetId) {
-    this.props.dispatch(setOpenTaskListWidgetHeaderId(taskListWidgetId));
+  handleTaskListWidgetHeaderDoubleClick(taskListWidgetId, currentData) {
+    this.props.dispatch(setFloatingTextInput(true, currentData, 'tasklist', taskListWidgetId ));
   }
 
   handleAccountIconClick() {
@@ -365,7 +438,8 @@ class App extends React.Component {
           selectedTask.taskId === element.props.taskId && this.isModKeyDown !== true) { // If task is already selected and the Mod Key isn't down.
 
             // Task Already Selected. Exclusively open it's Text Input.
-            this.props.dispatch(openTask(taskListWidgetId, element.props.taskId));          
+            this.props.dispatch(openTask(taskListWidgetId, element.props.taskId));      
+            this.props.dispatch(setFloatingTextInput(true, element.props.text, 'task', element.props.taskId)); 
         }
 
         else {
@@ -400,24 +474,24 @@ class App extends React.Component {
   }
 
   handleAddTaskButtonClick() {
-    // TODO: Make sure this won't crash out if nothing is Selected.
     this.addNewTask();
+    
   }
 
   handleRemoveTaskButtonClick() {
     this.props.dispatch(removeSelectedTaskAsync());
   }
 
-  handleTaskChanged(projectId, taskListWidgetId, taskId, newData, currentMetadata) {
-    this.props.dispatch(updateTaskNameAsync(taskListWidgetId, taskId, newData, currentMetadata));
-  }
-
   addNewTaskList() {
-    this.props.dispatch(addNewTaskListAsync());
+    if (this.props.selectedProject !== -1) {
+      this.props.dispatch(setFloatingTextInput(true, '', 'tasklist', ''));
+    }
   }
 
   addNewTask() {
-    this.props.dispatch(addNewTaskAsync());
+    if (this.props.selectedProjectId !== -1 && this.props.focusedTaskListId !== -1) {
+      this.props.dispatch(setFloatingTextInput(true, '', 'task', ''));
+    }
   }
 
   makeNewLayoutEntry(taskListId) {
@@ -434,10 +508,6 @@ class App extends React.Component {
     }
   }
 
-  handleTaskListWidgetHeaderChanged(taskListWidgetId, newData) {
-    this.props.dispatch(updateTaskListWidgetHeaderAsync(taskListWidgetId, newData));
-  }
-
   handleProjectSelectorClick(e, projectSelectorId) {
     this.props.dispatch(selectProject(projectSelectorId));
   }
@@ -447,7 +517,7 @@ class App extends React.Component {
   }
 
   handleAddProjectClick() {
-    this.props.dispatch(addNewProjectAsync());
+    this.props.dispatch(setFloatingTextInput(true, '', 'project', ''));
   }
 
   handleRemoveProjectClick(projectId) {
@@ -460,10 +530,6 @@ class App extends React.Component {
           this.props.dispatch(setMessageBox({}));
         }));
     }
-  }
-
-  handleProjectNameSubmit(projectSelectorId, newName) {
-    this.props.dispatch(updateProjectNameAsync(projectSelectorId, newName));
   }
 
   handleTaskListWidgetRemoveButtonClick(projectId, taskListWidgetId) {
@@ -530,6 +596,7 @@ const mapStateToProps = state => {
     remoteProjectIds: state.remoteProjectIds,
     openTaskOptionsId: state.openTaskOptionsId,
     showOnlySelfTasks: state.showOnlySelfTasks,
+    floatingTextInput: state.floatingTextInput,
   }
 }
 

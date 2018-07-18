@@ -37,7 +37,6 @@ class Task extends React.Component {
         this.handleTaskOptionsCancelButtonClick = this.handleTaskOptionsCancelButtonClick.bind(this);
         this.handleTaskOptionsMoveButtonClick = this.handleTaskOptionsMoveButtonClick.bind(this);
         this.handleTaskTouchEnd = this.handleTaskTouchEnd.bind(this);
-        this.handleTaskTextSubmit = this.handleTaskTextSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -154,9 +153,7 @@ class Task extends React.Component {
                         <div className="TaskClickContainer" onClick={this.forwardOnTaskClick} onTouchStart={this.handleTaskTouchStart}
                         onTouchEnd={this.handleTaskTouchEnd}>
                             <div className="TaskTextContainer">
-                                <TaskText text={this.props.text} isInputOpen={this.props.isInputOpen} isComplete={this.props.isComplete}
-                                onTaskTextSubmit={this.handleTaskTextSubmit}
-                                />
+                                <TaskText text={this.props.text} isComplete={this.props.isComplete}/>
                             </div>
                         </div>
                         <div className="DueDateContainer">
@@ -240,10 +237,6 @@ class Task extends React.Component {
 
     forwardOnTaskClick(e) {
         this.props.handleClick(this);
-    }
-
-    handleTaskTextSubmit(newData) {
-        this.props.onTaskTextSubmit(this.props.taskId, newData, this.props.metadata);
     }
 
     handleCheckBoxClick(e, incomingValue) {

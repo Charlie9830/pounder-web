@@ -52,7 +52,7 @@ class FloatingTextInput extends React.Component {
     }
 
     handleCancelButtonClick() {
-        this.props.onTextSubmit(this.props.defaultValue);
+        this.props.onCancel();
     }
 
     handleOkButtonClick() {

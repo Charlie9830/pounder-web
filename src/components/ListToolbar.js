@@ -19,8 +19,6 @@ class ListToolbar extends React.Component{
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.handleTaskListSettingsChanged = this.handleTaskListSettingsChanged.bind(this);
         this.handlePress = this.handlePress.bind(this);
-        this.handleHeaderInputSubmit = this.handleHeaderInputSubmit.bind(this);
-        this.handleHeaderInputCancel = this.handleHeaderInputCancel.bind(this);
         this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
     }
 
@@ -35,7 +33,6 @@ class ListToolbar extends React.Component{
 
     render() {
         var settingsMenu = this.getSettingsMenu(this.props);
-        var headerInputJSX = this.getHeaderInputJSX(this.props);
 
         return (
             <div className="ListToolbar" data-isfocused={this.props.isFocused}>
@@ -45,7 +42,6 @@ class ListToolbar extends React.Component{
                 </div>
 
                 <div className="ListToolbarHeaderContainer" ref={this.headerContainerRef}>
-                    {headerInputJSX}
                     <label className="ListToolbarHeader" data-isfocused={this.props.isFocused} onDoubleClick={this.handleDoubleClick}>
                         {this.props.headerText}
                     </label>
@@ -85,25 +81,8 @@ class ListToolbar extends React.Component{
         this.props.onSettingsButtonClick();
     }
 
-    getHeaderInputJSX(props) {
-        if (props.isHeaderOpen) {
-            return (
-                <FloatingTextInput onTextSubmit={this.handleHeaderInputSubmit} onCancel={this.handleHeaderInputCancel}
-                defaultValue={props.headerText}/>
-            )
-        }
-    }
-
     handleRemoveButtonClick(e) {
         this.props.onRemoveButtonClick(e);
-    }
-
-    handleHeaderInputCancel() {
-        this.props.onHeaderSubmit(this.props.headerText);
-    }
-
-    handleHeaderInputSubmit(value) {
-        this.props.onHeaderSubmit(value);
     }
 }
 

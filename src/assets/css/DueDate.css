@@ -18,17 +18,13 @@
 }
 
 .DueDateText {
-  display: block;
+  flex-shrink: 1;
   color: var(--due-date-text-color);
   font-family: var(--primary-font-family);
   font-size: 7pt;
   font-weight: 700;
-  text-align: center;
-  margin: 0 auto;
-  line-height: 36px; /* Set height: of .DueDate Equal to This */
   user-select: none;
 }
-
 
 
 .Complete {

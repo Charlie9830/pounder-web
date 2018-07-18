@@ -4,6 +4,7 @@ import Calendar from './Calendar';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import OverlayMenuContainer from '../containers/OverlayMenuContainer';
 import { ParseDueDate } from 'pounder-utilities';
+import CenteringContainer from '../containers/CenteringContainer';
 
 class DueDate extends React.Component {
   constructor(props) {
@@ -25,9 +26,12 @@ class DueDate extends React.Component {
 
     return (
       <div className={className} onClick={this.handleClick}>
-        <label className="DueDateText"> {text} </label>
+        <CenteringContainer>
+          <div className="DueDateText"> {text} </div>
+        </CenteringContainer>
+
         <TransitionGroup enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
-        {calendarMenu}
+          {calendarMenu}
         </TransitionGroup>
       </div>
     );

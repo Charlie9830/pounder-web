@@ -10,7 +10,8 @@ import { setAppSettingsMenuPage, setFavouriteProjectIdAsync,
     setCSSConfigAsync, setMessageBox, 
     setGeneralConfigAsync, setIsAppSettingsOpen, setAllColorsToDefaultAsync,
     logInUserAsync, logOutUserAsync, registerNewUserAsync, postSnackbarMessage, unsubscribeFromDatabaseAsync,
-    subscribeToDatabaseAsync, selectProject, sendPasswordResetEmailAsync, setAuthStatusMessage } from 'pounder-redux/action-creators';
+    subscribeToDatabaseAsync, selectProject, sendPasswordResetEmailAsync, setAuthStatusMessage,
+    setIsInRegisterMode } from 'pounder-redux/action-creators';
 import { MessageBoxTypes } from 'pounder-redux';
 
 
@@ -37,7 +38,7 @@ class AppSettingsMenu extends React.Component {
         this.handleRegisterButtonClick = this.handleRegisterButtonClick.bind(this);
         this.handleDisableAnimationsChange = this.handleDisableAnimationsChange.bind(this);
         this.handlePasswordResetButtonClick = this.handlePasswordResetButtonClick.bind(this);
-        this.handleIsFirstTimeBootChange = this.handleIsFirstTimeBootChange.bind(this);
+        this.handleRegisterModeChanged = this.handleRegisterModeChanged.bind(this);
     }
 
     componentDidMount() {
@@ -66,6 +67,9 @@ class AppSettingsMenu extends React.Component {
         )
     }
 
+    handleRegisterModeChanged(newValue) {
+        this.props.dispatch(setIsInRegisterMode(newValue));
+    }
     handleAppSettingsMenuContainerClick() {
         // Close Color Picker if it's open.
         if (this.state.openColorPickerIndex !== -1) {
@@ -117,8 +121,9 @@ class AppSettingsMenu extends React.Component {
                     isLoggedIn={this.props.isLoggedIn} userEmail={this.props.userEmail}
                     onLogInButtonClick={(email, password) => {this.props.dispatch(logInUserAsync(email,password))}}
                     onLogOutButtonClick={() => {this.props.dispatch(logOutUserAsync())}} displayName={this.props.displayName}
+                    onRegisterButtonClick={this.handleRegisterButtonClick}
                     onPasswordResetButtonClick={this.handlePasswordResetButtonClick} 
-                    isFirstTimeBoot={this.props.generalConfig.isFirstTimeBoot} onIsFirstTimeBootChange={this.handleIsFirstTimeBootChange}
+                    isInRegisterMode={this.props.isInRegisterMode} onRegisterModeChanged={this.handleRegisterModeChanged}
                     />
                 )
 
@@ -179,6 +184,7 @@ const mapStateToProps = state => {
         isLoggedIn: state.isLoggedIn,
         userEmail: state.userEmail,
         displayName: state.displayName,
+        isInRegisterMode: state.isInRegisterMode,
     }
 }
 

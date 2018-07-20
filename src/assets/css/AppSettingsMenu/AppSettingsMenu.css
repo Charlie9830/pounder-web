@@ -11,6 +11,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-content: flex-start;
+    height: calc(100% - 32px);
 }
 
 .AppSettingsMenuSidebarContainer {
@@ -73,6 +74,19 @@
     flex-grow: 1;
     height: fit-content;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.AccountSettingsActionLink {
+    flex-shrink: 1;
+    color: var(--alternate-active-text-color);
+    font-family: var(--primary-font-family);
+    font-size: 10pt;
+    cursor: pointer;
 }
 
 .AppSettingsItemLabel {
@@ -95,18 +109,20 @@
     background: var(--surface-color-alternate);
     color: var(--primary-active-text-color);
     border: gray 1px solid;
-    padding: 1px;
+    padding: 2px;
 }
 
 .AppSettingsAccountInput {
-    width: 90%;
-    font-size: 14pt;
+    margin-top: 5px;
     font-family: var(--primary-font-family);
-    background: var(--surface-color-alternate);
+    background: transparent;
     color: var(--alternate-active-text-color);
-    border: gray 1px solid;
-    padding: 1px;
-    margin-top: 4px;
+    border: 0px solid gray;
+    border-bottom: 1px solid gray;
+    outline: none;
+    padding: 2px;
+    width: 250px;
+    height: 24px;
 }
 
 .DatabaseSettingsPageInfoPane {
@@ -185,7 +201,7 @@
     align-content: center;
     align-items: center;
     width: 100%;
-    margin-top: 25px;
+    margin-top: 15px;
 }
 
 
@@ -216,6 +232,16 @@
     font-family: var(--primary-font-family);
     font-size: 10pt;
     line-height: 10pt;
+}
+
+.AccountSettingsContentsContainer {
+    flex-shrink: 1;
+    min-height: 325px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
 }
 
 .AppSettingsAccountButtonsFlexContainer {
@@ -350,6 +376,19 @@
 .ResetColorSettingsLink:hover {
     color: var(--alternate-active-text-color);
     cursor: default;
+}
+
+.AccountSettingsRegisterTitle {
+    font-family: var(--primary-font-family);
+    color: var(--primary-active-text-color);
+    font-size: 12pt;
+}
+
+.AccountSettingsRegisterSubtitle {
+    font-family: var(--primary-font-family);
+    color: var(--alternate-active-text-color);
+    margin-top: 10px;
+    font-size: 10pt;
 }
 
 /* Color Picker Transitioning */

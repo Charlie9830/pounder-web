@@ -60,7 +60,7 @@ class FloatingTextInput extends React.Component {
     }
 
     handleOkButtonClick() {
-        this.props.onTextSubmit(this.textarea.value);
+        this.props.onTextSubmit(this.textarea.value, this.props.defaultValue);
     }
 
     handleKeyPress(e) {

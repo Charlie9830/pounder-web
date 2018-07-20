@@ -206,7 +206,7 @@ class Task extends React.Component {
     }
 
     handleAssignToMember(userId) {
-        this.props.onAssignToMember(userId, this.props.taskId);
+        this.props.onAssignToMember(userId, this.props.assignedTo, this.props.taskId);
     }
 
     handleTaskMetadataCloseButtonClick() {
@@ -222,8 +222,9 @@ class Task extends React.Component {
     }
 
     handlePriorityToggleClick(newValue) {
-        this.props.onPriorityToggleClick(this.props.taskId, newValue, this.props.metadata);
+        this.props.onPriorityToggleClick(this.props.taskId, newValue, this.props.isHighPriority, this.props.metadata);
     }
+
 
     handleDueDateClick() {
         this.props.onDueDateClick(this.props.taskId);
@@ -240,11 +241,12 @@ class Task extends React.Component {
     }
 
     handleCheckBoxClick(e, incomingValue) {
-        this.props.onTaskCheckBoxClick(e, this.props.taskId, incomingValue, this.props.metadata);
+        this.props.onTaskCheckBoxClick(e, this.props.taskId, incomingValue, this.props.isComplete, this.props.metadata);
     }
 
+
     handleNewDateSubmit(newDate) {
-        this.props.onNewDateSubmit(this.props.taskId, newDate, this.props.metadata);
+        this.props.onNewDateSubmit(this.props.taskId, newDate, this.props.dueDate, this.props.metadata);
     }
 }
 

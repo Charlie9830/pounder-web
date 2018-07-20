@@ -10,6 +10,7 @@ class GeneralSettingsPage extends React.Component {
         
         // Refs.
         this.disableAnimationsCheckboxRef = React.createRef();
+        this.sortProjectsBySelectorRef = React.createRef();
         // Method Bindings.
         this.getFavouriteProjectSelectorJSX = this.getFavouriteProjectSelectorJSX.bind(this);
         this.handleStartInFullscreenChange = this.handleStartInFullscreenChange.bind(this);
@@ -19,10 +20,13 @@ class GeneralSettingsPage extends React.Component {
         this.handleColorPickerCloseButtonClick = this.handleColorPickerCloseButtonClick.bind(this);
         this.handleDefaultAllColorsButtonClick = this.handleDefaultAllColorsButtonClick.bind(this);
         this.handleDisableAnimationsChange = this.handleDisableAnimationsChange.bind(this);
+        this.getSortProjectsBySelectorJSX = this.getSortProjectsBySelectorJSX.bind(this);
+        this.handleSortProjectsBySelectorChange = this.handleSortProjectsBySelectorChange.bind(this);
     }
 
     render() {
         var favoriteProjectSelectorJSX = this.getFavouriteProjectSelectorJSX();
+        var sortProjectsBySelectorJSX = this.getSortProjectsBySelectorJSX();
 
         // Zero Fill any undefined values.
         var disableAnimations = this.props.generalConfig.disableAnimations === undefined ?
@@ -47,6 +51,17 @@ class GeneralSettingsPage extends React.Component {
                     </span>
                 </div>
 
+                {/* Sort projects by */}
+                <div className="AppSettingsVerticalFlexItem">
+                    <span className="AppSettingsHorizontalFlexItem">
+                        <div className="AppSettingsItemLabel"> Sort Projects by </div>
+                    </span>
+                    <span className="AppSettingsHorizontalFlexItem">
+                        {sortProjectsBySelectorJSX}
+                    </span>
+                </div>
+
+
                 {/* Color Selection Title */}
                 <div className="AppSettingsVerticalFlexItem">
                     <MenuSubtitle text="Application Color Selection"/>
@@ -63,6 +78,10 @@ class GeneralSettingsPage extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    handleSortProjectsBySelectorChange() {
+        this.props.onSortProjectsBySelectorChange(this.sortProjectsBySelectorRef.current.value);
     }
 
     handleDefaultAllColorsButtonClick() {
@@ -112,6 +131,19 @@ class GeneralSettingsPage extends React.Component {
         )
     }
 
+    getSortProjectsBySelectorJSX() {
+        var sortProjectsBy = this.props.generalConfig.sortProjectsBy === undefined ? 'alphabetically' : this.props.generalConfig.sortProjectsBy;
+
+        return (
+            <select className="FavouriteProjectSelect" ref={this.sortProjectsBySelectorRef} defaultValue={sortProjectsBy}
+            onChange={this.handleSortProjectsBySelectorChange}>
+                <option key={0} value='alphabetically'> Alphabetically </option>
+                <option key={1} value='created'> Date created </option>
+                <option key={2} value='updated'> Updated </option>
+            </select>
+        )
+    }
+    
     handleFavouriteProjectSelectChange() {
         var id = this.refs.favourteProjectSelect.value;
         this.props.onFavouriteProjectSelectChange(id);

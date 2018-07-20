@@ -212,13 +212,13 @@ class App extends React.Component {
       <CSSTransition classNames="FloatingTextInputTransition" timeout={250} in={floatingTextInput.isOpen}
         mountOnEnter={true} unmountOnExit={true} appear={true} enter={!disableAnimations} exit={disableAnimations}>
           <FloatingTextInput defaultValue={floatingTextInput.currentText}
-            onTextSubmit={(newValue) => this.handleFloatingTextInputSubmit(newValue, floatingTextInput.targetType, floatingTextInput.targetId)}
+            onTextSubmit={(newValue, oldValue) => this.handleFloatingTextInputSubmit(newValue, oldValue, floatingTextInput.targetType, floatingTextInput.targetId)}
             onCancel={() => { this.props.dispatch(setFloatingTextInput(false)) }} />
       </CSSTransition>
     )
   }
 
-  handleFloatingTextInputSubmit(newValue, targetType, targetId) {
+  handleFloatingTextInputSubmit(newValue, oldValue, targetType, targetId) {
     switch (targetType) {
       case "task":
         if (targetId === '') {
@@ -231,7 +231,9 @@ class App extends React.Component {
           this.props.dispatch(updateTaskNameAsync(
             this.props.taskListWidgetId,
             targetId,
-            newValue, this.extractMetadata(targetId)))
+            newValue,
+            oldValue,
+            this.extractMetadata(targetId)))
         }
         break;
 
@@ -243,7 +245,7 @@ class App extends React.Component {
 
         else {
           // Update existing Task List.
-          this.props.dispatch(updateTaskListWidgetHeaderAsync(targetId, newValue));
+          this.props.dispatch(updateTaskListWidgetHeaderAsync(targetId, newValue, oldValue));
         }
         break;
 
@@ -255,7 +257,7 @@ class App extends React.Component {
 
       else {
         // Update existing Project.
-        this.props.dispatch(updateProjectNameAsync(targetId, newValue));
+        this.props.dispatch(updateProjectNameAsync(targetId, newValue, oldValue));
       }
       break;
 
@@ -303,8 +305,8 @@ class App extends React.Component {
     this.props.dispatch(setFloatingTextInput(true, currentData, 'project', projectSelectorId));
   }
 
-  handleAssignToMember(userId, taskId) {
-    this.props.dispatch(updateTaskAssignedToAsync(userId, taskId));
+  handleAssignToMember(newUserId, oldUserId, taskId) {
+    this.props.dispatch(updateTaskAssignedToAsync(newUserId, oldUserId, taskId));
   }
 
   handleRequestSidebarClose() {
@@ -377,8 +379,8 @@ class App extends React.Component {
     this.props.dispatch(getCSSConfigAsync());
   }
 
-  handleTaskPriorityToggleClick(taskId, newValue, currentMetadata) {
-    this.props.dispatch(updateTaskPriority(taskId, newValue, currentMetadata));
+  handleTaskPriorityToggleClick(taskId, newValue, oldValue, currentMetadata) {
+    this.props.dispatch(updateTaskPriority(taskId, newValue, oldValue, currentMetadata));
   }
 
   getProjectName(props) {
@@ -515,8 +517,8 @@ class App extends React.Component {
     this.props.dispatch(selectProject(projectSelectorId));
   }
   
-  handleTaskCheckBoxClick(e, projectId, taskListWidgetId, taskId, incomingValue, currentMetadata) {
-    this.props.dispatch(updateTaskCompleteAsync(taskListWidgetId, taskId, incomingValue, currentMetadata));
+  handleTaskCheckBoxClick(e, projectId, taskListWidgetId, taskId, newValue, oldValue, currentMetadata) {
+    this.props.dispatch(updateTaskCompleteAsync(taskListWidgetId, taskId, newValue, oldValue, currentMetadata));
   }
 
   handleAddProjectClick() {
@@ -560,8 +562,8 @@ class App extends React.Component {
     this.props.dispatch(updateTaskListSettingsAsync(taskListWidgetId, newTaskListSettings));
   }
 
-  handleNewDateSubmit(projectId, taskListWidgetId, taskId, newDate, currentMetadata) {
-    this.props.dispatch(updateTaskDueDateAsync(taskId, newDate, currentMetadata));
+  handleNewDateSubmit(projectId, taskListWidgetId, taskId, newDate, oldDate, currentMetadata) {
+    this.props.dispatch(updateTaskDueDateAsync(taskId, newDate, oldDate, currentMetadata));
   }
 }
 

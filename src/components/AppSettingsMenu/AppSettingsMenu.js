@@ -39,6 +39,7 @@ class AppSettingsMenu extends React.Component {
         this.handleDisableAnimationsChange = this.handleDisableAnimationsChange.bind(this);
         this.handlePasswordResetButtonClick = this.handlePasswordResetButtonClick.bind(this);
         this.handleRegisterModeChanged = this.handleRegisterModeChanged.bind(this);
+        this.handleSortProjectsBySelectorChange = this.handleSortProjectsBySelectorChange.bind(this);
     }
 
     componentDidMount() {
@@ -112,7 +113,7 @@ class AppSettingsMenu extends React.Component {
                     onColorPickerCloseButtonClick={this.handleColorPickerCloseButtonClick}
                     onDefaultAllColorsButtonClick={this.handleDefaultAllColorsButtonClick}
                     onDisableAnimationsChange={this.handleDisableAnimationsChange}
-                    />
+                    onSortProjectsBySelectorChange={this.handleSortProjectsBySelectorChange}/>
                 )
 
             case "account":
@@ -130,6 +131,10 @@ class AppSettingsMenu extends React.Component {
             default: 
                 return (<div/>)
         }
+    }
+
+    handleSortProjectsBySelectorChange(newValue) {
+        this.props.dispatch(setGeneralConfigAsync({...this.props.generalConfig, sortProjectsBy: newValue}))
     }
 
     handleIsFirstTimeBootChange(value) {

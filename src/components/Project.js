@@ -199,8 +199,8 @@ class Project extends React.Component {
         this.props.onTaskListJumpMenuButtonClick();
     }
 
-    handleAssignToMember(userId, taskId) {
-        this.props.onAssignToMember(userId, taskId);
+    handleAssignToMember(newUserId, oldUserId, taskId) {
+        this.props.onAssignToMember(newUserId, oldUserId, taskId);
     }
 
     handleTaskMetadataOpen(taskListWidgetId, taskId) {
@@ -245,8 +245,8 @@ class Project extends React.Component {
     }
     
 
-    handleTaskPriorityToggleClick(taskId, newValue, currentMetadata) {
-        this.props.onTaskPriorityToggleClick(taskId, newValue, currentMetadata);
+    handleTaskPriorityToggleClick(taskId, newValue, oldValue, currentMetadata) {
+        this.props.onTaskPriorityToggleClick(taskId, newValue, oldValue, currentMetadata);
     }
 
     handleTaskListSettingsButtonClick(taskListWidgetId) {
@@ -286,8 +286,8 @@ class Project extends React.Component {
         this.props.onTaskClick(element, this.props.projectId, taskListWidgetId);
     }
 
-    handleTaskCheckBoxClick(e, taskListWidgetId, taskId, incomingValue, currentMetadata) {
-        this.props.onTaskCheckBoxClick(e, this.props.projectId, taskListWidgetId, taskId, incomingValue, currentMetadata)
+    handleTaskCheckBoxClick(e, taskListWidgetId, taskId, newValue, oldValue, currentMetadata) {
+        this.props.onTaskCheckBoxClick(e, this.props.projectId, taskListWidgetId, taskId, newValue, oldValue, currentMetadata)
     }
 
     handleTaskListWidgetRemoveButtonClick(taskListWidgetId) {
@@ -298,8 +298,8 @@ class Project extends React.Component {
         this.props.onTaskListSettingsChanged(this.props.projectId, taskListWidgetId, newTaskListSettings);
     }
 
-    handleNewDateSubmit(taskListWidgetId, taskId, newDate, currentMetadata) {
-        this.props.onNewDateSubmit(this.props.projectId, taskListWidgetId, taskId, newDate, currentMetadata);
+    handleNewDateSubmit(taskListWidgetId, taskId, newDate, oldDate, currentMetadata) {
+        this.props.onNewDateSubmit(this.props.projectId, taskListWidgetId, taskId, newDate, oldDate, currentMetadata);
     }
 }
 

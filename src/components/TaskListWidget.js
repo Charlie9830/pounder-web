@@ -128,8 +128,8 @@ class TaskListWidget extends React.Component {
         this.props.onSettingsMenuClose();
     }
 
-    handleAssignToMember(userId, taskId) {
-        this.props.onAssignToMember(userId, taskId);
+    handleAssignToMember(newUserId, oldUserId, taskId) {
+        this.props.onAssignToMember(newUserId, oldUserId, taskId);
     }
 
     handleTaskMetadataOpen(taskId) {
@@ -140,8 +140,8 @@ class TaskListWidget extends React.Component {
         this.props.onTaskMetadataCloseButtonClick();
     }
 
-    handleTaskPriorityToggleClick(taskId, newValue, currentMetadata) {
-        this.props.onTaskPriorityToggleClick(taskId, newValue, currentMetadata);
+    handleTaskPriorityToggleClick(taskId, newValue, oldValue, currentMetadata) {
+        this.props.onTaskPriorityToggleClick(taskId, newValue, oldValue, currentMetadata);
     }
 
     handleSettingsButtonClick() {
@@ -176,8 +176,8 @@ class TaskListWidget extends React.Component {
         this.props.onHeaderPress(this.props.taskListWidgetId, this.props.taskListName);
     }
 
-    handleTaskCheckBoxClick(e, taskId, incomingValue, currentMetadata) {
-        this.props.onTaskCheckBoxClick(e, this.props.taskListWidgetId, taskId, incomingValue, currentMetadata);
+    handleTaskCheckBoxClick(e, taskId, newValue, oldValue, currentMetadata) {
+        this.props.onTaskCheckBoxClick(e, this.props.taskListWidgetId, taskId, newValue, oldValue, currentMetadata);
     }
 
     handleRemoveButtonClick(e) {
@@ -235,8 +235,8 @@ class TaskListWidget extends React.Component {
         }
     } 
 
-    handleNewDateSubmit(taskId, newDate, currentMetadata) {
-        this.props.onNewDateSubmit(this.props.taskListWidgetId, taskId, newDate, currentMetadata);
+    handleNewDateSubmit(taskId, newDate, oldDate, currentMetadata) {
+        this.props.onNewDateSubmit(this.props.taskListWidgetId, taskId, newDate, oldDate, currentMetadata);
     }
 
 }

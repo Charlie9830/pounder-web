@@ -36,6 +36,7 @@ class Project extends React.Component {
         this.handleTaskOptionsOpen = this.handleTaskOptionsOpen.bind(this);
         this.handleTaskOptionsClose = this.handleTaskOptionsClose.bind(this);
         this.handleShowOnlySelfTasksChanged = this.handleShowOnlySelfTasksChanged.bind(this);
+        this.getToolbarButtonEnableStates = this.getToolbarButtonEnableStates.bind(this);
     }
     
     componentDidMount() {   
@@ -119,6 +120,7 @@ class Project extends React.Component {
         });
 
         var projectMessageDisplayJSX = this.getProjectMessageDisplayJSX(filteredTaskListWidgets.length);
+        var toolbarButtonEnableStates = this.getToolbarButtonEnableStates();
 
         return (
             <div className="Project">
@@ -139,7 +141,7 @@ class Project extends React.Component {
                         onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick} isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen}
                         onShowOnlySelfTasksChanged={this.handleShowOnlySelfTasksChanged}
                         showOnlySelfTasks={this.props.showOnlySelfTasks}
-                        isRemote={this.props.isRemote} />
+                        isRemote={this.props.isRemote} buttonEnableStates={toolbarButtonEnableStates}/>
                 </div>
                 <div className="TaskListsContainer">
                     {projectMessageDisplayJSX}
@@ -147,6 +149,22 @@ class Project extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    getToolbarButtonEnableStates() {
+        var overide = this.props.projectId !== -1;
+
+        var isAddTaskButtonEnabled = overide && this.props.focusedTaskListId !== -1;
+        var isRemoveTaskButtonEnabled = overide && this.props.selectedTask.taskId !== -1;
+        var isAddTaskListButtonEnabled = overide;
+        var isRemoveTaskListButtonEnabled = overide && this.props.focusedTaskListId !== -1;
+
+        return {
+            isAddTaskButtonEnabled: isAddTaskButtonEnabled,
+            isRemoveTaskButtonEnabled: isRemoveTaskButtonEnabled,
+            isAddTaskListButtonEnabled: isAddTaskListButtonEnabled,
+            isRemoveTaskListButtonEnabled: isRemoveTaskListButtonEnabled,
+        }
     }
 
     handleShowOnlySelfTasksChanged(newValue) {

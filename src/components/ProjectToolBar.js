@@ -47,7 +47,8 @@ class ProjectToolBar extends React.Component {
             <div>
                 <div className="ProjectToolbarFlexContainer">
                     <div className="ToolbarPairsFlexContainer">
-                        <Button iconSrc={NewTaskIcon} size="small" onClick={this.handleAddTaskButtonClick}/>
+                        <Button iconSrc={NewTaskIcon} size="small" onClick={this.handleAddTaskButtonClick}
+                        isEnabled={this.props.buttonEnableStates.isAddTaskButtonEnabled}/>
                     </div>
                     <div className="ToolBarButtonContainer">
                         <TaskListJumpMenu taskLists={this.props.taskLists} isOpen={this.props.isTaskListJumpMenuOpen} onMenuButtonClick={this.handleTaskListJumpMenuButtonClick}
@@ -57,7 +58,8 @@ class ProjectToolBar extends React.Component {
                     {showOnlySelfTasksSwitchJSX}
                     
                     <div className="ToolbarPairsFlexContainer">
-                        <Button iconSrc={NewTaskListIcon} size="small" onClick={this.handleAddTaskListButtonClick}/>
+                        <Button iconSrc={NewTaskListIcon} size="small" onClick={this.handleAddTaskListButtonClick}
+                        isEnabled={this.props.buttonEnableStates.isAddTaskListButtonEnabled}/>
                     </div>
                 </div>
             </div>

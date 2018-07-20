@@ -158,6 +158,7 @@ class App extends React.Component {
               onShareMenuButtonClick={this.handleShareMenuButtonClick} updatingInviteIds={this.props.updatingInviteIds}
               onProjectSelectorInputDoubleClick={this.handleProjectSelectorInputDoubleClick} isShareMenuOpen={this.props.isShareMenuOpen}
               openProjectSelectorId={this.props.openProjectSelectorId}
+              isLoggedIn={this.props.isLoggedIn}
             />
           </div>
         </CSSTransition>

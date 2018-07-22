@@ -7,6 +7,8 @@
   max-height: 240px; /* Same as .TaskClickContainer max-height */
   display: flex;
   flex-direction: column;
+  background-color: transparent;
+  transition: background-color 500ms ease;
 }
 
 .TaskContainer[data-ismetadataopen*="true"] {
@@ -21,7 +23,8 @@
 }
 
 .TaskContainer[data-isselected*="true"] {
-  background: var(--task-selected-color);
+  background-color: var(--task-selected-color);
+  transition: background-color 250ms ease;
 }
 
 .TaskContainer[data-ismoving*="true"] {
@@ -345,6 +348,18 @@
 .TaskOptionsCancelButtonText {
   flex-shrink: 1;
   color: #FFF;
+}
+
+.TaskCheckboxContainer {
+  flex-shrink: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 20px;
+  height: 40px;
+  padding-right: 5px; /* Shares the divide with TaskTextContainer */
 }
 
 

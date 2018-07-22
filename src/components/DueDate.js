@@ -11,7 +11,6 @@ class DueDate extends React.Component {
     super(props);
 
     // Method Bindings.
-    this.handleClick = this.handleClick.bind(this);
     this.handleNewDateSubmit = this.handleNewDateSubmit.bind(this);
     this.handlePriorityToggleClick = this.handlePriorityToggleClick.bind(this);
     this.handleAssignToMember = this.handleAssignToMember.bind(this);
@@ -25,7 +24,7 @@ class DueDate extends React.Component {
     var calendarMenu = this.getCalendarMenu(this.props);
 
     return (
-      <div className={className} onClick={this.handleClick}>
+      <div className={className}>
         <CenteringContainer>
           <div className="DueDateText"> {text} </div>
         </CenteringContainer>
@@ -57,12 +56,6 @@ class DueDate extends React.Component {
     this.props.onAssignToMember(userId);
   }
 
-
-  handleClick() {
-    if (!this.props.isCalendarOpen) {
-      this.props.onClick();
-    }
-  }
 
   handleBackButtonClick() {
     this.props.onNewDateSubmit(this.props.dueDate);

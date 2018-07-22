@@ -3,6 +3,7 @@ import TaskArea from '../components/TaskArea';
 import Task from '../components/Task';
 import ListToolbar from '../components/ListToolbar';
 import '../assets/css/TaskListWidget.css';
+import Ink from 'react-ink';
 import { TaskMetadataStore } from 'pounder-stores';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -176,8 +177,8 @@ class TaskListWidget extends React.Component {
         this.props.onHeaderPress(this.props.taskListWidgetId, this.props.taskListName);
     }
 
-    handleTaskCheckBoxClick(e, taskId, newValue, oldValue, currentMetadata) {
-        this.props.onTaskCheckBoxClick(e, this.props.taskListWidgetId, taskId, newValue, oldValue, currentMetadata);
+    handleTaskCheckBoxClick(taskId, newValue, oldValue, currentMetadata) {
+        this.props.onTaskCheckBoxClick(this.props.taskListWidgetId, taskId, newValue, oldValue, currentMetadata);
     }
 
     handleRemoveButtonClick(e) {

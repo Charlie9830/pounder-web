@@ -286,8 +286,8 @@ class Project extends React.Component {
         this.props.onTaskClick(element, this.props.projectId, taskListWidgetId);
     }
 
-    handleTaskCheckBoxClick(e, taskListWidgetId, taskId, newValue, oldValue, currentMetadata) {
-        this.props.onTaskCheckBoxClick(e, this.props.projectId, taskListWidgetId, taskId, newValue, oldValue, currentMetadata)
+    handleTaskCheckBoxClick(taskListWidgetId, taskId, newValue, oldValue, currentMetadata) {
+        this.props.onTaskCheckBoxClick(this.props.projectId, taskListWidgetId, taskId, newValue, oldValue, currentMetadata)
     }
 
     handleTaskListWidgetRemoveButtonClick(taskListWidgetId) {

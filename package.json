@@ -40,6 +40,7 @@
     "react-dev-utils": "^4.2.1",
     "react-dom": "^16.4.1",
     "react-hot-loader": "^4.3.1",
+    "react-ink": "^6.4.0",
     "react-modal": "^3.4.5",
     "react-redux": "^5.0.6",
     "react-scroll-to-component": "^1.0.2",

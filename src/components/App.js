@@ -517,7 +517,7 @@ class App extends React.Component {
     this.props.dispatch(selectProject(projectSelectorId));
   }
   
-  handleTaskCheckBoxClick(e, projectId, taskListWidgetId, taskId, newValue, oldValue, currentMetadata) {
+  handleTaskCheckBoxClick(projectId, taskListWidgetId, taskId, newValue, oldValue, currentMetadata) {
     this.props.dispatch(updateTaskCompleteAsync(taskListWidgetId, taskId, newValue, oldValue, currentMetadata));
   }
 

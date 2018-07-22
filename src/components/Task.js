@@ -143,29 +143,27 @@ class Task extends React.Component {
 
             return (
                 <CSSTransition classNames="TaskTransitionItem" timeout={250} mountOnEnter={true} unmountOnExit={true}
-                 key="task">
-                <div>
-                    <div className="Task" data-ishighpriority={this.props.isHighPriority} data-iscomplete={this.props.isComplete}>
-                        <div className={"TaskCheckBox"} >
+                    key="task">
+                    <div>
+                        <div className="Task" data-ishighpriority={this.props.isHighPriority} data-iscomplete={this.props.isComplete}>
                             <TaskCheckBox isChecked={this.props.isComplete} onCheckBoxClick={this.handleCheckBoxClick}
-                            disableAnimations={this.props.disableAnimations} />
-                        </div>
-                        <div className="TaskClickContainer" onClick={this.forwardOnTaskClick} onTouchStart={this.handleTaskTouchStart}
-                        onTouchEnd={this.handleTaskTouchEnd}>
-                            <div className="TaskTextContainer">
-                                <TaskText text={this.props.text} isComplete={this.props.isComplete}/>
+                                disableAnimations={this.props.disableAnimations} />
+                            <div className="TaskClickContainer" onClick={this.forwardOnTaskClick} onTouchStart={this.handleTaskTouchStart}
+                                onTouchEnd={this.handleTaskTouchEnd}>
+                                <div className="TaskTextContainer">
+                                    <TaskText text={this.props.text} isComplete={this.props.isComplete} />
+                                </div>
+                            </div>
+                            <div className="DueDateContainer">
+                                <DueDate dueDate={this.props.dueDate} onClick={this.handleDueDateClick} isComplete={this.props.isComplete}
+                                    isCalendarOpen={this.props.isCalendarOpen} onNewDateSubmit={this.handleNewDateSubmit}
+                                    projectMembers={this.props.projectMembers} onAssignToMember={this.handleAssignToMember}
+                                    onPriorityToggleClick={this.handlePriorityToggleClick} isHighPriority={this.props.isHighPriority}
+                                    assignedTo={this.props.assignedTo} disableAnimations={this.props.disableAnimations} />
                             </div>
                         </div>
-                        <div className="DueDateContainer">
-                            <DueDate dueDate={this.props.dueDate} onClick={this.handleDueDateClick} isComplete={this.props.isComplete}
-                                isCalendarOpen={this.props.isCalendarOpen} onNewDateSubmit={this.handleNewDateSubmit}
-                                projectMembers={this.props.projectMembers} onAssignToMember={this.handleAssignToMember}
-                                onPriorityToggleClick={this.handlePriorityToggleClick} isHighPriority={this.props.isHighPriority}
-                                assignedTo={this.props.assignedTo} disableAnimations={this.props.disableAnimations} />
-                        </div>
+                        {taskAssigneeJSX}
                     </div>
-                    {taskAssigneeJSX}
-                </div>
                 </CSSTransition>
             )
         }
@@ -251,3 +249,4 @@ class Task extends React.Component {
 }
 
 export default Task;
+

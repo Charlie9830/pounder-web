@@ -280,6 +280,7 @@
   align-items: center;
   min-height: 40px;
   max-height: 240px;  /* Same as .TaskContainer max-height */
+  margin-left: 5px; /* Shares the divide with TaskCheckboxContainer */
   overflow: hidden;
 }
 

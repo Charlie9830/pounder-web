@@ -1,8 +1,13 @@
 .TaskCheckBoxContainer {
+  flex-shrink: 1;
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 20px;
+  height: 40px;
+  padding-right: 5px; /* Shares the divide with TaskTextContainer */
 }
 
 .TaskCheckBoxIsNotChecked {

@@ -1,5 +1,5 @@
 import React from 'react';
-import FloatingTextInput from "../components/FloatingTextInput";
+import VerticalCenteringContainer from '../containers/VerticalCenteringContainer';
 import '../assets/css/TaskText.css';
 
 class TaskText extends React.Component {
@@ -8,7 +8,7 @@ class TaskText extends React.Component {
 
         return (
             <div className={currentClassName} data-ishighpriority={this.props.isHighPriority}>
-                <label>{this.props.text}</label>
+                    <label>{this.props.text}</label>
             </div>
         )
     }

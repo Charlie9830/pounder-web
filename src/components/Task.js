@@ -22,6 +22,7 @@ class Task extends React.Component {
         this.taskClickContainerLastTouchCount = 0;
 
         // Refs.
+        this.inkCanvasRef = React.createRef();
         this.taskContainerRef = React.createRef();
         this.taskClickContainerRef = React.createRef();
         this.dueDateContainerRef = React.createRef();
@@ -72,7 +73,6 @@ class Task extends React.Component {
         
         // Tap
         hammer.on('tap', event => {
-            console.log(event.target);
             switch(this.determineTapTarget(event.target)) {
                 case 'click-container':
                 this.props.handleClick(this);
@@ -99,7 +99,6 @@ class Task extends React.Component {
                 
             }
         })
-
     }
 
     componentWillUnmount() {
@@ -183,17 +182,15 @@ class Task extends React.Component {
                     key="task">
                     <div>
                         <div className="Task" data-ishighpriority={this.props.isHighPriority} data-iscomplete={this.props.isComplete}>
-                            <Ink/>    
+                            <Ink ref={this.inkCanvasRef}/>    
 
                             <div className="TaskCheckboxContainer" ref={this.taskCheckboxContainerRef}>
                                 <TaskCheckBox isChecked={this.props.isComplete}
                                     disableAnimations={this.props.disableAnimations} />
                             </div>
                             
-                            <div className="TaskClickContainer" ref={this.taskClickContainerRef}>
-                                <div className="TaskTextContainer">
-                                    <TaskText text={this.props.text} isComplete={this.props.isComplete} />
-                                </div>
+                            <div className="TaskTextContainer">
+                                <TaskText text={this.props.text} isComplete={this.props.isComplete} />
                             </div>
 
                             <div className="DueDateContainer" ref={this.dueDateContainerRef}>
@@ -291,8 +288,12 @@ class Task extends React.Component {
     }
 
     determineTapTarget(eventTarget) {
-        if (this.isChild(eventTarget, this.taskClickContainerRef.current, this.taskContainerRef.current)) {
-            return 'click-container';
+        if (eventTarget.tagName.toUpperCase() === "CANVAS") {
+            /* For some reason, You can't get react-ink to work properly when you try and differentiate out the tasktext clicks.
+            Either Ink consumes the touch events. Or it doesn't trigger the animation at all. It always works for Due date and the
+            checkbox, but almost always fails with Task text. 
+            */
+            return 'click-container'
         }
 
         // Check for nested assignee BEFORE checking for task-assignee-container.

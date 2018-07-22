@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Handball Help</title>
+    <link href="./styles.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="HelpPageContainer">
+        <h1> Help </h1>
+
+        <h2> Topics </h2>
+        <ul>
+            <li><a href="#overviewoffeatures"> Overview of the core features </a></li>
+            <li><a href="#gettingstarted"> Getting started </a></li>
+            <li><a href="#tips"> Tips </a></li>
+        </ul>
+
+        
+        <h3 id="overviewoffeatures"> Features in depth </h3>
+        <h4> Task Lists</h4>
+        <p> Customize each of your task lists position and size</p>
+        <img style="width: 100%; height: 100%;" src="adjusting-lists.gif"/>
+        
+        <h4> Task moving</h4>
+        <p> Quickly move tasks between lists</p>
+        <img style="width: 100%; height: 100%;" src="task-moving.gif"/>
+
+        <h4> Due dates</h4>
+        <p> Set due dates quickly and get a customizable coloured countdown indicator</p>
+        <img style="width: 100%; height: 100%;" src="date-setting.gif"/>
+
+        <h4> Task Priority/Importance</h4>
+        <p> Quickly set a Task to high priority </p>
+        <img style="width: 100%; height: 100%;" src="priority-setting.gif"/>
+
+        <h4> Project invite</h4>
+        <p> Invite other members to your project. </p>
+        <img style="width: 100%; height: 100%;" src="project-invites.gif"/>
+
+        <h4> Command line arguements in Task names </h4>
+        <p> Don't like using the mouse? Neither do I, use command line
+            arguments to setup a new task without needing to use the mouse.
+        </p>
+        <img style="width: 100%; height: 100%;" src="command-line-args.gif"/>
+
+
+        <h3> Getting Started </h3>
+        <ul>
+            <li class="GetStartedListItem"> Click the
+                <img class="ButtonIcon" src="./NewProjectIcon.svg" /> button to create a new Project.
+            </li>
+            <li class="GetStartedListItem"> Name your project. </li>
+            <li class="GetStartedListItem">
+                Click the
+                <img class="ButtonIcon" src="./NewTaskListIcon.svg" /> button to create a new Task List.
+            </li>
+            <li class="GetStartedListItem">
+                Click the
+                <img class="ButtonIcon" src="./NewTaskIcon.svg" /> button to create a new Task. Type the name and press Enter to store the task.
+            </li>
+            <li class="GetStartedListItem"> Use the drag handle in the bottom right hand corner of the Task List to resize it </li>
+            <li class="GetStartedListItem">
+                Click the
+                <img class="ButtonIcon" src="./NewTaskListIcon.svg" /> button to create a second Task List. Name it.
+            </li>
+            <li class="GetStartedListItem">
+                Click and drag on the header bar of the Task List to reposition it.
+            </li>
+            <p>
+                That's the basics covered! Read the tips section for some more advanced usage.
+            </p>
+        </ul>
+
+
+
+        <h3 id="tips"> Tips </h3>
+        <h4> Moving Tasks </h4>
+        <p>
+            Tasks can be moved from one Task List to another.
+        </p>
+        <h5>
+            On Desktop:
+        </h5>
+        <p>
+            Hold down the Shift key and select the task you want to move. Release the shift key and click
+            on the task list you wish to move the task into.
+        </p>
+        <h5> On Mobile or Touchscreen </h5>
+        <p>
+            Use two fingers to touch the task you want to move. Then touch with one finger the task list you
+            wish to move the task into.
+        </p>
+        <h5>
+            or
+        </h5>
+        <p>
+            Swipe the task to the right, then touch the Move button. Now touch the task list
+            you wish to move the task into.
+        </p>
+
+        <h4> Setting a due date </h4>
+        <p>
+            Tasks can have due dates assigned to them. To set a due date, click or touch the circle on the right
+            hand side of the task. You can now choose a shortcut date or select a date from the calendar. You
+            can also set the due date with command line arguements in the task name, see 
+            <a href="#TaskArguments"> Task Arguments </a> for more details.
+        </p>
+
+        <h4> Setting a task as Important </h4>
+        <p>
+            Tasks can have an Important flag assigned to them. To set the Important flag, click or touch the circle
+            on the right hand side of the task. Click or Touch the exclamation mark in the top left hand corner of the
+            dialog. Your task is now set as important. You can also set the importance of a task with command line arguements in the task name, see 
+            <a href="#TaskArguments"> Task Arguments </a> for more details.
+        </p>
+
+        <h4> Assigning a task to a project contributor </h4>
+        <p>
+            When your project is being shared with other people, you can assign Tasks to them. Click or touch the circle
+            on the right hand side of the task. At the bottom of the dialog, click or touch the display name of the user
+            you wish to assign the task to, you can also assign it to yourself by pressing "Me". You can remove the
+            assignemnt by pressing the "Nobody" option. You can also set the assignment of a task with command line arguments
+            in the task name, see 
+            <a href="#TaskArguments"> Task Arguments </a> for more details.
+        </p>
+        <h4 id="TaskArguments"> Task Arguments </h4>
+        <p>
+            To streamline the process of creating tasks, you can use command line arguments to set the importance,
+            due date and user assingment. The syntax follows command line arguments structure from, MS-DOS or Nix
+            systems. That is a hypen to begin the command, a letter or word to designate the parameter, followed by
+            a space then the value you wish to set. Keep reading for examples.
+        </p>            
+
+        
+        <h5> Due Date -d </h5>
+        <p>
+            To set an exact date you can use standard date formats. 21/08/2018, 21/08, 21-aug.
+        </p>
+        <p>
+            To set an offset date you can use just numbers to represent days ahead, suffix 'w' to
+            represent weeks ahead or use words like "today" or "tommorrow". Bad spelling is supported.
+        </p>
+
+        <div class="ExampleContainer">
+            <div class="ExampleText"> Order more Gas Cylinders <b> -d 3d </b> </div>
+        </div>
+
+        <div class="ExampleContainer">
+            <div class="ExampleText"> Order new ML Lamps <b>-d 22/10/2018  </b> </div>
+        </div>
+
+        <h5> Important / High Priority -hp or -i </h5>
+        <p>
+            No values are required to toggle this, only the parameter -hp or -i.
+        </p>
+
+        <div class="ExampleContainer">
+            <div class="ExampleText"> Book a swing <b> -hp </b> </div>
+        </div>
+
+        <div class="ExampleContainer">
+            <div class="ExampleText"> Finish masking Pro Booms <b>-i </b> </div>
+        </div>
+
+        <h5> Assign To -a </h5>
+        <p>
+            Use the intended users display name as the parameter. Fuzzy matching is used so don't worry to much
+            about spelling. eg: if "bob" isn't a contributor it will be matched to "Rob".
+        </p>
+
+        <div class="ExampleContainer">
+            <div class="ExampleText"> Build a lamp check <b> -a emily </b> </div>
+        </div>
+        <div class="ExampleContainer">
+            <div class="ExampleText"> Refill MDG's <b> -a will </b> </div>
+        </div>
+
+    </div>
+</body>=
+
+</html>

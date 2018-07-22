@@ -1,6 +1,9 @@
 import React from 'react';
 import GeneralSettingsPage from './GeneralSettingsPage';
 import AccountSettingsPage from './AccountSettingsPage';
+import HelpPage from './HelpPage';
+import WelcomePage from './WelcomePage';
+import AboutPage from './AboutPage';
 import AppSettingsSidebar from './AppSettingsSidebar';
 import MenuHeader from '../MenuHeader';
 import '../../assets/css/AppSettingsMenu/AppSettingsMenu.css';
@@ -127,6 +130,20 @@ class AppSettingsMenu extends React.Component {
                     isInRegisterMode={this.props.isInRegisterMode} onRegisterModeChanged={this.handleRegisterModeChanged}
                     />
                 )
+                case "help":
+            return (
+                <HelpPage/>
+            )
+
+            case "welcome":
+            return (
+                <WelcomePage/>
+            )
+
+            case "about":
+            return (
+                <AboutPage/>
+            )
 
             default: 
                 return (<div/>)

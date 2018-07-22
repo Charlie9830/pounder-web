@@ -17,7 +17,7 @@
 .AppSettingsMenuSidebarContainer {
     flex-shrink: 1;
     width: 100%;
-    height: 50px;
+    height: 75px;
 }
 
 .AppSettingsMenuContentContainer {
@@ -391,6 +391,20 @@
     font-size: 10pt;
 }
 
+.AppSettingsIFrameContainer {
+    width: 100%;
+    height: 100%;
+}
+
+.AppSettingsIFrame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    
+}
+
+
 /* Color Picker Transitioning */
 .ColorPickerContainer-enter {
     position: fixed;
@@ -437,3 +451,4 @@
 .ColorPickerContainer-exit-done {
     display: none;
 }
+

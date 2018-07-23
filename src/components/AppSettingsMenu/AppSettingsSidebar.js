@@ -41,24 +41,6 @@ class AppSettingsSidebar extends React.Component {
                         </label>
                     </div>
                 </div>
-
-                { /* Welcome */}
-                <div className="AppSettingsSidebarItemContainer" onClick={() => this.handleItemClick("welcome")}>
-                    <div>
-                        <label className="AppSettingsSidebarItemLabel" data-isselected={this.props.menuPage === "welcome"}>
-                            Welcome
-                        </label>
-                    </div>
-                </div>
-
-                { /* Help */}
-                <div className="AppSettingsSidebarItemContainer" onClick={() => this.handleItemClick("help")}>
-                    <div>
-                        <label className="AppSettingsSidebarItemLabel" data-isselected={this.props.menuPage === "help"}>
-                            Help
-                        </label>
-                    </div>
-                </div>
             </div>
         )    
     }

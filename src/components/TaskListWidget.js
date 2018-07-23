@@ -31,7 +31,7 @@ class TaskListWidget extends React.Component {
         this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
         this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
         this.handleTaskOptionsOpen = this.handleTaskOptionsOpen.bind(this);
-        this.handleTaskOptionsClose = this.handleTaskOptionsClose.bind(this);
+        this.handleTaskOptionsCancel = this.handleTaskOptionsCancel.bind(this);
     }
 
     componentDidMount(){
@@ -88,7 +88,7 @@ class TaskListWidget extends React.Component {
                                 onAssignToMember={this.handleAssignToMember} assignedTo={assignedTo}
                                 onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
                                 onTaskOptionsOpen={this.handleTaskOptionsOpen} isOptionsOpen={isOptionsOpen}
-                                onTaskOptionsClose={this.handleTaskOptionsClose} />
+                                onTaskOptionsCancel={this.handleTaskOptionsCancel} />
                     </CSSTransition>
                 )
             })
@@ -113,8 +113,8 @@ class TaskListWidget extends React.Component {
         )
     }
 
-    handleTaskOptionsClose() {
-        this.props.onTaskOptionsClose();
+    handleTaskOptionsCancel() {
+        this.props.onTaskOptionsCancel();
     }
 
     handleTaskOptionsOpen(taskId) {

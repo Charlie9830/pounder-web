@@ -22,7 +22,7 @@ setIsAppSettingsOpen, getCSSConfigAsync, setAppSettingsMenuPage,setOpenProjectSe
 setMessageBox, attachAuthListenerAsync, denyProjectInviteAsync, postSnackbarMessage, removeTaskAsync,
 selectProject, setOpenTaskOptionsId, setShowOnlySelfTasks, addNewTaskWithNameAsync,
 setOpenTaskListWidgetHeaderId, updateTaskAssignedToAsync, closeMetadata, addNewProjectWithNameAsync,
-setIsSidebarOpen,
+setIsSidebarOpen, cancelTaskMove,
 unsubscribeFromDatabaseAsync, } from 'pounder-redux/action-creators';
 
 class App extends React.Component {
@@ -75,7 +75,7 @@ class App extends React.Component {
     this.handleAssignToMember = this.handleAssignToMember.bind(this);
     this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
     this.handleTaskOptionsOpen = this.handleTaskOptionsOpen.bind(this);
-    this.handleTaskOptionsClose = this.handleTaskOptionsClose.bind(this);
+    this.handleTaskOptionsCancel = this.handleTaskOptionsCancel.bind(this);
     this.handleTaskListWidgetHeaderDoubleClick = this.handleTaskListWidgetHeaderDoubleClick.bind(this);
     this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
     this.handleProjectSelectorInputDoubleClick = this.handleProjectSelectorInputDoubleClick.bind(this);
@@ -194,7 +194,7 @@ class App extends React.Component {
               onTaskListWidgetHeaderDoubleClick={this.handleTaskListWidgetHeaderDoubleClick}
               onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
               onTaskOptionsOpen={this.handleTaskOptionsOpen} openTaskOptionsId={this.props.openTaskOptionsId}
-              onTaskOptionsClose={this.handleTaskOptionsClose} onSettingsMenuClose={this.handleSettingsMenuClose}
+              onTaskOptionsCancel={this.handleTaskOptionsCancel} onSettingsMenuClose={this.handleSettingsMenuClose}
               onShowOnlySelfTasksChanged={this.handleShowOnlySelfTasksChanged}
               showOnlySelfTasks={this.props.showOnlySelfTasks}
               isRemote={this.props.isSelectedProjectRemote}
@@ -280,8 +280,9 @@ class App extends React.Component {
     this.props.dispatch(setShowOnlySelfTasks(newValue))
   }
 
-  handleTaskOptionsClose() {
+  handleTaskOptionsCancel() {
     this.props.dispatch(setOpenTaskOptionsId(-1));
+    this.props.dispatch(cancelTaskMove());
   }
 
   handleTaskOptionsOpen(taskId) {

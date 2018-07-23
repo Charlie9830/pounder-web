@@ -34,7 +34,7 @@ class Project extends React.Component {
         this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
         this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
         this.handleTaskOptionsOpen = this.handleTaskOptionsOpen.bind(this);
-        this.handleTaskOptionsClose = this.handleTaskOptionsClose.bind(this);
+        this.handleTaskOptionsCancel = this.handleTaskOptionsCancel.bind(this);
         this.handleShowOnlySelfTasksChanged = this.handleShowOnlySelfTasksChanged.bind(this);
         this.getToolbarButtonEnableStates = this.getToolbarButtonEnableStates.bind(this);
     }
@@ -113,7 +113,7 @@ class Project extends React.Component {
                         onTaskMetadataCloseButtonClick={this.handleTaskMetadataCloseButtonClick}
                         onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
                         onTaskOptionsOpen={this.handleTaskOptionsOpen} openTaskOptionsId={this.props.openTaskOptionsId} 
-                        onTaskOptionsClose={this.handleTaskOptionsClose}/>
+                        onTaskOptionsCancel={this.handleTaskOptionsCancel}/>
                 </div>
                 
             )
@@ -175,8 +175,8 @@ class Project extends React.Component {
         this.props.onSettingsMenuClose();
     }
 
-    handleTaskOptionsClose() {
-        this.props.onTaskOptionsClose();
+    handleTaskOptionsCancel() {
+        this.props.onTaskOptionsCancel();
     }
 
     handleTaskOptionsOpen(taskId) {

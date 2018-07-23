@@ -18,9 +18,6 @@ class Task extends React.Component {
             showOptions: false,
         }
 
-        // Class Storage.
-        this.taskClickContainerLastTouchCount = 0;
-
         // Refs.
         this.inkCanvasRef = React.createRef();
         this.taskContainerRef = React.createRef();
@@ -32,7 +29,6 @@ class Task extends React.Component {
 
         // Method Bindings.
         this.forwardOnTaskClick = this.forwardOnTaskClick.bind(this);
-        this.handleTaskTouchStart = this.handleTaskTouchStart.bind(this);
         this.handleNewDateSubmit = this.handleNewDateSubmit.bind(this);
         this.handlePriorityToggleClick = this.handlePriorityToggleClick.bind(this);
         this.getTaskOrMetadata = this.getTaskOrMetadata.bind(this);
@@ -43,7 +39,6 @@ class Task extends React.Component {
         this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
         this.handleTaskOptionsCancelButtonClick = this.handleTaskOptionsCancelButtonClick.bind(this);
         this.handleTaskOptionsMoveButtonClick = this.handleTaskOptionsMoveButtonClick.bind(this);
-        this.handleTaskTouchEnd = this.handleTaskTouchEnd.bind(this);
         this.determineTapTarget = this.determineTapTarget.bind(this);
     }
 
@@ -67,15 +62,22 @@ class Task extends React.Component {
         hammer.on('swipe', event => {
             if (event.deltaX > 0 && event.deltaTime > 100) {
                 // Swipe Right
+                this.props.onTaskTwoFingerTouch(this.props.taskId);
+            }
+
+            if (event.deltaX < 0 && event.deltaTime > 100) {
+                // Swipe Left.
+                
                 this.props.onTaskOptionsOpen(this.props.taskId);
             }
         })
         
-        // Tap
         hammer.on('tap', event => {
             switch(this.determineTapTarget(event.target)) {
                 case 'click-container':
-                this.props.handleClick(this);
+                if (event.tapCount === 1) {
+                    this.props.handleClick(this);
+                }
                 break;
 
                 case 'due-date-container':
@@ -219,18 +221,13 @@ class Task extends React.Component {
         }
     }
 
-    handleTaskTouchEnd(touchEvent) {
-        if (touchEvent.touches.length === 1) {
-            this.forwardOnTaskClick(touchEvent);
-        }
-    }
 
     handleTaskOptionsMoveButtonClick() {
         this.props.onTaskTwoFingerTouch(this.props.taskId);
     }
 
     handleTaskOptionsCancelButtonClick() {
-        this.props.onTaskOptionsClose();
+        this.props.onTaskOptionsCancel();
     }
 
     handleTaskOptionsDeleteButtonClick() {
@@ -257,13 +254,6 @@ class Task extends React.Component {
         this.props.onPriorityToggleClick(this.props.taskId, newValue, this.props.isHighPriority, this.props.metadata);
     }
 
-    handleTaskTouchStart(touchEvent) {
-        if (touchEvent.touches.length === 2) {
-            this.props.onTaskTwoFingerTouch(this.props.taskId);
-        }
-
-        this.taskClickContainerLastTouchCount = touchEvent.touches.length
-    }
 
     forwardOnTaskClick(e) {
         this.props.handleClick(this);

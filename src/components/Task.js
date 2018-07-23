@@ -105,6 +105,8 @@ class Task extends React.Component {
                 
             }
         })
+
+        hammer.get('tap').set({interval: 500})
     }
 
     componentWillUnmount() {

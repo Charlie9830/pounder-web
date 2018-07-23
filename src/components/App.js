@@ -213,7 +213,7 @@ class App extends React.Component {
     return (
       <CSSTransition classNames="FloatingTextInputTransition" timeout={250} in={floatingTextInput.isOpen}
         mountOnEnter={true} unmountOnExit={true} appear={true} enter={!disableAnimations} exit={disableAnimations}>
-          <FloatingTextInput defaultValue={floatingTextInput.currentText}
+          <FloatingTextInput defaultValue={floatingTextInput.currentText} niceTargetName={floatingTextInput.niceTargetName}
             onTextSubmit={(newValue, oldValue) => this.handleFloatingTextInputSubmit(newValue, oldValue, floatingTextInput.targetType, floatingTextInput.targetId)}
             onCancel={() => { this.props.dispatch(setFloatingTextInput(false)) }} />
       </CSSTransition>
@@ -305,7 +305,7 @@ class App extends React.Component {
   }
 
   handleProjectSelectorInputDoubleClick(projectSelectorId, currentData) {
-    this.props.dispatch(setFloatingTextInput(true, currentData, 'project', projectSelectorId));
+    this.props.dispatch(setFloatingTextInput(true, currentData, 'project', "Project", projectSelectorId));
   }
 
   handleAssignToMember(newUserId, oldUserId, taskId) {
@@ -330,7 +330,7 @@ class App extends React.Component {
   }
 
   handleTaskListWidgetHeaderDoubleClick(taskListWidgetId, currentData) {
-    this.props.dispatch(setFloatingTextInput(true, currentData, 'tasklist', taskListWidgetId ));
+    this.props.dispatch(setFloatingTextInput(true, currentData, 'tasklist', 'Task List', taskListWidgetId ));
   }
 
   handleAccountIconClick() {
@@ -449,7 +449,7 @@ class App extends React.Component {
 
   handleTaskOpenTextInput(element, taskListWidgetId) {
     this.props.dispatch(openTask(taskListWidgetId, element.props.taskId));
-    this.props.dispatch(setFloatingTextInput(true, element.props.text, 'task', element.props.taskId));
+    this.props.dispatch(setFloatingTextInput(true, element.props.text, 'task', 'Task', element.props.taskId));
   }
 
   handleTaskTwoFingerTouch(taskListWidgetId, taskId) {
@@ -487,13 +487,13 @@ class App extends React.Component {
 
   addNewTaskList() {
     if (this.props.selectedProject !== -1) {
-      this.props.dispatch(setFloatingTextInput(true, '', 'tasklist', ''));
+      this.props.dispatch(setFloatingTextInput(true, '', 'tasklist', '', ''));
     }
   }
 
   addNewTask() {
     if (this.props.selectedProjectId !== -1 && this.props.focusedTaskListId !== -1) {
-      this.props.dispatch(setFloatingTextInput(true, '', 'task', ''));
+      this.props.dispatch(setFloatingTextInput(true, '', 'task','', ''));
     }
   }
 
@@ -520,7 +520,7 @@ class App extends React.Component {
   }
 
   handleAddProjectClick() {
-    this.props.dispatch(setFloatingTextInput(true, '', 'project', ''));
+    this.props.dispatch(setFloatingTextInput(true, '', 'project','', ''));
   }
 
   handleRemoveProjectClick(projectId) {

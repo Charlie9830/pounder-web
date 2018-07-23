@@ -57,7 +57,7 @@
   grid-row: Title;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-content: center;
   margin-left: 10%;
   margin-top: 10px;

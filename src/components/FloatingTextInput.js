@@ -33,7 +33,7 @@ class FloatingTextInput extends React.Component {
                     <div className="FloatingTextInputPopupContainer" onClick={this.handleContainerClick}>
                         <MenuHeader onBackButtonClick={this.handleCancelButtonClick}/>
                         <div className="FloatingTextInputTitleContainer">
-                            <div className="FloatingTextInputTitle"> Name </div>
+                            <div className="FloatingTextInputTitle"> {this.props.niceTargetName} </div>
                         </div>
 
                         <div className="FloatingTextInputTextAreaContainer">

@@ -32,6 +32,7 @@ class TaskListWidget extends React.Component {
         this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
         this.handleTaskOptionsOpen = this.handleTaskOptionsOpen.bind(this);
         this.handleTaskOptionsCancel = this.handleTaskOptionsCancel.bind(this);
+        this.handleTaskOpenTextInput = this.handleTaskOpenTextInput.bind(this);
     }
 
     componentDidMount(){
@@ -88,7 +89,8 @@ class TaskListWidget extends React.Component {
                                 onAssignToMember={this.handleAssignToMember} assignedTo={assignedTo}
                                 onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
                                 onTaskOptionsOpen={this.handleTaskOptionsOpen} isOptionsOpen={isOptionsOpen}
-                                onTaskOptionsCancel={this.handleTaskOptionsCancel} />
+                                onTaskOptionsCancel={this.handleTaskOptionsCancel}
+                                onOpenTextInput={this.handleTaskOpenTextInput} />
                     </CSSTransition>
                 )
             })
@@ -111,6 +113,10 @@ class TaskListWidget extends React.Component {
              </TaskArea>
             </div>
         )
+    }
+
+    handleTaskOpenTextInput(element) {
+        this.props.onTaskOpenTextInput(element, this.props.taskListWidgetId);
     }
 
     handleTaskOptionsCancel() {

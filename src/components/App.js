@@ -83,6 +83,7 @@ class App extends React.Component {
     this.getFloatingTextInputJSX = this.getFloatingTextInputJSX.bind(this);
     this.handleFloatingTextInputSubmit = this.handleFloatingTextInputSubmit.bind(this);
     this.extractMetadata = this.extractMetadata.bind(this);
+    this.handleTaskOpenTextInput = this.handleTaskOpenTextInput.bind(this);
     
   }
 
@@ -198,6 +199,7 @@ class App extends React.Component {
               onShowOnlySelfTasksChanged={this.handleShowOnlySelfTasksChanged}
               showOnlySelfTasks={this.props.showOnlySelfTasks}
               isRemote={this.props.isSelectedProjectRemote}
+              onTaskOpenTextInput={this.handleTaskOpenTextInput}
             />
           </div>
         </CSSTransition>
@@ -440,19 +442,14 @@ class App extends React.Component {
       // If a task is already moving, it's completion will be handled by the Task List Focus change. Letting the selecition handling runs
       // causes problems.
       else if (this.props.isATaskMoving === false) {
-        if (selectedTask.taskListWidgetId === taskListWidgetId &&
-          selectedTask.taskId === element.props.taskId && this.isModKeyDown !== true) { // If task is already selected and the Mod Key isn't down.
-
-            // Task Already Selected. Exclusively open it's Text Input.
-            this.props.dispatch(openTask(taskListWidgetId, element.props.taskId));      
-            this.props.dispatch(setFloatingTextInput(true, element.props.text, 'task', element.props.taskId)); 
-        }
-
-        else {
           // Otherwise just Select it.
           this.props.dispatch(selectTask(taskListWidgetId, element.props.taskId, this.isModKeyDown));
-        }
       }
+  }
+
+  handleTaskOpenTextInput(element, taskListWidgetId) {
+    this.props.dispatch(openTask(taskListWidgetId, element.props.taskId));
+    this.props.dispatch(setFloatingTextInput(true, element.props.text, 'task', element.props.taskId));
   }
 
   handleTaskTwoFingerTouch(taskListWidgetId, taskId) {

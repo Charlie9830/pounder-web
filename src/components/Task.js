@@ -78,6 +78,10 @@ class Task extends React.Component {
                 if (event.tapCount === 1) {
                     this.props.handleClick(this);
                 }
+
+                if (event.tapCount >= 2) {
+                    this.props.onOpenTextInput(this);
+                }
                 break;
 
                 case 'due-date-container':

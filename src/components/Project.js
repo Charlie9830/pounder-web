@@ -37,6 +37,7 @@ class Project extends React.Component {
         this.handleTaskOptionsCancel = this.handleTaskOptionsCancel.bind(this);
         this.handleShowOnlySelfTasksChanged = this.handleShowOnlySelfTasksChanged.bind(this);
         this.getToolbarButtonEnableStates = this.getToolbarButtonEnableStates.bind(this);
+        this.handleTaskOpenTextInput = this.handleTaskOpenTextInput.bind(this);
     }
     
     componentDidMount() {   
@@ -118,7 +119,8 @@ class Project extends React.Component {
                         onTaskMetadataCloseButtonClick={this.handleTaskMetadataCloseButtonClick}
                         onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
                         onTaskOptionsOpen={this.handleTaskOptionsOpen} openTaskOptionsId={this.props.openTaskOptionsId} 
-                        onTaskOptionsCancel={this.handleTaskOptionsCancel}/>
+                        onTaskOptionsCancel={this.handleTaskOptionsCancel}
+                        onTaskOpenTextInput={this.handleTaskOpenTextInput}/>
                 </div>
                 
             )
@@ -154,6 +156,10 @@ class Project extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    handleTaskOpenTextInput(element, taskListWidgetId) {
+        this.props.onTaskOpenTextInput(element, taskListWidgetId);
     }
 
     getToolbarButtonEnableStates() {

@@ -17,17 +17,19 @@ class ListToolbar extends React.Component{
         this.handleRemoveButtonClick = this.handleRemoveButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.handleTaskListSettingsChanged = this.handleTaskListSettingsChanged.bind(this);
-        this.handlePress = this.handlePress.bind(this);
+        this.handleDoubleTap = this.handleDoubleTap.bind(this);
         this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
     }
 
     componentDidMount() {
         this.hammer = new Hammer(this.headerContainerRef.current);
-        this.hammer.on('press', this.handlePress);
+        this.hammer.on('tap', this.handleDoubleTap);
+
+        this.hammer.get('tap').set({interval: 300, taps: 2});
     }
 
     componentWillUnmount() {
-        this.hammer.off('press', this.headerContainerRef.current, this.handlePress);
+        this.hammer.off('tap', this.headerContainerRef.current, this.handleDoubleTap);
     }
 
     render() {
@@ -57,7 +59,7 @@ class ListToolbar extends React.Component{
         this.props.onSettingsMenuClose();
     }
 
-    handlePress(event) {
+    handleDoubleTap(event) {
         this.props.onHeaderPress();
     }
 

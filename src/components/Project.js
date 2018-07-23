@@ -71,6 +71,11 @@ class Project extends React.Component {
                 tasks = this.props.tasks.filter(task => {
                     return task.taskList === item.uid && task.assignedTo === getUserUid();
                 })
+
+                if (tasks.length === 0) {
+                    // No point in showing the user empty Task lists when they just want to see tasks assigned to themselves.
+                    return (<div/>);
+                }
             }
             
 

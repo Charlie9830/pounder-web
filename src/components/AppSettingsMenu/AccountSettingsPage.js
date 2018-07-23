@@ -30,10 +30,6 @@ class AccountSettingsPage extends React.Component {
     }
 
     componentDidMount() {
-        // Component selectively renders, check if it has been rendered first.
-        if (this.refs.emailInput !== undefined) {
-            this.refs.emailInput.focus();
-        }
     }
 
     componentDidUpdate(prevProps, prevState) {

@@ -15,6 +15,7 @@ import { setAppSettingsMenuPage, setFavouriteProjectIdAsync,
     setIsInRegisterMode } from 'pounder-redux/action-creators';
 import { MessageBoxTypes } from 'pounder-redux';
 
+const issuesURL = "www.github.com/Charlie9830/Pounder/issues";
 
 class AppSettingsMenu extends React.Component {
     constructor(props) {
@@ -130,7 +131,7 @@ class AppSettingsMenu extends React.Component {
                 )
             case "about":
             return (
-                <AboutPage/>
+                <AboutPage issuesURL={issuesURL}/>
             )
 
             default: 

@@ -5,7 +5,6 @@ import TaskListSettingsMenu from './TaskListSettingsMenu';
 import Hammer from 'hammerjs';
 import TaskListSettingsIcon from '../assets/icons/SettingsIcon.svg';
 import DeleteTaskListIcon from '../assets/icons/DeleteTaskListIcon.svg';
-import FloatingTextInput from './FloatingTextInput';
 
 class ListToolbar extends React.Component{
     constructor(props) {
@@ -42,7 +41,7 @@ class ListToolbar extends React.Component{
                 </div>
 
                 <div className="ListToolbarHeaderContainer" ref={this.headerContainerRef}>
-                    <label className="ListToolbarHeader" data-isfocused={this.props.isFocused} onDoubleClick={this.handleDoubleClick}>
+                    <label className="ListToolbarHeader" data-isfocused={this.props.isFocused}>
                         {this.props.headerText}
                     </label>
                 </div>

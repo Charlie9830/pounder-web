@@ -12,7 +12,7 @@ const onUpdateAvailable = () => {
 
 require('typeface-open-sans');
 
-setupBackend("development", "mobile");
+setupBackend("production", "mobile");
 
 ReactDOM.render(<Provider store={appStore}><VisibleApp /></Provider>, document.getElementById('root'));
 registerServiceWorker(onUpdateAvailable);

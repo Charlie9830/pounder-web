@@ -7,7 +7,7 @@ import AppIcon from '../../assets/icons/Handball-Icon-Desktop-Draft.svg'
 class AboutPage extends React.Component {
 
     render() {
-        const appVersion = "2.0.2 RC";
+        const appVersion = "2.0.2";
 
         return (
             <div className="AboutPageContainer">

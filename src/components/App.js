@@ -22,7 +22,7 @@ setIsAppSettingsOpen, getCSSConfigAsync, setAppSettingsMenuPage,setOpenProjectSe
 setMessageBox, attachAuthListenerAsync, denyProjectInviteAsync, postSnackbarMessage, removeTaskAsync,
 selectProject, setOpenTaskOptionsId, setShowOnlySelfTasks, addNewTaskWithNameAsync,
 setOpenTaskListWidgetHeaderId, updateTaskAssignedToAsync, closeMetadata, addNewProjectWithNameAsync,
-setIsSidebarOpen, cancelTaskMove,
+setIsSidebarOpen, cancelTaskMove, setShowCompletedTasksAsync, setIsProjectMenuOpen,
 unsubscribeFromDatabaseAsync, } from 'pounder-redux/action-creators';
 
 class App extends React.Component {
@@ -84,6 +84,9 @@ class App extends React.Component {
     this.handleFloatingTextInputSubmit = this.handleFloatingTextInputSubmit.bind(this);
     this.extractMetadata = this.extractMetadata.bind(this);
     this.handleTaskOpenTextInput = this.handleTaskOpenTextInput.bind(this);
+    this.handleShowCompletedTasksClick = this.handleShowCompletedTasksClick.bind(this);
+    this.handleProjectMenuClose = this.handleProjectMenuClose.bind(this);
+    this.handleProjectMenuOpen = this.handleProjectMenuOpen.bind(this);
     
   }
 
@@ -200,11 +203,28 @@ class App extends React.Component {
               showOnlySelfTasks={this.props.showOnlySelfTasks}
               isRemote={this.props.isSelectedProjectRemote}
               onTaskOpenTextInput={this.handleTaskOpenTextInput}
+              onShowCompletedTasksClick={this.handleShowCompletedTasksClick}
+              showCompletedTasks={this.props.showCompletedTasks}
+              onProjectMenuOpen={this.handleProjectMenuOpen}
+              onProjectMenuClose={this.handleProjectMenuClose}
+              isProjectMenuOpen={this.props.isProjectMenuOpen}
             />
           </div>
         </CSSTransition>
       )
     }
+  }
+
+  handleProjectMenuOpen() {
+    this.props.dispatch(setIsProjectMenuOpen(true));
+  }
+
+  handleProjectMenuClose() {
+    this.props.dispatch(setIsProjectMenuOpen(false));
+  }
+
+  handleShowCompletedTasksClick() {
+    this.props.dispatch(setShowCompletedTasksAsync(!this.props.showCompletedTasks));
   }
 
   getFloatingTextInputJSX(disableAnimations) {
@@ -600,6 +620,8 @@ const mapStateToProps = state => {
     openTaskOptionsId: state.openTaskOptionsId,
     showOnlySelfTasks: state.showOnlySelfTasks,
     floatingTextInput: state.floatingTextInput,
+    showCompletedTasks: state.showCompletedTasks,
+    isProjectMenuOpen: state.isProjectMenuOpen,
   }
 }
 

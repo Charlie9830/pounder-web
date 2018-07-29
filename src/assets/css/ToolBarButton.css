@@ -44,6 +44,13 @@
     height: fit-content;
 }
 
+.ShowCompletedTasksToggleContainer {
+    flex-shrink: 1;
+    padding-top: 4px;
+    width: fit-content;
+    height: fit-content;
+}
+
 .ToolbarPairsFlexContainer {
     display: flex;
     flex-direction: row;

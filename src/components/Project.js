@@ -3,9 +3,13 @@ import TaskListWidget from './TaskListWidget';
 import ProjectMessageDisplay from './ProjectMessageDisplay';
 import '../assets/css/Project.css';
 import ProjectToolBar from './ProjectToolBar';
+import OverlayMenuContainer from '../containers/OverlayMenuContainer';
 import scrollToComponent from 'react-scroll-to-component';
 import BurgerIcon from '../assets/icons/BurgerIcon.svg';
+import MenuIcon from '../assets/icons/MenuIcon.svg';
 import { getUserUid } from 'pounder-firebase';
+import EyeOpenIcon from '../assets/icons/EyeOpenIcon.svg';
+import EyeClosedIcon from '../assets/icons/EyeClosedIcon.svg';
 
 class Project extends React.Component {
     constructor(props){
@@ -38,6 +42,9 @@ class Project extends React.Component {
         this.handleShowOnlySelfTasksChanged = this.handleShowOnlySelfTasksChanged.bind(this);
         this.getToolbarButtonEnableStates = this.getToolbarButtonEnableStates.bind(this);
         this.handleTaskOpenTextInput = this.handleTaskOpenTextInput.bind(this);
+        this.getProjectMenuJSX = this.getProjectMenuJSX.bind(this);
+        this.handleProjectMenuButtonClick = this.handleProjectMenuButtonClick.bind(this);
+        this.handleShowCompletedTasksClick = this.handleShowCompletedTasksClick.bind(this);
     }
     
     componentDidMount() {   
@@ -128,19 +135,27 @@ class Project extends React.Component {
 
         var projectMessageDisplayJSX = this.getProjectMessageDisplayJSX(filteredTaskListWidgets.length);
         var toolbarButtonEnableStates = this.getToolbarButtonEnableStates();
+        var projectMenuJSX = this.getProjectMenuJSX();
 
         return (
-            <div className="Project">
+            <div className="Project">       
+                {projectMenuJSX}
                 <div className="ProjectToolBar">
                     <div className="ProjectHeaderContainer">
                         <div className="ProjectHeaderBurgerButtonContainer" onClick={this.handleBackArrowClick}>
                             <img className="ProjectHeaderBurgerButton" src={BurgerIcon} />
                         </div>
+
                         <div className="ProjectNameContainer">
                             <div className="ProjectName">
                                 {this.props.projectName}
                             </div>
                         </div>
+
+                        <div className="ProjectHeaderMenuButtonContainer" onClick={this.handleProjectMenuButtonClick}>
+                            <img className="ProjectHeaderMenuButton" src={MenuIcon}/>
+                        </div>
+
                     </div>
                     
                     <ProjectToolBar onAddTaskButtonClick={this.handleAddTaskButtonClick} onAddTaskListButtonClick={this.handleAddTaskListButtonClick}
@@ -156,6 +171,36 @@ class Project extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    handleShowCompletedTasksClick() {
+        this.props.onProjectMenuClose();
+        this.props.onShowCompletedTasksClick();
+    }
+
+    handleProjectMenuButtonClick() {
+        this.props.onProjectMenuOpen();
+    }
+
+    getProjectMenuJSX() {
+        if (this.props.isProjectMenuOpen) {
+            var text = this.props.showCompletedTasks === true ? "Hide completed Tasks" : "Show completed Tasks";
+            var eyeIcon = this.props.showCompletedTasks === true ? EyeClosedIcon : EyeOpenIcon;
+
+            return (
+                <OverlayMenuContainer renderOverlay={false} onOutsideChildBoundsClick={() => { this.props.onProjectMenuClose() }}>
+                    <div className="ProjectMenuContainer">
+                        <div className="ProjectMenuContentGrid">
+                            <div className="ProjectMenuItem" onClick={this.handleShowCompletedTasksClick}>
+                                <img className="ProjectMenuItemIcon" src={eyeIcon} />
+                                <div className="ProjectMenuItemLabel"> {text} </div>q
+                            </div>
+                        </div>
+                    </div>
+                </OverlayMenuContainer>
+            )
+        }
+        
     }
 
     handleTaskOpenTextInput(element, taskListWidgetId) {

@@ -58,12 +58,7 @@ class TaskListWidget extends React.Component {
             }
 
             builtTasks = sortedTasks.map((item, index, array) => {
-                // Bail out if Task isn't meant to be Visible.
-                if (!this.props.settings.isCompleteTasksShown && item.isComplete) {
-                    // eslint-disable-next-line
-                    return;
-                }
-
+                
                 // Render Element.
                 var isTaskSelected = item.uid === this.props.selectedTaskId;
                 var isTaskMoving = item.uid === this.props.movingTaskId;

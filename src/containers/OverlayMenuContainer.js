@@ -16,8 +16,10 @@ class OverlayMenuContainer extends React.Component {
     }
 
     render() {
+        var renderOverlay = this.props.renderOverlay === undefined || this.props.renderOverlay === true ? true : false;
+
         var jsx = (
-            <div className="OverlayMenuContainer" ref={this.overlayMenuContainerRef}
+            <div className="OverlayMenuContainer" data-renderoverlay={renderOverlay}  ref={this.overlayMenuContainerRef}
                 onKeyPress={this.handleContainerKeyPress} onClick={(e) => { this.handleContainerClick(e, 'outside') }}>
                 <div onClick={(e) => { this.handleContainerClick(e, 'inside') }}>
                     {this.props.children}

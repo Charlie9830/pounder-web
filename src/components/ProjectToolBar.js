@@ -6,9 +6,29 @@ import NewTaskIcon from '../assets/icons/NewTaskIcon.svg';
 import NewTaskListIcon from '../assets/icons/NewTaskListIcon.svg';
 import ShowAllTasksIcon from '../assets/icons/ShowAllTasksIcon.svg';
 import ShowOnlySelfTasksIcon from '../assets/icons/ShowOnlySelfTasksIcon.svg';
+import EyeOpenIcon from '../assets/icons/EyeOpenIcon.svg';
+import EyeClosedIcon from '../assets/icons/EyeClosedIcon.svg';
 import Toggle from 'react-toggle';
 import '../assets/css/react-toggle/style.css';
 
+
+// React-Toggle Icon.
+class EyeOpen extends React.Component {
+    render() {
+        return (
+            <img className="ToggleIcon" src={EyeOpenIcon}/>
+        )
+    }
+}
+
+// React-Toggle Icon.
+class EyeClosed extends React.Component {
+    render() {
+        return (
+            <img className="ToggleIcon" src={EyeClosedIcon}/>
+        )
+    }
+}
 
 // React-Toggle Icon.
 class ShowAllTasks extends React.Component {
@@ -50,6 +70,7 @@ class ProjectToolBar extends React.Component {
                         <Button iconSrc={NewTaskIcon} size="small" onClick={this.handleAddTaskButtonClick}
                         isEnabled={this.props.buttonEnableStates.isAddTaskButtonEnabled}/>
                     </div>
+
                     <div className="ToolBarButtonContainer">
                         <TaskListJumpMenu taskLists={this.props.taskLists} isOpen={this.props.isTaskListJumpMenuOpen} onMenuButtonClick={this.handleTaskListJumpMenuButtonClick}
                             onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick} />

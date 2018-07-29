@@ -190,7 +190,7 @@ class Task extends React.Component {
                     key="task">
                     <div>
                         <div className="Task" data-ishighpriority={this.props.isHighPriority} data-iscomplete={this.props.isComplete}>
-                            <Ink ref={this.inkCanvasRef}/>    
+                            <Ink style={{color: 'gray'}} ref={this.inkCanvasRef}/>    
 
                             <div className="TaskCheckboxContainer" ref={this.taskCheckboxContainerRef}>
                                 <TaskCheckBox isChecked={this.props.isComplete}

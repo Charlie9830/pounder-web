@@ -19,7 +19,6 @@ class FloatingTextInput extends React.Component {
 
     componentDidMount() {
         // Pull Keyboard Focus.
-        console.log(this.textarea);
         this.textarea.focus();
     }
 

@@ -1,0 +1,98 @@
+/* Transitioning */
+.ChecklistSettingsTransition-enter {
+    display: block;
+    opacity: 0.01;
+}
+
+.ChecklistSettingsTransition-enter-active {
+    opacity: 1;
+    transition: opacity 250ms ease;    
+}
+
+.ChecklistSettingsTransition-enter-done {
+}
+
+.ChecklistSettingsTransition-exit {
+    opacity: 1;
+}
+
+.ChecklistSettingsTransition-exit-active {
+    opacity: 0.01;
+    transition: opacity 250ms ease;
+    
+}
+
+.ChecklistSettingsTransition-exit-done {
+    display: none;
+}
+
+.ChecklistSettingsContainer {
+    display: grid;
+    grid-template-rows: [ChecklistSwitch]min-content [DayPicker]min-content [Interval]min-content [RenewNow] min-content;
+    width: 100%;
+}
+
+.ChecklistSettingsSwitchContainer {
+    grid-row: ChecklistSwitch;
+}
+
+.ChecklistSettingsDayPickerContainer {
+    grid-row: DayPicker;
+}
+
+.ChecklistSettingsIntervalContainer {
+    grid-row: Interval;
+}
+
+.ChecklistSettingsHorizontalFlexContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    padding: 5px 0px 10px 10px;
+    height: auto;
+    min-height: 35px;
+
+}
+
+
+
+.ChecklistSettingsDaysInput {
+    margin: 0px;
+    width: 60px;
+    height: 14px;
+    text-align: middle;
+    font-family: var(--primary-font-family);
+    background: var(--surface-color-alternate);
+    color: var(--primary-active-text-color);
+    border: gray 1px solid;
+    padding: 2px;
+    margin-left: 20px;
+}
+
+.ChecklistSettingsDaysInput[data-isvalid*="false"] {
+    background: darkred;
+}
+
+
+.ChecklistSettingsItemLabel {
+    color: var(--primary-active-text-color);
+    font-family: var(--primary-font-family);
+    font-size: 10pt;
+    line-height: 10pt;
+    margin-left: 10px;
+}
+
+.ChecklistSettingsRenewNowContainer {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+
+}
+
+.ChecklistSettingsRenewIntervalSelect {
+    background: var(--surface-color-alternate);
+    color: var(--primary-active-text-color);
+    width: 85px;
+}

@@ -113,6 +113,10 @@ div {
   color: #FFF;
 }
 
+.DayPicker-Day:hover {
+  background: var(--primary-hover-color);
+}
+
 .DayPicker-WeekNumber {
   display: table-cell;
   padding: .5rem;
@@ -154,9 +158,11 @@ div {
 }
 
 .DayPicker-Day--disabled {
-  color: #dce0e0;
+  color: #555;
   cursor: default;
-  background-color: #eff1f1;
+  background-color: rgb(0, 0, 0);
+  pointer-events: none;
+  touch-action: none;
 }
 
 .DayPicker-Day--outside {

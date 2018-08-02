@@ -1,6 +1,11 @@
 import React from 'react';
 import '../assets/css/TaskListSettingsMenu.css'
-import { TaskListSettingsStore } from 'pounder-stores';
+import { TaskListSettingsStore, ChecklistSettingsFactory } from 'pounder-stores';
+import { getNormalizedDate } from 'pounder-utilities';
+import ChecklistSettings from './ChecklistSettings';
+import MenuHeader from './MenuHeader';
+import MenuSubtitle from './MenuSubtitle';
+import Moment from 'moment';
 
 var isCompleteTasksShown = false; // To Preserve backwards compatability of pre Show Complete Tasks change versions when using current Task lists.
 
@@ -15,6 +20,11 @@ class TaskListSettingsMenu extends React.Component {
         this.handleSortByPriorityItemClick = this.handleSortByPriorityItemClick.bind(this);
         this.handleSortByAssigneeItemClick = this.handleSortByAssigneeItemClick.bind(this);
         this.handleSortByAlphabeticalItemClick = this.handleSortByAlphabeticalItemClick.bind(this);
+        this.handleChecklistModeChange = this.handleChecklistModeChange.bind(this);
+        this.handleInitialStartDayPick = this.handleInitialStartDayPick.bind(this);
+        this.handleRenewIntervalChange = this.handleRenewIntervalChange.bind(this);
+        this.handleRenewNowButtonClick = this.handleRenewNowButtonClick.bind(this);
+        this.handleMenuHeaderBackButtonClick = this.handleMenuHeaderBackButtonClick.bind(this);
     }
 
     render() {
@@ -22,34 +32,110 @@ class TaskListSettingsMenu extends React.Component {
 
         return (
             <div className="TaskListSettingsMenuContainer">
-                {selectableItems}
+                <div className="TaskListSettingsMenuHeaderContainer">
+                    <MenuHeader onBackButtonClick={this.handleMenuHeaderBackButtonClick} />
+                </div>
+
+                <div className="TaskListSettingsSortingOptionsContainer">
+                    <div className="TaskListSettingsSortingOptionsHeaderContainer">
+                        <MenuSubtitle text="Sort by"/>
+                    </div>
+                    {selectableItems}
+                </div>
+                <div className="TaskListSettingsChecklistOptionsContainer">
+                    <ChecklistSettings onChecklistModeChange={this.handleChecklistModeChange} settings={this.props.settings.checklistSettings}
+                        onInitialStartDayPick={this.handleInitialStartDayPick} onRenewNowButtonClick={this.handleRenewNowButtonClick}
+                        onRenewIntervalChange={this.handleRenewIntervalChange} />
+                </div>
+
             </div>
         )
     }
     
+    handleMenuHeaderBackButtonClick() {
+        this.props.onSettingsMenuClose();
+    }
+
+    handleRenewNowButtonClick() {
+        this.props.onRenewNowButtonClick();
+    }
+
+    handleRenewIntervalChange(renewInterval) {
+        var newChecklistSettings = {
+            ...this.props.settings.checklistSettings,
+            renewInterval: renewInterval
+        };
+
+        this.props.onSettingsChanged(new TaskListSettingsStore(
+            isCompleteTasksShown,
+            this.props.settings.sortBy,
+            newChecklistSettings
+        ))
+    }
+
+    handleInitialStartDayPick(isoStartDate) {
+        var newChecklistSettings = {
+            ...this.props.settings.checklistSettings,
+            initialStartDate: isoStartDate,
+            nextRenewDate: isoStartDate,
+        }
+
+        this.props.onSettingsChanged(new TaskListSettingsStore(
+            isCompleteTasksShown,
+            this.props.settings.sortBy,
+            newChecklistSettings,
+        ))
+    }
+    
+    handleChecklistModeChange(newValue) {
+        var checklistSettings = {};
+
+        if (newValue === true) {
+            var initialStartDate = Moment().add(1, 'day');
+            var renewInterval = 1;
+            var nextRenewDate = initialStartDate;
+
+            checklistSettings = ChecklistSettingsFactory(
+                newValue,
+                getNormalizedDate(initialStartDate),
+                getNormalizedDate(nextRenewDate),
+                renewInterval
+            );
+        }
+
+        else {
+            checklistSettings = ChecklistSettingsFactory(false,"", "", 1);
+        }
+
+        this.props.onSettingsChanged(new TaskListSettingsStore(
+            isCompleteTasksShown,
+            this.props.settings.sortBy,
+            checklistSettings,
+        ))
+    }
     
     handleSortByCompletedTasksItemClick(e) {
-        this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "completed"));
+        this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "completed", this.props.settings.checklistSettings), true);
     }
 
     handleSortByDueDateItemClick(e) {
-        this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "due date"));
+        this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "due date", this.props.settings.checklistSettings), true);
     }
 
     handleSortByDateAddedItemClick(e) {
-        this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "date added"));
+        this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "date added", this.props.settings.checklistSettings), true);
     }
 
     handleSortByPriorityItemClick(e) {
-        this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "priority"));
+        this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "priority", this.props.settings.checklistSettings), true);
     }
 
     handleSortByAssigneeItemClick() {
-        this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "assignee"));
+        this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "assignee", this.props.settings.checklistSettings), true);
     }
 
     handleSortByAlphabeticalItemClick() {
-        this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "alphabetical"));
+        this.props.onSettingsChanged(new TaskListSettingsStore(isCompleteTasksShown, "alphabetical", this.props.settings.checklistSettings), true);
     }
 
     getSelectableMenuItems(props) {
@@ -60,7 +146,7 @@ class TaskListSettingsMenu extends React.Component {
             <div key="0" className="TaskListSettingsMenuItemContainer" onClick={this.handleSortByCompletedTasksItemClick}>
                 <div className="TaskListSettingsMenuItemFlexContainer">
                 <div className="TaskListSettingsMenuSelectedItemChit"  data-isselected={ this.props.settings.sortBy === "completed" }/>
-                    <label className="TaskListSettingsMenuItemLabel"> Sort by Completed </label>
+                    <label className="TaskListSettingsMenuItemLabel" data-isselected={ this.props.settings.sortBy === "completed" }>Completed </label>
                 </div>
                 <div className="TaskListSettingsMenuItemBottomBorder"/>
             </div>
@@ -70,8 +156,8 @@ class TaskListSettingsMenu extends React.Component {
         jsx.push((
             <div key="1" className="TaskListSettingsMenuItemContainer" onClick={this.handleSortByDueDateItemClick}>
                 <div className="TaskListSettingsMenuItemFlexContainer">
-                    <div className="TaskListSettingsMenuSelectedItemChit"  data-isselected={ this.props.settings.sortBy === "due date" }/>
-                    <label className="TaskListSettingsMenuItemLabel"> Sort by Due Date </label>
+                <div className="TaskListSettingsMenuSelectedItemChit"  data-isselected={ this.props.settings.sortBy === "due date" }/>
+                    <label className="TaskListSettingsMenuItemLabel" data-isselected={ this.props.settings.sortBy === "due date" }>Due Date </label>
                 </div>
                 <div className="TaskListSettingsMenuItemBottomBorder"/>
             </div>
@@ -81,8 +167,8 @@ class TaskListSettingsMenu extends React.Component {
         jsx.push((
             <div key="2" className="TaskListSettingsMenuItemContainer" onClick={this.handleSortByPriorityItemClick}>
                 <div className="TaskListSettingsMenuItemFlexContainer">
-                    <div className="TaskListSettingsMenuSelectedItemChit"  data-isselected={ this.props.settings.sortBy === "priority" }/>
-                    <label className="TaskListSettingsMenuItemLabel"> Sort by Priority </label>
+                <div className="TaskListSettingsMenuSelectedItemChit"  data-isselected={ this.props.settings.sortBy === "priority" }/>
+                    <label className="TaskListSettingsMenuItemLabel" data-isselected={ this.props.settings.sortBy === "priority" }>Priority </label>
                 </div>
                 <div className="TaskListSettingsMenuItemBottomBorder" />
             </div>
@@ -92,8 +178,8 @@ class TaskListSettingsMenu extends React.Component {
         jsx.push((
             <div key="3" className="TaskListSettingsMenuItemContainer" onClick={this.handleSortByDateAddedItemClick}>
                 <div className="TaskListSettingsMenuItemFlexContainer">
-                    <div className="TaskListSettingsMenuSelectedItemChit"  data-isselected={ this.props.settings.sortBy === "date added" } />
-                    <label className="TaskListSettingsMenuItemLabel"> Sort by Date Added </label>
+                <div className="TaskListSettingsMenuSelectedItemChit"  data-isselected={ this.props.settings.sortBy === "date added" } />
+                    <label className="TaskListSettingsMenuItemLabel" data-isselected={ this.props.settings.sortBy === "date added" }>Date Added </label>
                 </div>
                 <div className="TaskListSettingsMenuItemBottomBorder" />
                 </div>
@@ -103,8 +189,8 @@ class TaskListSettingsMenu extends React.Component {
             jsx.push((
                 <div key="4" className="TaskListSettingsMenuItemContainer" onClick={this.handleSortByAssigneeItemClick}>
                     <div className="TaskListSettingsMenuItemFlexContainer">
-                        <div className="TaskListSettingsMenuSelectedItemChit"  data-isselected={ this.props.settings.sortBy === "assignee" } />
-                        <label className="TaskListSettingsMenuItemLabel"> Sort by Assignee </label>
+                    <div className="TaskListSettingsMenuSelectedItemChit"  data-isselected={ this.props.settings.sortBy === "assignee" } />
+                        <label className="TaskListSettingsMenuItemLabel" data-isselected={ this.props.settings.sortBy === "assignee" }>Assignee </label>
                     </div>
                     <div className="TaskListSettingsMenuItemBottomBorder" />
                     </div>
@@ -114,8 +200,8 @@ class TaskListSettingsMenu extends React.Component {
                 jsx.push((
                     <div key="5" className="TaskListSettingsMenuItemContainer" onClick={this.handleSortByAlphabeticalItemClick}>
                         <div className="TaskListSettingsMenuItemFlexContainer">
-                            <div className="TaskListSettingsMenuSelectedItemChit"  data-isselected={ this.props.settings.sortBy === "alphabetical" } />
-                            <label className="TaskListSettingsMenuItemLabel"> Sort Alphabetically </label>
+                        <div className="TaskListSettingsMenuSelectedItemChit"  data-isselected={ this.props.settings.sortBy === "alphabetical" } />
+                            <label className="TaskListSettingsMenuItemLabel" data-isselected={ this.props.settings.sortBy === "alphabetical" } >Alphabetically </label>
                         </div>
                 {/* No Bottom Border here because it's the bottom of the Menu */}
             </div>

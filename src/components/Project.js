@@ -45,6 +45,7 @@ class Project extends React.Component {
         this.getProjectMenuJSX = this.getProjectMenuJSX.bind(this);
         this.handleProjectMenuButtonClick = this.handleProjectMenuButtonClick.bind(this);
         this.handleShowCompletedTasksClick = this.handleShowCompletedTasksClick.bind(this);
+        this.handleRenewNowButtonClick = this.handleRenewNowButtonClick.bind(this);
     }
     
     componentDidMount() {   
@@ -171,6 +172,10 @@ class Project extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    handleRenewNowButtonClick(taskListWidgetId) {
+        this.props.onRenewNowButtonClick(taskListWidgetId);
     }
 
     handleShowCompletedTasksClick() {
@@ -350,8 +355,8 @@ class Project extends React.Component {
         this.props.onTaskListWidgetRemoveButtonClick(this.props.projectId, taskListWidgetId);
     }
 
-    handleTaskListSettingsChanged(taskListWidgetId, newTaskListSettings) {
-        this.props.onTaskListSettingsChanged(this.props.projectId, taskListWidgetId, newTaskListSettings);
+    handleTaskListSettingsChanged(taskListWidgetId, newTaskListSettings, closeMenu) {
+        this.props.onTaskListSettingsChanged(this.props.projectId, taskListWidgetId, newTaskListSettings, closeMenu);
     }
 
     handleNewDateSubmit(taskListWidgetId, taskId, newDate, oldDate, currentMetadata) {

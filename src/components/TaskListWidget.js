@@ -33,6 +33,7 @@ class TaskListWidget extends React.Component {
         this.handleTaskOptionsOpen = this.handleTaskOptionsOpen.bind(this);
         this.handleTaskOptionsCancel = this.handleTaskOptionsCancel.bind(this);
         this.handleTaskOpenTextInput = this.handleTaskOpenTextInput.bind(this);
+        this.handleRenewNowButtonClick = this.handleRenewNowButtonClick.bind(this);
     }
 
     componentDidMount(){
@@ -110,6 +111,10 @@ class TaskListWidget extends React.Component {
         )
     }
 
+    handleRenewNowButtonClick() {
+        this.props.onRenewNowButtonClick(this.props.taskListWidgetId);
+    }
+
     handleTaskOpenTextInput(element) {
         this.props.onTaskOpenTextInput(element, this.props.taskListWidgetId);
     }
@@ -150,8 +155,8 @@ class TaskListWidget extends React.Component {
         this.props.onTaskListSettingsButtonClick(this.props.taskListWidgetId);
     }
 
-    handleTaskListSettingsChanged(newSettings) {
-        this.props.onSettingsChanged(this.props.taskListWidgetId, newSettings);
+    handleTaskListSettingsChanged(newSettings, closeMenu) {
+        this.props.onSettingsChanged(this.props.taskListWidgetId, newSettings, closeMenu);
     }
 
     handleDueDateClick(taskId) {

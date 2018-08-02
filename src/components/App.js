@@ -22,7 +22,7 @@ setIsAppSettingsOpen, getCSSConfigAsync, setAppSettingsMenuPage,setOpenProjectSe
 setMessageBox, attachAuthListenerAsync, denyProjectInviteAsync, postSnackbarMessage, removeTaskAsync,
 selectProject, setOpenTaskOptionsId, setShowOnlySelfTasks, addNewTaskWithNameAsync,
 setOpenTaskListWidgetHeaderId, updateTaskAssignedToAsync, closeMetadata, addNewProjectWithNameAsync,
-setIsSidebarOpen, cancelTaskMove, setShowCompletedTasksAsync, setIsProjectMenuOpen,
+setIsSidebarOpen, cancelTaskMove, setShowCompletedTasksAsync, setIsProjectMenuOpen, renewChecklistAsync,
 unsubscribeFromDatabaseAsync, } from 'pounder-redux/action-creators';
 
 class App extends React.Component {
@@ -87,6 +87,7 @@ class App extends React.Component {
     this.handleShowCompletedTasksClick = this.handleShowCompletedTasksClick.bind(this);
     this.handleProjectMenuClose = this.handleProjectMenuClose.bind(this);
     this.handleProjectMenuOpen = this.handleProjectMenuOpen.bind(this);
+    this.handleRenewNowButtonClick = this.handleRenewNowButtonClick.bind(this);
     
   }
 
@@ -288,6 +289,18 @@ class App extends React.Component {
     }
   }
 
+  handleRenewNowButtonClick(taskListWidgetId) {
+    this.props.dispatch(setOpenTaskListSettingsMenuId(-1));
+    
+    var taskList = this.props.taskLists.find(item => {
+      return item.uid === taskListWidgetId
+    })
+
+    if (taskList !== undefined) {
+      this.props.dispatch(renewChecklistAsync(taskList, this.props.isSelectedProjectRemote, this.props.selectedProjectId, true));
+    }
+  }
+  
   extractMetadata(taskId) {
     var task = this.props.tasks.find(item => {
       return item.uid === taskId;
@@ -576,7 +589,11 @@ class App extends React.Component {
     //   currentErrorMessage: "An error has occurred. Please consult Developer Diagnostics Log"});
   }
 
-  handleTaskListSettingsChanged(projectId, taskListWidgetId, newTaskListSettings) {
+  handleTaskListSettingsChanged(projectId, taskListWidgetId, newTaskListSettings, closeMenu) {
+    if (closeMenu === true) {
+      this.props.dispatch(setOpenTaskListSettingsMenuId(-1));
+    }
+
     this.props.dispatch(updateTaskListSettingsAsync(taskListWidgetId, newTaskListSettings));
   }
 

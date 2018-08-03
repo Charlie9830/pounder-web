@@ -330,7 +330,7 @@
     width: 85%;
     height: 1px;
     margin-left: 15%;
-    background: var(--task-divider-color);
+    background: var(--primary-divider-color);
 }
 
 .NoMembersMessage {

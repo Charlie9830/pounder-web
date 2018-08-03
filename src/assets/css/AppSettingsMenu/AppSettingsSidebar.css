@@ -24,11 +24,11 @@
 
 .AppSettingsSidebarItemLabel {
     flex: 1;
-    color: gray;
+    color: var(--primary-inactive-text-color);
     font-family: var(--primary-font-family);
     font-size: 12pt;
 }
 
 .AppSettingsSidebarItemLabel[data-isselected*="true"] {
-    color: #FFF;
+    color: var(--primary-active-text-color);
 }

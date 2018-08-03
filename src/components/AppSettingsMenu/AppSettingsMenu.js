@@ -26,6 +26,8 @@ class AppSettingsMenu extends React.Component {
             openColorPickerIndex: -1,
         }
 
+        // Refs
+        this.menuContentContainerRef = React.createRef();
 
         // Method Bindings.
         this.getPageJSX = this.getPageJSX.bind(this);
@@ -45,6 +47,17 @@ class AppSettingsMenu extends React.Component {
     }
 
     componentDidMount() {
+
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.openColorPickerIndex !== this.state.openColorPickerIndex) {
+            if (this.state.openColorPickerIndex === -1) {
+                // Color Picker is closing. Reset Scroll Postion.
+                this.menuContentContainerRef.current.scrollTop = this.scrollPositionBuffer;
+                this.scrollPositionBuffer = 0;
+            }
+        }
     }
 
     render() {
@@ -61,7 +74,7 @@ class AppSettingsMenu extends React.Component {
                         </div>
 
                         {/* Content */}
-                        <div className="AppSettingsMenuContentContainer">
+                        <div className="AppSettingsMenuContentContainer" ref={this.menuContentContainerRef}>
                             {contentsJSX}
                         </div>
                     </div>
@@ -172,7 +185,11 @@ class AppSettingsMenu extends React.Component {
     }
 
     handleColorPickerClick(index) {
-        this.setState({openColorPickerIndex: index});
+        var scrollPosition = this.menuContentContainerRef.current.scrollTop;
+        this.scrollPositionBuffer = scrollPosition;
+        this.setState({
+            openColorPickerIndex: index,
+        });
     }
     handleFavouriteProjectSelectChange(projectId) {
         this.props.dispatch(setFavouriteProjectIdAsync(projectId));

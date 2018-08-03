@@ -11,6 +11,7 @@ class GeneralSettingsPage extends React.Component {
         // Refs.
         this.disableAnimationsCheckboxRef = React.createRef();
         this.sortProjectsBySelectorRef = React.createRef();
+        
         // Method Bindings.
         this.getFavouriteProjectSelectorJSX = this.getFavouriteProjectSelectorJSX.bind(this);
         this.handleStartInFullscreenChange = this.handleStartInFullscreenChange.bind(this);

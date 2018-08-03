@@ -6,13 +6,24 @@
     z-index: 30;
 }
 
-.ColorPicker {
+.ColorPickerGrid {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-rows: [ColorDisplay]max-content [Sliders]auto [Footer]max-content;
     background: var(--surface-color-alternate);
     padding: 10px;
 }
 
+.ColorPickerColorDisplay {
+    grid-row: ColorDisplay;
+    width: 90%;
+    height: 35px;
+    border: 1px solid gray;
+}
+
 .ColorPickerSlidersFlexContainer {
-    height: 400px;
+    grid-row: Sliders;
     width: 95%;
     margin-top: 30px;
     margin-bottom: 20px;
@@ -34,14 +45,10 @@
     align-items: center;
 }
 
-.ColorPickerColorDisplay {
-    width: 90%;
-    height: 35px;
-    border: 1px solid gray;
-}
-
 .ColorPickerFooter {
+    grid-row: Footer;
     width: 95%;
+    padding-bottom: 15px;
     height: fit-content;
     display: flex;
     flex-direction: row-reverse;

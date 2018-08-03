@@ -62,6 +62,7 @@ class ColorPicker extends React.Component {
         this.handleOkButtonClick = this.handleOkButtonClick.bind(this);
         this.handleDarkenButtonClick = this.handleDarkenButtonClick.bind(this);
         this.handleLightenButtonClick = this.handleLightenButtonClick.bind(this);
+        this.handleCancelButtonClick = this.handleCancelButtonClick.bind(this);
     }
 
     componentDidMount() {
@@ -78,7 +79,8 @@ class ColorPicker extends React.Component {
         }
 
         return (
-            <div className="ColorPicker">
+            <div>
+            <div className="ColorPickerGrid">
                 <div style={colorDisplayStyle} className="ColorPickerColorDisplay">
                 </div>
                 <div className="ColorPickerSlidersFlexContainer">
@@ -111,13 +113,20 @@ class ColorPicker extends React.Component {
                 </div>
                 <div className="ColorPickerFooter">
                     <Button text="Ok" onClick={this.handleOkButtonClick} />
+                    <Button text="Cancel" onClick={this.handleCancelButtonClick}/>
                 </div>
+            </div>
             </div>
         )
     }
 
+    handleCancelButtonClick() {
+        const hexColor = tinycolor({ r: this.state.defaultRed, g: this.state.defaultGreen, b: this.state.defaultBlue }).toHexString();
+        this.props.onColorSelectComplete(hexColor);
+    }
+
     handleDarkenButtonClick() {
-        const color = tinycolor({ r: this.state.red, g: this.state.green, b: this.state.blue }).darken(5).toRgb();
+        const color = tinycolor({ r: this.state.red, g: this.state.green, b: this.state.blue }).darken(3).toRgb();
 
         this.setState({
             red: color.r,
@@ -127,7 +136,7 @@ class ColorPicker extends React.Component {
     }
 
     handleLightenButtonClick() {
-        const color = tinycolor({ r: this.state.red, g: this.state.green, b: this.state.blue }).lighten(5).toRgb();
+        const color = tinycolor({ r: this.state.red, g: this.state.green, b: this.state.blue }).lighten(3).toRgb();
 
         this.setState({
             red: color.r,

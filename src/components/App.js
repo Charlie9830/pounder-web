@@ -520,13 +520,13 @@ class App extends React.Component {
 
   addNewTaskList() {
     if (this.props.selectedProject !== -1) {
-      this.props.dispatch(setFloatingTextInput(true, '', 'tasklist', '', ''));
+      this.props.dispatch(setFloatingTextInput(true, '', 'tasklist', 'Task List', ''));
     }
   }
 
   addNewTask() {
     if (this.props.selectedProjectId !== -1 && this.props.focusedTaskListId !== -1) {
-      this.props.dispatch(setFloatingTextInput(true, '', 'task','', ''));
+      this.props.dispatch(setFloatingTextInput(true, '', 'task','Task', ''));
     }
   }
 
@@ -553,7 +553,7 @@ class App extends React.Component {
   }
 
   handleAddProjectClick() {
-    this.props.dispatch(setFloatingTextInput(true, '', 'project','', ''));
+    this.props.dispatch(setFloatingTextInput(true, '', 'project','Project name', ''));
   }
 
   handleRemoveProjectClick(projectId) {

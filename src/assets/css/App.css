@@ -40,7 +40,7 @@ body {
   --primary-divider-color: #3D3D3D;
 
   /* Task */
-  --task-checkbox-color: #FFF;
+  --task-checkbox-color: #555;
   --task-text-color: #FFF;
   --task-selected-color: #373737;
   --task-hover-color: #282828; 
@@ -53,7 +53,7 @@ body {
   --today-color: #1455c0;
   --important-color: #FF9300;
   --due-date-text-color: #FFF;
-  --due-date-circle-color: #777;
+  --due-date-circle-color: #555;
   --assignee-background-color: #236c76;
   --assignee-text-color: #FFF;
 

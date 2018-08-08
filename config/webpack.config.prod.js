@@ -30,8 +30,9 @@ const publicUrl = publicPath.slice(0, -1);
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
 
-// Append our own Enviroment Variable.
+// Append our own Enviroment Variables.
 env.stringified['HANDBALL_DEVICE'] = JSON.stringify('mobile');
+env.stringified['HANDBALL_VERSION'] = JSON.stringify(require('../package.json').version);
 
 // Assert this just to be safe.
 // Development builds of React are slow and not intended for production.

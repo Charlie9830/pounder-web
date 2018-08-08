@@ -23,8 +23,9 @@ const publicUrl = '';
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
 
-// Append our own Enviroment Variable.
+// Append our own Enviroment Variables.
 env.stringified['HANDBALL_DEVICE'] = JSON.stringify('mobile');
+env.stringified['HANDBALL_VERSION'] = JSON.stringify(require('../package.json').version);
 
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.

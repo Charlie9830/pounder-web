@@ -4,11 +4,12 @@ import Button from '../Button';
 import '../../assets/css/AppSettingsMenu/AboutPage.css';
 import AppIcon from '../../assets/icons/Handball-Icon-Desktop-Draft.svg'
 
+// eslint-disable-next-line
+const appVersion = HANDBALL_VERSION;
+
 class AboutPage extends React.Component {
 
     render() {
-        const appVersion = "2.0.2";
-
         return (
             <div className="AboutPageContainer">
                 <CenteringContainer>

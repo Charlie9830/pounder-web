@@ -73,19 +73,33 @@ class ChecklistSettings extends React.Component {
     }
 
     getChecklistSettingsControlJSX() {
-        var { initialStartDate } = this.getSelectedDates();
+        var { initialStartDate, nextRenewDate } = this.getSelectedDates();
         var renewIntervalJSX = this.getRenewIntervalJSX();
         const tomorrow = Moment().add(1,'day').toDate();
+        var modifers = {
+            followingRenewDate: nextRenewDate.toDate(),
+        }
+        
 
         if (this.props.settings.isChecklist) {
             return (
                     <CSSTransition classNames="ChecklistSettingsTransition" timeout={250} key="0">
                         <div>
-                            <div className="ChecklistSettingsDayPickerContainer">
-                                <MenuSubtitle text="Renew completed tasks on" />
-                                <DayPicker enableOutsideDays={true} selectedDays={[initialStartDate]} onDayClick={this.handleDayPickerDayClick}
-                                disabledDays={{ before: tomorrow }}/>
+                        <div className="ChecklistSettingsDayPickerContainer">
+                            <MenuSubtitle text="Renew completed tasks on" />
+                            <DayPicker enableOutsideDays={true} selectedDays={[initialStartDate.toDate()]} onDayClick={this.handleDayPickerDayClick}
+                                disabledDays={{ before: tomorrow }} modifiers={modifers} />
+                            <div className="ChecklistSettingsDayPickerLegendContainer">
+                                <div className="ChecklistSettingsDayPickerLegendItemContainer">
+                                    <div className="ChecklistSettingsDayPickerLegendChit" data-type="initial" />
+                                    <div className="ChecklistSettingsDayPickerLegendChitLabel"> Initial renew </div>
+                                </div>
+                                <div className="ChecklistSettingsDayPickerLegendItemContainer">
+                                    <div className="ChecklistSettingsDayPickerLegendChit" data-type="repeating" />
+                                    <div className="ChecklistSettingsDayPickerLegendChitLabel"> Repeating renew </div>
+                                </div>
                             </div>
+                        </div>
 
                             <div className="ChecklistSettingsIntervalContainer">
                                 <MenuSubtitle text="Repeat" />
@@ -241,10 +255,14 @@ class ChecklistSettings extends React.Component {
 
     getSelectedDates() {
         var initialStartDate = Moment(this.props.settings.initialStartDate);
-        var nextRenewDate = Moment(this.props.settings.nextRenewDate);
+
+        var nextRenewDate = this.props.settings.lastRenewDate === "" ? 
+        Moment(this.props.settings.initialStartDate).add(this.props.settings.renewInterval, 'd') :
+        Moment(this.props.settings.lastRenewDate).add(this.props.settings.renewInterval, 'd');
+        
         return {
-            initialStartDate: initialStartDate.toDate(),
-            nextRenewDate: nextRenewDate.toDate(),
+            initialStartDate: initialStartDate,
+            nextRenewDate: nextRenewDate,
         }
     }
 

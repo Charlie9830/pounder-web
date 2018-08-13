@@ -37,11 +37,31 @@
     color: var(--alternate-inactive-text-color);
 }
 
+.AboutPageSystemInfoContainer {
+    flex-shrink: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+
 
 .AboutPageDivider {
     flex-shrink: 1;
     height: 100px;
 }
+
+.AboutPageSystemValueContainer {
+    flex-shrink: 1;
+}
+
+.AboutPageSystemValue {
+    font-family: var(--primary-font-family);
+    color: var(--primary-inactive-text-color);
+}
+
 
 
 .AboutPageContactContainer {

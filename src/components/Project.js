@@ -198,7 +198,7 @@ class Project extends React.Component {
                         <div className="ProjectMenuContentGrid">
                             <div className="ProjectMenuItem" onClick={this.handleShowCompletedTasksClick}>
                                 <img className="ProjectMenuItemIcon" src={eyeIcon} />
-                                <div className="ProjectMenuItemLabel"> {text} </div>q
+                                <div className="ProjectMenuItemLabel"> {text} </div>
                             </div>
                         </div>
                     </div>

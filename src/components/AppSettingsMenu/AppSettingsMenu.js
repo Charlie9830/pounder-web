@@ -12,8 +12,8 @@ import { setAppSettingsMenuPage, setFavouriteProjectIdAsync,
     setGeneralConfigAsync, setIsAppSettingsOpen, setAllColorsToDefaultAsync,
     logInUserAsync, logOutUserAsync, registerNewUserAsync, postSnackbarMessage, unsubscribeFromDatabaseAsync,
     subscribeToDatabaseAsync, selectProject, sendPasswordResetEmailAsync, setAuthStatusMessage,
-    setIsInRegisterMode } from 'pounder-redux/action-creators';
-import { MessageBoxTypes } from 'pounder-redux';
+    setIsInRegisterMode } from 'handball-libs/libs/pounder-redux/action-creators';
+import { MessageBoxTypes } from 'handball-libs/libs/pounder-redux';
 
 const issuesURL = "www.github.com/Charlie9830/Pounder/issues";
 

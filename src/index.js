@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './assets/css/index.css';
 import VisibleApp from './components/App';
 import { Provider } from 'react-redux';
-import { setupBackend ,appStore } from 'pounder-redux';
+import { setupBackend ,appStore } from 'handball-libs/libs/pounder-redux';
 import registerServiceWorker from './registerServiceWorker';
 
 if (process.env.NODE_ENV === 'production') {

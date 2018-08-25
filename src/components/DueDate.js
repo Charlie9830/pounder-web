@@ -3,7 +3,7 @@ import '../assets/css/DueDate.css';
 import Calendar from './Calendar';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import OverlayMenuContainer from '../containers/OverlayMenuContainer';
-import { ParseDueDate } from 'pounder-utilities';
+import { ParseDueDate } from 'handball-libs/libs/pounder-utilities';
 import CenteringContainer from '../containers/CenteringContainer';
 
 class DueDate extends React.Component {

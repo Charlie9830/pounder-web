@@ -9,7 +9,7 @@ import '../assets/css/TaskListWidget.css';
 import '../assets/css/Sidebar.css';
 import '../assets/css/Project.css';
 import { connect } from 'react-redux';
-import { MessageBoxTypes } from 'pounder-redux';
+import { MessageBoxTypes } from 'handball-libs/libs/pounder-redux';
 import { hot } from 'react-hot-loader';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { selectTask, openTask, startTaskMove,
@@ -23,7 +23,7 @@ setMessageBox, attachAuthListenerAsync, denyProjectInviteAsync, postSnackbarMess
 selectProject, setOpenTaskOptionsId, setShowOnlySelfTasks, addNewTaskWithNameAsync,
 setOpenTaskListWidgetHeaderId, updateTaskAssignedToAsync, closeMetadata, addNewProjectWithNameAsync,
 setIsSidebarOpen, cancelTaskMove, setShowCompletedTasksAsync, setIsProjectMenuOpen, renewChecklistAsync,
-unsubscribeFromDatabaseAsync, } from 'pounder-redux/action-creators';
+unsubscribeFromDatabaseAsync, } from 'handball-libs/libs/pounder-redux/action-creators';
 
 class App extends React.Component {
   constructor(props) {

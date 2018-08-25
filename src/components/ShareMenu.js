@@ -8,9 +8,9 @@ import Spinner from './Spinner';
 import CenteringContainer from '../containers/CenteringContainer';
 import '../assets/css/ShareMenu.css';
 import { inviteUserToProjectAsync, kickUserFromProjectAsync, updateMemberRoleAsync, setMessageBox, setIsShareMenuOpen,
-removeRemoteProjectAsync, migrateProjectBackToLocalAsync } from 'pounder-redux/action-creators';
-import { MessageBoxTypes } from 'pounder-redux';
-import { getUserUid } from 'pounder-firebase';
+removeRemoteProjectAsync, migrateProjectBackToLocalAsync } from 'handball-libs/libs/pounder-redux/action-creators';
+import { MessageBoxTypes } from 'handball-libs/libs/pounder-redux';
+import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import BackArrow from '../assets/icons/BackArrow.svg';
 
 class ShareMenu extends React.Component {

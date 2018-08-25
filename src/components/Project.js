@@ -7,7 +7,7 @@ import OverlayMenuContainer from '../containers/OverlayMenuContainer';
 import scrollToComponent from 'react-scroll-to-component';
 import BurgerIcon from '../assets/icons/BurgerIcon.svg';
 import MenuIcon from '../assets/icons/MenuIcon.svg';
-import { getUserUid } from 'pounder-firebase';
+import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import EyeOpenIcon from '../assets/icons/EyeOpenIcon.svg';
 import EyeClosedIcon from '../assets/icons/EyeClosedIcon.svg';
 

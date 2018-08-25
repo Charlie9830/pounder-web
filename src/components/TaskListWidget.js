@@ -4,7 +4,7 @@ import Task from '../components/Task';
 import ListToolbar from '../components/ListToolbar';
 import '../assets/css/TaskListWidget.css';
 import Ink from 'react-ink';
-import { TaskMetadataStore } from 'pounder-stores';
+import { TaskMetadataStore } from 'handball-libs/libs/pounder-stores';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 

@@ -5,11 +5,7 @@ import Button from '../Button';
 import '../../assets/css/AppSettingsMenu/AboutPage.css';
 import AppIcon from '../../assets/icons/Handball-Icon-Desktop-Draft.svg'
 let dependencyVersions = [
-    { name: "pounder-redux", value: require('pounder-redux/package.json').version },
-    { name: "pounder-firebase", value: require('pounder-firebase/package.json').version },
-    { name: "pounder-stores", value: require('pounder-stores/package.json').version },
-    { name: "pounder-utilities", value: require('pounder-utilities/package.json').version },
-    { name: "pounder-dexie", value: require('pounder-dexie/package.json').version },
+    { name: "handball-libs", value: require('handball-libs/package.json').version },
     { name: "firestore-batch-paginator", value: require('firestore-batch-paginator/package.json').version },
     
 ]

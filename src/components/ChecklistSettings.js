@@ -4,7 +4,7 @@ import Button from './Button';
 import DayPicker from 'react-day-picker';
 import Moment from 'moment';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
-import { getNormalizedDate } from 'pounder-utilities';
+import { getNormalizedDate } from 'handball-libs/libs/pounder-utilities';
 import '../assets/css/react-day-picker/style.css';
 import '../assets/css/ChecklistSettings.css';
 import Toggle from 'react-toggle';

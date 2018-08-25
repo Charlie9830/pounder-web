@@ -5,8 +5,8 @@ import DayPicker from 'react-day-picker';
 import MenuHeader from './MenuHeader';
 import Button from './Button';
 import Moment from 'moment';
-import { getDayPickerDate, getClearedDate, getDaysForwardDate, getWeeksForwardDate } from 'pounder-utilities';
-import { getUserUid } from 'pounder-firebase';
+import { getDayPickerDate, getClearedDate, getDaysForwardDate, getWeeksForwardDate } from 'handball-libs/libs/pounder-utilities';
+import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 
 
 class Calendar extends React.Component {

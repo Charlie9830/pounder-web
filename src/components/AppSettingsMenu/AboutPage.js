@@ -6,8 +6,6 @@ import '../../assets/css/AppSettingsMenu/AboutPage.css';
 import AppIcon from '../../assets/icons/Handball-Icon-Desktop-Draft.svg'
 let dependencyVersions = [
     { name: "handball-libs", value: require('handball-libs/package.json').version },
-    { name: "firestore-batch-paginator", value: require('firestore-batch-paginator/package.json').version },
-    
 ]
 
 // eslint-disable-next-line

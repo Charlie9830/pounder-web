@@ -1,0 +1,26 @@
+.TaskInspector {
+    position: relative;
+    background: var(--surface-color-alternate);
+    border: 1px solid gray;
+    height: 100vh;
+}
+
+.TaskInspectorCalendarContainer {
+}
+
+.TaskInspectorCommentPanelContainer {
+}
+
+.TaskInspectorNotesContainer {
+}
+
+.TaskInspectorMetadataContainer {
+}
+
+.TaskNotePanel {
+    background: var(--surface-color-alternate);
+    color: var(--primary-active-text-color);
+    font-family: var(--primary-font-family);
+    resize: none;
+    margin: 0px 10px 10px 10px;
+}

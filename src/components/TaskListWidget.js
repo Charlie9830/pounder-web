@@ -5,6 +5,8 @@ import ListToolbar from '../components/ListToolbar';
 import '../assets/css/TaskListWidget.css';
 import Ink from 'react-ink';
 import { TaskMetadataStore } from 'handball-libs/libs/pounder-stores';
+import { GetDisplayNameFromLookup } from 'handball-libs/libs/pounder-utilities';
+import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 
@@ -62,17 +64,19 @@ class TaskListWidget extends React.Component {
                 // Render Element.
                 var isTaskSelected = item.uid === this.props.selectedTaskId;
                 var isTaskMoving = item.uid === this.props.movingTaskId;
-                var isCalendarOpen = item.uid === this.props.openCalendarId;
-                var isMetadataOpen = item.uid === this.props.openMetadataId;
                 var renderBottomBorder = array.length !== 1 && index !== array.length - 1;
+
+                var hasUnseenComments = item.unseenTaskCommentMembers !== undefined &&
+                 item.unseenTaskCommentMembers[getUserUid()] !== undefined;
+
                 var metadata = item.metadata === undefined ? Object.assign({}, new TaskMetadataStore("", "", "", "", "")) 
                 : item.metadata; 
-                var assignedTo = item.assignedTo === undefined ? -1 : item.assignedTo;
+                var assignedToDisplayName = GetDisplayNameFromLookup(item.assignedTo, this.props.memberLookup);
                 var isOptionsOpen = item.uid === this.props.openTaskOptionsId;
 
                 return (
                     <CSSTransition key={item.uid} classNames="TaskContainer" timeout={500} mountOnEnter={true}>
-                            <Task key={index} taskId={item.uid} text={item.taskName} dueDate={item.dueDate} isMetadataOpen={isMetadataOpen}
+                            <Task key={index} taskId={item.uid} text={item.taskName} dueDate={item.dueDate}
                                 isSelected={isTaskSelected} isComplete={item.isComplete} isMoving={isTaskMoving}
                                 handleClick={this.handleTaskClick} onTaskCheckBoxClick={this.handleTaskCheckBoxClick}
                                 onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch}
@@ -80,11 +84,13 @@ class TaskListWidget extends React.Component {
                                 isHighPriority={item.isHighPriority} 
                                 renderBottomBorder={renderBottomBorder}
                                 metadata={metadata} disableAnimations={this.props.disableAnimations}
-                                assignedTo={assignedTo}
+                                assignedToDisplayName={assignedToDisplayName}
                                 onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
                                 onTaskOptionsOpen={this.handleTaskOptionsOpen} isOptionsOpen={isOptionsOpen}
                                 onTaskOptionsCancel={this.handleTaskOptionsCancel}
-                                onOpenTextInput={this.handleTaskOpenTextInput} />
+                                onOpenTextInput={this.handleTaskOpenTextInput}
+                                note={item.note}
+                                hasUnseenComments={hasUnseenComments} />
                     </CSSTransition>
                 )
             })
@@ -140,7 +146,6 @@ class TaskListWidget extends React.Component {
     handleTaskListSettingsChanged(newSettings, closeMenu) {
         this.props.onSettingsChanged(this.props.taskListWidgetId, newSettings, closeMenu);
     }
-
 
     handleTaskTwoFingerTouch(taskId) {
         this.props.onTaskTwoFingerTouch(this.props.taskListWidgetId, taskId);

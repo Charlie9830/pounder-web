@@ -2,7 +2,6 @@ import React from 'react';
 import '../assets/css/Calendar.css';
 import '../assets/css/react-day-picker/style.css';
 import DayPicker from 'react-day-picker';
-import MenuHeader from './MenuHeader';
 import Button from './Button';
 import Moment from 'moment';
 import { getDayPickerDate, getClearedDate, getDaysForwardDate, getWeeksForwardDate } from 'handball-libs/libs/pounder-utilities';
@@ -40,8 +39,6 @@ class Calendar extends React.Component {
 
         return (
             <div className="CalendarPopupContainer">
-                <MenuHeader onBackButtonClick={() => {this.props.onBackButtonClick()}} />
-
                 <div className="CalendarGrid">
                     {/* Header */}
                     <div className="CalendarHeaderContainer">

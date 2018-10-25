@@ -8,6 +8,9 @@ import Hammer from 'hammerjs';
 import Ink from 'react-ink';
 import '../assets/css/Task.css';
 import '../assets/css/TaskCheckBox.css'
+import NewCommentsIcon from '../assets/icons/NewCommentsIcon.svg';
+import HasCommentsIcon from '../assets/icons/HasCommentsIcon.svg';
+import HasNotesIcon from '../assets/icons/HasNotesIcon.svg';
 
 
 class Task extends React.Component {
@@ -121,15 +124,7 @@ class Task extends React.Component {
         )
     }
 
-    getTaskAssigneeJSX() {
-        if (this.props.assignedToDisplayName !== "") {
-            return (
-                <div className="TaskAssignee" onClick={this.handleTaskAssigneeClick}>
-                    <div className="TaskAssigneeDisplayName"> {this.props.assignedToDisplayName} </div>
-                </div>
-            )
-        }
-    }
+    
 
     getTaskIndicatorPanelJSX() {
         var taskAssigneeJSX = this.getTaskAssigneeJSX();
@@ -144,6 +139,16 @@ class Task extends React.Component {
                 {noteIndicatorJSX}
             </div>
         )
+    }
+
+    getTaskAssigneeJSX() {
+        if (this.props.assignedToDisplayName !== "") {
+            return (
+                <div className="TaskAssignee" onClick={this.handleTaskAssigneeClick}>
+                    <div className="TaskAssigneeDisplayName"> {this.props.assignedToDisplayName} </div>
+                </div>
+            )
+        }
     }
 
     getUnreadCommentsIndicatorJSX() {
@@ -201,7 +206,7 @@ class Task extends React.Component {
         }
 
         else {
-            var taskAssigneeJSX = this.getTaskAssigneeJSX();
+            var taskIndicatorPanelJSX = this.getTaskIndicatorPanelJSX();
 
             return (
                 <CSSTransition classNames="TaskTransitionItem" timeout={250} mountOnEnter={true} unmountOnExit={true}
@@ -227,7 +232,7 @@ class Task extends React.Component {
                                     assignedTo={this.props.assignedTo} disableAnimations={this.props.disableAnimations} />
                             </div>
                         </div>
-                        {taskAssigneeJSX}
+                        {taskIndicatorPanelJSX}
                     </div>
                 </CSSTransition>
             )

@@ -24,7 +24,7 @@ setMessageBox, attachAuthListenerAsync, denyProjectInviteAsync, postSnackbarMess
 selectProject, setOpenTaskOptionsId, setShowOnlySelfTasks, addNewTaskWithNameAsync,
 setOpenTaskListWidgetHeaderId, updateTaskAssignedToAsync, closeMetadata, addNewProjectWithNameAsync,
 setIsSidebarOpen, cancelTaskMove, setShowCompletedTasksAsync, setIsProjectMenuOpen, renewChecklistAsync,
-unsubscribeFromDatabaseAsync, openTaskInspectorAsync } from 'handball-libs/libs/pounder-redux/action-creators';
+unsubscribeFromDatabaseAsync, openTaskInspectorAsync, openTaskInfo, getTaskCommentsAsync } from 'handball-libs/libs/pounder-redux/action-creators';
 
 class App extends React.Component {
   constructor(props) {
@@ -55,25 +55,18 @@ class App extends React.Component {
     this.handleTaskListSettingsChanged = this.handleTaskListSettingsChanged.bind(this);
     this.handleTaskClick = this.handleTaskClick.bind(this);
     this.handleTaskTwoFingerTouch = this.handleTaskTwoFingerTouch.bind(this);
-    this.handleDueDateClick = this.handleDueDateClick.bind(this);
-    this.handleNewDateSubmit = this.handleNewDateSubmit.bind(this);
     this.handleTaskListSettingsButtonClick = this.handleTaskListSettingsButtonClick.bind(this);
     this.getSelectedProjectTasks = this.getSelectedProjectTasks.bind(this);
-    this.handleTaskPriorityToggleClick = this.handleTaskPriorityToggleClick.bind(this);
     this.handleTaskListJumpMenuButtonClick = this.handleTaskListJumpMenuButtonClick.bind(this);
     this.initializeLocalConfig = this.initializeLocalConfig.bind(this);
     this.handleAppSettingsButtonClick = this.handleAppSettingsButtonClick.bind(this);
     this.handleAccountIconClick = this.handleAccountIconClick.bind(this);
     this.getSidebarOrProjectJSX = this.getSidebarOrProjectJSX.bind(this);
     this.handleRequestSidebarClose = this.handleRequestSidebarClose.bind(this);
-    this.handleBackArrowClick = this.handleBackArrowClick.bind(this);
     this.handleShareMenuButtonClick = this.handleShareMenuButtonClick.bind(this);
     this.handleAcceptInviteButtonClick = this.handleAcceptInviteButtonClick.bind(this);
     this.handleDenyInviteButtonClick = this.handleDenyInviteButtonClick.bind(this);
-    this.handleTaskMetadataCloseButtonClick = this.handleTaskMetadataCloseButtonClick.bind(this);
-    this.handleTaskMetadataOpen = this.handleTaskMetadataOpen.bind(this);
     this.getProjectMembers = this.getProjectMembers.bind(this);
-    this.handleAssignToMember = this.handleAssignToMember.bind(this);
     this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
     this.handleTaskOptionsOpen = this.handleTaskOptionsOpen.bind(this);
     this.handleTaskOptionsCancel = this.handleTaskOptionsCancel.bind(this);
@@ -92,7 +85,7 @@ class App extends React.Component {
     this.dispatchOpenTaskInfo = this.dispatchOpenTaskInfo.bind(this);
     this.getTaskInspectorJSX = this.getTaskInspectorJSX.bind(this);
     this.handleTaskInspectorOpen = this.handleTaskInspectorOpen.bind(this);
-    
+    this.handleBackArrowClick = this.handleBackArrowClick.bind(this);
   }
 
   componentDidMount() {
@@ -161,7 +154,7 @@ class App extends React.Component {
               onProjectSelectorClick={this.handleProjectSelectorClick} onAddProjectClick={this.handleAddProjectClick}
               onRemoveProjectClick={this.handleRemoveProjectClick} onProjectNameSubmit={this.handleProjectNameSubmit}
               invites={this.props.invites} isSelectedProjectRemote={this.props.isSelectedProjectRemote}
-              projectSelectorDueDateDisplays={this.props.projectSelectorDueDateDisplays} isLoggedIn={this.props.isLoggedIn}
+              projectSelectorIndicators={this.props.projectSelectorIndicators} isLoggedIn={this.props.isLoggedIn}
               favouriteProjectId={this.props.accountConfig.favouriteProjectId} onAppSettingsButtonClick={this.handleAppSettingsButtonClick}
               onAccountIconClick={this.handleAccountIconClick} isLoggingIn={this.props.isLoggingIn}
               onRequestSidebarClose={this.handleRequestSidebarClose} isAppSettingsOpen={this.props.isAppSettingsOpen}
@@ -191,16 +184,14 @@ class App extends React.Component {
               onAddTaskListButtonClick={this.handleAddTaskListButtonClick} onRemoveTaskListButtonClick={this.handleRemoveTaskListButtonClick}
               onTaskListSettingsChanged={this.handleTaskListSettingsChanged} onTaskClick={this.handleTaskClick}
               sourceTaskListId={this.props.sourceTaskListId} projectName={projectName}
-              onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch} onDueDateClick={this.handleDueDateClick}
-              openCalendarId={this.props.openCalendarId} onNewDateSubmit={this.handleNewDateSubmit}
+              onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch}
               onTaskListSettingsButtonClick={this.handleTaskListSettingsButtonClick}
               openTaskListSettingsMenuId={this.props.openTaskListSettingsMenuId}
               onTaskPriorityToggleClick={this.handleTaskPriorityToggleClick}
               onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick}
-              isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen} onBackArrowClick={this.handleBackArrowClick}
-              onTaskMetadataCloseButtonClick={this.handleTaskMetadataCloseButtonClick} onTaskMetadataOpen={this.handleTaskMetadataOpen}
+              isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen}
               disableAnimations={this.props.generalConfig.disableAnimations}
-              projectMembers={projectMembers} onAssignToMember={this.handleAssignToMember} 
+              projectMembers={projectMembers}
               openTaskListWidgetHeaderId={this.props.openTaskListWidgetHeaderId}
               onTaskListWidgetHeaderDoubleClick={this.handleTaskListWidgetHeaderDoubleClick}
               onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
@@ -216,6 +207,8 @@ class App extends React.Component {
               onProjectMenuClose={this.handleProjectMenuClose}
               isProjectMenuOpen={this.props.isProjectMenuOpen}
               onTaskInspectorOpen={this.handleTaskInspectorOpen}
+              onBackArrowClick={this.handleBackArrowClick}
+              memberLookup={this.props.memberLookup}
             />
           </div>
         </CSSTransition>
@@ -308,6 +301,14 @@ class App extends React.Component {
     }
   }
 
+  dispatchOpenTaskInfo(taskId) {
+    this.props.dispatch(openTaskInfo(taskId));
+
+    if (this.props.isSelectedProjectRemote) {
+      this.props.dispatch(getTaskCommentsAsync(taskId));
+    }
+  }
+
   handleRenewNowButtonClick(taskListWidgetId) {
     this.props.dispatch(setOpenTaskListSettingsMenuId(-1));
     
@@ -360,10 +361,6 @@ class App extends React.Component {
     this.props.dispatch(setFloatingTextInput(true, currentData, 'project', "Project", projectSelectorId));
   }
 
-  handleAssignToMember(newUserId, oldUserId, taskId) {
-    this.props.dispatch(updateTaskAssignedToAsync(newUserId, oldUserId, taskId));
-  }
-
   handleRequestSidebarClose() {
     this.props.dispatch(setIsSidebarOpen(false));
   }
@@ -388,14 +385,6 @@ class App extends React.Component {
   handleAccountIconClick() {
     this.props.dispatch(setIsAppSettingsOpen(true));
     this.props.dispatch(setAppSettingsMenuPage("account"));
-  }
-
-  handleTaskMetadataOpen(taskListWidgetId, taskId) {
-    this.props.dispatch(selectTask(taskListWidgetId, taskId, true));
-  }
-
-  handleTaskMetadataCloseButtonClick() {
-    this.props.dispatch(closeMetadata());
   }
 
   handleDenyInviteButtonClick(projectId) {
@@ -432,10 +421,6 @@ class App extends React.Component {
   initializeLocalConfig() {
     this.props.dispatch(getGeneralConfigAsync());
     this.props.dispatch(getCSSConfigAsync());
-  }
-
-  handleTaskPriorityToggleClick(taskId, newValue, oldValue, currentMetadata) {
-    this.props.dispatch(updateTaskPriority(taskId, newValue, oldValue, currentMetadata));
   }
 
   getProjectName(props) {
@@ -477,10 +462,6 @@ class App extends React.Component {
 
   handleTaskListSettingsButtonClick(projectId, taskListWidgetId) {
     this.props.dispatch(setOpenTaskListSettingsMenuId(taskListWidgetId));
-  }
-
-  handleDueDateClick(projectId, taskListWidgetId, taskId) {
-    this.props.dispatch(openCalendar(taskListWidgetId, taskId));
   }
 
   handleTaskClick(element, projectId, taskListWidgetId) {
@@ -615,10 +596,6 @@ class App extends React.Component {
 
     this.props.dispatch(updateTaskListSettingsAsync(taskListWidgetId, newTaskListSettings));
   }
-
-  handleNewDateSubmit(projectId, taskListWidgetId, taskId, newDate, oldDate, currentMetadata) {
-    this.props.dispatch(updateTaskDueDateAsync(taskId, newDate, oldDate, currentMetadata));
-  }
 }
 
 const mapStateToProps = state => {
@@ -637,7 +614,7 @@ const mapStateToProps = state => {
     sourceTaskListId: state.sourceTaskListId,
     openCalendarId: state.openCalendarId,
     openTaskListSettingsMenuId: state.openTaskListSettingsMenuId,
-    projectSelectorDueDateDisplays: state.projectSelectorDueDateDisplays,
+    projectSelectorIndicators: state.projectSelectorIndicators,
     isTaskListJumpMenuOpen: state.isTaskListJumpMenuOpen,
     isDexieConfigLoadComplete: state.isDexieConfigLoadComplete,
     generalConfig: state.generalConfig,
@@ -652,12 +629,14 @@ const mapStateToProps = state => {
     invites: state.invites,
     updatingInviteIds: state.updatingInviteIds,
     members: state.members,
+    memberLookup: state.memberLookup,
     remoteProjectIds: state.remoteProjectIds,
     openTaskOptionsId: state.openTaskOptionsId,
     showOnlySelfTasks: state.showOnlySelfTasks,
     floatingTextInput: state.floatingTextInput,
     showCompletedTasks: state.showCompletedTasks,
     isProjectMenuOpen: state.isProjectMenuOpen,
+    openTaskInspectorId: state.openTaskInspectorId,
   }
 }
 

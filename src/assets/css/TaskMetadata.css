@@ -1,16 +1,8 @@
 .TaskMetadata {
     position: relative;
-    background: rgb(42,42,42);
     user-select: none;
     cursor: default;
     z-index: 3;
-}
-
-.TaskMetadataCloseButtonContainer {
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    padding: 5px 10px 0px 10px;
 }
 
 .TaskMetadataCloseButton {

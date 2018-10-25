@@ -30,7 +30,7 @@ class Project extends React.Component {
         this.handleTaskListJumpMenuItemClick = this.handleTaskListJumpMenuItemClick.bind(this);
         this.handleTaskListJumpMenuButtonClick = this.handleTaskListJumpMenuButtonClick.bind(this);
         this.getProjectMessageDisplayJSX = this.getProjectMessageDisplayJSX.bind(this);
-
+        this.handleBackArrowClick = this.handleBackArrowClick.bind(this);
         this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
         this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
         this.handleTaskOptionsOpen = this.handleTaskOptionsOpen.bind(this);
@@ -114,17 +114,16 @@ class Project extends React.Component {
                         onTaskClick={this.handleTaskClick} onTaskCheckBoxClick={this.handleTaskCheckBoxClick}
                         onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch} settings={taskListSettings}
                         onSettingsChanged={this.handleTaskListSettingsChanged} onDueDateClick={this.handleDueDateClick}
-                        
                         onTaskListSettingsButtonClick={this.handleTaskListSettingsButtonClick}
                         openTaskListSettingsMenuId={this.props.openTaskListSettingsMenuId} projectMembers={this.props.projectMembers}
                         disableAnimations={this.props.disableAnimations}
-                        
                         onSettingsMenuClose={this.handleSettingsMenuClose}
-                        
                         onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
                         onTaskOptionsOpen={this.handleTaskOptionsOpen} openTaskOptionsId={this.props.openTaskOptionsId} 
                         onTaskOptionsCancel={this.handleTaskOptionsCancel}
-                        onTaskOpenTextInput={this.handleTaskOpenTextInput}/>
+                        onTaskOpenTextInput={this.handleTaskOpenTextInput}
+                        onTaskInspectorOpen={this.props.onTaskInspectorOpen}
+                        memberLookup={this.props.memberLookup}/>
                 </div>
                 
             )
@@ -168,6 +167,10 @@ class Project extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    handleBackArrowClick() {
+        this.props.onBackArrowClick();
     }
 
     handleRenewNowButtonClick(taskListWidgetId) {

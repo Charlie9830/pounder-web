@@ -5,6 +5,9 @@ import Calendar from './Calendar';
 import CommentPanel from './CommentPanel/CommentPanel';
 import TaskMetadata from './TaskMetadata';
 import MenuSubtitle from './MenuSubtitle';
+import MenuHeader from './MenuHeader';
+import { Tabs, Tab, TabList, TabPanel } from 'react-tabs'; 
+import '../assets/css/react-tabs/style.css';
 import '../assets/css/TaskInspector.css';
 import CrossIcon from '../assets/icons/CrossIcon.svg';
 import { updateTaskDueDateAsync, updateTaskPriorityAsync, updateTaskAssignedToAsync,
@@ -27,8 +30,8 @@ class TaskInspector extends React.Component {
         this.handlePaginateTaskCommentsRequest = this.handlePaginateTaskCommentsRequest.bind(this);
         this.handleNoteInputBlur = this.handleNoteInputBlur.bind(this);
         this.updateNote = this.updateNote.bind(this);
-        this.handleCloseButtonClick = this.handleCloseButtonClick.bind(this);
         this.handleTaskCommentDelete = this.handleTaskCommentDelete.bind(this);
+        this.handleMenuBackButtonClick = this.handleMenuBackButtonClick.bind(this);
     }
 
     render() {
@@ -45,51 +48,74 @@ class TaskInspector extends React.Component {
         });
 
         return (
-            <OverlayMenuContainer onOutsideChildBoundsClick={this.handleOutsideChildBoundsClick}>
+            <OverlayMenuContainer>
                 <div className="TaskInspector">
-                    <div className="TaskInspectorGrid">
-                        {/* Toolbar  */}
-                        <div className="TaskInspectorToolbarContainer">
-                            <img className="TaskInspectorCloseIcon" src={CrossIcon} onClick={this.handleCloseButtonClick} />
-                        </div>
+                    <MenuHeader onBackButtonClick={this.handleMenuBackButtonClick}/>
+                    <Tabs>
+                        <TabList>
+                            <Tab> Properties </Tab>
+                            <Tab> Comments </Tab>
+                            <Tab> Notes </Tab>
+                            <Tab> Info </Tab>
+                        </TabList>
+                        <TabPanel>
+                            {/* Calendar  */}
+                            <div className="TaskInspectorCalendarContainer">
+                                <MenuSubtitle text="Properties" showDivider={false} />
+                                <Calendar dueDate={dueDate} onNewDateSubmit={this.handleNewDateSubmit} projectMembers={selectedProjectMembers}
+                                    isHighPriority={isHighPriority} onPriorityToggleClick={this.handleTaskPriorityToggleClick}
+                                    onAssignToMember={this.handleAssignToMember} assignedTo={assignedTo} />
+                            </div>
 
-                        {/* Calendar  */}
-                        <div className="TaskInspectorCalendarContainer">
-                            <MenuSubtitle text="Properties" showDivider={false}/>
-                            <Calendar dueDate={dueDate} onNewDateSubmit={this.handleNewDateSubmit} projectMembers={selectedProjectMembers}
-                                isHighPriority={isHighPriority} onPriorityToggleClick={this.handleTaskPriorityToggleClick}
-                                onAssignToMember={this.handleAssignToMember} assignedTo={assignedTo} />
-                        </div>
+                        </TabPanel>
 
-                        {/* Comments  */}
-                        <div className="TaskInspectorCommentPanelContainer">
-                            <MenuSubtitle text="Comments" showDivider={false}/>
-                            <CommentPanel taskComments={this.props.taskComments} onNewComment={this.handleNewComment}
-                                isGettingTaskComments={this.props.isGettingTaskComments}
-                                onPaginateCommentsRequest={this.handlePaginateTaskCommentsRequest}
-                                isAllTaskCommentsFetched={this.props.isAllTaskCommentsFetched}
-                                onDeleteButtonClick={this.handleTaskCommentDelete} />
-                        </div>
+                        <TabPanel>
+                            {/* Comments  */}
+                            <div className="TaskInspectorCommentPanelContainer">
+                                <MenuSubtitle text="Comments" showDivider={false} />
+                                <CommentPanel taskComments={this.props.taskComments} onNewComment={this.handleNewComment}
+                                    isGettingTaskComments={this.props.isGettingTaskComments}
+                                    onPaginateCommentsRequest={this.handlePaginateTaskCommentsRequest}
+                                    isAllTaskCommentsFetched={this.props.isAllTaskCommentsFetched}
+                                    onDeleteButtonClick={this.handleTaskCommentDelete} />
+                            </div>
+                        </TabPanel>
 
-                        {/* Notes */}
-                        <div className="TaskInspectorNotesContainer">
-                            <MenuSubtitle text="Note" showDivider={false}/>
-                            <textarea className="TaskNotePanel" ref={this.noteInputTextAreaRef} onBlur={this.handleNoteInputBlur}
-                                defaultValue={note} placeholder="Add Details" />
-                        </div>
+                        <TabPanel>
+                            {/* Notes */}
+                            <div className="TaskInspectorNotesContainer">
+                                <MenuSubtitle text="Note" showDivider={false} />
+                                <textarea className="TaskNotePanel" ref={this.noteInputTextAreaRef} onBlur={this.handleNoteInputBlur}
+                                    defaultValue={note} placeholder="Add Details" />
+                            </div>
+                        </TabPanel>
+                        
 
-                        {/* Metadata */}
-                        <div className="TaskInspectorMetadataContainer">
-                            <MenuSubtitle text="Info" showDivider={false}/>
-                            <TaskMetadata metadata={metadata} />
-                        </div>
-                    </div>
+                        <TabPanel>
+
+                            {/* Metadata */}
+                            <div className="TaskInspectorMetadataContainer">
+                                <MenuSubtitle text="Info" showDivider={false} />
+                                <TaskMetadata metadata={metadata} />
+                            </div>
+                        </TabPanel>
+
+                        {/* 
+                        <div className="TaskInspectorGrid">
+                            <div className="TaskInspectorToolbarContainer">
+                                <img className="TaskInspectorCloseIcon" src={CrossIcon} onClick={this.handleCloseButtonClick} />
+                            </div>
+                        </div>  
+                    */} 
+                        
+                    </Tabs>
                 </div>
+
             </OverlayMenuContainer>
         )
     }
 
-    handleCloseButtonClick() {
+    handleMenuBackButtonClick() {
         this.props.dispatch(closeTaskInspectorAsync());
     }
 

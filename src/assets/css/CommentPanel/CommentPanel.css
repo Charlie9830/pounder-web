@@ -2,7 +2,7 @@
     display: grid;
     height: 450px;
     width: 100%;
-    grid-template-rows: [Comments]auto [Input]100px;
+    grid-template-rows: [Comments]auto [Input]50px;
 }
 
 .CommentPanelCommentsContainer {

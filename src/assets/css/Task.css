@@ -108,7 +108,10 @@
 }
 
 .TaskAssignee {
-  flex-shrink: 1;
+  grid-column: Assignee;
+  grid-row: 1;
+  justify-self: end;
+  align-self: end;
   display: flex;
   flex-direction: column;
   justify-content: center;

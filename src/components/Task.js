@@ -29,34 +29,21 @@ class Task extends React.Component {
 
         // Method Bindings.
         this.forwardOnTaskClick = this.forwardOnTaskClick.bind(this);
-        this.handleNewDateSubmit = this.handleNewDateSubmit.bind(this);
-        this.handlePriorityToggleClick = this.handlePriorityToggleClick.bind(this);
-        this.getTaskOrMetadata = this.getTaskOrMetadata.bind(this);
-        this.handleTaskMetadataCloseButtonClick = this.handleTaskMetadataCloseButtonClick.bind(this);
-        this.handleAssignToMember = this.handleAssignToMember.bind(this);
         this.getTaskAssigneeJSX = this.getTaskAssigneeJSX.bind(this);
-        this.getAssigneeDisplayName = this.getAssigneeDisplayName.bind(this);
+        this.handleTaskAssigneeClick = this.handleTaskAssigneeClick.bind(this);
+        this.getTaskIndicatorPanelJSX = this.getTaskIndicatorPanelJSX.bind(this);
+        this.getUnreadCommentsIndicatorJSX = this.getUnreadCommentsIndicatorJSX.bind(this);
+        this.handleTaskNoteIndicatorClick = this.handleTaskNoteIndicatorClick.bind(this);
+        
         this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
         this.handleTaskOptionsCancelButtonClick = this.handleTaskOptionsCancelButtonClick.bind(this);
         this.handleTaskOptionsMoveButtonClick = this.handleTaskOptionsMoveButtonClick.bind(this);
         this.determineTapTarget = this.determineTapTarget.bind(this);
+        this.getTaskOrOptions = this.getTaskOrOptions.bind(this);
     }
 
     componentDidMount() {
         var hammer = new Hammer(this.taskContainerRef.current, { domEvents: true });
-
-        // Press
-        hammer.on('press', event => {
-                if (this.props.isMetadataOpen === false) {
-                    // Open Metadata.
-                    this.props.onMetadataOpen(this.props.taskId);
-                }
-
-                else {
-                    // Close Metadata.
-                    this.props.onTaskMetadataCloseButtonClick();
-                }
-        })
 
         // Swipe
         hammer.on('swipe', event => {
@@ -73,36 +60,37 @@ class Task extends React.Component {
         })
         
         hammer.on('tap', event => {
-            switch(this.determineTapTarget(event.target)) {
+            switch (this.determineTapTarget(event.target)) {
                 case 'click-container':
-                if (event.tapCount === 1) {
-                    this.props.handleClick(this);
-                }
+                    if (event.tapCount === 1) {
+                        this.props.handleClick(this);
+                    }
 
-                if (event.tapCount >= 2) {
-                    this.props.onOpenTextInput(this);
-                }
-                break;
+                    if (event.tapCount >= 2) {
+                        this.props.onOpenTextInput(this);
+                    }
+                    break;
 
                 case 'due-date-container':
-                this.props.onDueDateClick(this.props.taskId);
-                break;
+                    this.props.onTaskInspectorOpen(this.props.taskId);
+
+                    break;
 
                 case 'checkbox-container':
-                this.props.onTaskCheckBoxClick(this.props.taskId, !this.props.isComplete, this.props.isComplete, this.props.metadata);
-                break;
+                    this.props.onTaskCheckBoxClick(this.props.taskId, !this.props.isComplete, this.props.isComplete, this.props.metadata);
+                    break;
 
                 case 'assignee':
-                this.props.onDueDateClick(this.props.taskId);
-                break;
+                    this.props.onDueDateClick(this.props.taskId);
+                    break;
 
                 case 'task-assignee-container':
-                this.props.handleClick(this);
-                break;
+                    this.props.handleClick(this);
+                    break;
 
                 default:
-                break;
-                
+                    break;
+
             }
         })
 
@@ -117,14 +105,14 @@ class Task extends React.Component {
 
 
     render() {
-        var taskOrMetadata = this.getTaskOrMetadata();
+        var taskOrOptions = this.getTaskOrOptions();
 
         return (
             <div ref={this.taskContainerRef} className="TaskContainer" data-isselected={this.props.isSelected} data-ismoving={this.props.isMoving}
                 data-ismetadataopen={this.props.isMetadataOpen}>
                 <div className="TaskTransitionArea">
                     <TransitionGroup enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
-                        {taskOrMetadata}
+                        {taskOrOptions}
                     </TransitionGroup>
                 
                 </div>
@@ -134,30 +122,60 @@ class Task extends React.Component {
     }
 
     getTaskAssigneeJSX() {
-        if (this.props.assignedTo !== -1) {
-            var displayName = this.getAssigneeDisplayName(this.props.assignedTo);
-
+        if (this.props.assignedToDisplayName !== "") {
             return (
-                <div className="TaskAssigneeContainer" data-ishighpriority={this.props.isHighPriority} ref={this.taskAssigneeContainerInnerRef}>
-                    <div className="TaskAssignee" ref={this.props.taskAssigneeInnerRef}>
-                        <div className="TaskAssigneeDisplayName"> {displayName} </div>
-                    </div>
+                <div className="TaskAssignee" onClick={this.handleTaskAssigneeClick}>
+                    <div className="TaskAssigneeDisplayName"> {this.props.assignedToDisplayName} </div>
                 </div>
             )
         }
     }
 
-    getAssigneeDisplayName(userId) {
-        var member = this.props.projectMembers.find(item => {
-            return item.userId === userId;
-        })
+    getTaskIndicatorPanelJSX() {
+        var taskAssigneeJSX = this.getTaskAssigneeJSX();
+        var unreadCommentsIndicatorJSX = this.getUnreadCommentsIndicatorJSX();
+        var noteIndicatorJSX = this.getNoteIndicatorJSX();
 
-        if (member !== undefined) {
-            return member.displayName;
+        return (
+            <div className="TaskIndicatorPanelContainer" data-ishighpriority={this.props.isHighPriority}
+                onClick={this.forwardOnTaskClick} onTouchStart={this.handleTaskTouchStart}>
+                {taskAssigneeJSX}
+                {unreadCommentsIndicatorJSX}
+                {noteIndicatorJSX}
+            </div>
+        )
+    }
+
+    getUnreadCommentsIndicatorJSX() {
+        if (this.props.hasUnseenComments === true) {
+            return (
+                <img className="UnreadTaskCommentsIndicator" src={NewCommentsIcon} onClick={this.handleUnreadCommentsIndicatorClick}/>
+            )
         }
     }
 
-    getTaskOrMetadata() {
+    getNoteIndicatorJSX() {
+        if (this.props.note !== undefined && this.props.note.length > 0) {
+            return (
+                <img className="TaskNoteIndicator" src={HasNotesIcon} onClick={this.handleTaskNoteIndicatorClick}/>
+            )
+        }
+    }
+
+    handleTaskNoteIndicatorClick(e) {
+        this.props.onTaskInspectorOpen(this.props.taskId);
+    }
+
+    handleUnreadCommentsIndicatorClick(e) {
+        this.props.onTaskInspectorOpen(this.props.taskId);
+    }
+
+    handleTaskAssigneeClick(e) {
+        this.props.onTaskInspectorOpen(this.props.taskId);
+    }
+
+
+    getTaskOrOptions() {
         if (this.props.isOptionsOpen) {
             return (
                 <CSSTransition classNames="OptionsTransitionItem" timeout={150} mountOnEnter={true} unmountOnExit={true}
@@ -182,7 +200,7 @@ class Task extends React.Component {
             
         }
 
-        else if (this.props.isMetadataOpen !== true) {
+        else {
             var taskAssigneeJSX = this.getTaskAssigneeJSX();
 
             return (
@@ -210,17 +228,6 @@ class Task extends React.Component {
                             </div>
                         </div>
                         {taskAssigneeJSX}
-                    </div>
-                </CSSTransition>
-            )
-        }
-
-        else {
-            return (
-                <CSSTransition classNames="MetadataTransitionItem" timeout={250} mountOnEnter={true} unmountOnExit={true}
-                 key="metadata">
-                    <div>
-                        <TaskMetadata metadata={this.props.metadata} onCloseButtonClick={this.handleTaskMetadataCloseButtonClick}/>
                     </div>
                 </CSSTransition>
             )

@@ -25,16 +25,12 @@ class Project extends React.Component {
         this.handleTaskTwoFingerTouch = this.handleTaskTwoFingerTouch.bind(this);
         this.handleTaskListSettingsChanged = this.handleTaskListSettingsChanged.bind(this);
         this.handleDueDateClick = this.handleDueDateClick.bind(this);
-        this.handleNewDateSubmit = this.handleNewDateSubmit.bind(this);
         this.handleTaskListSettingsButtonClick = this.handleTaskListSettingsButtonClick.bind(this);
-        this.handleTaskPriorityToggleClick = this.handleTaskPriorityToggleClick.bind(this);
+
         this.handleTaskListJumpMenuItemClick = this.handleTaskListJumpMenuItemClick.bind(this);
         this.handleTaskListJumpMenuButtonClick = this.handleTaskListJumpMenuButtonClick.bind(this);
         this.getProjectMessageDisplayJSX = this.getProjectMessageDisplayJSX.bind(this);
-        this.handleBackArrowClick = this.handleBackArrowClick.bind(this);
-        this.handleTaskMetadataCloseButtonClick = this.handleTaskMetadataCloseButtonClick.bind(this);
-        this.handleTaskMetadataOpen = this.handleTaskMetadataOpen.bind(this);
-        this.handleAssignToMember = this.handleAssignToMember.bind(this);
+
         this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
         this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
         this.handleTaskOptionsOpen = this.handleTaskOptionsOpen.bind(this);
@@ -112,19 +108,19 @@ class Project extends React.Component {
                         taskListWidgetId={item.uid} isFocused={isFocused} taskListName={item.taskListName}
                         tasks={tasks} selectedTaskId={selectedTaskId} openTaskInputId={openTaskInputId}
                         onWidgetClick={this.handleWidgetClick} movingTaskId={movingTaskId}
-                        onRemoveButtonClick={this.handleTaskListWidgetRemoveButtonClick} openMetadataId={openMetadataId}
+                        onRemoveButtonClick={this.handleTaskListWidgetRemoveButtonClick}
                         onHeaderPress={this.handleWidgetHeaderPress}
                         onHeaderDoubleClick={this.handleWidgetHeaderDoubleClick}
                         onTaskClick={this.handleTaskClick} onTaskCheckBoxClick={this.handleTaskCheckBoxClick}
                         onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch} settings={taskListSettings}
                         onSettingsChanged={this.handleTaskListSettingsChanged} onDueDateClick={this.handleDueDateClick}
-                        openCalendarId={this.props.openCalendarId} onNewDateSubmit={this.handleNewDateSubmit}
+                        
                         onTaskListSettingsButtonClick={this.handleTaskListSettingsButtonClick}
                         openTaskListSettingsMenuId={this.props.openTaskListSettingsMenuId} projectMembers={this.props.projectMembers}
-                        onTaskMetadataOpen={this.handleTaskMetadataOpen} disableAnimations={this.props.disableAnimations}
-                        onTaskPriorityToggleClick={this.handleTaskPriorityToggleClick}
-                        onAssignToMember={this.handleAssignToMember} onSettingsMenuClose={this.handleSettingsMenuClose}
-                        onTaskMetadataCloseButtonClick={this.handleTaskMetadataCloseButtonClick}
+                        disableAnimations={this.props.disableAnimations}
+                        
+                        onSettingsMenuClose={this.handleSettingsMenuClose}
+                        
                         onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
                         onTaskOptionsOpen={this.handleTaskOptionsOpen} openTaskOptionsId={this.props.openTaskOptionsId} 
                         onTaskOptionsCancel={this.handleTaskOptionsCancel}
@@ -248,9 +244,6 @@ class Project extends React.Component {
         this.props.onTaskOptionsDeleteButtonClick(taskId);
     }
 
-    handleBackArrowClick() {
-        this.props.onBackArrowClick();
-    }
 
     handleSettingsMenuClose() {
         this.props.onSettingsMenuClose();
@@ -260,17 +253,7 @@ class Project extends React.Component {
         this.props.onTaskListJumpMenuButtonClick();
     }
 
-    handleAssignToMember(newUserId, oldUserId, taskId) {
-        this.props.onAssignToMember(newUserId, oldUserId, taskId);
-    }
 
-    handleTaskMetadataOpen(taskListWidgetId, taskId) {
-        this.props.onTaskMetadataOpen(taskListWidgetId, taskId);
-    }
-
-    handleTaskMetadataCloseButtonClick() {
-        this.props.onTaskMetadataCloseButtonClick();
-    }
 
     getProjectMessageDisplayJSX(taskListWidgetCount) {
         // User not Logged in.
@@ -305,11 +288,6 @@ class Project extends React.Component {
 
     }
     
-
-    handleTaskPriorityToggleClick(taskId, newValue, oldValue, currentMetadata) {
-        this.props.onTaskPriorityToggleClick(taskId, newValue, oldValue, currentMetadata);
-    }
-
     handleTaskListSettingsButtonClick(taskListWidgetId) {
         this.props.onTaskListSettingsButtonClick(this.props.projectId, taskListWidgetId);
     }
@@ -357,10 +335,6 @@ class Project extends React.Component {
 
     handleTaskListSettingsChanged(taskListWidgetId, newTaskListSettings, closeMenu) {
         this.props.onTaskListSettingsChanged(this.props.projectId, taskListWidgetId, newTaskListSettings, closeMenu);
-    }
-
-    handleNewDateSubmit(taskListWidgetId, taskId, newDate, oldDate, currentMetadata) {
-        this.props.onNewDateSubmit(this.props.projectId, taskListWidgetId, taskId, newDate, oldDate, currentMetadata);
     }
 }
 

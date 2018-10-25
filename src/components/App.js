@@ -5,6 +5,7 @@ import Project from './Project';
 import MessageBox from './MessageBox';
 import VisibleSnackbar from './Snackbar';
 import FloatingTextInput from './FloatingTextInput';
+import VisibleTaskInspector from './TaskInspector';
 import '../assets/css/TaskListWidget.css';
 import '../assets/css/Sidebar.css';
 import '../assets/css/Project.css';
@@ -23,7 +24,7 @@ setMessageBox, attachAuthListenerAsync, denyProjectInviteAsync, postSnackbarMess
 selectProject, setOpenTaskOptionsId, setShowOnlySelfTasks, addNewTaskWithNameAsync,
 setOpenTaskListWidgetHeaderId, updateTaskAssignedToAsync, closeMetadata, addNewProjectWithNameAsync,
 setIsSidebarOpen, cancelTaskMove, setShowCompletedTasksAsync, setIsProjectMenuOpen, renewChecklistAsync,
-unsubscribeFromDatabaseAsync, } from 'handball-libs/libs/pounder-redux/action-creators';
+unsubscribeFromDatabaseAsync, openTaskInspectorAsync } from 'handball-libs/libs/pounder-redux/action-creators';
 
 class App extends React.Component {
   constructor(props) {
@@ -88,6 +89,9 @@ class App extends React.Component {
     this.handleProjectMenuClose = this.handleProjectMenuClose.bind(this);
     this.handleProjectMenuOpen = this.handleProjectMenuOpen.bind(this);
     this.handleRenewNowButtonClick = this.handleRenewNowButtonClick.bind(this);
+    this.dispatchOpenTaskInfo = this.dispatchOpenTaskInfo.bind(this);
+    this.getTaskInspectorJSX = this.getTaskInspectorJSX.bind(this);
+    this.handleTaskInspectorOpen = this.handleTaskInspectorOpen.bind(this);
     
   }
 
@@ -121,11 +125,13 @@ class App extends React.Component {
     var disableAnimations = this.props.generalConfig.disableAnimations === undefined ? false :
      this.props.generalConfig.disableAnimations;
     var floatingTextInputJSX = this.getFloatingTextInputJSX(disableAnimations);
+    var taskInspectorJSX = this.getTaskInspectorJSX();
     
 
     return (
       <div>
         <VisibleSnackbar />
+        {taskInspectorJSX}
 
         {floatingTextInputJSX}
 
@@ -209,9 +215,22 @@ class App extends React.Component {
               onProjectMenuOpen={this.handleProjectMenuOpen}
               onProjectMenuClose={this.handleProjectMenuClose}
               isProjectMenuOpen={this.props.isProjectMenuOpen}
+              onTaskInspectorOpen={this.handleTaskInspectorOpen}
             />
           </div>
         </CSSTransition>
+      )
+    }
+  }
+
+  handleTaskInspectorOpen(taskId) {
+    this.props.dispatch(openTaskInspectorAsync(taskId));
+  }
+
+  getTaskInspectorJSX() {
+    if (this.props.openTaskInspectorId !== -1) {
+      return (
+        <VisibleTaskInspector/>
       )
     }
   }

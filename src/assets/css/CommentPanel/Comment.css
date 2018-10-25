@@ -1,0 +1,72 @@
+.CommentContainer {
+    width: 100%;
+    font-family: var(--primary-font-family);
+    font-size: 9pt;
+    display: grid;
+    grid-template-rows: [Header]1fr [Text]1fr;
+    grid-row-gap: 3px;
+    margin: 0px 10px 15px 5px;
+}
+
+.CommentContainer[data-isunread*="true"] {
+    border-left-width: 6px;
+    border-left-color: rgb(76, 76, 200);
+    border-left-style: solid;
+}
+
+.CommentGrid {
+    display: grid;
+    width: 100%;
+    grid-template-rows: [Header] 35px [Text] 1fr;
+}
+
+.CommentHeaderContainer {
+    grid-row: Header;
+}
+
+.CommentTextContainer {
+    grid-row: Text;
+}
+
+.CommentText {
+    color: var(--primary-active-text-color);
+    user-select: text;
+}
+
+.CommentHeaderGrid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: [DisplayName] 1fr [TimeAgo]1fr [DeleteButton] auto;
+}
+
+.CommentDisplayNameContainer {
+    grid-column: DisplayName;
+}
+
+.CommentDisplayName {
+    color: var(--alternate-inactive-text-color);
+}
+
+.CommentTimeAgoContainer {
+    grid-column: TimeAgo;
+    justify-self: end;
+}
+
+.CommentTimeAgoContainer {
+    color: var(--alternate-inactive-text-color);
+}
+
+.CommentDeleteButtonContainer {
+    grid-column: DeleteButton;
+    justify-self: end;
+    cursor: default;
+    width: 16px;
+    height: 16px;
+    padding-left: 10px;
+}
+
+.CommentDeleteButton {
+    color: var(--primary-inactive-text-color);
+    user-select: none;
+}
+

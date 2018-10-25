@@ -127,6 +127,20 @@
   cursor: default;
 }
 
+.TaskIndicatorPanelContainer {
+  width: 100%;
+  height: fit-content;
+  display: grid;
+  grid-template-columns: [Note]min-content [Comments]min-content [Assignee]1fr;
+}
+
+.TaskIndicatorPanelContainer[data-ishighpriority*="true"] {
+  border-left-width: 6px;
+  border-left-style: solid;
+  border-left-color: var(--important-color);
+  box-sizing: border-box;
+}
+
 .TaskTransitionArea {
   width: 100%;
   height: 100%;
@@ -364,6 +378,30 @@
   width: 20px;
   height: 40px;
   padding-right: 5px; /* Shares the divide with TaskTextContainer */
+}
+
+.UnreadTaskCommentsIndicator {
+  grid-column: Comments;
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
+  width: 15px;
+  height: 15px;
+  padding-left: 5px;
+  padding-bottom: 5px;
+}
+
+.TaskNoteIndicator {
+  grid-column: Note;
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
+  width: 15px;
+  height: 15px;
+  color: white;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  opacity: 0.5;
 }
 
 

@@ -201,14 +201,14 @@ class Sidebar extends React.Component{
 
     projectMapper(item, index) {
         var isSelected = this.props.selectedProjectId === item.uid;
-        var dueDateDisplay = this.props.projectSelectorDueDateDisplays[item.uid];
+        var projectIndicators = this.props.projectSelectorIndicators[item.uid];
         var isFavouriteProject = this.props.favouriteProjectId === item.uid;
 
         return (
             <CSSTransition key={item.uid} timeout={250} classNames="ProjectSelectorContainer">
                 <ProjectSelector key={index} projectSelectorId={item.uid} projectName={item.projectName} isSelected={isSelected}
                     onClick={this.handleProjectSelectorClick} onDoubleClick={this.handleProjectSelectorDoubleClick}
-                    dueDateDisplay={dueDateDisplay}
+                    projectIndicators={projectIndicators}
                     isFavouriteProject={isFavouriteProject} />
             </CSSTransition>
         )

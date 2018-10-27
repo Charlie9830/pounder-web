@@ -61,7 +61,6 @@ class TaskInspector extends React.Component {
                         <TabPanel>
                             {/* Calendar  */}
                             <div className="TaskInspectorCalendarContainer">
-                                <MenuSubtitle text="Properties" showDivider={false} />
                                 <Calendar dueDate={dueDate} onNewDateSubmit={this.handleNewDateSubmit} projectMembers={selectedProjectMembers}
                                     isHighPriority={isHighPriority} onPriorityToggleClick={this.handleTaskPriorityToggleClick}
                                     onAssignToMember={this.handleAssignToMember} assignedTo={assignedTo} />
@@ -72,19 +71,18 @@ class TaskInspector extends React.Component {
                         <TabPanel>
                             {/* Comments  */}
                             <div className="TaskInspectorCommentPanelContainer">
-                                <MenuSubtitle text="Comments" showDivider={false} />
                                 <CommentPanel taskComments={this.props.taskComments} onNewComment={this.handleNewComment}
                                     isGettingTaskComments={this.props.isGettingTaskComments}
                                     onPaginateCommentsRequest={this.handlePaginateTaskCommentsRequest}
                                     isAllTaskCommentsFetched={this.props.isAllTaskCommentsFetched}
-                                    onDeleteButtonClick={this.handleTaskCommentDelete} />
+                                    onDeleteButtonClick={this.handleTaskCommentDelete}
+                                    />
                             </div>
                         </TabPanel>
 
                         <TabPanel>
                             {/* Notes */}
                             <div className="TaskInspectorNotesContainer">
-                                <MenuSubtitle text="Note" showDivider={false} />
                                 <textarea className="TaskNotePanel" ref={this.noteInputTextAreaRef} onBlur={this.handleNoteInputBlur}
                                     defaultValue={note} placeholder="Add Details" />
                             </div>
@@ -95,7 +93,6 @@ class TaskInspector extends React.Component {
 
                             {/* Metadata */}
                             <div className="TaskInspectorMetadataContainer">
-                                <MenuSubtitle text="Info" showDivider={false} />
                                 <TaskMetadata metadata={metadata} />
                             </div>
                         </TabPanel>

@@ -1,8 +1,8 @@
 .TaskInspector {
     position: relative;
     background: var(--surface-color-alternate);
-    border: 1px solid gray;
     height: 100vh;
+    overflow-y: scroll;
 }
 
 .TaskInspectorCalendarContainer {
@@ -12,15 +12,23 @@
 }
 
 .TaskInspectorNotesContainer {
+    position: fixed;
+    top: 80px;
+    bottom: 10px;
+    left: 0px;
+    right: 0px;
+    padding: 10px;
 }
 
 .TaskInspectorMetadataContainer {
 }
 
 .TaskNotePanel {
+    height: 100%;
+    width: 100%;
     background: var(--surface-color-alternate);
     color: var(--primary-active-text-color);
     font-family: var(--primary-font-family);
     resize: none;
-    margin: 0px 10px 10px 10px;
+    border: none;
 }

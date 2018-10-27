@@ -1,6 +1,7 @@
 .CommentPanelGrid {
+    position: relative;
     display: grid;
-    height: 450px;
+    height: 100%;
     width: 100%;
     grid-template-rows: [Comments]auto [Input]50px;
 }
@@ -19,7 +20,6 @@
     justify-content: flex-start;
     align-items: flex-start;
     align-content: flex-start;
-    border: 1px solid gray;
 }
 
 .CommentPanelSpinnerContainer {
@@ -30,6 +30,12 @@
 .CommentPanelInputContainer {
     grid-row: Input;
     width: 100%;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    padding-bottom: 10px;
+    background: var(--surface-color-alternate);
 }
 
 .CommentPanelNote {

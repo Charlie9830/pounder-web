@@ -221,7 +221,6 @@ class App extends React.Component {
   }
 
   handleMoveTaskListToProject(sourceProjectId, targetProjectId, taskListWidgetId) {
-    console.log("%s  :  %s  :  %s", sourceProjectId, targetProjectId, taskListWidgetId );
     if (targetProjectId !== "-1") {
       var projectName = this.props.projects.find(item => {
         return item.uid === targetProjectId;

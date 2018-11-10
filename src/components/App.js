@@ -24,7 +24,8 @@ setMessageBox, attachAuthListenerAsync, denyProjectInviteAsync, postSnackbarMess
 selectProject, setOpenTaskOptionsId, setShowOnlySelfTasks, addNewTaskWithNameAsync,
 setOpenTaskListWidgetHeaderId, updateTaskAssignedToAsync, closeMetadata, addNewProjectWithNameAsync,
 setIsSidebarOpen, cancelTaskMove, setShowCompletedTasksAsync, setIsProjectMenuOpen, renewChecklistAsync,
-unsubscribeFromDatabaseAsync, openTaskInspectorAsync, openTaskInfo, getTaskCommentsAsync } from 'handball-libs/libs/pounder-redux/action-creators';
+unsubscribeFromDatabaseAsync, openTaskInspectorAsync, openTaskInfo, getTaskCommentsAsync,
+moveTaskListToProjectAsync } from 'handball-libs/libs/pounder-redux/action-creators';
 
 class App extends React.Component {
   constructor(props) {
@@ -86,6 +87,8 @@ class App extends React.Component {
     this.getTaskInspectorJSX = this.getTaskInspectorJSX.bind(this);
     this.handleTaskInspectorOpen = this.handleTaskInspectorOpen.bind(this);
     this.handleBackArrowClick = this.handleBackArrowClick.bind(this);
+    this.handleMoveTaskListToProject = this.handleMoveTaskListToProject.bind(this);
+    
   }
 
   componentDidMount() {
@@ -178,7 +181,7 @@ class App extends React.Component {
               movingTaskId={this.props.movingTaskId} focusedTaskListId={this.props.focusedTaskListId}
               projectId={this.props.selectedProjectId} onTaskListWidgetRemoveButtonClick={this.handleTaskListWidgetRemoveButtonClick}
               onTaskListWidgetFocusChanged={this.handleTaskListWidgetFocusChange}
-              isLoggedIn={this.props.isLoggedIn}
+              isLoggedIn={this.props.isLoggedIn} projects={this.props.projects}
               onTaskCheckBoxClick={this.handleTaskCheckBoxClick} onTaskMoved={this.handleTaskMoved}
               onAddTaskButtonClick={this.handleAddTaskButtonClick} onRemoveTaskButtonClick={this.handleRemoveTaskButtonClick}
               onAddTaskListButtonClick={this.handleAddTaskListButtonClick} onRemoveTaskListButtonClick={this.handleRemoveTaskListButtonClick}
@@ -209,10 +212,29 @@ class App extends React.Component {
               onTaskInspectorOpen={this.handleTaskInspectorOpen}
               onBackArrowClick={this.handleBackArrowClick}
               memberLookup={this.props.memberLookup}
+              onMoveTaskListToProject={this.handleMoveTaskListToProject}
             />
           </div>
         </CSSTransition>
       )
+    }
+  }
+
+  handleMoveTaskListToProject(sourceProjectId, targetProjectId, taskListWidgetId) {
+    console.log("%s  :  %s  :  %s", sourceProjectId, targetProjectId, taskListWidgetId );
+    if (targetProjectId !== "-1") {
+      var projectName = this.props.projects.find(item => {
+        return item.uid === targetProjectId;
+      }).projectName;
+
+      this.props.dispatch(setMessageBox(true, `Are you sure you want to move this list to ${projectName}`,
+        MessageBoxTypes.STANDARD, null, result => {
+          this.props.dispatch(setMessageBox(false));
+
+          if (result === "ok") {
+            this.props.dispatch(moveTaskListToProjectAsync(sourceProjectId, targetProjectId, taskListWidgetId));
+          }
+        }))
     }
   }
 

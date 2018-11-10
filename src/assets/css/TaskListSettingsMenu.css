@@ -59,7 +59,7 @@
 .TaskListSettingsMenuContainer {
     display: grid;
     position: relative;
-    grid-template-rows: [MenuHeader]min-content [SortingOptions]auto [ChecklistOptions]1fr;
+    grid-template-rows: [MenuHeader]min-content [SortingOptions]auto [MoveToProject]auto [ChecklistOptions]1fr;
     width: 100%;
     height: 100vh;
     background: var(--surface-color-alternate);
@@ -79,6 +79,10 @@
 
 .TaskListSettingsSortingOptionsHeaderContainer {
     grid-column: Left / span 2;
+}
+
+.TaskListSettingsMoveToContainer {
+    grid-row: MoveToProject;
 }
 
 .TaskListSettingsChecklistOptionsContainer {
@@ -133,4 +137,11 @@
     width: 135px;
     margin-left: 20px;
     border-bottom: 0px rgb(65, 65, 65) solid;
+}
+
+.MoveToProjectsSelector {
+    margin: 5px 0px 10px 10px;
+    color: var(--primary-active-text-color);
+    background: var(--surface-color-alternate);
+    min-width: 135px;
 }

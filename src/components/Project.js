@@ -26,7 +26,6 @@ class Project extends React.Component {
         this.handleTaskListSettingsChanged = this.handleTaskListSettingsChanged.bind(this);
         this.handleDueDateClick = this.handleDueDateClick.bind(this);
         this.handleTaskListSettingsButtonClick = this.handleTaskListSettingsButtonClick.bind(this);
-
         this.handleTaskListJumpMenuItemClick = this.handleTaskListJumpMenuItemClick.bind(this);
         this.handleTaskListJumpMenuButtonClick = this.handleTaskListJumpMenuButtonClick.bind(this);
         this.getProjectMessageDisplayJSX = this.getProjectMessageDisplayJSX.bind(this);
@@ -123,7 +122,9 @@ class Project extends React.Component {
                         onTaskOptionsCancel={this.handleTaskOptionsCancel}
                         onTaskOpenTextInput={this.handleTaskOpenTextInput}
                         onTaskInspectorOpen={this.props.onTaskInspectorOpen}
-                        memberLookup={this.props.memberLookup}/>
+                        memberLookup={this.props.memberLookup}
+                        projects={this.props.projects} projectId={this.props.projectId}
+                        onMoveTaskListToProject={this.props.onMoveTaskListToProject}/>
                 </div>
                 
             )

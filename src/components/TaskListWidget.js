@@ -35,6 +35,7 @@ class TaskListWidget extends React.Component {
         this.taskSortAssigneeHelper = this.taskSortAssigneeHelper.bind(this);
         this.taskSortDueDateHelper = this.taskSortDueDateHelper.bind(this);
         this.handleTaskInspectorOpen = this.handleTaskInspectorOpen.bind(this);
+        this.handleMoveTaskListToProject = this.handleMoveTaskListToProject.bind(this);
     }
 
     componentDidMount(){
@@ -105,7 +106,8 @@ class TaskListWidget extends React.Component {
                  onRemoveButtonClick={this.handleRemoveButtonClick} isSettingsMenuOpen={isSettingsMenuOpen}
                  onTaskListSettingsChanged={this.handleTaskListSettingsChanged}
                  settings={this.props.settings} onSettingsButtonClick={this.handleSettingsButtonClick}
-                 onSettingsMenuClose={this.handleSettingsMenuClose}/>
+                 onSettingsMenuClose={this.handleSettingsMenuClose}
+                 projects={this.props.projects} onMoveTaskListToProject={this.handleMoveTaskListToProject}/>
                  <TaskArea>
                  <TransitionGroup enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
                      {builtTasks}
@@ -113,6 +115,10 @@ class TaskListWidget extends React.Component {
              </TaskArea>
             </div>
         )
+    }
+
+    handleMoveTaskListToProject(targetProjectId) {
+        this.props.onMoveTaskListToProject(this.props.projectId, targetProjectId, this.props.taskListWidgetId)
     }
 
     handleRenewNowButtonClick() {

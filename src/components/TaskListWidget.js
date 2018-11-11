@@ -107,7 +107,8 @@ class TaskListWidget extends React.Component {
                  onTaskListSettingsChanged={this.handleTaskListSettingsChanged}
                  settings={this.props.settings} onSettingsButtonClick={this.handleSettingsButtonClick}
                  onSettingsMenuClose={this.handleSettingsMenuClose}
-                 projects={this.props.projects} onMoveTaskListToProject={this.handleMoveTaskListToProject}/>
+                 projects={this.props.projects} onMoveTaskListToProject={this.handleMoveTaskListToProject}
+                 onRenewNowButtonClick={this.handleRenewNowButtonClick}/>
                  <TaskArea>
                  <TransitionGroup enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
                      {builtTasks}

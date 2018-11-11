@@ -213,6 +213,7 @@ class App extends React.Component {
               onBackArrowClick={this.handleBackArrowClick}
               memberLookup={this.props.memberLookup}
               onMoveTaskListToProject={this.handleMoveTaskListToProject}
+              onRenewNowButtonClick={this.handleRenewNowButtonClick}
             />
           </div>
         </CSSTransition>

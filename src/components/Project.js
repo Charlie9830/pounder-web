@@ -124,7 +124,8 @@ class Project extends React.Component {
                         onTaskInspectorOpen={this.props.onTaskInspectorOpen}
                         memberLookup={this.props.memberLookup}
                         projects={this.props.projects} projectId={this.props.projectId}
-                        onMoveTaskListToProject={this.props.onMoveTaskListToProject}/>
+                        onMoveTaskListToProject={this.props.onMoveTaskListToProject}
+                        onRenewNowButtonClick={this.handleRenewNowButtonClick}/>
                 </div>
                 
             )

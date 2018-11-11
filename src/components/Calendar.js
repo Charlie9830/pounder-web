@@ -56,7 +56,9 @@ class Calendar extends React.Component {
                             <div className="ShortcutItemContainer" data-grid-col="left" onClick={this.handleTodayItemClick}>
                                 <div className="CalendarShortcutItemLabel"> Today </div>
                             </div>
-                            <div className="ShortcutItemContainer" data-grid-col="right" onClick={this.handleTomorrowItemClick}>
+                            {/* Tomorrow uses onTouchEnd instead of Click because Hammer bleeds through from Task and triggers this event
+                            when the user is trying to open the inspector.  */} 
+                            <div className="ShortcutItemContainer" data-grid-col="right" onTouchEnd={this.handleTomorrowItemClick}>
                                 <div className="CalendarShortcutItemLabel"> Tomorrow </div>
                             </div>
                             <div className="ShortcutItemContainer" data-grid-col="left" onClick={this.handleOneWeekItemClick}>

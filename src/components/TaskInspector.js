@@ -125,6 +125,8 @@ class TaskInspector extends React.Component {
     handleNewDateSubmit(newDate, oldDate) {
         var taskId = this.props.openTaskInspectorId;
 
+        console.warn("Updating Task Due Date");
+
         this.props.dispatch(updateTaskDueDateAsync(taskId, newDate, oldDate));
         this.props.dispatch(closeTaskInspectorAsync());
     }

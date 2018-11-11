@@ -184,11 +184,6 @@
     width: 20px;
 }
 
-.ShortcutItemContainer:hover {
-    background: rgba(52,52,52,255);
-}
-
-
 .CalendarShortcutItemLabel {
     flex: 1;
     font-family: var(--primary-font-family);

@@ -2,7 +2,7 @@ import React from 'react';
 import '../assets/css/ProjectSelector.css';
 import Hammer from 'hammerjs';
 import FavoriteIcon from '../assets/icons/HeartIcon.svg';
-import HasUnseenCommentsIcon from '../assets/icons/HasCommentsIcon.svg';
+import NewCommentsIcon from '../assets/icons/NewCommentsIcon.svg';
 
 class ProjectSelector extends React.Component {
     constructor(props) {
@@ -89,7 +89,7 @@ class ProjectSelector extends React.Component {
     getHasUnseenCommentsIconJSX(props) {
         if (props.projectIndicators.hasUnseenComments) {
             return (
-                <img className="ProjectSelectorCommentsIcon" src={HasUnseenCommentsIcon}/>
+                <img className="ProjectSelectorCommentsIcon" src={NewCommentsIcon}/>
             )
         }
     }

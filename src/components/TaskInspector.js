@@ -47,6 +47,8 @@ class TaskInspector extends React.Component {
             return item.project === this.props.selectedProjectId
         });
 
+        console.log(this.props.isTaskCommentsPaginating);
+
         return (
             <OverlayMenuContainer>
                 <div className="TaskInspector">
@@ -76,6 +78,7 @@ class TaskInspector extends React.Component {
                                     onPaginateCommentsRequest={this.handlePaginateTaskCommentsRequest}
                                     isAllTaskCommentsFetched={this.props.isAllTaskCommentsFetched}
                                     onDeleteButtonClick={this.handleTaskCommentDelete}
+                                    isPaginating={this.props.isTaskCommentsPaginating}
                                     />
                             </div>
                         </TabPanel>
@@ -124,8 +127,6 @@ class TaskInspector extends React.Component {
 
     handleNewDateSubmit(newDate, oldDate) {
         var taskId = this.props.openTaskInspectorId;
-
-        console.warn("Updating Task Due Date");
 
         this.props.dispatch(updateTaskDueDateAsync(taskId, newDate, oldDate));
         this.props.dispatch(closeTaskInspectorAsync());
@@ -186,6 +187,7 @@ let mapStateToProps = state => {
         taskComments: state.taskComments,
         isGettingTaskComments: state.isGettingTaskComments,
         isAllTaskCommentsFetched: state.isAllTaskCommentsFetched,
+        isTaskCommentsPaginating: state.isTaskCommentsPaginating,
     }
 }
 

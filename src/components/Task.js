@@ -9,7 +9,6 @@ import Ink from 'react-ink';
 import '../assets/css/Task.css';
 import '../assets/css/TaskCheckBox.css'
 import NewCommentsIcon from '../assets/icons/NewCommentsIcon.svg';
-import HasCommentsIcon from '../assets/icons/HasCommentsIcon.svg';
 import HasNotesIcon from '../assets/icons/HasNotesIcon.svg';
 
 

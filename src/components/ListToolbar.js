@@ -81,7 +81,7 @@ class ListToolbar extends React.Component{
                 <CSSTransition classNames="TaskListSettingsTransition" timeout={250} key="0">
                     <OverlayMenuContainer onOutsideChildBoundsClick={this.handleSettingsMenuClose}>
                         <TaskListSettingsMenu settings={this.props.settings} onSettingsMenuClose={this.handleSettingsMenuClose}
-                            onSettingsChanged={this.handleTaskListSettingsChanged} projects={props.projects}
+                            onSettingsChanged={this.handleTaskListSettingsChanged} projects={props.projects} projectId={props.projectId}
                             onMoveTaskListToProject={props.onMoveTaskListToProject} onRenewNowButtonClick={this.handleRenewNowButtonClick} />
                     </OverlayMenuContainer>
                 </CSSTransition>

@@ -239,7 +239,6 @@ class App extends React.Component {
   }
 
   handleTaskInspectorOpen(taskId) {
-    console.warn(taskId);
     this.props.dispatch(openTaskInspectorAsync(taskId));
   }
 

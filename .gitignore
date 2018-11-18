@@ -6,9 +6,6 @@
 # testing
 /coverage
 
-# firebase
-/.firebase
-
 # production
 /build
 

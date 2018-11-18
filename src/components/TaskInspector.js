@@ -47,8 +47,6 @@ class TaskInspector extends React.Component {
             return item.project === this.props.selectedProjectId
         });
 
-        console.log(this.props.isTaskCommentsPaginating);
-
         return (
             <OverlayMenuContainer>
                 <div className="TaskInspector">

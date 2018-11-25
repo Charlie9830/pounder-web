@@ -11,6 +11,12 @@ import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import EyeOpenIcon from '../assets/icons/EyeOpenIcon.svg';
 import EyeClosedIcon from '../assets/icons/EyeClosedIcon.svg';
 
+
+import { Button, Typography, ListItem, List, Paper } from '@material-ui/core';
+
+import AddIcon from '@material-ui/icons/Add';
+
+
 class Project extends React.Component {
     constructor(props){
         super(props);
@@ -37,8 +43,6 @@ class Project extends React.Component {
         this.handleShowOnlySelfTasksChanged = this.handleShowOnlySelfTasksChanged.bind(this);
         this.getToolbarButtonEnableStates = this.getToolbarButtonEnableStates.bind(this);
         this.handleTaskOpenTextInput = this.handleTaskOpenTextInput.bind(this);
-        this.getProjectMenuJSX = this.getProjectMenuJSX.bind(this);
-        this.handleProjectMenuButtonClick = this.handleProjectMenuButtonClick.bind(this);
         this.handleShowCompletedTasksClick = this.handleShowCompletedTasksClick.bind(this);
         this.handleRenewNowButtonClick = this.handleRenewNowButtonClick.bind(this);
     }
@@ -101,8 +105,8 @@ class Project extends React.Component {
 
             var movingTaskId = item.uid === this.props.sourceTaskListId ? this.props.movingTaskId : -1;
 
-            return (
-                <div key={index} className="TaskListWidgetContainer">
+            let taskListWidget = () => {
+                return (
                     <TaskListWidget ref={item.uid}
                         taskListWidgetId={item.uid} isFocused={isFocused} taskListName={item.taskListName}
                         tasks={tasks} selectedTaskId={selectedTaskId} openTaskInputId={openTaskInputId}
@@ -126,47 +130,65 @@ class Project extends React.Component {
                         projects={this.props.projects} projectId={this.props.projectId}
                         onMoveTaskListToProject={this.props.onMoveTaskListToProject}
                         onRenewNowButtonClick={this.handleRenewNowButtonClick}/>
-                </div>
-                
+                )
+            }
+
+            return (
+                <ListItem key={item.uid} component={taskListWidget}/>
             )
         });
 
         var projectMessageDisplayJSX = this.getProjectMessageDisplayJSX(filteredTaskListWidgets.length);
         var toolbarButtonEnableStates = this.getToolbarButtonEnableStates();
-        var projectMenuJSX = this.getProjectMenuJSX();
+
+        
+        const extendedFabStyle = {
+            margin: 0,
+            top: 'auto',
+            right: 20,
+            bottom: 90,
+            left: 'auto',
+            position: 'fixed',
+        };
+
+        const fabStyle = {
+            margin: 0,
+            top: 'auto',
+            right: 20,
+            bottom: 20,
+            left: 'auto',
+            position: 'fixed',
+        };
+
+        
 
         return (
-            <div className="Project">       
-                {projectMenuJSX}
-                <div className="ProjectToolBar">
-                    <div className="ProjectHeaderContainer">
-                        <div className="ProjectHeaderBurgerButtonContainer" onClick={this.handleBackArrowClick}>
-                            <img className="ProjectHeaderBurgerButton" src={BurgerIcon} />
-                        </div>
-
-                        <div className="ProjectNameContainer">
-                            <div className="ProjectName">
-                                {this.props.projectName}
-                            </div>
-                        </div>
-
-                        <div className="ProjectHeaderMenuButtonContainer" onClick={this.handleProjectMenuButtonClick}>
-                            <img className="ProjectHeaderMenuButton" src={MenuIcon}/>
-                        </div>
-
-                    </div>
-                    
+            <div className="Project">
                     <ProjectToolBar onAddTaskButtonClick={this.handleAddTaskButtonClick} onAddTaskListButtonClick={this.handleAddTaskListButtonClick}
                         taskLists={filteredTaskListWidgets} onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick}
                         onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick} isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen}
                         onShowOnlySelfTasksChanged={this.handleShowOnlySelfTasksChanged}
                         showOnlySelfTasks={this.props.showOnlySelfTasks}
-                        isRemote={this.props.isRemote} buttonEnableStates={toolbarButtonEnableStates}/>
-                </div>
-                <div className="TaskListsContainer">
-                    {projectMessageDisplayJSX}
-                    {taskListWidgets}
-                </div>
+                        isRemote={this.props.isRemote} buttonEnableStates={toolbarButtonEnableStates}
+                        projectName={this.props.projectName} showCompletedTasks={this.props.showCompletedTasks} />
+
+                    <List>
+                        {taskListWidgets}
+
+                        <Button variant="text" color="secondary" onClick={this.handleAddTaskListButtonClick}>
+                            <AddIcon/> Add new List
+                        </Button>
+                    </List>
+
+
+                    <Button variant="extendedFab" style={extendedFabStyle} size="small" onClick={this.handleAddTaskListButtonClick}>
+                        New List
+                    </Button>
+
+                    <Button variant="fab" style={fabStyle} onClick={this.handleAddTaskButtonClick}>
+                        <AddIcon />
+                    </Button>
+
             </div>
         )
     }
@@ -182,31 +204,6 @@ class Project extends React.Component {
     handleShowCompletedTasksClick() {
         this.props.onProjectMenuClose();
         this.props.onShowCompletedTasksClick();
-    }
-
-    handleProjectMenuButtonClick() {
-        this.props.onProjectMenuOpen();
-    }
-
-    getProjectMenuJSX() {
-        if (this.props.isProjectMenuOpen) {
-            var text = this.props.showCompletedTasks === true ? "Hide completed Tasks" : "Show completed Tasks";
-            var eyeIcon = this.props.showCompletedTasks === true ? EyeClosedIcon : EyeOpenIcon;
-
-            return (
-                <OverlayMenuContainer renderOverlay={false} onOutsideChildBoundsClick={() => { this.props.onProjectMenuClose() }}>
-                    <div className="ProjectMenuContainer">
-                        <div className="ProjectMenuContentGrid">
-                            <div className="ProjectMenuItem" onClick={this.handleShowCompletedTasksClick}>
-                                <img className="ProjectMenuItemIcon" src={eyeIcon} />
-                                <div className="ProjectMenuItemLabel"> {text} </div>
-                            </div>
-                        </div>
-                    </div>
-                </OverlayMenuContainer>
-            )
-        }
-        
     }
 
     handleTaskOpenTextInput(element, taskListWidgetId) {

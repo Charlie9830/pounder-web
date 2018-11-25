@@ -22,11 +22,6 @@
   flex-direction: column;
 }
 
-.TaskContainer[data-isselected*="true"] {
-  background-color: var(--task-selected-color);
-  transition: background-color 250ms ease;
-}
-
 .TaskContainer[data-ismoving*="true"] {
   background: rgba(63,63,180,255);
   transition: background-color 250ms ease;

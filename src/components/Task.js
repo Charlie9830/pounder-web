@@ -2,10 +2,7 @@ import React from 'react';
 import TaskText from './TaskText';
 import DueDate from './DueDate';
 import TaskCheckBox from './TaskCheckBox';
-import TaskMetadata from './TaskMetadata';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Hammer from 'hammerjs';
-import Ink from 'react-ink';
 import '../assets/css/Task.css';
 import '../assets/css/TaskCheckBox.css'
 import NewCommentsIcon from '../assets/icons/NewCommentsIcon.svg';
@@ -21,13 +18,13 @@ class Task extends React.Component {
         }
 
         // Refs.
-        this.inkCanvasRef = React.createRef();
         this.taskContainerRef = React.createRef();
         this.taskClickContainerRef = React.createRef();
         this.dueDateContainerRef = React.createRef();
         this.taskCheckboxContainerRef = React.createRef();
         this.taskAssigneeRef = React.createRef();
         this.taskAssigneeContainerRef = React.createRef()
+        this.taskIndicatorPanelRef = React.createRef();
 
         // Method Bindings.
         this.forwardOnTaskClick = this.forwardOnTaskClick.bind(this);
@@ -40,15 +37,19 @@ class Task extends React.Component {
         this.handleTaskOptionsDeleteButtonClick = this.handleTaskOptionsDeleteButtonClick.bind(this);
         this.handleTaskOptionsCancelButtonClick = this.handleTaskOptionsCancelButtonClick.bind(this);
         this.handleTaskOptionsMoveButtonClick = this.handleTaskOptionsMoveButtonClick.bind(this);
-        this.determineTapTarget = this.determineTapTarget.bind(this);
-        this.getTaskOrOptions = this.getTaskOrOptions.bind(this);
+        this.handleTap = this.handleTap.bind(this);
     }
 
     componentDidMount() {
-        var hammer = new Hammer(this.taskContainerRef.current, { domEvents: true });
+        let taskContainerHammer = new Hammer(this.taskContainerRef.current, { domEvents: true });
+        let taskCheckboxHammer = new Hammer(this.taskCheckboxContainerRef.current, { domEvents: true });
+        let taskTextContainerHammer = new Hammer(this.taskClickContainerRef.current, { domEvents: true });
+        let dueDateContainerHammer = new Hammer(this.dueDateContainerRef.current, { domEvents: true });
+        let taskIndicatorPanelHammer = new Hammer(this.taskIndicatorPanelRef.current, { domEvents: true });
+
 
         // Swipe
-        hammer.on('swipe', event => {
+        taskContainerHammer.on('swipe', event => {
             if (event.deltaX > 0 && event.deltaTime > 100) {
                 // Swipe Right
                 this.props.onTaskTwoFingerTouch(this.props.taskId);
@@ -61,68 +62,83 @@ class Task extends React.Component {
             }
         })
         
-        hammer.on('tap', event => {
-            switch (this.determineTapTarget(event.target)) {
-                case 'click-container':
-                    if (event.tapCount === 1) {
-                        this.props.handleClick(this);
-                    }
-
-                    if (event.tapCount >= 2) {
-                        this.props.onOpenTextInput(this);
-                    }
-                    break;
-
-                case 'due-date-container':
-                    this.props.onTaskInspectorOpen(this.props.taskId);
-
-                    break;
-
-                case 'checkbox-container':
-                    this.props.onTaskCheckBoxClick(this.props.taskId, !this.props.isComplete, this.props.isComplete, this.props.metadata);
-                    break;
-
-                case 'assignee':
-                    this.props.onDueDateClick(this.props.taskId);
-                    break;
-
-                case 'task-assignee-container':
-                    this.props.handleClick(this);
-                    break;
-
-                default:
-                    break;
-
-            }
+        // Checkbox Tap
+        taskCheckboxHammer.on('tap', event => {
+            this.props.onTaskCheckBoxClick(this.props.taskId, !this.props.isComplete, this.props.isComplete, this.props.metadata);
         })
 
-        hammer.get('tap').set({interval: 500})
+        // Click Container Tap or Double Tap
+        taskTextContainerHammer.on('tap', event => {
+            this.handleTap(event.tapCount);
+        })
+
+        // Due Date Circle Tap.
+        dueDateContainerHammer.on('tap', event => {
+            this.props.onTaskInspectorOpen(this.props.taskId);
+        })
+
+        // Indicator Panel Tap
+        taskIndicatorPanelHammer.on('tap', event => {
+            this.handleTap(event.tapCount);
+        })
+
+        taskContainerHammer.get('tap').set({interval: 500})
     }
+
 
     componentWillUnmount() {
         Hammer.off(this.taskContainerRef.current, 'press');
         Hammer.off(this.taskContainerRef.current, 'swipe');
         Hammer.off(this.taskContainerRef.current, 'tap');
+
+        Hammer.off(this.taskCheckboxContainerRef.current, 'tap');
+        Hammer.off(this.dueDateContainerRef.current, 'tap');
+        Hammer.off(this.taskIndicatorPanelRef.current, 'tap');
+        Hammer.off(this.taskClickContainerRef.current, 'tap');
     }
 
 
     render() {
-        var taskOrOptions = this.getTaskOrOptions();
+        var taskIndicatorPanelJSX = this.getTaskIndicatorPanelJSX();
 
         return (
-            <div ref={this.taskContainerRef} className="TaskContainer" data-isselected={this.props.isSelected} data-ismoving={this.props.isMoving}
+            <div ref={this.taskContainerRef} className="TaskContainer" data-ismoving={this.props.isMoving}
                 data-ismetadataopen={this.props.isMetadataOpen}>
-                <div className="TaskTransitionArea">
-                    <TransitionGroup enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
-                        {taskOrOptions}
-                    </TransitionGroup>
-                
+
+                <div className="Task" data-ishighpriority={this.props.isHighPriority} data-iscomplete={this.props.isComplete}>
+
+                    <div className="TaskCheckboxContainer" ref={this.taskCheckboxContainerRef}>
+                        <TaskCheckBox isChecked={this.props.isComplete}
+                            disableAnimations={this.props.disableAnimations} />
+                    </div>
+
+                    <div className="TaskTextContainer" ref={this.taskClickContainerRef}>
+                        <TaskText text={this.props.text} isComplete={this.props.isComplete} />
+                    </div>
+
+                    <div className="DueDateContainer" ref={this.dueDateContainerRef}>
+                        <DueDate dueDate={this.props.dueDate} isComplete={this.props.isComplete}
+                            isCalendarOpen={this.props.isCalendarOpen} onNewDateSubmit={this.handleNewDateSubmit}
+                            projectMembers={this.props.projectMembers} onAssignToMember={this.handleAssignToMember}
+                            onPriorityToggleClick={this.handlePriorityToggleClick} isHighPriority={this.props.isHighPriority}
+                            assignedTo={this.props.assignedTo} disableAnimations={this.props.disableAnimations} />
+                    </div>
                 </div>
-                {this.getBottomBorderJSX(this.props)}
+                {taskIndicatorPanelJSX}
             </div>
         )
     }
 
+    
+    handleTap(tapCount) {
+        if (tapCount === 1) {
+            this.props.handleClick(this);
+        }
+
+        if (tapCount >= 2) {
+            this.props.onOpenTextInput(this);
+        }
+    }
     
 
     getTaskIndicatorPanelJSX() {
@@ -131,8 +147,8 @@ class Task extends React.Component {
         var noteIndicatorJSX = this.getNoteIndicatorJSX();
 
         return (
-            <div className="TaskIndicatorPanelContainer" data-ishighpriority={this.props.isHighPriority}
-                onClick={this.forwardOnTaskClick} onTouchStart={this.handleTaskTouchStart}>
+            <div className="TaskIndicatorPanelContainer" ref={this.taskIndicatorPanelRef} 
+                data-ishighpriority={this.props.isHighPriority}>
                 {taskAssigneeJSX}
                 {unreadCommentsIndicatorJSX}
                 {noteIndicatorJSX}
@@ -178,67 +194,6 @@ class Task extends React.Component {
         this.props.onTaskInspectorOpen(this.props.taskId);
     }
 
-
-    getTaskOrOptions() {
-        if (this.props.isOptionsOpen) {
-            return (
-                <CSSTransition classNames="OptionsTransitionItem" timeout={150} mountOnEnter={true} unmountOnExit={true}
-                key="options">
-                    <div>
-                        <div className="TaskOptionsOverlay" onClick={() => {this.setState({showOptions: false})}}>
-                            <div className="TaskOptionsDeleteButton" onClick={this.handleTaskOptionsDeleteButtonClick}>
-                                <div className="TaskOptionsDeleteButtonText"> Delete </div>
-                            </div>
-
-                            <div className="TaskOptionsCancelButton" onClick={this.handleTaskOptionsCancelButtonClick}>
-                                <div className="TaskOptionsCancelButtonText"> Cancel </div>
-                            </div>
-
-                            <div className="TaskOptionsMoveButton" onClick={this.handleTaskOptionsMoveButtonClick}>
-                                <div className="TaskOptionsMoveButtonText"> Move </div>
-                            </div>
-                        </div>
-                    </div>
-                </CSSTransition>
-            )
-            
-        }
-
-        else {
-            var taskIndicatorPanelJSX = this.getTaskIndicatorPanelJSX();
-
-            return (
-                <CSSTransition classNames="TaskTransitionItem" timeout={250} mountOnEnter={true} unmountOnExit={true}
-                    key="task">
-                    <div>
-                        <div className="Task" data-ishighpriority={this.props.isHighPriority} data-iscomplete={this.props.isComplete}>
-                            <Ink style={{color: '#555'}} ref={this.inkCanvasRef}/>    
-
-                            <div className="TaskCheckboxContainer" ref={this.taskCheckboxContainerRef}>
-                                <TaskCheckBox isChecked={this.props.isComplete}
-                                    disableAnimations={this.props.disableAnimations} />
-                            </div>
-                            
-                            <div className="TaskTextContainer">
-                                <TaskText text={this.props.text} isComplete={this.props.isComplete} />
-                            </div>
-
-                            <div className="DueDateContainer" ref={this.dueDateContainerRef}>
-                                <DueDate dueDate={this.props.dueDate} isComplete={this.props.isComplete}
-                                    isCalendarOpen={this.props.isCalendarOpen} onNewDateSubmit={this.handleNewDateSubmit}
-                                    projectMembers={this.props.projectMembers} onAssignToMember={this.handleAssignToMember}
-                                    onPriorityToggleClick={this.handlePriorityToggleClick} isHighPriority={this.props.isHighPriority}
-                                    assignedTo={this.props.assignedTo} disableAnimations={this.props.disableAnimations} />
-                            </div>
-                        </div>
-                        {taskIndicatorPanelJSX}
-                    </div>
-                </CSSTransition>
-            )
-        }
-    }
-
-
     handleTaskOptionsMoveButtonClick() {
         this.props.onTaskTwoFingerTouch(this.props.taskId);
     }
@@ -259,14 +214,6 @@ class Task extends React.Component {
         this.props.onTaskMetadataCloseButtonClick();
     }
 
-    getBottomBorderJSX(props) {
-        if (props.renderBottomBorder) {
-            return (
-                <div className="TaskBottomBorder"/>
-            )
-        }
-    }
-
     handlePriorityToggleClick(newValue) {
         this.props.onPriorityToggleClick(this.props.taskId, newValue, this.props.isHighPriority, this.props.metadata);
     }
@@ -279,52 +226,6 @@ class Task extends React.Component {
 
     handleNewDateSubmit(newDate) {
         this.props.onNewDateSubmit(this.props.taskId, newDate, this.props.dueDate, this.props.metadata);
-    }
-
-    isChild (obj, parentObj, upperBoundingObj) {
-
-        // Recursievly search up the DOM Tree from obj looking to find parentObj. Stop searching when upperBoundingObj or document body
-        // is hit.
-        while (obj !== undefined && obj !== null && obj !== upperBoundingObj && obj.tagName.toUpperCase() !== 'BODY'){
-            if (obj === parentObj){
-                return true;
-            }
-            obj = obj.parentNode;
-        }
-        return false;
-    }
-
-    determineTapTarget(eventTarget) {
-        if (eventTarget.tagName.toUpperCase() === "CANVAS") {
-            /* For some reason, You can't get react-ink to work properly when you try and differentiate out the tasktext clicks.
-            Either Ink consumes the touch events. Or it doesn't trigger the animation at all. It always works for Due date and the
-            checkbox, but almost always fails with Task text. 
-            */
-            return 'click-container'
-        }
-
-        // Check for nested assignee BEFORE checking for task-assignee-container.
-        if (this.isChild(eventTarget, this.taskAssigneeRef.current, this.taskContainerRef.current)) {
-            return 'assignee'
-        }
-
-        // Check for task-assignee-container AFTER checking for assignee.
-        if (this.isChild(eventTarget, this.taskAssigneeContainerRef.current, this.taskContainerRef.current)) {
-            return 'task-assignee-container';
-        }
-
-        if (this.isChild(eventTarget, this.dueDateContainerRef.current, this.taskContainerRef.current)) {
-            return 'due-date-container';
-        }
-
-        if (this.isChild(eventTarget, this.taskCheckboxContainerRef.current, this.taskContainerRef.current)) {
-            return 'checkbox-container';
-        }
-
-        else {
-            // Probably a touch on metadata or options or something else.
-            return 'something-else';
-        }
     }
 }
 

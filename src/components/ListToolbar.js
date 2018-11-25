@@ -8,6 +8,12 @@ import Hammer from 'hammerjs';
 import TaskListSettingsIcon from '../assets/icons/SettingsIcon.svg';
 import DeleteTaskListIcon from '../assets/icons/DeleteTaskListIcon.svg';
 
+
+import { Toolbar, IconButton, Typography, Grid } from '@material-ui/core';
+import { withTheme } from '@material-ui/core/styles';
+
+import SettingsIcon from '@material-ui/icons/Settings';
+
 class ListToolbar extends React.Component{
     constructor(props) {
         super(props);
@@ -25,47 +31,71 @@ class ListToolbar extends React.Component{
     }
 
     componentDidMount() {
-        this.hammer = new Hammer(this.headerContainerRef.current);
-        this.hammer.on('tap', this.handleDoubleTap);
+        // this.hammer = new Hammer(this.headerContainerRef.current);
+        // this.hammer.on('tap', this.handleDoubleTap);
 
-        this.hammer.get('tap').set({interval: 300, taps: 2});
+        // this.hammer.get('tap').set({interval: 300, taps: 2});
     }
 
     componentWillUnmount() {
-        this.hammer.off('tap', this.headerContainerRef.current, this.handleDoubleTap);
+        // this.hammer.off('tap', this.headerContainerRef.current, this.handleDoubleTap);
     }
 
     render() {
+        const { theme } = this.props;
+
+        let toolbarStyle = {
+            background: this.props.isFocused ? theme.palette.secondary.light : theme.palette.secondary.dark,
+            width: '100%',
+            height: '44px',
+        }
+
         var settingsMenu = this.getSettingsMenu(this.props);
         var typeText = this.props.settings.checklistSettings.isChecklist ? "Checklist" : "";
 
         return (
-            <div className="ListToolbar" data-isfocused={this.props.isFocused}>
-                <div className="ListToolbarSettingsMenuContainer" onClick={this.handleSettingsClick}>
-                    <img className="ListToolbarSettingsIcon" src={TaskListSettingsIcon} />
-                    <TransitionGroup>
-                        {settingsMenu}
-                    </TransitionGroup>
-                </div>
+            <div style={toolbarStyle}>
+                <Grid container
+                justify="flex-start"
+                alignItems="center">
+                    <IconButton>
+                        <SettingsIcon fontSize="small" />
+                    </IconButton>
 
-                <div className="ListToolbarTypeContainer">
-                    <VerticalCenteringContainer>
-                        <div className="ListToolbarTypeLabel"> {typeText} </div>
-                    </VerticalCenteringContainer>
-                </div>
 
-                <div className="ListToolbarHeaderContainer" ref={this.headerContainerRef}>
-                    <label className="ListToolbarHeader" data-isfocused={this.props.isFocused}>
+                    <Typography align="center" style={{ flexGrow: 1 }}>
                         {this.props.headerText}
-                    </label>
-                </div>
-
-                <div className="ListToolbarDeleteButtonContainer" onClick={this.handleRemoveButtonClick}>
-                    <img className="DeleteButton" src={DeleteTaskListIcon} />
-                </div>
+                    </Typography>
+                </Grid>
             </div>
         )
     }
+
+
+    // <div className="ListToolbar" data-isfocused={this.props.isFocused}>
+    //             <div className="ListToolbarSettingsMenuContainer" onClick={this.handleSettingsClick}>
+    //                 <img className="ListToolbarSettingsIcon" src={TaskListSettingsIcon} />
+    //                 <TransitionGroup>
+    //                     {settingsMenu}
+    //                 </TransitionGroup>
+    //             </div>
+
+    //             <div className="ListToolbarTypeContainer">
+    //                 <VerticalCenteringContainer>
+    //                     <div className="ListToolbarTypeLabel"> {typeText} </div>
+    //                 </VerticalCenteringContainer>
+    //             </div>
+
+    //             <div className="ListToolbarHeaderContainer" ref={this.headerContainerRef}>
+    //                 <label className="ListToolbarHeader" data-isfocused={this.props.isFocused}>
+    //                     {this.props.headerText}
+    //                 </label>
+    //             </div>
+
+    //             <div className="ListToolbarDeleteButtonContainer" onClick={this.handleRemoveButtonClick}>
+    //                 <img className="DeleteButton" src={DeleteTaskListIcon} />
+    //             </div>
+    //         </div>
 
     handleSettingsMenuClose() {
         this.props.onSettingsMenuClose();
@@ -106,4 +136,4 @@ class ListToolbar extends React.Component{
     }
 }
 
-export default ListToolbar;
+export default withTheme()(ListToolbar);

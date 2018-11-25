@@ -8,13 +8,28 @@ import '../assets/css/ToolBarButton.css';
 import NewProjectIcon from '../assets/icons/NewProjectIcon.svg';
 import RemoveProjectIcon from '../assets/icons/RemoveProjectIcon.svg';
 import SettingsIcon from '../assets/icons/SettingsIcon.svg';
-import Button from './Button';
 import AccountIconLoggedIn from '../assets/icons/AccountIconLoggedIn.svg';
 import AccountIconLoggedOut from '../assets/icons/AccountIconLoggedOut.svg';
 import AccountIconLoggingIn from '../assets/icons/AccountIconLoggingIn.svg';
 import ShareIcon from '../assets/icons/ShareIcon.svg';
 import AcceptIcon from '../assets/icons/AcceptIcon.svg';
 import DenyIcon from '../assets/icons/DenyIcon.svg';
+
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Divider from '@material-ui/core/Divider';
+import Paper from '@material-ui/core/Paper';
+
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Settings from '@material-ui/icons/Settings';
+import Share from '@material-ui/icons/Share';
+import Add from '@material-ui/icons/Add';
 
 class Sidebar extends React.Component{
     constructor(props) {
@@ -63,8 +78,17 @@ class Sidebar extends React.Component{
         var shareMenuJSX = this.getShareMenuJSX();
 
 
+        const fabStyle = {
+            margin: 0,
+            top: 'auto',
+            right: 20,
+            bottom: 20,
+            left: 'auto',
+            position: 'fixed',
+        };
+
         return (
-            <div className="Sidebar" data-disableanimations={this.props.disableAnimations} onClick={this.handleSidebarClick}>
+            <div style={{height: '100vh', width: '100vw'}}>
 
                 {/* App Settings  */} 
                 {appSettingsJSX}   
@@ -73,43 +97,34 @@ class Sidebar extends React.Component{
                 {shareMenuJSX}
 
                 { /* Grid - Toolbar, Selectors and Footer */}
-                <div className="SidebarGridContainer">
-                    <div className="SidebarToolbarContainer">
-                        {sidebarToolbarJSX}
-                    </div>
-                    <div className="SidebarSelectablesContainer">
-                        {/* Invites */}
-                        {projectInvitesTitleJSX}
-                        <div className="ProjectInvitesContainer">
-                            <TransitionGroup enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
-                                {invitesJSX}
-                            </TransitionGroup>
-                        </div>
-                        {invitesDividerJSX}
+                    {/* AppBar  */}
+                        <AppBar>
+                            <Toolbar>
+                                <Typography style={{flexGrow: '1'}} variant="h6">
+                                    Handball
+                                </Typography>
 
-                        {/* Local Projects  */}
-                        {localProjectsTitleJSX}
-                        <div className="LocalProjectSelectorsContainer">
-                        <TransitionGroup enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
-                            {localProjectSelectorsJSX}
-                        </TransitionGroup>
-                        </div>
+                                <IconButton>
+                                    <Share onClick={this.handleShareMenuButtonClick} />
+                                </IconButton>
 
-                        {localAndRemoteDividerJSX}
+                                <IconButton onClick={() => { this.props.onAppSettingsButtonClick() }}>
+                                    <Settings />
+                                </IconButton>
 
-                        {/* Remote Projects  */}
-                        {remoteProjectsTitleJSX}
-                        <div className="RemoteProjectSelectorsContainer">
-                        <TransitionGroup enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
-                            {remoteProjectSelectorsJSX}
-                        </TransitionGroup>
-                        </div>
-                    </div>
+                                <IconButton onClick={() => { this.props.onAccountIconClick() }}>
+                                    <AccountCircle />
+                                </IconButton>
+                            </Toolbar>
+                        </AppBar>
 
-                    {/* Footer  */}
-                    {sidebarBottombarJSX}
+                            <List>
+                                {localProjectSelectorsJSX}
+                            </List>
 
-                </div>
+                <Button variant="fab" color="secondary" style={fabStyle} onClick={this.handleAddProjectClick}>
+                    <Add/>
+                </Button>
             </div>
         )
     }
@@ -204,13 +219,19 @@ class Sidebar extends React.Component{
         var projectIndicators = this.props.projectSelectorIndicators[item.uid];
         var isFavouriteProject = this.props.favouriteProjectId === item.uid;
 
-        return (
-            <CSSTransition key={item.uid} timeout={250} classNames="ProjectSelectorContainer">
-                <ProjectSelector key={index} projectSelectorId={item.uid} projectName={item.projectName} isSelected={isSelected}
+        let projectSelector = () => {
+            return (
+                <ProjectSelector projectSelectorId={item.uid} projectName={item.projectName}
                     onClick={this.handleProjectSelectorClick} onDoubleClick={this.handleProjectSelectorDoubleClick}
                     projectIndicators={projectIndicators}
                     isFavouriteProject={isFavouriteProject} />
-            </CSSTransition>
+            )
+        }
+
+
+        return (
+            <ListItem style={{width: '100%'}} selected={isSelected} key={index} component={projectSelector}/>
+                
         )
     }
 

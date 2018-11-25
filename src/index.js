@@ -6,6 +6,10 @@ import { Provider } from 'react-redux';
 import { setupBackend ,appStore } from 'handball-libs/libs/pounder-redux';
 import registerServiceWorker from './registerServiceWorker';
 
+import { createMuiTheme, MuiThemeProvider }  from '@material-ui/core/styles';
+import PrimaryColor from '@material-ui/core/colors/grey';
+import SecondaryColor from '@material-ui/core/colors/orange';
+
 if (process.env.NODE_ENV === 'production') {
     // eslint-disable-next-line
     const handballVersion = HANDBALL_VERSION;
@@ -39,5 +43,13 @@ require('typeface-open-sans');
 
 setupBackend("development", "mobile");
 
-ReactDOM.render(<Provider store={appStore}><VisibleApp /></Provider>, document.getElementById('root'));
+let theme = createMuiTheme({
+    'palette': {
+        'primary': PrimaryColor,
+        'secondary': SecondaryColor,
+        'type': 'dark'
+    }
+})
+
+ReactDOM.render(<Provider store={appStore}><MuiThemeProvider theme={theme}><VisibleApp /></MuiThemeProvider></Provider>, document.getElementById('root'));
 registerServiceWorker(onUpdateAvailable);

@@ -12,6 +12,12 @@ import '../assets/css/Project.css';
 import { connect } from 'react-redux';
 import { MessageBoxTypes } from 'handball-libs/libs/pounder-redux';
 import { hot } from 'react-hot-loader';
+
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Drawer from '@material-ui/core/Drawer';
+import Portal from '@material-ui/core/Portal';
+
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { selectTask, openTask, startTaskMove,
 setOpenTaskListSettingsMenuId, openCalendar, addNewTaskListAsync, addNewTaskAsync, addNewTaskListWithNameAsync,
@@ -62,7 +68,6 @@ class App extends React.Component {
     this.initializeLocalConfig = this.initializeLocalConfig.bind(this);
     this.handleAppSettingsButtonClick = this.handleAppSettingsButtonClick.bind(this);
     this.handleAccountIconClick = this.handleAccountIconClick.bind(this);
-    this.getSidebarOrProjectJSX = this.getSidebarOrProjectJSX.bind(this);
     this.handleRequestSidebarClose = this.handleRequestSidebarClose.bind(this);
     this.handleShareMenuButtonClick = this.handleShareMenuButtonClick.bind(this);
     this.handleAcceptInviteButtonClick = this.handleAcceptInviteButtonClick.bind(this);
@@ -88,6 +93,8 @@ class App extends React.Component {
     this.handleTaskInspectorOpen = this.handleTaskInspectorOpen.bind(this);
     this.handleBackArrowClick = this.handleBackArrowClick.bind(this);
     this.handleMoveTaskListToProject = this.handleMoveTaskListToProject.bind(this);
+    this.getProjectJSX = this.getProjectJSX.bind(this);
+    this.getSidebarJSX = this.getSidebarJSX.bind(this);
     
   }
 
@@ -117,42 +124,39 @@ class App extends React.Component {
   }
 
   render() {
-    var sidebarOrProjectJSX = this.getSidebarOrProjectJSX();
-    var disableAnimations = this.props.generalConfig.disableAnimations === undefined ? false :
-     this.props.generalConfig.disableAnimations;
-    var floatingTextInputJSX = this.getFloatingTextInputJSX(disableAnimations);
-    var taskInspectorJSX = this.getTaskInspectorJSX();
-    
+    const { classes } = this.props;
+    var projectJSX = this.getProjectJSX();
+    var sidebarJSX = this.getSidebarJSX();
+    var floatingTextInputJSX = this.getFloatingTextInputJSX(false);
 
     return (
-      <div>
-        <VisibleSnackbar />
-        {taskInspectorJSX}
+      <React.Fragment>
+        <Portal>
+          {floatingTextInputJSX}
+        </Portal>
+        <CssBaseline/>
+        <Grid container
+        direction="row"
+        justify="center"
+        alignItems="center">
+          <Grid item>
+            {projectJSX}
+          </Grid>
 
-        {floatingTextInputJSX}
-
-        <MessageBox config={this.props.messageBox} />
-
-        {/* Sidebar / Project Transition Group */}
-        <TransitionGroup enter={!disableAnimations} exit={!disableAnimations}>
-          {sidebarOrProjectJSX}
-        </TransitionGroup>
-
-      </div>
+          <Drawer anchor="left" open={this.props.isSidebarOpen}>
+            {sidebarJSX}
+          </Drawer>
+        </Grid>
+      </React.Fragment>
     );
   }
 
-  getSidebarOrProjectJSX() {
-    var projectMembers = this.getProjectMembers();
-
+  getSidebarJSX() {
     // eslint-disable-next-line
     var projects = this.props.projects == undefined ? [] : this.props.projects;
-    if (this.props.isSidebarOpen) {
-      return (
-        <CSSTransition key={"sidebarContainer"} classNames="SidebarContainer" appear={true} 
-        timeout={{enter: 250, exit: 250}}>
-          <div>
-            <Sidebar className="Sidebar" projects={projects} selectedProjectId={this.props.selectedProjectId}
+
+    return (
+      <Sidebar className="Sidebar" projects={projects} selectedProjectId={this.props.selectedProjectId}
               disableAnimations={this.props.generalConfig.disableAnimations}
               onProjectSelectorClick={this.handleProjectSelectorClick} onAddProjectClick={this.handleAddProjectClick}
               onRemoveProjectClick={this.handleRemoveProjectClick} onProjectNameSubmit={this.handleProjectNameSubmit}
@@ -167,17 +171,15 @@ class App extends React.Component {
               openProjectSelectorId={this.props.openProjectSelectorId}
               isLoggedIn={this.props.isLoggedIn}
             />
-          </div>
-        </CSSTransition>
-      )
-    }
+    )
+  }
 
-    else {
-      var projectName = this.getProjectName(this.props);
-      return (
-        <CSSTransition key={"projectContainer"} classNames="ProjectContainer" timeout={250}>
-          <div>
-            <Project taskLists={this.props.taskLists} tasks={this.props.tasks} selectedTask={this.props.selectedTask}
+  getProjectJSX() {
+    var projectName = this.getProjectName(this.props);
+    var projectMembers = this.getProjectMembers();
+
+    return (
+      <Project taskLists={this.props.taskLists} tasks={this.props.tasks} selectedTask={this.props.selectedTask}
               movingTaskId={this.props.movingTaskId} focusedTaskListId={this.props.focusedTaskListId}
               projectId={this.props.selectedProjectId} onTaskListWidgetRemoveButtonClick={this.handleTaskListWidgetRemoveButtonClick}
               onTaskListWidgetFocusChanged={this.handleTaskListWidgetFocusChange}
@@ -215,11 +217,9 @@ class App extends React.Component {
               onMoveTaskListToProject={this.handleMoveTaskListToProject}
               onRenewNowButtonClick={this.handleRenewNowButtonClick}
             />
-          </div>
-        </CSSTransition>
-      )
-    }
+    )
   }
+
 
   handleMoveTaskListToProject(sourceProjectId, targetProjectId, taskListWidgetId) {
     if (targetProjectId !== "-1") {

@@ -9,6 +9,9 @@ import { GetDisplayNameFromLookup } from 'handball-libs/libs/pounder-utilities';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
+import { Paper, List, ListItem } from '@material-ui/core';
+import { withTheme } from '@material-ui/core/styles';
+
 
 class TaskListWidget extends React.Component {
     constructor(props){
@@ -43,6 +46,8 @@ class TaskListWidget extends React.Component {
     
 
     render() {
+        const { theme } = this.props;
+
         var builtTasks = [];
 
         // eslint-disable-next-line
@@ -65,7 +70,7 @@ class TaskListWidget extends React.Component {
                 // Render Element.
                 var isTaskSelected = item.uid === this.props.selectedTaskId;
                 var isTaskMoving = item.uid === this.props.movingTaskId;
-                var renderBottomBorder = array.length !== 1 && index !== array.length - 1;
+                var showDivider = array.length !== 1 && index !== array.length - 1;
 
                 var hasUnseenComments = item.unseenTaskCommentMembers !== undefined &&
                  item.unseenTaskCommentMembers[getUserUid()] !== undefined;
@@ -75,24 +80,29 @@ class TaskListWidget extends React.Component {
                 var assignedToDisplayName = GetDisplayNameFromLookup(item.assignedTo, this.props.memberLookup);
                 var isOptionsOpen = item.uid === this.props.openTaskOptionsId;
 
+                let task = () => {
+                    return (
+                        <Task taskId={item.uid} text={item.taskName} dueDate={item.dueDate}
+                            isComplete={item.isComplete} isMoving={isTaskMoving}
+                            handleClick={this.handleTaskClick} onTaskCheckBoxClick={this.handleTaskCheckBoxClick}
+                            onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch}
+                            onTaskInspectorOpen={this.handleTaskInspectorOpen}
+                            isHighPriority={item.isHighPriority}
+                            renderBottomBorder={showDivider}
+                            metadata={metadata} disableAnimations={this.props.disableAnimations}
+                            assignedToDisplayName={assignedToDisplayName}
+                            onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
+                            onTaskOptionsOpen={this.handleTaskOptionsOpen} isOptionsOpen={isOptionsOpen}
+                            onTaskOptionsCancel={this.handleTaskOptionsCancel}
+                            onOpenTextInput={this.handleTaskOpenTextInput}
+                            note={item.note}
+                            hasUnseenComments={hasUnseenComments} />
+                    )
+                }
+                
                 return (
-                    <CSSTransition key={item.uid} classNames="TaskContainer" timeout={500} mountOnEnter={true}>
-                            <Task key={index} taskId={item.uid} text={item.taskName} dueDate={item.dueDate}
-                                isSelected={isTaskSelected} isComplete={item.isComplete} isMoving={isTaskMoving}
-                                handleClick={this.handleTaskClick} onTaskCheckBoxClick={this.handleTaskCheckBoxClick}
-                                onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch}
-                                onTaskInspectorOpen={this.handleTaskInspectorOpen}
-                                isHighPriority={item.isHighPriority} 
-                                renderBottomBorder={renderBottomBorder}
-                                metadata={metadata} disableAnimations={this.props.disableAnimations}
-                                assignedToDisplayName={assignedToDisplayName}
-                                onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
-                                onTaskOptionsOpen={this.handleTaskOptionsOpen} isOptionsOpen={isOptionsOpen}
-                                onTaskOptionsCancel={this.handleTaskOptionsCancel}
-                                onOpenTextInput={this.handleTaskOpenTextInput}
-                                note={item.note}
-                                hasUnseenComments={hasUnseenComments} />
-                    </CSSTransition>
+                    <ListItem key={item.uid} dense={true} component={task} selected={isTaskSelected} divider={showDivider}
+                    />
                 )
             })
         }
@@ -100,21 +110,24 @@ class TaskListWidget extends React.Component {
         var isSettingsMenuOpen = this.props.openTaskListSettingsMenuId === this.props.taskListWidgetId;
         return (
             <div className="TaskListWidget" data-isfocused={this.props.isFocused} onClick={this.handleWidgetClick}>
-                <ListToolbar headerText={this.props.taskListName}
-                 onHeaderPress={this.handleHeaderPress} isFocused={this.props.isFocused}
-                 onHeaderDoubleClick={this.handleHeaderDoubleClick}
-                 onRemoveButtonClick={this.handleRemoveButtonClick} isSettingsMenuOpen={isSettingsMenuOpen}
-                 onTaskListSettingsChanged={this.handleTaskListSettingsChanged}
-                 settings={this.props.settings} onSettingsButtonClick={this.handleSettingsButtonClick}
-                 onSettingsMenuClose={this.handleSettingsMenuClose}
-                 projects={this.props.projects} onMoveTaskListToProject={this.handleMoveTaskListToProject}
-                 onRenewNowButtonClick={this.handleRenewNowButtonClick}
-                 projectId={this.props.projectId}/>
-                 <TaskArea>
-                 <TransitionGroup enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
-                     {builtTasks}
-                 </TransitionGroup>
-             </TaskArea>
+                <Paper>
+                    <ListToolbar headerText={this.props.taskListName}
+                        onHeaderPress={this.handleHeaderPress} isFocused={this.props.isFocused}
+                        onHeaderDoubleClick={this.handleHeaderDoubleClick}
+                        onRemoveButtonClick={this.handleRemoveButtonClick} isSettingsMenuOpen={isSettingsMenuOpen}
+                        onTaskListSettingsChanged={this.handleTaskListSettingsChanged}
+                        settings={this.props.settings} onSettingsButtonClick={this.handleSettingsButtonClick}
+                        onSettingsMenuClose={this.handleSettingsMenuClose}
+                        projects={this.props.projects} onMoveTaskListToProject={this.handleMoveTaskListToProject}
+                        onRenewNowButtonClick={this.handleRenewNowButtonClick}
+                        projectId={this.props.projectId} />
+                    <TaskArea>
+                    <List>
+                        {builtTasks}
+                    </List>
+                            
+                    </TaskArea>
+                </Paper>
             </div>
         )
     }
@@ -288,4 +301,4 @@ class TaskListWidget extends React.Component {
 
 }
 
-export default TaskListWidget;
+export default withTheme()(TaskListWidget);

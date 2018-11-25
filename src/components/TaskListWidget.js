@@ -9,7 +9,7 @@ import { GetDisplayNameFromLookup } from 'handball-libs/libs/pounder-utilities';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-import { Paper, List, ListItem } from '@material-ui/core';
+import { Paper, List, ListItem, Divider } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
 
 
@@ -80,30 +80,31 @@ class TaskListWidget extends React.Component {
                 var assignedToDisplayName = GetDisplayNameFromLookup(item.assignedTo, this.props.memberLookup);
                 var isOptionsOpen = item.uid === this.props.openTaskOptionsId;
 
-                let task = () => {
+                // let task = () => {
                     return (
-                        <Task taskId={item.uid} text={item.taskName} dueDate={item.dueDate}
-                            isComplete={item.isComplete} isMoving={isTaskMoving}
-                            handleClick={this.handleTaskClick} onTaskCheckBoxClick={this.handleTaskCheckBoxClick}
-                            onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch}
-                            onTaskInspectorOpen={this.handleTaskInspectorOpen}
-                            isHighPriority={item.isHighPriority}
-                            renderBottomBorder={showDivider}
-                            metadata={metadata} disableAnimations={this.props.disableAnimations}
-                            assignedToDisplayName={assignedToDisplayName}
-                            onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
-                            onTaskOptionsOpen={this.handleTaskOptionsOpen} isOptionsOpen={isOptionsOpen}
-                            onTaskOptionsCancel={this.handleTaskOptionsCancel}
-                            onOpenTextInput={this.handleTaskOpenTextInput}
-                            note={item.note}
-                            hasUnseenComments={hasUnseenComments} />
+                            <Task key={item.uid} isSelected={isTaskSelected} taskId={item.uid} text={item.taskName} dueDate={item.dueDate}
+                                isComplete={item.isComplete} isMoving={isTaskMoving}
+                                handleClick={this.handleTaskClick} onTaskCheckBoxClick={this.handleTaskCheckBoxClick}
+                                onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch}
+                                onTaskInspectorOpen={this.handleTaskInspectorOpen}
+                                isHighPriority={item.isHighPriority}
+                                metadata={metadata} disableAnimations={this.props.disableAnimations}
+                                assignedToDisplayName={assignedToDisplayName}
+                                onTaskOptionsDeleteButtonClick={this.handleTaskOptionsDeleteButtonClick}
+                                onTaskOptionsOpen={this.handleTaskOptionsOpen} isOptionsOpen={isOptionsOpen}
+                                onTaskOptionsCancel={this.handleTaskOptionsCancel}
+                                onOpenTextInput={this.handleTaskOpenTextInput}
+                                note={item.note}
+                                hasUnseenComments={hasUnseenComments}
+                                showDivider={showDivider}
+                            />
                     )
-                }
+                // }
                 
-                return (
-                    <ListItem key={item.uid} dense={true} component={task} selected={isTaskSelected} divider={showDivider}
-                    />
-                )
+                // return (
+                //     <ListItem key={item.uid} dense={true} component={task} selected={isTaskSelected} divider={showDivider}
+                //     />
+                // )
             })
         }
 
@@ -122,7 +123,7 @@ class TaskListWidget extends React.Component {
                         onRenewNowButtonClick={this.handleRenewNowButtonClick}
                         projectId={this.props.projectId} />
                     <TaskArea>
-                    <List>
+                    <List disablePadding={true} dense={true}>
                         {builtTasks}
                     </List>
                             

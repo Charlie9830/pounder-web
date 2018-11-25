@@ -7,8 +7,6 @@
   max-height: 240px; /* Same as .TaskClickContainer max-height */
   display: flex;
   flex-direction: column;
-  background-color: transparent;
-  transition: background-color 500ms ease;
 }
 
 .TaskContainer[data-ismetadataopen*="true"] {
@@ -113,7 +111,6 @@
   align-items: center;
   align-content: center;
   padding: 2px 8px 2px 8px;
-  background: var(--assignee-background-color);
 }
 
 .TaskAssigneeDisplayName {

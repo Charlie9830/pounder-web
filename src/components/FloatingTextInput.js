@@ -2,61 +2,52 @@ import React from 'react';
 import '../assets/css/FloatingTextInput.css'
 import TextareaAutosize from 'react-autosize-textarea';
 import OverlayMenuContainer from '../containers/OverlayMenuContainer';
-import Button from './Button';
 import MenuHeader from './MenuHeader';
+import { Paper, Grid, TextField, Button } from '@material-ui/core';
 
 class FloatingTextInput extends React.Component {
     constructor(props) {
         super(props);
 
+        // Refs.
+        this.textInputRef = React.createRef();
+
         // Method Bindings
         this.handleOkButtonClick = this.handleOkButtonClick.bind(this);
         this.handleCancelButtonClick = this.handleCancelButtonClick.bind(this);
-        this.handleOutsideChildBoundsClick = this.handleOutsideChildBoundsClick.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
-        this.handleContainerClick = this.handleContainerClick.bind(this);
-    }
-
-    componentDidMount() {
-        // Pull Keyboard Focus.
-        this.textarea.focus();
-    }
-
-    componentDidUpdate() {
-        this.textarea.focus();
     }
 
     render() {
+        let paperStyle = {
+            padding: '15px',
+        }
+        
         return (
-            <OverlayMenuContainer onOutsideChildBoundsClick={this.handleOutsideChildBoundsClick}>
-                    <div className="FloatingTextInputPopupContainer" onClick={this.handleContainerClick}>
-                        <MenuHeader onBackButtonClick={this.handleCancelButtonClick}/>
-                        <div className="FloatingTextInputTitleContainer">
-                            <div className="FloatingTextInputTitle"> {this.props.niceTargetName} </div>
-                        </div>
+            <Paper style={paperStyle}>
+                <Grid container
+                    direction="row"
+                    justify="flex-start"
+                    alignItems="center">
+                    <TextField multiline fullWidth inputRef={this.textInputRef} label={this.props.niceTargetName} autoFocus={true}
+                    onKeyPress={this.handleKeyPress} />
+                </Grid>
 
-                        <div className="FloatingTextInputTextAreaContainer">
-                            <TextareaAutosize className="FloatingTextInputTextArea" innerRef={ref => this.textarea = ref} type='text' defaultValue={this.props.defaultValue}
-                                onKeyDown={this.handleKeyDown} onKeyPress={this.handleKeyPress} />
-                        </div>
-                        <div className="FloatingTextInputFooter">
-                            <Button text="Ok" size="small" onClick={this.handleOkButtonClick} />
-                        </div>
-                    </div>
-            </OverlayMenuContainer>
+                <Grid container
+                    direction="row"
+                    justify="flex-end"
+                    alignItems="center">
+
+                    <Button variant="text" color="secondary" onClick={this.handleCancelButtonClick}>
+                        Cancel
+                    </Button>
+
+                    <Button variant="text" color="secondary" onClick={this.handleOkButtonClick}>
+                        Ok
+                    </Button>
+                </Grid>
+            </Paper>
         )
-    }
-
-    handleContainerClick() {
-        // Push Focus back to Textarea to keep Keyboard open, otherise it closes as before the uses has lifted their finger,
-        // from the original Press.
-        this.textarea.focus();
-    }
-
-    handleOutsideChildBoundsClick() {
-        // Push Focus back to Textarea to keep Keyboard open, otherise it closes as before the uses has lifted their finger,
-        // from the original Press.
-        this.textarea.focus();
     }
 
     handleCancelButtonClick() {
@@ -64,12 +55,12 @@ class FloatingTextInput extends React.Component {
     }
 
     handleOkButtonClick() {
-        this.props.onTextSubmit(this.textarea.value, this.props.defaultValue);
+        this.props.onTextSubmit(this.textInputRef.current.value, this.props.defaultValue);
     }
 
     handleKeyPress(e) {
         if (e.key === "Enter") {
-            this.props.onTextSubmit(this.textarea.value);
+            this.props.onTextSubmit(this.textInputRef.current.value);
         }
     }
 

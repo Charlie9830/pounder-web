@@ -124,17 +124,17 @@ class App extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
     var projectJSX = this.getProjectJSX();
     var sidebarJSX = this.getSidebarJSX();
     var floatingTextInputJSX = this.getFloatingTextInputJSX(false);
 
     return (
       <React.Fragment>
-        <Portal>
-          {floatingTextInputJSX}
-        </Portal>
+        
+        {floatingTextInputJSX}
+
         <CssBaseline/>
+
         <Grid container
         direction="row"
         justify="center"
@@ -266,12 +266,12 @@ class App extends React.Component {
     var floatingTextInput = this.props.floatingTextInput;
 
     return (
-      <CSSTransition classNames="FloatingTextInputTransition" timeout={250} in={floatingTextInput.isOpen}
-        mountOnEnter={true} unmountOnExit={true} appear={true} enter={!disableAnimations} exit={disableAnimations}>
-          <FloatingTextInput defaultValue={floatingTextInput.currentText} niceTargetName={floatingTextInput.niceTargetName}
-            onTextSubmit={(newValue, oldValue) => this.handleFloatingTextInputSubmit(newValue, oldValue, floatingTextInput.targetType, floatingTextInput.targetId)}
-            onCancel={() => { this.props.dispatch(setFloatingTextInput(false)) }} />
-      </CSSTransition>
+      <Drawer open={floatingTextInput.isOpen} anchor="top">
+        <FloatingTextInput defaultValue={floatingTextInput.currentText} niceTargetName={floatingTextInput.niceTargetName}
+          onTextSubmit={(newValue, oldValue) => this.handleFloatingTextInputSubmit(newValue, oldValue, floatingTextInput.targetType, floatingTextInput.targetId)}
+          onCancel={() => { this.props.dispatch(setFloatingTextInput(false)) }} />
+      </Drawer>
+          
     )
   }
 

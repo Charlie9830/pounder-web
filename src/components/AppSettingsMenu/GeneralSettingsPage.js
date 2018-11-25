@@ -2,6 +2,7 @@ import React from 'react';
 import MenuSubtitle from '../MenuSubtitle';
 import ThemeSettings from './ThemeSettings';
 import '../../assets/css/AppSettingsMenu/AppSettingsMenu.css';
+import { Grid, Paper, List, ListItem, Typography, Select, InputLabel, ListItemText, ListItemSecondaryAction, Checkbox } from '@material-ui/core';
 
 
 class GeneralSettingsPage extends React.Component {
@@ -32,54 +33,87 @@ class GeneralSettingsPage extends React.Component {
         // Zero Fill any undefined values.
         var disableAnimations = this.props.generalConfig.disableAnimations === undefined ?
             false : this.props.generalConfig.disableAnimations;
+
         return (
-            <div className="AppSettingsVerticalFlexContainer">
-            {/* Disable Animations */}
-            <div className="AppSettingsVerticalFlexItem">
-            <input className="AppSettingsHorizontalFlexItem" type="checkbox" ref={this.disableAnimationsCheckboxRef}
-                onChange={this.handleDisableAnimationsChange} checked={disableAnimations} />
-            <span className="AppSettingsHorizontalFlexItem">
-                <div className="AppSettingsItemLabel"> Disable animations </div>
-            </span>
-        </div>
-                {/* Faviourte Project Selection */}
-                <div className="AppSettingsVerticalFlexItem">
-                    <span className="AppSettingsHorizontalFlexItem">
-                        <div className="AppSettingsItemLabel"> Favourite project </div>
-                    </span>
-                    <span className="AppSettingsHorizontalFlexItem">
-                        {favoriteProjectSelectorJSX}
-                    </span>
-                </div>
+            <Grid container
+            direction="column"
+            justify="flex-start"
+            alignItems="stretch">
 
-                {/* Sort projects by */}
-                <div className="AppSettingsVerticalFlexItem">
-                    <span className="AppSettingsHorizontalFlexItem">
-                        <div className="AppSettingsItemLabel"> Sort Projects by </div>
-                    </span>
-                    <span className="AppSettingsHorizontalFlexItem">
-                        {sortProjectsBySelectorJSX}
-                    </span>
-                </div>
+                    <List>
+                        <ListItem>
+                            <ListItemText primary="Favourite Project"
+                            secondary="Auto select on launch"/>
+                            <ListItemSecondaryAction>
+                                {favoriteProjectSelectorJSX}
+                            </ListItemSecondaryAction>
+                            
+                        </ListItem>
 
+                        <ListItem>
+                            <ListItemText primary="Sort projects by"/>
+                            <ListItemSecondaryAction>
+                                {sortProjectsBySelectorJSX}
+                            </ListItemSecondaryAction>
+                        </ListItem>
 
-                {/* Color Selection Title */}
-                <div className="AppSettingsVerticalFlexItem">
-                    <MenuSubtitle text="Application Color Selection"/>
-                </div>
-
-                {/* Color Selection Properties and Inputs */}
-                <div className="AppSettingsVerticalFlexItem">
-                    <ThemeSettings cssConfig={this.props.cssConfig}
-                    onCSSPropertyChange={(propertyName, value) => {this.props.onCSSPropertyChange(propertyName, value)}}
-                    onColorPickerClick={this.handleColorPickerClick} openColorPickerIndex={this.props.openColorPickerIndex}
-                    onColorPickerCloseButtonClick={this.handleColorPickerCloseButtonClick}
-                    onDefaultAllColorsButtonClick={this.handleDefaultAllColorsButtonClick}
-                    />
-                </div>
-            </div>
+                        <ListItem>
+                            <ListItemText primary="Disable animations" 
+                            secondary="Improve performance on low power devices"/>
+                            <ListItemSecondaryAction>
+                                <Checkbox/>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    </List>
+            </Grid>
         )
     }
+
+    // <div className="AppSettingsVerticalFlexContainer">
+    //             {/* Disable Animations */}
+    //             <div className="AppSettingsVerticalFlexItem">
+    //                 <input className="AppSettingsHorizontalFlexItem" type="checkbox" ref={this.disableAnimationsCheckboxRef}
+    //                     onChange={this.handleDisableAnimationsChange} checked={disableAnimations} />
+    //                 <span className="AppSettingsHorizontalFlexItem">
+    //                     <div className="AppSettingsItemLabel"> Disable animations </div>
+    //                 </span>
+    //             </div>
+    //             {/* Faviourte Project Selection */}
+    //             <div className="AppSettingsVerticalFlexItem">
+    //                 <span className="AppSettingsHorizontalFlexItem">
+    //                     <div className="AppSettingsItemLabel"> Favourite project </div>
+    //                 </span>
+    //                 <span className="AppSettingsHorizontalFlexItem">
+    //                     {favoriteProjectSelectorJSX}
+    //                 </span>
+    //             </div>
+
+    //             {/* Sort projects by */}
+    //             <div className="AppSettingsVerticalFlexItem">
+    //                 <span className="AppSettingsHorizontalFlexItem">
+    //                     <div className="AppSettingsItemLabel"> Sort Projects by </div>
+    //                 </span>
+    //                 <span className="AppSettingsHorizontalFlexItem">
+    //                     {sortProjectsBySelectorJSX}
+    //                 </span>
+    //             </div>
+
+
+    //             {/* Color Selection Title */}
+    //             <div className="AppSettingsVerticalFlexItem">
+    //                 <MenuSubtitle text="Application Color Selection" />
+    //             </div>
+
+    //             {/* Color Selection Properties and Inputs */}
+    //             <div className="AppSettingsVerticalFlexItem">
+    //                 <ThemeSettings cssConfig={this.props.cssConfig}
+    //                     onCSSPropertyChange={(propertyName, value) => { this.props.onCSSPropertyChange(propertyName, value) }}
+    //                     onColorPickerClick={this.handleColorPickerClick} openColorPickerIndex={this.props.openColorPickerIndex}
+    //                     onColorPickerCloseButtonClick={this.handleColorPickerCloseButtonClick}
+    //                     onDefaultAllColorsButtonClick={this.handleDefaultAllColorsButtonClick}
+    //                 />
+    //             </div>
+    //         </div>
 
     handleSortProjectsBySelectorChange() {
         this.props.onSortProjectsBySelectorChange(this.sortProjectsBySelectorRef.current.value);
@@ -125,10 +159,10 @@ class GeneralSettingsPage extends React.Component {
         
         // Build options into HTML select Element.
         return (
-            <select className="FavouriteProjectSelect" value={this.props.accountConfig.favouriteProjectId}
+            <Select value={this.props.accountConfig.favouriteProjectId}
              ref="favourteProjectSelect" onChange={this.handleFavouriteProjectSelectChange}>
                 {optionsJSX}
-            </select>
+            </Select>
         )
     }
 
@@ -136,12 +170,12 @@ class GeneralSettingsPage extends React.Component {
         var sortProjectsBy = this.props.generalConfig.sortProjectsBy === undefined ? 'alphabetically' : this.props.generalConfig.sortProjectsBy;
 
         return (
-            <select className="FavouriteProjectSelect" ref={this.sortProjectsBySelectorRef} defaultValue={sortProjectsBy}
+            <Select ref={this.sortProjectsBySelectorRef} defaultValue={sortProjectsBy}
             onChange={this.handleSortProjectsBySelectorChange}>
                 <option key={0} value='alphabetically'> Alphabetically </option>
                 <option key={1} value='created'> Date created </option>
                 <option key={2} value='updated'> Updated </option>
-            </select>
+            </Select>
         )
     }
     

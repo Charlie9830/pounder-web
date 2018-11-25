@@ -160,10 +160,14 @@ class Project extends React.Component {
             position: 'fixed',
         };
 
-        
+        let listAreaStyle = {
+            paddingLeft: '15px',
+            paddingRight: '15px'
+        }        
 
         return (
             <div className="Project">
+                    {/* Toolbar  */} 
                     <ProjectToolBar onAddTaskButtonClick={this.handleAddTaskButtonClick} onAddTaskListButtonClick={this.handleAddTaskListButtonClick}
                         taskLists={filteredTaskListWidgets} onTaskListJumpMenuItemClick={this.handleTaskListJumpMenuItemClick}
                         onTaskListJumpMenuButtonClick={this.handleTaskListJumpMenuButtonClick} isTaskListJumpMenuOpen={this.props.isTaskListJumpMenuOpen}
@@ -172,7 +176,8 @@ class Project extends React.Component {
                         isRemote={this.props.isRemote} buttonEnableStates={toolbarButtonEnableStates}
                         projectName={this.props.projectName} showCompletedTasks={this.props.showCompletedTasks} />
 
-                    <List>
+                    {/* Task Lists  */} 
+                    <List style={listAreaStyle}>
                         {taskListWidgets}
 
                         <Button variant="text" color="secondary" onClick={this.handleAddTaskListButtonClick}>
@@ -180,7 +185,7 @@ class Project extends React.Component {
                         </Button>
                     </List>
 
-
+                    {/* Floating Action Buttons  */} 
                     <Button variant="extendedFab" style={extendedFabStyle} size="small" onClick={this.handleAddTaskListButtonClick}>
                         New List
                     </Button>

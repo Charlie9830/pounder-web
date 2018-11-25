@@ -107,14 +107,18 @@ class Task extends React.Component {
     render() {
         var taskIndicatorPanelJSX = this.getTaskIndicatorPanelJSX();
 
-        let listItemStyle = {
+        let taskItemStyle = {
             padding: '0px',
+        }
+
+        let taskIndicatorItemStyle = {
+            height: '32px',
+            ...taskItemStyle
         }
 
         return (
             <React.Fragment>
-                
-                <ListItem  style={listItemStyle} dense={true} disableGutters={true} selected={this.props.isSelected}
+                <ListItem  style={taskItemStyle} dense={true} disableGutters={true} selected={this.props.isSelected}
                 onClick={this.handleTaskClick}>
                     <Checkbox checked={this.props.isComplete} />
                     <ListItemText>
@@ -128,8 +132,8 @@ class Task extends React.Component {
                     </IconButton>
                 </ListItem>
 
-                <ListItem style={listItemStyle} dense={true} disableGutters={true} selected={this.props.isSelected}
-                divider={this.props.showDivider}>
+                <ListItem style={taskIndicatorItemStyle} dense={true} disableGutters={true} selected={this.props.isSelected}
+                divider={this.props.showDivider} onClick={this.handleTaskClick}>
                     {taskIndicatorPanelJSX}
                 </ListItem>
             </React.Fragment>

@@ -15,6 +15,10 @@ import { setAppSettingsMenuPage, setFavouriteProjectIdAsync,
     setIsInRegisterMode } from 'handball-libs/libs/pounder-redux/action-creators';
 import { MessageBoxTypes } from 'handball-libs/libs/pounder-redux';
 
+import { AppBar, IconButton, Typography, Grid, Toolbar, Tabs, Tab, TabContainer } from '@material-ui/core';
+
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
 const issuesURL = "www.github.com/Charlie9830/Pounder/issues";
 
 class AppSettingsMenu extends React.Component {
@@ -31,7 +35,7 @@ class AppSettingsMenu extends React.Component {
 
         // Method Bindings.
         this.getPageJSX = this.getPageJSX.bind(this);
-        this.handleSidebarItemClick = this.handleSidebarItemClick.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
         this.handleOkButtonClick = this.handleOkButtonClick.bind(this);
         this.handleFavouriteProjectSelectChange = this.handleFavouriteProjectSelectChange.bind(this);
         this.handleCSSPropertyChange = this.handleCSSPropertyChange.bind(this);
@@ -64,28 +68,61 @@ class AppSettingsMenu extends React.Component {
         var contentsJSX = this.getPageJSX()
         
         return (
-            <div>
-                <div className="AppSettingsMenuContainer" onClick={this.handleAppSettingsMenuContainerClick}>
-                    <MenuHeader onBackButtonClick={() => {this.props.dispatch(setIsAppSettingsOpen(false))}}/>
-                    <div className="AppSettingsMenuSidebarContentFlexContainer">
-                        {/* Sidebar */}
-                        <div className="AppSettingsMenuSidebarContainer">
-                            <AppSettingsSidebar menuPage={this.props.menuPage} onItemClick={this.handleSidebarItemClick} />
-                        </div>
+            <Grid container
+            direction="column"
+            justify="flex-start"
+            alignItems="stretch">
 
-                        {/* Content */}
-                        <div className="AppSettingsMenuContentContainer" ref={this.menuContentContainerRef}>
-                            {contentsJSX}
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <Grid item>
+                    <AppBar position="sticky">
+                        <Toolbar>
+                            <IconButton>
+                                <ArrowBackIcon />
+                            </IconButton>
+
+                            <Typography variant="h6">
+                                Settings
+                            </Typography>
+                        </Toolbar>
+                        <Tabs fullWidth indicatorColor="secondary" value={this.props.menuPage} onChange={this.handleTabChange}>
+                            <Tab label="General" value="general" />
+                            <Tab label="Account" value="account" />
+                            <Tab label="About" value="about" />
+                        </Tabs>
+                        
+                    </AppBar>
+            </Grid>
+            
+            <Grid item>
+                {contentsJSX}
+            </Grid>
+                
+            </Grid>
+                
         )
     }
+
+    // <div>
+    //             <div className="AppSettingsMenuContainer" onClick={this.handleAppSettingsMenuContainerClick}>
+    //                 <MenuHeader onBackButtonClick={() => {this.props.dispatch(setIsAppSettingsOpen(false))}}/>
+    //                 <div className="AppSettingsMenuSidebarContentFlexContainer">
+    //                     {/* Sidebar */}
+    //                     <div className="AppSettingsMenuSidebarContainer">
+    //                         <AppSettingsSidebar menuPage={this.props.menuPage} onItemClick={this.handleSidebarItemClick} />
+    //                     </div>
+
+    //                     {/* Content */}
+    //                     <div className="AppSettingsMenuContentContainer" ref={this.menuContentContainerRef}>
+    //                         {contentsJSX}
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         </div>
 
     handleRegisterModeChanged(newValue) {
         this.props.dispatch(setIsInRegisterMode(newValue));
     }
+
     handleAppSettingsMenuContainerClick() {
         // Close Color Picker if it's open.
         if (this.state.openColorPickerIndex !== -1) {
@@ -195,8 +232,8 @@ class AppSettingsMenu extends React.Component {
         this.props.dispatch(setFavouriteProjectIdAsync(projectId));
     }
 
-    handleSidebarItemClick(itemName) {
-        this.props.dispatch(setAppSettingsMenuPage(itemName));
+    handleTabChange(event, value) {
+        this.props.dispatch(setAppSettingsMenuPage(value));
     }
 }
 

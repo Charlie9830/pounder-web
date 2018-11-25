@@ -30,6 +30,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Settings from '@material-ui/icons/Settings';
 import Share from '@material-ui/icons/Share';
 import Add from '@material-ui/icons/Add';
+import { Drawer, Portal } from '@material-ui/core';
 
 class Sidebar extends React.Component{
     constructor(props) {
@@ -98,7 +99,7 @@ class Sidebar extends React.Component{
 
                 { /* Grid - Toolbar, Selectors and Footer */}
                     {/* AppBar  */}
-                        <AppBar>
+                        <AppBar position="sticky">
                             <Toolbar>
                                 <Typography style={{flexGrow: '1'}} variant="h6">
                                     Handball
@@ -256,13 +257,13 @@ class Sidebar extends React.Component{
     }
 
     getAppSettingsJSX() {
-            return (
-                <CSSTransition key={"appSettings"} classNames="AppSettingsContainer" in={this.props.isAppSettingsOpen} timeout={250}
-                mountOnEnter={true} unmountOnExit={true}
-                enter={!this.props.disableAnimations} exit={!this.props.disableAnimations}>
-                    <VisibleAppSettingsMenu/>
-                </CSSTransition>
-            )
+        return (
+            <Portal>
+                <Drawer anchor="right" open={this.props.isAppSettingsOpen}>
+                    <VisibleAppSettingsMenu />
+                </Drawer>
+            </Portal>
+        )
     }
 
     getSidebarToolbarJSX() {

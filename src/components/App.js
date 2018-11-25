@@ -17,6 +17,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Drawer from '@material-ui/core/Drawer';
 import Portal from '@material-ui/core/Portal';
+import { withTheme } from '@material-ui/core/styles';
 
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { selectTask, openTask, startTaskMove,
@@ -32,6 +33,7 @@ setOpenTaskListWidgetHeaderId, updateTaskAssignedToAsync, closeMetadata, addNewP
 setIsSidebarOpen, cancelTaskMove, setShowCompletedTasksAsync, setIsProjectMenuOpen, renewChecklistAsync,
 unsubscribeFromDatabaseAsync, openTaskInspectorAsync, openTaskInfo, getTaskCommentsAsync,
 moveTaskListToProjectAsync } from 'handball-libs/libs/pounder-redux/action-creators';
+import VisibleAppSettingsMenu from './AppSettingsMenu/AppSettingsMenu';
 
 class App extends React.Component {
   constructor(props) {
@@ -99,6 +101,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    // Set App Background Colour.
+    document.getElementById("root").style.setProperty('background', this.props.theme.palette.background.default);
+
     // Read and Apply Config values.
     this.initializeLocalConfig();
     // Attach an Authentication state listener. Will pull down database when Logged in.
@@ -124,6 +129,7 @@ class App extends React.Component {
   }
 
   render() {
+
     var projectJSX = this.getProjectJSX();
     var sidebarJSX = this.getSidebarJSX();
     var floatingTextInputJSX = this.getFloatingTextInputJSX(false);
@@ -662,7 +668,7 @@ const mapStateToProps = state => {
   }
 }
 
-let VisibleApp = connect(mapStateToProps)(App);
+let VisibleApp = connect(mapStateToProps)(withTheme()(App));
 export default hot(module)(VisibleApp);
 
 

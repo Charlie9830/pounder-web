@@ -93,7 +93,7 @@ class App extends React.Component {
     this.dispatchOpenTaskInfo = this.dispatchOpenTaskInfo.bind(this);
     this.getTaskInspectorJSX = this.getTaskInspectorJSX.bind(this);
     this.handleTaskInspectorOpen = this.handleTaskInspectorOpen.bind(this);
-    this.handleBackArrowClick = this.handleBackArrowClick.bind(this);
+    this.handleProjectToolbarMenuButtonClick = this.handleProjectToolbarMenuButtonClick.bind(this);
     this.handleMoveTaskListToProject = this.handleMoveTaskListToProject.bind(this);
     this.getProjectJSX = this.getProjectJSX.bind(this);
     this.getSidebarJSX = this.getSidebarJSX.bind(this);
@@ -129,7 +129,6 @@ class App extends React.Component {
   }
 
   render() {
-
     var projectJSX = this.getProjectJSX();
     var sidebarJSX = this.getSidebarJSX();
     var floatingTextInputJSX = this.getFloatingTextInputJSX(false);
@@ -149,7 +148,7 @@ class App extends React.Component {
             {projectJSX}
           </Grid>
 
-          <Drawer anchor="left" open={this.props.isSidebarOpen}>
+          <Drawer anchor="left" variant="persistent" open={this.props.isSidebarOpen}>
             {sidebarJSX}
           </Drawer>
         </Grid>
@@ -218,7 +217,7 @@ class App extends React.Component {
               onProjectMenuClose={this.handleProjectMenuClose}
               isProjectMenuOpen={this.props.isProjectMenuOpen}
               onTaskInspectorOpen={this.handleTaskInspectorOpen}
-              onBackArrowClick={this.handleBackArrowClick}
+              onProjectToolbarMenuButtonClick={this.handleProjectToolbarMenuButtonClick}
               memberLookup={this.props.memberLookup}
               onMoveTaskListToProject={this.handleMoveTaskListToProject}
               onRenewNowButtonClick={this.handleRenewNowButtonClick}
@@ -282,6 +281,7 @@ class App extends React.Component {
   }
 
   handleFloatingTextInputSubmit(newValue, oldValue, targetType, targetId) {
+
     switch (targetType) {
       case "task":
         if (targetId === '') {
@@ -381,7 +381,7 @@ class App extends React.Component {
     this.props.dispatch(setOpenTaskListSettingsMenuId(-1));
   }
 
-  handleBackArrowClick() {
+  handleProjectToolbarMenuButtonClick() {
     this.props.dispatch(setIsSidebarOpen(true));
   }
 

@@ -258,11 +258,9 @@ class Sidebar extends React.Component{
 
     getAppSettingsJSX() {
         return (
-            <Portal>
-                <Drawer anchor="right" open={this.props.isAppSettingsOpen}>
+                <Drawer anchor="right" variant="temporary" open={this.props.isAppSettingsOpen}>
                     <VisibleAppSettingsMenu />
                 </Drawer>
-            </Portal>
         )
     }
 

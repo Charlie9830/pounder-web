@@ -11,7 +11,6 @@ class GeneralSettingsPage extends React.Component {
         
         // Refs.
         this.disableAnimationsCheckboxRef = React.createRef();
-        this.sortProjectsBySelectorRef = React.createRef();
         
         // Method Bindings.
         this.getFavouriteProjectSelectorJSX = this.getFavouriteProjectSelectorJSX.bind(this);
@@ -43,7 +42,7 @@ class GeneralSettingsPage extends React.Component {
                     <List>
                         <ListItem>
                             <ListItemText primary="Favourite Project"
-                            secondary="Auto select on launch"/>
+                            secondary="Auto select this project on launch"/>
                             <ListItemSecondaryAction>
                                 {favoriteProjectSelectorJSX}
                             </ListItemSecondaryAction>
@@ -115,8 +114,10 @@ class GeneralSettingsPage extends React.Component {
     //             </div>
     //         </div>
 
-    handleSortProjectsBySelectorChange() {
-        this.props.onSortProjectsBySelectorChange(this.sortProjectsBySelectorRef.current.value);
+    handleSortProjectsBySelectorChange(e) {
+        var value = e.target.value;
+
+        this.props.onSortProjectsBySelectorChange(value);
     }
 
     handleDefaultAllColorsButtonClick() {
@@ -156,11 +157,14 @@ class GeneralSettingsPage extends React.Component {
 
         // Append a "None" option.
         optionsJSX.unshift((<option key={0} value="-1"> None </option>))
-        
+
+        let favouriteProjectId = this.props.accountConfig.favouriteProjectId === undefined ?
+         "-1" : this.props.accountConfig.favouriteProjectId;
+
         // Build options into HTML select Element.
         return (
-            <Select value={this.props.accountConfig.favouriteProjectId}
-             ref="favourteProjectSelect" onChange={this.handleFavouriteProjectSelectChange}>
+            <Select value={favouriteProjectId}
+            onChange={this.handleFavouriteProjectSelectChange}>
                 {optionsJSX}
             </Select>
         )
@@ -170,7 +174,7 @@ class GeneralSettingsPage extends React.Component {
         var sortProjectsBy = this.props.generalConfig.sortProjectsBy === undefined ? 'alphabetically' : this.props.generalConfig.sortProjectsBy;
 
         return (
-            <Select ref={this.sortProjectsBySelectorRef} defaultValue={sortProjectsBy}
+            <Select value={sortProjectsBy}
             onChange={this.handleSortProjectsBySelectorChange}>
                 <option key={0} value='alphabetically'> Alphabetically </option>
                 <option key={1} value='created'> Date created </option>
@@ -179,8 +183,8 @@ class GeneralSettingsPage extends React.Component {
         )
     }
     
-    handleFavouriteProjectSelectChange() {
-        var id = this.refs.favourteProjectSelect.value;
+    handleFavouriteProjectSelectChange(e) {
+        let id = e.target.value;
         this.props.onFavouriteProjectSelectChange(id);
     }
 }

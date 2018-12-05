@@ -174,7 +174,8 @@ class Project extends React.Component {
                         onShowOnlySelfTasksChanged={this.handleShowOnlySelfTasksChanged}
                         showOnlySelfTasks={this.props.showOnlySelfTasks}
                         isRemote={this.props.isRemote} buttonEnableStates={toolbarButtonEnableStates}
-                        projectName={this.props.projectName} showCompletedTasks={this.props.showCompletedTasks} />
+                        projectName={this.props.projectName} showCompletedTasks={this.props.showCompletedTasks}
+                        onProjectToolbarMenuButtonClick={this.props.onProjectToolbarMenuButtonClick} />
 
                     {/* Task Lists  */} 
                     <List style={listAreaStyle}>

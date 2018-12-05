@@ -19,7 +19,7 @@ import { AppBar, IconButton, Typography, Grid, Toolbar, Tabs, Tab, TabContainer 
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-const issuesURL = "www.github.com/Charlie9830/Pounder/issues";
+const issuesURL = "https://www.github.com/Charlie9830/Pounder/issues";
 
 class AppSettingsMenu extends React.Component {
     constructor(props) {
@@ -48,6 +48,7 @@ class AppSettingsMenu extends React.Component {
         this.handlePasswordResetButtonClick = this.handlePasswordResetButtonClick.bind(this);
         this.handleRegisterModeChanged = this.handleRegisterModeChanged.bind(this);
         this.handleSortProjectsBySelectorChange = this.handleSortProjectsBySelectorChange.bind(this);
+        this.handleBackArrowClick = this.handleBackArrowClick.bind(this);
     }
 
     componentDidMount() {
@@ -71,12 +72,13 @@ class AppSettingsMenu extends React.Component {
             <Grid container
             direction="column"
             justify="flex-start"
-            alignItems="stretch">
+            alignItems="stretch"
+            style={{width: '100vw', height: '100vh'}}>
 
                 <Grid item>
                     <AppBar position="sticky">
                         <Toolbar>
-                            <IconButton>
+                            <IconButton onClick={this.handleBackArrowClick}>
                                 <ArrowBackIcon />
                             </IconButton>
 
@@ -89,7 +91,6 @@ class AppSettingsMenu extends React.Component {
                             <Tab label="Account" value="account" />
                             <Tab label="About" value="about" />
                         </Tabs>
-                        
                     </AppBar>
             </Grid>
             
@@ -102,22 +103,9 @@ class AppSettingsMenu extends React.Component {
         )
     }
 
-    // <div>
-    //             <div className="AppSettingsMenuContainer" onClick={this.handleAppSettingsMenuContainerClick}>
-    //                 <MenuHeader onBackButtonClick={() => {this.props.dispatch(setIsAppSettingsOpen(false))}}/>
-    //                 <div className="AppSettingsMenuSidebarContentFlexContainer">
-    //                     {/* Sidebar */}
-    //                     <div className="AppSettingsMenuSidebarContainer">
-    //                         <AppSettingsSidebar menuPage={this.props.menuPage} onItemClick={this.handleSidebarItemClick} />
-    //                     </div>
-
-    //                     {/* Content */}
-    //                     <div className="AppSettingsMenuContentContainer" ref={this.menuContentContainerRef}>
-    //                         {contentsJSX}
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </div>
+    handleBackArrowClick() {
+        this.props.dispatch(setIsAppSettingsOpen(false));
+    }
 
     handleRegisterModeChanged(newValue) {
         this.props.dispatch(setIsInRegisterMode(newValue));

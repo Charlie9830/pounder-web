@@ -71,7 +71,7 @@ class ProjectToolBar extends React.Component {
         let taskListJumpMenuJSX = this.getTaskListJumpMenuJSX();
 
         return (
-            <AppBar position="sticky">
+            <AppBar position="sticky" color="secondary">
                 <Toolbar>
                     <IconButton onClick={() => {this.props.onProjectToolbarMenuButtonClick()}}>
                         <MenuIcon/>

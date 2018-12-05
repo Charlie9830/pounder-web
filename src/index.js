@@ -51,5 +51,6 @@ let theme = createMuiTheme({
     }
 })
 
+
 ReactDOM.render(<Provider store={appStore}><MuiThemeProvider theme={theme}><VisibleApp /></MuiThemeProvider></Provider>, document.getElementById('root'));
 registerServiceWorker(onUpdateAvailable);

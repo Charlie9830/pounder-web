@@ -138,6 +138,8 @@ class App extends React.Component {
         
         {floatingTextInputJSX}
 
+        <MessageBox config={this.props.messageBox}/>
+
         <CssBaseline/>
 
         <Grid container
@@ -232,7 +234,7 @@ class App extends React.Component {
         return item.uid === targetProjectId;
       }).projectName;
 
-      this.props.dispatch(setMessageBox(true, `Are you sure you want to move this list to ${projectName}`,
+      this.props.dispatch(setMessageBox(true, "Move List?", `Are you sure you want to move this list to ${projectName}`,
         MessageBoxTypes.STANDARD, null, result => {
           this.props.dispatch(setMessageBox(false));
 
@@ -523,7 +525,7 @@ class App extends React.Component {
 
   handleRemoveTaskListButtonClick() {
     if (this.props.focusedTaskListId !== -1) {
-      this.props.dispatch(setMessageBox(true, "Are you sure you want to delete this Task List?", MessageBoxTypes.STANDARD, null,
+      this.props.dispatch(setMessageBox(true, "Delete this List?", "This includes all the Tasks belonging to this list", MessageBoxTypes.STANDARD, null,
         (result) => {
           if (result === "ok") {
             this.removeTaskList(this.props.focusedTaskListId);
@@ -586,7 +588,7 @@ class App extends React.Component {
 
   handleRemoveProjectClick(projectId) {
     if (projectId !== -1) {
-      this.props.dispatch(setMessageBox(true, "Are you sure you want to delete this Project?", MessageBoxTypes.STANDARD, null,
+      this.props.dispatch(setMessageBox(true, "Delete this Project", "All Lists and Tasks will be deleted", MessageBoxTypes.STANDARD, null,
         (result) => {
           if (result === "ok") {
             this.props.dispatch(removeProjectAsync(projectId));
@@ -597,7 +599,7 @@ class App extends React.Component {
   }
 
   handleTaskListWidgetRemoveButtonClick(projectId, taskListWidgetId) {
-    this.props.dispatch(setMessageBox(true, "Are you sure you want to delete this Task List?", MessageBoxTypes.STANDARD, null,
+    this.props.dispatch(setMessageBox(true, "Delete this List?", "This includes all Tasks belonging to this list.", MessageBoxTypes.STANDARD, null,
       (result) => {
         if (result === "ok") {
           this.removeTaskList(taskListWidgetId);

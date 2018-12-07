@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import Button from './Button';
 import MenuSubtitle from './MenuSubtitle';
 import MenuHeader from './MenuHeader';
 import Spinner from './Spinner';
@@ -12,6 +11,62 @@ removeRemoteProjectAsync, migrateProjectBackToLocalAsync } from 'handball-libs/l
 import { MessageBoxTypes } from 'handball-libs/libs/pounder-redux';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import BackArrow from '../assets/icons/BackArrow.svg';
+
+import { Grid, Toolbar, AppBar, Typography, IconButton, TextField, NativeSelect, Button, List, ListSubheader, Paper,  ListItem, ListItemText, ListItemIcon,
+ListItemSecondaryAction, Modal, CircularProgress } from '@material-ui/core';
+
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import RemoveIcon from '@material-ui/icons/RemoveCircle';
+import ArrowUpIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownIcon from '@material-ui/icons/ArrowDownward';
+import CheckIcon from '@material-ui/icons/Check';
+import ClockIcon from '@material-ui/icons/AccessTime';
+import CrossIcon from '@material-ui/icons/Clear';
+
+let MemberStatusIcon = (props) => {
+    switch(props.status) {
+        case "pending":
+        return <ClockIcon fontSize="small"/>
+
+        case "added":
+        return <CheckIcon fontSize="small"/>
+
+        case "denied":
+        return <CrossIcon fontSize="small"/>
+
+        default:
+        return null;
+    }
+}
+
+let WaitingOverlay = (props) => {
+    let gridStyle = {
+        width: '100%',
+        height: '100%',
+    }
+
+    return (
+        <Modal open={props.open} disableAutoFocus={true}>
+            <Grid container style={gridStyle}
+                direction="column"
+                justify="center"
+                alignItems="center">
+                    <Grid item>
+                        <CircularProgress />
+                    </Grid>
+
+                    <Grid item>
+                        <Typography align="center" variant="h6"> {props.message} </Typography>
+                    </Grid>
+
+                    <Grid item style={{marginTop: '32px'}}>
+                        <Typography align="center" variant="h6"> {props.subMessage} </Typography>
+                    </Grid>
+                    
+            </Grid>
+        </Modal>
+    )
+}
 
 class ShareMenu extends React.Component {
     constructor(props) {
@@ -33,100 +88,110 @@ class ShareMenu extends React.Component {
         this.isCurrentUserAnOwner = this.isCurrentUserAnOwner.bind(this);
         this.handleLeaveButtonClick = this.handleLeaveButtonClick.bind(this);
         this.getInviteButtonJSX = this.getInviteButtonJSX.bind(this);
-        this.handleDoneButtonClick = this.handleDoneButtonClick.bind(this);
-        this.handleDoneButtonClick = this.handleDoneButtonClick.bind(this);
         this.isUserAlreadyAMember = this.isUserAlreadyAMember.bind(this);
         this.handleMakePersonalButtonClick = this.handleMakePersonalButtonClick.bind(this);
         this.handleEmailInputKeyPress = this.handleEmailInputKeyPress.bind(this);
         this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
         this.getIsMemberUpdating = this.getIsMemberUpdating.bind(this);
+        this.handleBackArrowClick = this.handleBackArrowClick.bind(this);
     }
 
     render() {
+        let ShareMenuGrid = {
+            width: '100vw',
+            height: '100vh',
+            display: 'grid',
+            gridTemplateRows: '[Toolbar]auto [Invite]min-content [MemberList]1fr [Actions]1fr ',
+        }
+
+        let ToolbarContainer = {
+            gridRow: 'Toolbar'
+        }
+
+        let InviteContainer = {
+            gridRow: 'Invite',
+        }
+
+        let ActionsContainer = {
+            gridRow: 'Actions'
+        }
+
+        let MemberListContainer = {
+            gridRow: 'MemberList'
+        }
+
         var filteredMembers = this.getFilteredMembers();
         var ownersJSX = this.getMembersJSX(filteredMembers, 'owner');
         var membersJSX = this.getMembersJSX(filteredMembers, 'member');
-        var waitingOverlay = this.getWaitingOverlay();
         var isLeaveButtonEnabled = this.props.isSelectedProjectRemote;
         var isMakePersonalButtonEnabled = this.props.isSelectedProjectRemote && this.isCurrentUserAnOwner(filteredMembers);
+        var isCurrentUserAnOwner = this.isCurrentUserAnOwner(filteredMembers);
 
         return (
-            <div className="ShareMenuContainer">
-                <div className="ShareMenu">
-                    {waitingOverlay}
-
-                    <div className="ShareMenuVerticalFlexContainer">
-
-                        <MenuHeader onBackButtonClick={() => {this.props.dispatch(setIsShareMenuOpen(false))}}/>
-
-                        {/* Invite  */}
-                        <MenuSubtitle text="Invite" showDivider={false} />
-                        <div className="ShareMenuInviteContainer">
-                                <input className="InviteEmail" type='email' placeholder="Email" ref={this.emailInputRef}
-                                    onKeyPress={this.handleEmailInputKeyPress} />
-                                <select className="InviteRoleSelect" defaultValue='member' ref={this.roleSelectRef}>
-                                    <option value='owner'> Owner </option>
-                                    <option value='member'> Member </option>
-                                </select>
-                                <Button text="Invite" onClick={this.handleInviteButtonClick} />
-                        </div>
-
-                        {/* Project Actions  */}
-                        <MenuSubtitle text="Actions" />
-                        <div className="ShareMenuActionsContainer">
-
-                            {/* Leave */}
-                            <div className="ActionItemContainer">
-                                <div className="ActionLabel"> Leave Project </div>
-                                <Button text='Leave' size='small' onClick={this.handleLeaveButtonClick}
-                                    isEnabled={isLeaveButtonEnabled} />
-                            </div>
-
-                            {/* Divider  */}
-                            <div className="ActionItemDivider" />
-
-                            {/* Make Personal  */}
-                            <div className="ActionItemContainer">
-                                <div className="ActionLabel"> Make Personal </div>
-                                <Button text='Go' size='small' onClick={this.handleMakePersonalButtonClick}
-                                    isEnabled={isMakePersonalButtonEnabled} />
-                            </div>
-
-                            {/* Divider  */}
-                            <div className="ActionItemDivider" />
-
-                            {/* Delete  */}
-                            <div className="ActionItemContainer">
-                                <div className="ActionLabel"> Delete Project </div>
-                                <Button text='Go' size='small' onClick={this.handleDeleteButtonClick}
-                                    isEnabled={isMakePersonalButtonEnabled} />
-                            </div>
-                        </div>
-
-
-                        {/* Members List  */}
-                        <MenuSubtitle text="Project Contributors" />
-                        <div className="MembersListContainer">
-                            {/* Owners  */} 
-                            <div className="MembersListRoleTitle">
-                                Owners
-                            </div>
-                            <div className="MembersListContentContainer">
-                                {ownersJSX}
-                            </div>
-
-                            {/* Members  */} 
-                            <div className="MembersListRoleTitle">
-                                Members
-                            </div>
-                            <div className="MembersListContentContainer">
-                                {membersJSX}
-                            </div>
-                        </div>                        
-                    </div>
+            <div style={ShareMenuGrid}>  
+                {/* Spinner Overlay  */} 
+                <WaitingOverlay open={this.props.isShareMenuWaiting} message={this.props.shareMenuMessage}
+                 subMessage={this.props.shareMenuSubMessage}/>
+            
+                {/* Toolbar  */} 
+                <div style={ToolbarContainer}>
+                    <AppBar position="sticky">
+                        <Toolbar>
+                            <IconButton onClick={this.handleBackArrowClick}>
+                                <ArrowBackIcon />
+                            </IconButton>
+                            <Typography variant="h6">
+                                Invite Users
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
                 </div>
-            </div>
 
+                {/* Invite Container  */} 
+                <div style={InviteContainer}>
+                    <Grid container
+                    direction="column"
+                    justify="space-between"
+                    alignItems="center">
+                        <TextField type="email" label="Email" inputRef={this.emailInputRef} onKeyPress={this.handleEmailInputKeyPress}/>
+
+                        <div style={{height: '8px'}}/>
+
+                        <NativeSelect defaultValue="member" inputRef={this.roleSelectRef}>
+                            <option value='owner'> Owner </option>
+                            <option value='member'> Member </option>
+                        </NativeSelect>
+
+                        <div style={{height: '16px'}}/>
+
+                        <Button variant="contained" onClick={this.handleInviteButtonClick}> Invite </Button>
+                    </Grid>
+                </div>
+
+                {/* Member List Container  */} 
+                <div style={MemberListContainer}>
+                        <List>
+                            <ListSubheader> Owners </ListSubheader>
+                                {ownersJSX}
+                            <ListSubheader> Members </ListSubheader>
+                                {membersJSX}
+                        </List>
+                    
+                </div>
+
+                 {/* Actions Container */ }
+                 <div style={ActionsContainer}>
+                 <Grid container style={{height: '100%'}}
+                 direction="row"
+                 justify="center"
+                 alignItems="center">
+                     <Button variant="outlined" style={{margin: '8px'}} size="small" onClick={this.handleLeaveButtonClick} hidden={!isLeaveButtonEnabled}> Leave Project </Button>
+                     <Button variant="outlined" style={{margin: '8px'}} size="small" onClick={this.handleMakePersonalButtonClick} hidden={!isMakePersonalButtonEnabled}> Make Personal </Button>
+                     <Button variant="outlined"  style={{margin: '8px'}} size="small" color="secondary" onClick={this.handleDeleteButtonClick} hidden={!isCurrentUserAnOwner}> Delete Project </Button>
+                 </Grid>
+             </div>
+
+            </div>      
         )
     }
 
@@ -140,67 +205,36 @@ class ShareMenu extends React.Component {
                 return item.role === role;
             })
 
+            var promoteDemoteIcon = role === "owner" ? <ArrowDownIcon fontSize="small"/> : <ArrowUpIcon fontSize="small"/>;
+            var roleButtonAction = role === "owner" ? "demote" : "promote";
+            
+
             membersJSX = roledMembers.map((item, index) => {
                 var isUpdating = this.getIsMemberUpdating(item.userId, this.props.selectedProjectId);
+                var kickUserButtonJSX = isCurrentUserOwner && item.userId !== getUserUid() ? <IconButton onClick={() => {this.handleKickButtonClick(item.displayName, item.userId)}}> <RemoveIcon fontSize="small"/> </IconButton> : null;
 
                 return (
-                    <CSSTransition key={item.userId} classNames="ProjectMemberContainer" timeout={250} >
-                        <div>
-                            <div key={index} className="ProjectMember" data-isupdating={isUpdating}>
-                                <div className="ProjectMemberGrid">
-                                    {/* DisplayName and Email  */}
-                                    <div className="ProjectMemberNameAndEmailContainer">
-                                        <div className="ProjectMemberDisplayName">
-                                            {item.displayName}
-                                        </div>
-                                        <div className="ProjectMemberEmail">
-                                            {item.email}
-                                        </div>
-                                    </div>
+                    <ListItem key={item.userId} disabled={isUpdating}>
+                        <ListItemIcon>
+                            <MemberStatusIcon status={item.status}/>
+                        </ListItemIcon>
 
-                                    {/* Buttons  */}
-                                    <div className="ProjectMemberButtonsContainer">
-                                        {this.getRoleButtonJSX(item, isCurrentUserOwner)}
-                                        {this.getKickButtonJSX(item, isCurrentUserOwner)}
-                                    </div>
+                        <ListItemText primary={item.displayName} secondary={item.email}/>
 
-                                    {/* Status  */}
-                                    <div className="ProjectMemberStatus" data-status={item.status}>
-                                        {this.toTitleCase(item.status)}
-                                    </div>
+                        <ListItemSecondaryAction>
 
-                                    {/* Half Bleed Divider */}
-                                    <div className="ProjectMemberDivider" />
-                                </div>
-                            </div>
-                        </div>
+                            <IconButton onClick={() => {this.handleRoleButtonClick(roleButtonAction, item.userId, filteredMembers)}} >
+                                {promoteDemoteIcon}
+                            </IconButton>
 
-                    </CSSTransition>
+                            {kickUserButtonJSX}
+                            
+                        </ListItemSecondaryAction>
+                    </ListItem>
                 )
             })
 
-            // if (filteredMembers.length === 0) {
-            //     return (
-            //         <div>
-            //             <CenteringContainer>
-            //                 <div className="NoMembersMessage">
-            //                     No project contributors
-            //                 </div>
-            //             </CenteringContainer>
-            //         </div>
-            //     )
-            // }
-    
-            // else {
-                var disableAnimations = this.props.generalConfig.disableAnimations === undefined ?
-                 false : this.props.generalConfig.disableAnimations;
-
-                return (
-                    <TransitionGroup enter={!disableAnimations} exit={!disableAnimations}>
-                        {membersJSX}
-                    </TransitionGroup>
-                )
-            // }
+            return membersJSX;
         }
     }
 
@@ -219,7 +253,7 @@ class ShareMenu extends React.Component {
     handleMakePersonalButtonClick() {
         var message  = "This will kick all users from the Project and return it to being Personal only. " +
         "Are you sure you want to continue?";
-        this.props.dispatch(setMessageBox(true, message, MessageBoxTypes.STANDARD, null,
+        this.props.dispatch(setMessageBox(true, "Make this project Personal only?" ,message, MessageBoxTypes.STANDARD, null,
         result => {
             if (result === 'ok') {
                 this.props.dispatch(migrateProjectBackToLocalAsync(this.props.selectedProjectId, this.getProjectName()));
@@ -231,7 +265,7 @@ class ShareMenu extends React.Component {
 
     handleDeleteButtonClick() {
         var message  = "Deleting this project will remove it from all other contributors accounts as well. Are you sure you want to continue?"
-        this.props.dispatch(setMessageBox(true, message, MessageBoxTypes.STANDARD, null,
+        this.props.dispatch(setMessageBox(true, "Delete this project?", message, MessageBoxTypes.STANDARD, null,
         result => {
             if (result === 'ok') {
                 this.props.dispatch(removeRemoteProjectAsync(this.props.selectedProjectId));
@@ -241,7 +275,7 @@ class ShareMenu extends React.Component {
         } ))
     }
 
-    handleDoneButtonClick() {
+    handleBackArrowClick() {
         this.props.dispatch(setIsShareMenuOpen(false));
     }
 
@@ -286,7 +320,7 @@ class ShareMenu extends React.Component {
             // User is last Member.
             var message = "You are the sole contributor to this project, if you leave the project, it will be deleted from the database. " +
             "Are you sure you want to leave?";
-            this.props.dispatch(setMessageBox(true, message, MessageBoxTypes.STANDARD, null, result => {
+            this.props.dispatch(setMessageBox(true, "Leave this project?", message, MessageBoxTypes.STANDARD, null, result => {
                 this.props.dispatch(setMessageBox(false));
                 if (result === "ok") {
                     this.props.dispatch(removeRemoteProjectAsync(this.props.selectedProjectId));
@@ -296,7 +330,7 @@ class ShareMenu extends React.Component {
         
         else if (filteredMembers.length > 1 && this.isCurrentUserTheOnlyOwner(filteredMembers)) {
             // User is the only Owner.
-            this.props.dispatch(setMessageBox(true, 'You must promote another user to Owner before you can leave the project.',
+            this.props.dispatch(setMessageBox(true, "You are the sole owner", 'You must promote another user to Owner before you can leave the project.',
                 MessageBoxTypes.OK_ONLY, null, result => {
                     this.props.dispatch(setMessageBox(false))
                 }
@@ -304,7 +338,7 @@ class ShareMenu extends React.Component {
         }
 
         else {
-            this.props.dispatch(setMessageBox(true, 'Are you sure you want to Leave?', MessageBoxTypes.STANDARD, null,
+            this.props.dispatch(setMessageBox(true, "Leave Project", 'Are you sure you want to Leave?', MessageBoxTypes.STANDARD, null,
         result => {
             if (result === "ok") {
                 this.props.dispatch(kickUserFromProjectAsync(this.props.selectedProjectId, getUserUid()));
@@ -355,12 +389,12 @@ class ShareMenu extends React.Component {
         var email = this.emailInputRef.current.value;
 
         if (email === this.props.userEmail) {
-            this.props.dispatch(setMessageBox(true, "You can't invite yourself to your own project.", MessageBoxTypes.OK_ONLY,
+            this.props.dispatch(setMessageBox(true, "", "You can't invite yourself to your own project.", MessageBoxTypes.OK_ONLY,
         null, () => {this.props.dispatch(setMessageBox(false))}));
         }
 
         if (this.isUserAlreadyAMember(email)) {
-            this.props.dispatch(setMessageBox(true, "User is already a contributor.", MessageBoxTypes.OK_ONLY,
+            this.props.dispatch(setMessageBox(true, "", "User is already a contributor.", MessageBoxTypes.OK_ONLY,
         null, () => {this.props.dispatch(setMessageBox(false))}));
         }
 
@@ -390,7 +424,7 @@ class ShareMenu extends React.Component {
         if (action === 'demote') {
             // Ensure the user can't Demote themselves before first delegating another Member to be an Owner.
             if (this.isCurrentUserTheOnlyOwner(this.getFilteredMembers())) {
-               this.props.dispatch(setMessageBox(true, "You must delegate another member to be an owner before you can demote yourself.", MessageBoxTypes.OK_ONLY,
+               this.props.dispatch(setMessageBox(true, "You are the sole Owner", "You must delegate another member to be an owner before you can demote yourself.", MessageBoxTypes.OK_ONLY,
             null, () => { this.props.dispatch(setMessageBox(false)) }));
             }
 
@@ -402,7 +436,14 @@ class ShareMenu extends React.Component {
     }
 
     handleKickButtonClick(displayName, userId) {
-        this.props.dispatch(kickUserFromProjectAsync(this.props.selectedProjectId, userId));
+        this.props.dispatch(setMessageBox(true, "", `Are you sure you want to kick ${displayName} from the Project?`, MessageBoxTypes.STANDARD, null, (result) => {
+            if (result === "ok") {
+                this.props.dispatch(kickUserFromProjectAsync(this.props.selectedProjectId, userId));
+            }
+
+            this.props.dispatch(setMessageBox(false));
+        }))
+        
     }
 
     getRoleButtonJSX(member, isCurrentUserOwner) {

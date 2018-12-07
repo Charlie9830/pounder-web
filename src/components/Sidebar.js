@@ -30,7 +30,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Settings from '@material-ui/icons/Settings';
 import Share from '@material-ui/icons/Share';
 import Add from '@material-ui/icons/Add';
-import { Drawer, Portal } from '@material-ui/core';
+import { Drawer, Portal, ListSubheader } from '@material-ui/core';
 
 class Sidebar extends React.Component{
     constructor(props) {
@@ -120,7 +120,11 @@ class Sidebar extends React.Component{
                         </AppBar>
 
                             <List>
+                                <ListSubheader> Personal Projects </ListSubheader>
                                 {localProjectSelectorsJSX}
+
+                                <ListSubheader> Shared Projects </ListSubheader>
+                                {remoteProjectSelectorsJSX}
                             </List>
 
                 <Button variant="fab" color="secondary" style={fabStyle} onClick={this.handleAddProjectClick}>
@@ -131,11 +135,11 @@ class Sidebar extends React.Component{
     }
 
     getShareMenuJSX() {
-        if (this.props.isShareMenuOpen) {
-          return (
-            <VisibleShareMenu />
-          )
-        }
+        return (
+            <Drawer anchor="right" variant="temporary" open={this.props.isShareMenuOpen}>
+                <VisibleShareMenu/>
+            </Drawer>
+        )
       }
 
     handleDenyInviteButtonClick(projectId) {
@@ -231,7 +235,7 @@ class Sidebar extends React.Component{
 
 
         return (
-            <ListItem style={{width: '100%'}} selected={isSelected} key={index} component={projectSelector}/>
+            <ListItem style={{width: '100%'}} selected={isSelected} key={item.uid} component={projectSelector}/>
                 
         )
     }

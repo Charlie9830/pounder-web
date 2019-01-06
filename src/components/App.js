@@ -32,7 +32,7 @@ selectProject, setOpenTaskOptionsId, setShowOnlySelfTasks, addNewTaskWithNameAsy
 setOpenTaskListWidgetHeaderId, updateTaskAssignedToAsync, closeMetadata, addNewProjectWithNameAsync,
 setIsSidebarOpen, cancelTaskMove, setShowCompletedTasksAsync, setIsProjectMenuOpen, renewChecklistAsync,
 unsubscribeFromDatabaseAsync, openTaskInspectorAsync, openTaskInfo, getTaskCommentsAsync,
-moveTaskListToProjectAsync } from 'handball-libs/libs/pounder-redux/action-creators';
+moveTaskListToProjectAsync, setOpenChecklistSettingsId } from 'handball-libs/libs/pounder-redux/action-creators';
 import VisibleAppSettingsMenu from './AppSettingsMenu/AppSettingsMenu';
 
 class App extends React.Component {
@@ -60,7 +60,6 @@ class App extends React.Component {
     this.handleRemoveTaskButtonClick = this.handleRemoveTaskButtonClick.bind(this);
     this.handleAddTaskListButtonClick = this.handleAddTaskListButtonClick.bind(this);
     this.addNewTaskList = this.addNewTaskList.bind(this);
-    this.handleRemoveTaskListButtonClick = this.handleRemoveTaskListButtonClick.bind(this);
     this.handleTaskListSettingsChanged = this.handleTaskListSettingsChanged.bind(this);
     this.handleTaskClick = this.handleTaskClick.bind(this);
     this.handleTaskTwoFingerTouch = this.handleTaskTwoFingerTouch.bind(this);
@@ -97,7 +96,9 @@ class App extends React.Component {
     this.handleMoveTaskListToProject = this.handleMoveTaskListToProject.bind(this);
     this.getProjectJSX = this.getProjectJSX.bind(this);
     this.getSidebarJSX = this.getSidebarJSX.bind(this);
-    
+    this.handleChecklistSettingsOpen = this.handleChecklistSettingsOpen.bind(this);
+    this.handleChecklistSettingsClose = this.handleChecklistSettingsClose.bind(this);
+
   }
 
   componentDidMount() {
@@ -193,7 +194,7 @@ class App extends React.Component {
               isLoggedIn={this.props.isLoggedIn} projects={this.props.projects}
               onTaskCheckBoxClick={this.handleTaskCheckBoxClick} onTaskMoved={this.handleTaskMoved}
               onAddTaskButtonClick={this.handleAddTaskButtonClick} onRemoveTaskButtonClick={this.handleRemoveTaskButtonClick}
-              onAddTaskListButtonClick={this.handleAddTaskListButtonClick} onRemoveTaskListButtonClick={this.handleRemoveTaskListButtonClick}
+              onAddTaskListButtonClick={this.handleAddTaskListButtonClick}
               onTaskListSettingsChanged={this.handleTaskListSettingsChanged} onTaskClick={this.handleTaskClick}
               sourceTaskListId={this.props.sourceTaskListId} projectName={projectName}
               onTaskTwoFingerTouch={this.handleTaskTwoFingerTouch}
@@ -223,25 +224,25 @@ class App extends React.Component {
               memberLookup={this.props.memberLookup}
               onMoveTaskListToProject={this.handleMoveTaskListToProject}
               onRenewNowButtonClick={this.handleRenewNowButtonClick}
+              onChecklistSettingsOpen={this.handleChecklistSettingsOpen}
+              openChecklistSettingsId={this.props.openChecklistSettingsId}
+              onChecklistSettingsClose={this.handleChecklistSettingsClose}
             />
     )
   }
 
+  handleChecklistSettingsClose() {
+    this.props.dispatch(setOpenChecklistSettingsId(-1));
+  }
+
+  handleChecklistSettingsOpen(taskListWidgetId) {
+    this.props.dispatch(setOpenTaskListSettingsMenuId(-1));
+    this.props.dispatch(setOpenChecklistSettingsId(taskListWidgetId));
+  }
 
   handleMoveTaskListToProject(sourceProjectId, targetProjectId, taskListWidgetId) {
     if (targetProjectId !== "-1") {
-      var projectName = this.props.projects.find(item => {
-        return item.uid === targetProjectId;
-      }).projectName;
-
-      this.props.dispatch(setMessageBox(true, "Move List?", `Are you sure you want to move this list to ${projectName}`,
-        MessageBoxTypes.STANDARD, null, result => {
-          this.props.dispatch(setMessageBox(false));
-
-          if (result === "ok") {
-            this.props.dispatch(moveTaskListToProjectAsync(sourceProjectId, targetProjectId, taskListWidgetId));
-          }
-        }))
+      this.props.dispatch(moveTaskListToProjectAsync(sourceProjectId, targetProjectId, taskListWidgetId));
     }
   }
 
@@ -523,18 +524,6 @@ class App extends React.Component {
     this.props.dispatch(startTaskMove(taskId, taskListWidgetId));
   }
 
-  handleRemoveTaskListButtonClick() {
-    if (this.props.focusedTaskListId !== -1) {
-      this.props.dispatch(setMessageBox(true, "Delete this List?", "This includes all the Tasks belonging to this list", MessageBoxTypes.STANDARD, null,
-        (result) => {
-          if (result === "ok") {
-            this.removeTaskList(this.props.focusedTaskListId);
-          }
-          this.props.dispatch(setMessageBox({}));
-        }));
-    }
-  }
-
   handleAddTaskListButtonClick() {
     this.addNewTaskList();
   }
@@ -599,6 +588,8 @@ class App extends React.Component {
   }
 
   handleTaskListWidgetRemoveButtonClick(projectId, taskListWidgetId) {
+    this.props.dispatch(setOpenTaskListSettingsMenuId(-1));
+    
     this.props.dispatch(setMessageBox(true, "Delete this List?", "This includes all Tasks belonging to this list.", MessageBoxTypes.STANDARD, null,
       (result) => {
         if (result === "ok") {
@@ -667,6 +658,7 @@ const mapStateToProps = state => {
     showCompletedTasks: state.showCompletedTasks,
     isProjectMenuOpen: state.isProjectMenuOpen,
     openTaskInspectorId: state.openTaskInspectorId,
+    openChecklistSettingsId: state.openChecklistSettingsId,
   }
 }
 

@@ -30,7 +30,43 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Settings from '@material-ui/icons/Settings';
 import Share from '@material-ui/icons/Share';
 import Add from '@material-ui/icons/Add';
-import { Drawer, Portal, ListSubheader } from '@material-ui/core';
+import CheckIcon from '@material-ui/icons/Check';
+import ClearIcon from '@material-ui/icons/Clear';
+import GroupIcon from '@material-ui/icons/Group';
+import { Drawer, Portal, ListItemIcon, ListSubheader, ListItemText, ListItemSecondaryAction, CircularProgress } from '@material-ui/core';
+
+
+let Invite = (props) => {
+    if (props.isUpdating) {
+        return (
+            <ListItem>
+                <Grid container
+                direction="column"
+                justify="center"
+                alignItems="center">
+                    <CircularProgress size={25}/>
+                </Grid>
+            </ListItem>
+        )
+    }
+
+    return (
+        <ListItem>
+            <ListItemIcon>
+                <GroupIcon/>
+            </ListItemIcon>
+            <ListItemText primary={props.projectName} secondary={props.displayName}/>
+            <ListItemSecondaryAction>
+                <IconButton>
+                    <ClearIcon fontSize="small" onClick={props.onDeny}/>
+                </IconButton>
+                <IconButton>
+                    <CheckIcon fontSize="small" onClick={props.onAccept}/>
+                </IconButton>
+            </ListItemSecondaryAction>
+        </ListItem>
+    )
+}
 
 class Sidebar extends React.Component{
     constructor(props) {
@@ -66,18 +102,14 @@ class Sidebar extends React.Component{
         var splitProjects = this.getSplitProjects();
         var localProjectsCount = splitProjects.localProjects.length;
         var remoteProjectsCount = splitProjects.remoteProjects.length;
-        var localProjectsTitleJSX = this.getLocalProjectsTitleJSX(localProjectsCount > 0 && remoteProjectsCount > 0);
-        var remoteProjectsTitleJSX = this.getRemoteProjectsTitleJSX(splitProjects.remoteProjects.length > 0);
-        var projectInvitesTitleJSX = this.getProjectInvitesTitleJSX(this.props.invites.length > 0);
+        var localProjectsSubheaderJSX = localProjectsCount > 0 ? <ListSubheader> Personal Projects </ListSubheader> : null;
+        var remoteProjectsSubheaderJSX = remoteProjectsCount > 0 ? <ListSubheader> Shared Projects </ListSubheader> : null;
+        var invitesSubheaderJSX = this.props.invites.length > 0 ? <ListSubheader> Invites </ListSubheader> : null;
         var invitesJSX = this.getInvitesJSX();
-        var localAndRemoteDividerJSX = this.getSidebarFullBleedDividerJSX(localProjectsCount > 0 && remoteProjectsCount > 0);
-        var invitesDividerJSX = this.getSidebarFullBleedDividerJSX((localProjectsCount > 0 || remoteProjectsCount > 0) &&
-            this.props.invites.length > 0);
+        
         var localProjectSelectorsJSX = splitProjects.localProjects.map(this.projectMapper);
         var remoteProjectSelectorsJSX = splitProjects.remoteProjects.map(this.projectMapper);
-        var sidebarToolbarJSX = this.getSidebarToolbarJSX();
         var shareMenuJSX = this.getShareMenuJSX();
-
 
         const fabStyle = {
             margin: 0,
@@ -120,10 +152,16 @@ class Sidebar extends React.Component{
                         </AppBar>
 
                             <List>
-                                <ListSubheader> Personal Projects </ListSubheader>
+                                {/* Invites  */} 
+                                {invitesSubheaderJSX}
+                                {invitesJSX}
+                            
+                                {/* Local Projects  */} 
+                                {localProjectsSubheaderJSX}
                                 {localProjectSelectorsJSX}
 
-                                <ListSubheader> Shared Projects </ListSubheader>
+                                {/* Remote Projects  */} 
+                                {remoteProjectsSubheaderJSX}
                                 {remoteProjectSelectorsJSX}
                             </List>
 
@@ -154,23 +192,11 @@ class Sidebar extends React.Component{
     getInvitesJSX() {
         var jsx = this.props.invites.map((item, index) => {
             
-            var isEnabled = !this.getIsInviteUpdating(item.projectId);
+            var isUpdating = this.getIsInviteUpdating(item.projectId);
             return (
-                <CSSTransition key={index} classNames="InviteContainer" timeout={250}>
-                    <div className="InviteContainer" key={index} data-isenabled={isEnabled}>
-                        {/* Project and Display Name  */}
-                        <div className="InviteProjectAndDisplayName">
-                            <div className="InviteProjectName"> {item.projectName} </div>
-                            <div className="InviteDisplayName"> {item.sourceDisplayName} </div>
-                        </div>
-
-                        {/* Buttons  */}
-                        <div className="InviteButtons">
-                            <Button size='verysmall' iconSrc={AcceptIcon} onClick={() => { this.handleAcceptInviteButtonClick(item.projectId) }} />
-                            <Button size='verysmall' iconSrc={DenyIcon} onClick={() => { this.handleDenyInviteButtonClick(item.projectId) }} />
-                        </div>
-                    </div>
-                </CSSTransition>
+                    <Invite key={index} projectName={item.projectName} displayName={item.sourceDisplayName} isUpdating={isUpdating}
+                    onAccept={() => {this.handleAcceptInviteButtonClick(item.projectId)}}
+                    onDeny={() => {this.handleDenyInviteButtonClick(item.projectId)}}/>
             )
         })
 
@@ -224,20 +250,12 @@ class Sidebar extends React.Component{
         var projectIndicators = this.props.projectSelectorIndicators[item.uid];
         var isFavouriteProject = this.props.favouriteProjectId === item.uid;
 
-        let projectSelector = () => {
             return (
-                <ProjectSelector projectSelectorId={item.uid} projectName={item.projectName}
+                <ProjectSelector key={item.uid} isSelected={isSelected} projectSelectorId={item.uid} projectName={item.projectName}
                     onClick={this.handleProjectSelectorClick} onDoubleClick={this.handleProjectSelectorDoubleClick}
                     projectIndicators={projectIndicators}
                     isFavouriteProject={isFavouriteProject} />
             )
-        }
-
-
-        return (
-            <ListItem style={{width: '100%'}} selected={isSelected} key={item.uid} component={projectSelector}/>
-                
-        )
     }
 
     getSplitProjects() {

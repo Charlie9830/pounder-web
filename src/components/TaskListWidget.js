@@ -39,6 +39,7 @@ class TaskListWidget extends React.Component {
         this.taskSortDueDateHelper = this.taskSortDueDateHelper.bind(this);
         this.handleTaskInspectorOpen = this.handleTaskInspectorOpen.bind(this);
         this.handleMoveTaskListToProject = this.handleMoveTaskListToProject.bind(this);
+        this.handleChecklistSettingsOpen = this.handleChecklistSettingsOpen.bind(this);
     }
 
     componentDidMount(){
@@ -80,7 +81,6 @@ class TaskListWidget extends React.Component {
                 var assignedToDisplayName = GetDisplayNameFromLookup(item.assignedTo, this.props.memberLookup);
                 var isOptionsOpen = item.uid === this.props.openTaskOptionsId;
 
-                // let task = () => {
                     return (
                             <Task key={item.uid} isSelected={isTaskSelected} taskId={item.uid} text={item.taskName} dueDate={item.dueDate}
                                 isComplete={item.isComplete} isMoving={isTaskMoving}
@@ -99,12 +99,6 @@ class TaskListWidget extends React.Component {
                                 showDivider={showDivider}
                             />
                     )
-                // }
-                
-                // return (
-                //     <ListItem key={item.uid} dense={true} component={task} selected={isTaskSelected} divider={showDivider}
-                //     />
-                // )
             })
         }
 
@@ -121,7 +115,10 @@ class TaskListWidget extends React.Component {
                         onSettingsMenuClose={this.handleSettingsMenuClose}
                         projects={this.props.projects} onMoveTaskListToProject={this.handleMoveTaskListToProject}
                         onRenewNowButtonClick={this.handleRenewNowButtonClick}
-                        projectId={this.props.projectId} />
+                        projectId={this.props.projectId}
+                        onChecklistSettingsOpen={this.handleChecklistSettingsOpen}
+                        isChecklistSettingsOpen={this.props.isChecklistSettingsOpen}
+                        onChecklistSettingsClose={this.props.onChecklistSettingsClose} />
                     <TaskArea>
                     <List disablePadding={true} dense={true}>
                         {builtTasks}
@@ -131,6 +128,10 @@ class TaskListWidget extends React.Component {
                 </Paper>
             </div>
         )
+    }
+
+    handleChecklistSettingsOpen() {
+        this.props.onChecklistSettingsOpen(this.props.taskListWidgetId);
     }
 
     handleMoveTaskListToProject(targetProjectId) {

@@ -10,6 +10,8 @@ import '../assets/css/ChecklistSettings.css';
 import Toggle from 'react-toggle';
 import '../assets/css/react-toggle/style.css';
 
+import { Paper, Typography, TextField, Switch, Grid, FormControlLabel, Select } from '@material-ui/core';
+
 class ChecklistSettings extends React.Component {
     constructor(props) {
         super(props);
@@ -17,7 +19,7 @@ class ChecklistSettings extends React.Component {
         // State.
         this.state = {
             showCustomIntervalInput: false,
-            isCustomDaysValid: true,
+            isCustomDaysValid: false,
         }
 
         // Refs.
@@ -52,23 +54,15 @@ class ChecklistSettings extends React.Component {
         var checkListSettingsControlJSX = this.getChecklistSettingsControlJSX();
 
         return (
-            <div className="ChecklistSettingsContainer">
-                <div className="ChecklistSettingsSwitchContainer">
-                    <MenuSubtitle text="Checklist"/>
-                    <div className="ChecklistSettingsHorizontalFlexContainer">
-                        <Toggle ref={this.checklistModeCheckboxRef} onChange={this.handleChecklistModeCheckboxChange}
-                        checked={this.props.settings.isChecklist}/>
-                        <div className="ChecklistSettingsItemLabel"></div>
-                    </div>
-                    <div className="ChecklistSettingsRenewNowContainer" >
-                        <Button text="Renew" size="small" onClick={this.handleRenewNowButtonClick}
-                        isEnabled={this.props.settings.isChecklist} />
-                    </div>
-                </div>
-                <TransitionGroup>
-                    {checkListSettingsControlJSX}
-                </TransitionGroup>
-            </div>
+            <Paper style={{margin: '16px', padding: '16px'}}>
+                <FormControlLabel control={
+                    <Switch checked={this.props.settings.isChecklist} onChange={this.handleChecklistModeCheckboxChange}/>
+                }
+                label="Checklist mode"/>
+                <TextField type="date" label="Renew List on"/>
+
+                <TextField label="Renew on" type="date"/>
+            </Paper>
         )
     }
 

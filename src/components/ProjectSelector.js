@@ -1,8 +1,59 @@
 import React from 'react';
 import '../assets/css/ProjectSelector.css';
 import Hammer from 'hammerjs';
-import FavoriteIcon from '../assets/icons/HeartIcon.svg';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import NewCommentsIcon from '../assets/icons/NewCommentsIcon.svg';
+
+import ReactSwipe from 'react-swipe';
+
+import { ListItem, ListItemText, ListItemSecondaryAction, ListItemIcon, Grid } from '@material-ui/core';
+import { withTheme } from '@material-ui/core/styles';
+import CommentIcon from '@material-ui/icons/Comment';
+
+const DueDateColorLookup = {
+        "today": '#1455c0',
+        "soon": '#FF9300',
+        "overdue": '#F00',
+        "later": '#22B30B'
+}
+
+let DueDateIndicator = (props) => {
+    if (props.count === 0) {
+        return null;
+    }
+
+    let circleStyle = {
+        borderRadius: '50%',
+        width: '24px',
+        height: '24px',
+        margin: '0px 2px',
+        background: DueDateColorLookup[props.type]
+    }
+
+    let labelStyle = {
+        fontSize: '12pt',
+        color: 'white',
+        lineHeight: '24px',
+        margin: '0px auto',
+        textAlign: 'center'
+    }
+
+    return (
+        <div style={circleStyle}>
+            <div style={labelStyle}>
+                {props.count}
+            </div>
+        </div>
+    ) 
+}
+
+let UnseenCommentsIndicator = (props) => {
+    if (props.show === false) {
+        return null;
+    }
+
+    return <CommentIcon fontSize="small"/>
+}
 
 class ProjectSelector extends React.Component {
     constructor(props) {
@@ -19,13 +70,10 @@ class ProjectSelector extends React.Component {
     }
 
     componentDidMount() {
-        this.hammer = new Hammer(this.containerRef.current);
-        this.hammer.on('press', this.handlePress);
     }
 
 
     componentWillUnmount() {
-        this.hammer.off('press', this.containerRef.current, this.handlePress);
     }
 
     render(){
@@ -33,28 +81,24 @@ class ProjectSelector extends React.Component {
         var heartJSX = this.getHeartJSX();
 
         return (
-            <div className="ProjectSelectorContainer" ref={this.containerRef} onClick={this.handleClick} onDoubleClick={this.handlePress}>
-                    <div className="ProjectSelectorFlexContainer">
-                            {heartJSX}
-                        <div className="ProjectSelectorLabelContainer">
-                            <div className="ProjectSelectorText" data-isselected={this.props.isSelected}>
-                                {this.props.projectName}
-                            </div>
-                        </div>
-                        <div className="ProjectSelectorIconContainer">
-                            {indicators}
-                        </div>
-                    </div>
-            </div>
+            <ListItem selected={this.props.isSelected} onClick={this.handleClick}>
+                {heartJSX}
+
+                <ListItemText primary={this.props.projectName} />
+
+                <ListItemSecondaryAction>
+                    {indicators}
+                </ListItemSecondaryAction>
+            </ListItem>
         )
     }
 
     getHeartJSX() {
         if (this.props.isFavouriteProject) {
             return (
-                <div className="ProjectSelectorHeartContainer">
-                    <img className="ProjectSelectorFavoriteIcon" src={FavoriteIcon} />
-                </div>
+                <ListItemIcon>
+                    <FavoriteIcon fontSize="small"/>
+                </ListItemIcon>
             )
         }
     }
@@ -62,26 +106,22 @@ class ProjectSelector extends React.Component {
     getIndicatorsJSX(props) {
         // eslint-disable-next-line
         if (props.projectIndicators == undefined || props.projectIndicators == {}) {
-            return ( <div/>)
+            return null;
         }
         
-        var hasUnseenCommentsJSX = this.getHasUnseenCommentsIconJSX(props);
+
         return (
-            <div>
-                <div className="ProjectSelectorIcon" data-colour="Red" data-count={props.projectIndicators.reds}>
-                    <label className="ProjectSelectorIconText"> {props.projectIndicators.reds} </label>
-                </div>
-                <div className="ProjectSelectorIcon" data-colour="Blue" data-count={props.projectIndicators.yellowReds}>
-                    <label className="ProjectSelectorIconText"> {props.projectIndicators.yellowReds} </label>
-                </div>
-                <div className="ProjectSelectorIcon" data-colour="Yellow" data-count={props.projectIndicators.yellows}>
-                    <label className="ProjectSelectorIconText"> {props.projectIndicators.yellows} </label>
-                </div>
-                <div className="ProjectSelectorIcon" data-colour="Green" data-count={props.projectIndicators.greens}>
-                    <label className="ProjectSelectorIconText"> {props.projectIndicators.greens} </label>
-                </div>
-                {hasUnseenCommentsJSX}
-            </div>
+            <Grid container
+            direction="row"
+            justify="flex-end"
+            alignItems="center">
+                <DueDateIndicator type="overdue" count={props.projectIndicators.reds}/>
+                <DueDateIndicator type="today" count={props.projectIndicators.yellowReds}/>
+                <DueDateIndicator type="soon" count={props.projectIndicators.yellows}/>
+                <DueDateIndicator type="later" count={props.projectIndicators.greens}/>
+
+                <UnseenCommentsIndicator show={props.projectIndicators.hasUnseenComments}/>
+            </Grid>
         )
     }
 
@@ -103,4 +143,4 @@ class ProjectSelector extends React.Component {
     }
 }
 
-export default ProjectSelector;
+export default withTheme()(ProjectSelector);

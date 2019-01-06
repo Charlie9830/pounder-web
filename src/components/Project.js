@@ -86,7 +86,6 @@ class Project extends React.Component {
                 }
             }
             
-
             var selectedTaskId = -1;
             var openTaskInputId = -1;
             var openMetadataId = -1;
@@ -104,10 +103,11 @@ class Project extends React.Component {
             }
 
             var movingTaskId = item.uid === this.props.sourceTaskListId ? this.props.movingTaskId : -1;
+            var isChecklistSettingsOpen = item.uid === this.props.openChecklistSettingsId;
 
             let taskListWidget = () => {
                 return (
-                    <TaskListWidget ref={item.uid}
+                    <TaskListWidget
                         taskListWidgetId={item.uid} isFocused={isFocused} taskListName={item.taskListName}
                         tasks={tasks} selectedTaskId={selectedTaskId} openTaskInputId={openTaskInputId}
                         onWidgetClick={this.handleWidgetClick} movingTaskId={movingTaskId}
@@ -129,12 +129,15 @@ class Project extends React.Component {
                         memberLookup={this.props.memberLookup}
                         projects={this.props.projects} projectId={this.props.projectId}
                         onMoveTaskListToProject={this.props.onMoveTaskListToProject}
-                        onRenewNowButtonClick={this.handleRenewNowButtonClick}/>
+                        onRenewNowButtonClick={this.handleRenewNowButtonClick}
+                        onChecklistSettingsOpen={this.props.onChecklistSettingsOpen}
+                        isChecklistSettingsOpen={isChecklistSettingsOpen}
+                        onChecklistSettingsClose={this.props.onChecklistSettingsClose}/>
                 )
             }
 
             return (
-                <ListItem key={item.uid} component={taskListWidget}/>
+                <ListItem itemRef={item.uid} key={item.uid} component={taskListWidget}/>
             )
         });
 

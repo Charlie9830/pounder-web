@@ -7,12 +7,16 @@ import {TransitionGroup, CSSTransition} from 'react-transition-group';
 import Hammer from 'hammerjs';
 import TaskListSettingsIcon from '../assets/icons/SettingsIcon.svg';
 import DeleteTaskListIcon from '../assets/icons/DeleteTaskListIcon.svg';
+import ChecklistSettingsDialog from './ChecklistSettingsDialog';
 
 
-import { Toolbar, IconButton, Typography, Grid } from '@material-ui/core';
+import { Toolbar, IconButton, Typography, Grid, Drawer, Menu, MenuItem, ListSubheader, Divider, ListItemIcon, ListItemText } from '@material-ui/core';
 import { withTheme } from '@material-ui/core/styles';
 
 import SettingsIcon from '@material-ui/icons/Settings';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SortIcon from '@material-ui/icons/Sort';
 
 class ListToolbar extends React.Component{
     constructor(props) {
@@ -20,7 +24,7 @@ class ListToolbar extends React.Component{
 
         // Refs.
         this.headerContainerRef = React.createRef();
-        
+
         // Method Bindings.
         this.handleRemoveButtonClick = this.handleRemoveButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
@@ -28,6 +32,7 @@ class ListToolbar extends React.Component{
         this.handleDoubleTap = this.handleDoubleTap.bind(this);
         this.handleSettingsMenuClose = this.handleSettingsMenuClose.bind(this);
         this.handleRenewNowButtonClick = this.handleRenewNowButtonClick.bind(this);
+        this.getSettingsMenuJSX = this.getSettingsMenuJSX.bind(this);
     }
 
     componentDidMount() {
@@ -50,7 +55,7 @@ class ListToolbar extends React.Component{
             height: '44px',
         }
 
-        var settingsMenu = this.getSettingsMenu(this.props);
+        var settingsMenuJSX = this.getSettingsMenuJSX();
         var typeText = this.props.settings.checklistSettings.isChecklist ? "Checklist" : "";
 
         return (
@@ -58,44 +63,19 @@ class ListToolbar extends React.Component{
                 <Grid container
                 justify="flex-start"
                 alignItems="center">
-                    <IconButton>
-                        <SettingsIcon fontSize="small" />
+                    <IconButton onClick={this.handleSettingsClick}>
+                        <MoreHorizIcon/>
                     </IconButton>
-
 
                     <Typography align="center" style={{ flexGrow: 1 }}>
                         {this.props.headerText}
                     </Typography>
                 </Grid>
+
+                {settingsMenuJSX}
             </div>
         )
     }
-
-
-    // <div className="ListToolbar" data-isfocused={this.props.isFocused}>
-    //             <div className="ListToolbarSettingsMenuContainer" onClick={this.handleSettingsClick}>
-    //                 <img className="ListToolbarSettingsIcon" src={TaskListSettingsIcon} />
-    //                 <TransitionGroup>
-    //                     {settingsMenu}
-    //                 </TransitionGroup>
-    //             </div>
-
-    //             <div className="ListToolbarTypeContainer">
-    //                 <VerticalCenteringContainer>
-    //                     <div className="ListToolbarTypeLabel"> {typeText} </div>
-    //                 </VerticalCenteringContainer>
-    //             </div>
-
-    //             <div className="ListToolbarHeaderContainer" ref={this.headerContainerRef}>
-    //                 <label className="ListToolbarHeader" data-isfocused={this.props.isFocused}>
-    //                     {this.props.headerText}
-    //                 </label>
-    //             </div>
-
-    //             <div className="ListToolbarDeleteButtonContainer" onClick={this.handleRemoveButtonClick}>
-    //                 <img className="DeleteButton" src={DeleteTaskListIcon} />
-    //             </div>
-    //         </div>
 
     handleSettingsMenuClose() {
         this.props.onSettingsMenuClose();
@@ -105,18 +85,16 @@ class ListToolbar extends React.Component{
         this.props.onHeaderPress();
     }
 
-    getSettingsMenu(props) {
-        if (props.isSettingsMenuOpen) {
-            return (
-                <CSSTransition classNames="TaskListSettingsTransition" timeout={250} key="0">
-                    <OverlayMenuContainer onOutsideChildBoundsClick={this.handleSettingsMenuClose}>
-                        <TaskListSettingsMenu settings={this.props.settings} onSettingsMenuClose={this.handleSettingsMenuClose}
-                            onSettingsChanged={this.handleTaskListSettingsChanged} projects={props.projects} projectId={props.projectId}
-                            onMoveTaskListToProject={props.onMoveTaskListToProject} onRenewNowButtonClick={this.handleRenewNowButtonClick} />
-                    </OverlayMenuContainer>
-                </CSSTransition>
-            ) 
-        }
+    getSettingsMenuJSX() {
+        return (
+            <TaskListSettingsMenu isOpen={this.props.isSettingsMenuOpen} onRemoveButtonClick={this.handleRemoveButtonClick}
+            settings={this.props.settings} onSettingsMenuClose={this.handleSettingsMenuClose}
+            onSettingsChanged={this.handleTaskListSettingsChanged} projects={this.props.projects} currentProjectId={this.props.projectId}
+            onMoveTaskListToProject={this.props.onMoveTaskListToProject} onRenewNowButtonClick={this.handleRenewNowButtonClick}
+            onChecklistSettingsOpen={this.props.onChecklistSettingsOpen}
+            onChecklistSettingsClose={this.props.onChecklistSettingsClose}
+            isChecklistSettingsOpen={this.props.isChecklistSettingsOpen} />
+        ) 
     }
 
     handleRenewNowButtonClick() {

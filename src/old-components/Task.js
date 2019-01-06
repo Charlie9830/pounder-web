@@ -141,9 +141,6 @@ class Task extends React.Component {
         )
     }
 
-
-    
-
     // <div ref={this.taskContainerRef} className="TaskContainer" data-ismoving={this.props.isMoving}
     //             data-ismetadataopen={this.props.isMetadataOpen}>
 

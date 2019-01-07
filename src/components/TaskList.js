@@ -16,6 +16,7 @@ class TaskList extends Component {
             flexGrow: '1',
             display: 'grid',
             gridTemplateRows: '[Toolbar]auto [Tasks]1fr',
+            overflowX: 'hidden',
         }
 
         return (

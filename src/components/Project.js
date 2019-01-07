@@ -7,6 +7,8 @@ import PriorityIndicator from './Task/PriorityIndicator';
 import TaskCheckbox from './Task/TaskCheckbox';
 import TaskText from './Task/TaskText';
 import AddNewTaskListButton from './AddNewTaskListButton';
+import SwipeableListItem from './SwipeableListItem/SwipeableListItem';
+import SwipeableListItemAction from './SwipeableListItem/SwipeableListItemAction';
 
 import { GetDisplayNameFromLookup } from 'handball-libs/libs/pounder-utilities';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
@@ -16,6 +18,9 @@ import { AppBar, Toolbar, Typography, Grid, withTheme, Button, Fab } from '@mate
 
 import AddIcon from '@material-ui/icons/Add';
 import AddTaskListIcon from '@material-ui/icons/PlaylistAdd';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+import MoveTaskIcon from '../icons/MoveTaskIcon';
 
 const primaryFabStyle = {
     margin: 0,
@@ -148,17 +153,30 @@ class Project extends React.Component {
                     assignedTo={item.assignedTo}
                 />
 
+                let leftActions = [
+                    { value: 'moveTask', background: this.props.theme.palette.primary.light, icon: <MoveTaskIcon/> }
+                ]
+
+                let rightActions = [
+                    { value: 'deleteTask', background: this.props.theme.palette.error.light, icon: <DeleteIcon/>}
+                ]
+
                 return (
-                    <TaskBase
-                    key={item.uid}
-                    selected={isTaskSelected}
-                    isMoving={isTaskMoving}
-                    priorityIndicator={priorityIndicator}
-                    checkbox={checkbox}
-                    taskText={taskText}
-                    dueDate={dueDate}
-                    indicatorPanel={indicatorPanel}
-                    />
+                    <SwipeableListItem
+                        key={item.uid}
+                        leftActions={leftActions}
+                        rightActions={rightActions}
+                        onActionClick={(type) => { this.props.onTaskActionClick(item.uid, type)}}>
+                        <TaskBase
+                            selected={isTaskSelected}
+                            isMoving={isTaskMoving}
+                            priorityIndicator={priorityIndicator}
+                            checkbox={checkbox}
+                            taskText={taskText}
+                            dueDate={dueDate}
+                            indicatorPanel={indicatorPanel}
+                        />
+                    </SwipeableListItem>
                 )
             })
 

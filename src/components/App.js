@@ -14,6 +14,7 @@ class App extends React.Component {
 
         // Method Bindings.
         this.handleTaskCheckboxChange = this.handleTaskCheckboxChange.bind(this);
+        this.handleTaskActionClick = this.handleTaskActionClick.bind(this);
     }
 
     render() {
@@ -25,8 +26,19 @@ class App extends React.Component {
             taskLists={MockData.taskLists}
 
             onTaskCheckboxChange={this.handleTaskCheckboxChange}
+            onTaskActionClick={this.handleTaskActionClick}
             />
         )
+    }
+
+    handleTaskActionClick(uid, type) {
+        if (type === 'moveTask') {
+
+        }
+
+        if (type === 'deleteTask') {
+            
+        }
     }
 
     handleTaskCheckboxChange(taskId, newValue, oldValue, currentMetadata) {

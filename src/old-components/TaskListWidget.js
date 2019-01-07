@@ -1,6 +1,6 @@
 import React from 'react';
 import TaskArea from '../components/TaskArea';
-import Task from '../components/Task';
+import Task from '../components/Task/Task';
 import ListToolbar from '../components/ListToolbar';
 import '../assets/css/TaskListWidget.css';
 import Ink from 'react-ink';

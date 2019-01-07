@@ -17,7 +17,7 @@ const TaskListToolbar = (props) => {
             </div>
         
             <div style={{gridColumn: 'Title', placeSelf: 'center', marginLeft: '-48px'}}>
-                <Typography> {props.name} </Typography>
+                <Typography variant="subheading"> {props.name} </Typography>
             </div>
             
         </div>

@@ -6,7 +6,7 @@ let paperStyle = {
     width: 'calc(100% - 16px)',
     marginLeft: '8px',
     marginRight: '8px',
-    marginBottom: '8px',
+    marginTop: '8px',
 }
 
 class TaskList extends Component {

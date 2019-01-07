@@ -6,11 +6,34 @@ import IndicatorPanel from './Task/IndicatorPanel';
 import PriorityIndicator from './Task/PriorityIndicator';
 import TaskCheckbox from './Task/TaskCheckbox';
 import TaskText from './Task/TaskText';
+import AddNewTaskListButton from './AddNewTaskListButton';
+
 import { GetDisplayNameFromLookup } from 'handball-libs/libs/pounder-utilities';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import { TaskMetadataStore } from 'handball-libs/libs/pounder-stores';
 
-import { AppBar, Toolbar, Typography, Grid, withTheme } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Grid, withTheme, Button, Fab } from '@material-ui/core';
+
+import AddIcon from '@material-ui/icons/Add';
+import AddTaskListIcon from '@material-ui/icons/PlaylistAdd';
+
+const primaryFabStyle = {
+    margin: 0,
+    top: 'auto',
+    right: 20,
+    bottom: 20,
+    left: 'auto',
+    position: 'fixed',
+};
+
+const secondaryFabStyle = {
+    margin: 0,
+    top: 'auto',
+    right: 20,
+    bottom: 90,
+    left: 'auto',
+    position: 'fixed',
+};
 
 class Project extends React.Component {
     constructor(props) {
@@ -23,6 +46,12 @@ class Project extends React.Component {
 
     render() {
         let { theme } = this.props;
+        let contentGridStyle = {
+            height: '100%',
+            background: theme.palette.background.default,
+            marginTop: '56px', // Clear the AppBar
+            marginBottom: '120px' // Clear the Fabs at lowest Scroll Point
+        }
 
         return (
             <React.Fragment>
@@ -32,13 +61,23 @@ class Project extends React.Component {
                     </Toolbar>
                 </AppBar>
 
-                <Grid style={{ height: '100%', background: theme.palette.background.default }}
+                <Grid style={contentGridStyle}
                     container
                     direction="column"
                     justify="flex-start"
                     alignItems="center">
                     {this.getTaskListsJSX()}
+                    <AddNewTaskListButton/>
                 </Grid>
+
+                <Fab color="primary" style={primaryFabStyle}>
+                    <AddIcon/>
+                 </Fab>
+
+                 <Fab style={secondaryFabStyle}>
+                    <AddTaskListIcon/>
+                 </Fab>
+
             </React.Fragment>
         )
     }

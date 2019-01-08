@@ -39,8 +39,6 @@ class SwipeableListItem extends Component {
         let rightActionsColumnWidth = this.state.isRightActionsOpen ? 'max-content' : `${this.state.rightActionsWidth}px`;
         let childrenWidth = this.childrenContainerRef.current === null ? `1fr` : `${this.childrenContainerRef.current.offsetWidth}px`;
 
-        //childrenWidth = '319.200px';
-
         let containerGrid = {
             width: '100%',
             position: 'relative',
@@ -48,8 +46,6 @@ class SwipeableListItem extends Component {
             display: 'grid',
             gridTemplateColumns: `[LeftActions]${leftActionsColumnWidth} [Children]${childrenWidth} [RightActions]${rightActionsColumnWidth}`,
         }
-
-        console.log(containerGrid.gridTemplateColumns);
 
         let leftActionsContainer = {
             gridColumn: 'LeftActions',
@@ -63,17 +59,16 @@ class SwipeableListItem extends Component {
             gridColumn: 'Children',
             placeSelf: 'center flex-start',
             width: '100%',
-            // transform: `translateX(${this.state.childrenTranslate}px)`,
-            marginLeft: this.state.rightActionsWidth * -1,
-            background: 'purple',
+            marginLeft: `${(this.state.rightActionsWidth / 2) * -1 }px`
         }
 
         let rightActionsContainer = {
             gridColumn: 'RightActions',
+            position: 'relative',
             display: 'flex',
             flexDirection: 'row-reverse',
             justifyContent: 'flex-start',
-            marginLeft: this.state.rightActionsWidth * -1,
+            marginLeft: `${this.state.rightActionsWidth * -1}px`,
             alignItems: 'center'
         }
 
@@ -84,14 +79,14 @@ class SwipeableListItem extends Component {
                 </div>
 
                 <div style={childrenContainer}>
-                    <Swipeable 
-                    onSwipingLeft={this.handleSwipingLeft}
-                    onSwipingRight={this.handleSwipingRight}
-                    onSwiped={this.handleSwiped}>
-                        <div ref={this.childrenContainerRef}>
-                            {this.props.children}
-                        </div>
-                    </Swipeable>
+                        <Swipeable
+                            onSwipingLeft={this.handleSwipingLeft}
+                            onSwipingRight={this.handleSwipingRight}
+                            onSwiped={this.handleSwiped}>
+                            <div ref={this.childrenContainerRef}>
+                                {this.props.children}
+                            </div>
+                        </Swipeable>
                 </div>
 
                 <div style={rightActionsContainer}>
@@ -149,8 +144,6 @@ class SwipeableListItem extends Component {
     }
 
     handleSwipingLeft(e, deltaX) {
-        let absX = e.target.getBoundingClientRect().x
-
         if (deltaX > leftThreshold) {
             // Threshold Acheived.
             this.setState({
@@ -162,13 +155,12 @@ class SwipeableListItem extends Component {
             // Keep sliding open.
             this.setState({
                 rightActionsWidth: deltaX,
-                childrenTranslate: absX * -1,
+                childrenTranslate: deltaX * -1,
             });
         }
     }
 
     handleSwipingRight(e, deltaX) {
-        console.log(deltaX);
         if (deltaX > rightThreshold) {
             // Threshold Acheived.
             this.setState({

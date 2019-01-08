@@ -4,9 +4,11 @@ import Project from './Project';
 import '../assets/css/App.css';
 
 import { connect } from 'react-redux';
-import { updateTaskCompleteAsync } from 'handball-libs/libs/pounder-redux/action-creators';
+import { updateTaskCompleteAsync, setIsAppDrawerOpen } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import MockData from '../MockData';
+import { Drawer } from '@material-ui/core';
+import VisibleAppDrawer from './AppDrawer';
 
 class App extends React.Component {
     constructor(props) {
@@ -15,20 +17,34 @@ class App extends React.Component {
         // Method Bindings.
         this.handleTaskCheckboxChange = this.handleTaskCheckboxChange.bind(this);
         this.handleTaskActionClick = this.handleTaskActionClick.bind(this);
+        this.handleProjectMenuButtonClick = this.handleProjectMenuButtonClick.bind(this);
     }
 
     render() {
         return (
-            <Project
-            projectId={MockData.selectedProjectId}
-            projectName={MockData.projectName}
-            tasks={MockData.tasks}
-            taskLists={MockData.taskLists}
+            <React.Fragment>
+                <Drawer open={this.props.isAppDrawerOpen} anchor="left">
+                    <VisibleAppDrawer/>
+                </Drawer>
 
-            onTaskCheckboxChange={this.handleTaskCheckboxChange}
-            onTaskActionClick={this.handleTaskActionClick}
-            />
+                <Project
+                    projectId={MockData.selectedProjectId}
+                    projectName={MockData.projectName}
+                    tasks={MockData.tasks}
+                    taskLists={MockData.taskLists}
+
+                    onTaskCheckboxChange={this.handleTaskCheckboxChange}
+                    onTaskActionClick={this.handleTaskActionClick}
+                    onMenuButtonClick={this.handleProjectMenuButtonClick}
+                />
+            </React.Fragment>
+
+            
         )
+    }
+
+    handleProjectMenuButtonClick() {
+        this.props.dispatch(setIsAppDrawerOpen(true));
     }
 
     handleTaskActionClick(uid, type) {
@@ -48,7 +64,7 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
     return {
-
+        isAppDrawerOpen: state.isAppDrawerOpen,
     }
 }
 

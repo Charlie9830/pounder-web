@@ -14,11 +14,12 @@ import { GetDisplayNameFromLookup } from 'handball-libs/libs/pounder-utilities';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import { TaskMetadataStore } from 'handball-libs/libs/pounder-stores';
 
-import { AppBar, Toolbar, Typography, Grid, withTheme, Button, Fab } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Grid, withTheme, IconButton, Fab } from '@material-ui/core';
 
 import AddIcon from '@material-ui/icons/Add';
 import AddTaskListIcon from '@material-ui/icons/PlaylistAdd';
 import DeleteIcon from '@material-ui/icons/Delete';
+import MenuIcon from '@material-ui/icons/Menu';
 
 import MoveTaskIcon from '../icons/MoveTaskIcon';
 
@@ -62,6 +63,9 @@ class Project extends React.Component {
             <React.Fragment>
                 <AppBar>
                     <Toolbar>
+                        <IconButton onClick={this.props.onMenuButtonClick}>
+                            <MenuIcon/>
+                        </IconButton>
                         <Typography variant="h6"> {this.props.projectName} </Typography>
                     </Toolbar>
                 </AppBar>
@@ -158,7 +162,7 @@ class Project extends React.Component {
                 ]
 
                 let rightActions = [
-                    { value: 'deleteTask', background: this.props.theme.palette.error.light, icon: <DeleteIcon/>}
+                    { value: 'deleteTask', background: this.props.theme.palette.error.dark, icon: <DeleteIcon/>}
                 ]
 
                 return (

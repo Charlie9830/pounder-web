@@ -50,6 +50,12 @@ let theme = createMuiTheme({
         'background': {
             'default': "rgb(30,30,30)",
             'paper': 'rgb(42,42,42)'
+        },
+        'custom': {
+            "today": '#1455c0',
+            "soon": '#FF9300',
+            "overdue": '#F00',
+            "later": '#22B30B'
         }
     }
 })

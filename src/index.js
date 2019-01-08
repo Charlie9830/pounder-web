@@ -1,3 +1,4 @@
+import '@babel/polyfill'; // Stops renerator runtime error when using async/await.
 import React from 'react';
 import ReactDOM from 'react-dom';
 import VisibleApp from './components/App';

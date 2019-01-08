@@ -1,5 +1,6 @@
 import React from 'react';
 import Project from './Project';
+import TextInputDialog from './dialogs/TextInputDialog';
 
 import '../assets/css/App.css';
 
@@ -7,7 +8,7 @@ import { connect } from 'react-redux';
 import { updateTaskCompleteAsync, setIsAppDrawerOpen } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import MockData from '../MockData';
-import { Drawer } from '@material-ui/core';
+import { Drawer, CssBaseline } from '@material-ui/core';
 import VisibleAppDrawer from './AppDrawer';
 
 class App extends React.Component {
@@ -23,6 +24,8 @@ class App extends React.Component {
     render() {
         return (
             <React.Fragment>
+                <CssBaseline/>
+
                 <Drawer open={this.props.isAppDrawerOpen} anchor="left">
                     <VisibleAppDrawer/>
                 </Drawer>
@@ -37,9 +40,17 @@ class App extends React.Component {
                     onTaskActionClick={this.handleTaskActionClick}
                     onMenuButtonClick={this.handleProjectMenuButtonClick}
                 />
-            </React.Fragment>
 
-            
+                <TextInputDialog
+                    isOpen={this.props.textInputDialog.isOpen}
+                    title={this.props.textInputDialog.title}
+                    text={this.props.textInputDialog.text}
+                    label={this.props.textInputDialog.label}
+                    onCancel={this.props.textInputDialog.onCancel}
+                    onOkay={this.props.textInputDialog.onOkay}
+                />
+
+            </React.Fragment>
         )
     }
 
@@ -65,6 +76,7 @@ class App extends React.Component {
 const mapStateToProps = state => {
     return {
         isAppDrawerOpen: state.isAppDrawerOpen,
+        textInputDialog: state.textInputDialog,
     }
 }
 

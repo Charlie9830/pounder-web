@@ -11,7 +11,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import AddIcon from '@material-ui/icons/Add';
 
 import { acceptProjectInviteAsync, denyProjectInviteAsync, addNewProjectAsync,
-setIsAppSettingsOpen } from 'handball-libs/libs/pounder-redux/action-creators';
+setIsAppSettingsOpen, selectProject } from 'handball-libs/libs/pounder-redux/action-creators';
 
 const fabStyle = {
     margin: 0,
@@ -137,8 +137,9 @@ class AppDrawer extends Component {
         let jsx = projects.map( item => {
             return (
                 <ProjectListItem 
+                onClick={() => { this.props.dispatch(selectProject(item.uid))}}
                 key={item.uid}
-                name={item.name}
+                name={item.projectName}
                 isFavorite={this.props.favouriteProjectId === item.uid}
                 isSelected={this.props.selectedProjectId === item.uid}
                 indicators={this.props.projectSelectorIndicators[item.uid]}
@@ -152,13 +153,13 @@ class AppDrawer extends Component {
 
 let mapStateToProps = (state) => {
     return {
-        localProjects: [ { uid: 'L1', name: 'Local Project A' }, { uid: 'L2', name: 'Local Project B' }, { uid: 'L3', name: 'Local Project C' }, ],
-        remoteProjects: [ { uid: 'R1', name: 'Remote Project A' }, { uid: 'R2', name: 'Remote Project B' }, { uid: 'R3', name: 'Remote Project C' }, ],
-        invites: [ { projectName: 'Harry Plopper', sourceDisplayName: 'Rob Garrison', projectId: 'HarryPlopper', sourceEmail: 'rob@garrison.com.au' } ],
-        projectSelectorIndicators: { 'L1': { later: 2, soon: 1, today: 1, overdue: 1, hasUnseenComments: true}},
-        favouriteProjectId: 'L2',
-        selectedProjectId: 'L1',
-        updatingInviteIds: []
+        localProjects: state.localProjects,
+        remoteProjects: state.remoteProjects,
+        invites: state.invites,
+        projectSelectorIndicators: state.projectSelectorIndicators,
+        favouriteProjectId: state.favouriteProjectId,
+        selectedProjectId: state.selectedProjectId,
+        updatingInviteIds: state.updatingInviteIds,
     }
 }
 

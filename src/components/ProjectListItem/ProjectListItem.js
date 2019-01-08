@@ -7,10 +7,12 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 
 const ProjectListItem = (props) => {
-    let { theme, name, isFavorite, indicators, isSelected } = props;
+    let { theme, name, isFavorite, indicators, isSelected, onClick } = props;
 
     return (
-        <ListItem selected={isSelected}>
+        <ListItem 
+        onClick={onClick}
+        selected={isSelected}>
             { isFavorite && <ListItemIcon style={{marginRight: '0px'}}><FavoriteIcon fontSize="small"/></ListItemIcon> }
 
             <ListItemText primary={name}/>

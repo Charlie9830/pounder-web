@@ -5,11 +5,12 @@ import TextInputDialog from './dialogs/TextInputDialog';
 import '../assets/css/App.css';
 
 import { connect } from 'react-redux';
-import { updateTaskCompleteAsync, setIsAppDrawerOpen } from 'handball-libs/libs/pounder-redux/action-creators';
+import { updateTaskCompleteAsync, setIsAppDrawerOpen, attachAuthListenerAsync } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import MockData from '../MockData';
 import { Drawer, CssBaseline } from '@material-ui/core';
 import VisibleAppDrawer from './AppDrawer';
+import VisibleAppSettingsMenu from './AppSettingsMenu/AppSettingsMenu';
 
 class App extends React.Component {
     constructor(props) {
@@ -21,6 +22,12 @@ class App extends React.Component {
         this.handleProjectMenuButtonClick = this.handleProjectMenuButtonClick.bind(this);
     }
 
+    componentDidMount() {
+        // Attach an Authentication state listener. Will pull down database when Logged in.
+        this.props.dispatch(attachAuthListenerAsync());
+    }
+    
+
     render() {
         return (
             <React.Fragment>
@@ -28,6 +35,10 @@ class App extends React.Component {
 
                 <Drawer open={this.props.isAppDrawerOpen} anchor="left">
                     <VisibleAppDrawer/>
+                </Drawer>
+
+                <Drawer open={this.props.isAppSettingsOpen} anchor="left">
+                    <VisibleAppSettingsMenu/>
                 </Drawer>
 
                 <Project
@@ -76,7 +87,9 @@ class App extends React.Component {
 const mapStateToProps = state => {
     return {
         isAppDrawerOpen: state.isAppDrawerOpen,
+        isAppSettingsOpen: state.isAppSettingsOpen,
         textInputDialog: state.textInputDialog,
+        isLoggedIn: state.isLoggedIn,
     }
 }
 

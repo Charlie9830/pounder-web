@@ -10,7 +10,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ShareIcon from '@material-ui/icons/Share';
 import AddIcon from '@material-ui/icons/Add';
 
-import { acceptProjectInviteAsync, denyProjectInviteAsync, addNewProjectAsync } from 'handball-libs/libs/pounder-redux/action-creators';
+import { acceptProjectInviteAsync, denyProjectInviteAsync, addNewProjectAsync,
+setIsAppSettingsOpen } from 'handball-libs/libs/pounder-redux/action-creators';
 
 const fabStyle = {
     margin: 0,
@@ -48,7 +49,7 @@ class AppDrawer extends Component {
                         direction="row-reverse"
                         justify="flex-start"
                         alignItems="center">
-                            <IconButton>
+                            <IconButton onClick={() => { this.props.dispatch(setIsAppSettingsOpen(true))}}>
                                 <SettingsIcon />
                             </IconButton>
                             <IconButton>

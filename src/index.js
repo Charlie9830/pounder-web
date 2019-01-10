@@ -59,7 +59,8 @@ let theme = createMuiTheme({
             "today": '#1455c0',
             "soon": '#FF9300',
             "overdue": '#F00',
-            "later": '#22B30B'
+            "later": '#22B30B',
+            "unreadItem": '#1455c0',
         }
     }
 })

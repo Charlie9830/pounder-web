@@ -21,14 +21,14 @@ class ExpandingTextInputListItem extends Component {
         return (
             <ListItem onClick={() => { this.setState({ isInputOpen: true }) }}>
                 <ListItemIcon>
-                    <EditIcon/>
+                    <EditIcon />
                 </ListItemIcon>
                 <ExpandingTextInput
-                isOpen={this.state.isInputOpen}
-                placeholder={this.props.placeholder}
-                value={this.props.value}
-                onChange={this.handleInputChange}/>
-                
+                    isOpen={this.state.isInputOpen}
+                    placeholder={this.props.placeholder}
+                    value={this.props.value}
+                    onChange={this.handleInputChange} />
+
             </ListItem>
         );
     }

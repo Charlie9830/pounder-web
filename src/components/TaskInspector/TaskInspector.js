@@ -17,6 +17,8 @@ import PersonIcon from '@material-ui/icons/Person';
 import ClockIcon from '@material-ui/icons/AccessTime';
 import DateInputListItem from '../DateInputListItem';
 import ExpandingTextInputListItem from '../ExpandingTextInputListItem';
+import CommentPanel from '../CommentPanel/CommentPanel';
+import ExpandingCommentPanel from '../CommentPanel/ExpandingCommentPanel';
 
 
 let toolbarStyle = {
@@ -73,6 +75,19 @@ class TaskInspector extends Component {
 
                     </List>
                 </Paper>
+
+                <Paper style={paperStyle}>
+                    <div>
+                        <ExpandingCommentPanel
+                            comments={this.props.taskComments}
+                            isLoadingComments={this.props.isGettingTaskComments}
+                            onCommentPost={(text) => { this.props.dispatch(postNewCommentAsync(task.uid, text)) }}
+                            onCommentDelete={(commentId) => { this.props.dispatch(deleteTaskCommentAsync(task.uid, commentId)) }}
+                            onPaginateComments={() => { this.props.dispatch(paginateTaskCommentsAsync(task.uid)) }}
+                        />
+                    </div>
+                    
+                </Paper>
             </FullScreenView>
         );
     }
@@ -82,6 +97,8 @@ const mapStateToProps = (state) => {
     return {
         openTaskInspectorId: state.openTaskInspectorId,
         openTaskInspectorEntity: state.openTaskInspectorEntity,
+        taskComments: state.taskComments,
+        isGettingTaskComments: state.isGettingTaskComments,
     }
 }
 

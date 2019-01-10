@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Typography, TextField, Grow, ClickAwayListener } from '@material-ui/core';
+import { Typography, TextField, Grow, ClickAwayListener, Popover } from '@material-ui/core';
+import Expander from './Expander';
 
 let textFieldStyle = {
     width: '100%',
-    height: '200px',
+    maxHeight: '100%',
+    padding: '8px',
+    overflowY: 'scroll'
 }
 
 class ExpandingTextInput extends Component {
@@ -12,6 +15,7 @@ class ExpandingTextInput extends Component {
         
         // Refs.
         this.inputRef = React.createRef();
+        this.anchorRef = React.createRef();
 
         // State.
         this.state = {
@@ -24,7 +28,7 @@ class ExpandingTextInput extends Component {
 
     render() {
         // Controlled or Uncontrolled Mode.
-        let isExpanded = this.props.isOpen=== undefined ? this.state.isOpen : this.props.isOpen
+        let isExpanded = this.props.isOpen === undefined ? this.state.isOpen : this.props.isOpen
 
         let hasValue = this.props.value !== undefined && this.props.value.trim() !== "";
         let closedValue = hasValue ?  this.props.value : this.props.placeholder || "";
@@ -32,30 +36,31 @@ class ExpandingTextInput extends Component {
         
         return (
             <React.Fragment>
-                <Grow
-                    in={!isExpanded}
-                    unmountOnExit={true}
-                    mountOnEnter={true}
-                    timeout={{ enter: 250, exit: 0 }}>
+                <div ref={this.anchorRef}>
                     <Typography
-                        style={{width: '100%', minHeight: '1em'}}
+                        style={{ width: '100%', minHeight: '1em' }}
                         color={typographyColor}
-                        hidden={isExpanded}
-                        onClick={() => { this.setState({ isOpen: true }) }}> {closedValue} </Typography>
-                </Grow>
-
-                <Grow
-                    in={isExpanded}
-                    unmountOnExit={true}
-                    mountOnEnter={true}>
-                        <TextField
-                            inputRef={this.inputRef}
-                            autoFocus
-                            style={textFieldStyle}
-                            multiline
-                            defaultValue={this.props.value}
-                            onBlur={this.handleInputBlur} />
-                </Grow>
+                        onClick={() => { this.setState({ isOpen: true }) }}>
+                        {closedValue}
+                    </Typography>
+                </div>
+                    
+                <Expander
+                    anchorEl={this.anchorRef.current}
+                    open={isExpanded}
+                    onClose={this.handleInputBlur}>
+                    <TextField
+                        variant="outlined"
+                        inputRef={this.inputRef}
+                        autoFocus
+                        style={textFieldStyle}
+                        multiline
+                        defaultValue={this.props.value}
+                        onBlur={this.handleInputBlur} />
+                </Expander>
+               
+                    
+                
             </React.Fragment>
         );
     }

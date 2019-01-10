@@ -32,13 +32,7 @@ class App extends React.Component {
 
     componentDidMount() {
         // Attach an Authentication state listener. Will pull down database when Logged in.
-        this.props.dispatch(attachAuthListenerAsync());
-
-        setTimeout( () => {
-            this.props.dispatch(openTaskInspectorAsync("Xkvz62yKhGLKTaGuGXMv"));
-            this.props.dispatch(selectProject("t2TwjrbHB9o2FpJUL4zH"));
-        }, 2000)
-        
+        this.props.dispatch(attachAuthListenerAsync());        
     }
     
 

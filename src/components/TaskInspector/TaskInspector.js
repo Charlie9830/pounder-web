@@ -16,6 +16,7 @@ import NoteIcon from '@material-ui/icons/Edit';
 import PersonIcon from '@material-ui/icons/Person';
 import ClockIcon from '@material-ui/icons/AccessTime';
 import DateInputListItem from '../DateInputListItem';
+import ExpandingTextInputListItem from '../ExpandingTextInputListItem';
 
 
 let toolbarStyle = {
@@ -50,7 +51,6 @@ class TaskInspector extends Component {
 
                 <Paper style={paperStyle}>
                     <List>
-
                         <DateInputListItem 
                         clearable={true}
                         autoOk={true}
@@ -58,16 +58,11 @@ class TaskInspector extends Component {
                         value={task.dueDate}
                         onChange={(newValue) => { this.props.dispatch(updateTaskDueDateAsync(task.uid, newValue, task.dueDate))}}
                         />
-
-                        <ListItem>
-                            <ListItemIcon>
-                                <NoteIcon />
-                            </ListItemIcon>
-                            <ExpandingTextInput 
-                             placeholder="Add details"
-                             value={task.note}
-                             onChange={(newValue) => { this.props.dispatch(updateTaskNoteAsync(newValue, task.note, task.uid)) }}/>
-                        </ListItem>
+                        
+                        <ExpandingTextInputListItem
+                        placeholder="Add details"
+                        value={task.note}
+                        onChange={ (newValue) => { this.props.dispatch(updateTaskNoteAsync(newValue, task.note, task.uid))} }/>
 
                         <ListItem>
                             <ListItemIcon>

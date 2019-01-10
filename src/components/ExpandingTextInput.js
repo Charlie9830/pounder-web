@@ -15,7 +15,7 @@ class ExpandingTextInput extends Component {
 
         // State.
         this.state = {
-            isExpanded: false,
+            isOpen: false,
         }
 
         // Method Bindings.
@@ -23,6 +23,9 @@ class ExpandingTextInput extends Component {
     }
 
     render() {
+        // Controlled or Uncontrolled Mode.
+        let isExpanded = this.props.isOpen=== undefined ? this.state.isOpen : this.props.isOpen
+
         let hasValue = this.props.value !== undefined && this.props.value.trim() !== "";
         let closedValue = hasValue ?  this.props.value : this.props.placeholder || "";
         let typographyColor = hasValue ? "textPrimary" : "textSecondary";
@@ -30,19 +33,19 @@ class ExpandingTextInput extends Component {
         return (
             <React.Fragment>
                 <Grow
-                    in={!this.state.isExpanded}
+                    in={!isExpanded}
                     unmountOnExit={true}
                     mountOnEnter={true}
                     timeout={{ enter: 250, exit: 0 }}>
                     <Typography
                         style={{width: '100%', minHeight: '1em'}}
                         color={typographyColor}
-                        hidden={this.state.isExpanded}
-                        onClick={() => { this.setState({ isExpanded: true }) }}> {closedValue} </Typography>
+                        hidden={isExpanded}
+                        onClick={() => { this.setState({ isOpen: true }) }}> {closedValue} </Typography>
                 </Grow>
 
                 <Grow
-                    in={this.state.isExpanded}
+                    in={isExpanded}
                     unmountOnExit={true}
                     mountOnEnter={true}>
                         <TextField
@@ -53,14 +56,18 @@ class ExpandingTextInput extends Component {
                             defaultValue={this.props.value}
                             onBlur={this.handleInputBlur} />
                 </Grow>
-
             </React.Fragment>
         );
     }
 
     handleInputBlur() {
         this.props.onChange(this.inputRef.current.value);
-        this.setState({ isExpanded: false });
+
+        if (this.props.isExpanded === undefined) {
+            // Uncontrolled Mode.
+            this.setState({ isOpen: false });
+        }
+        
     }
 }
 

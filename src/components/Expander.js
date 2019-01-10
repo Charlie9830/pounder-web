@@ -15,10 +15,10 @@ const styles = {
 
 let gridStyle = {
     width: '100vw',
-    height: '100vh',
+    height: '99.9vh',
+    maxHeight: '99.9vh',
     display: 'grid',
     gridTemplateRows: '[Toolbar]56px [Children]1fr',
-    overflowY: 'hidden'
 }
 
 const Expander = (props) => {

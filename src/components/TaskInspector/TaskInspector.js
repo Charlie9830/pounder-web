@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Typography, AppBar, Toolbar, IconButton, Tabs, Tab, List, ListItem, ListItemIcon, ListItemText, Paper, ListSubheader } from '@material-ui/core';
+import { Typography, AppBar, Toolbar, IconButton, Tabs, Tab, List, ListItem, ListItemIcon, ListItemText, Paper, ListSubheader, Grid } from '@material-ui/core';
 import FullScreenView from '../../layout-components/FullScreenView';
 import PriorityToggle from './PriorityToggle';
 import ExpandingTextInput from '../ExpandingTextInput';
@@ -32,14 +32,37 @@ let paperStyle = {
     marginBottom: '16px'
 }
 
-class TaskInspector extends Component {    
+let NoTaskEntityFallback = (props) => {
+    return (
+        <FullScreenView>
+            <Toolbar>
+                <div style={toolbarStyle}>
+                    <IconButton onClick={props.onBackArrowClick}>
+                        <ArrowBackIcon />
+                    </IconButton>
+                </div>
+            </Toolbar>
+        </FullScreenView>
+    )
+}
+
+class TaskInspector extends Component {
+    
     render() {
         let task = this.props.openTaskInspectorEntity;
+
+        if (task === null || task === undefined) {
+            return (
+                <NoTaskEntityFallback
+                onBackArrowClick={ () => {this.props.dispatch(closeTaskInspectorAsync())}}/>
+            )
+        }
+
         return (
             <FullScreenView>
                 <Toolbar>
                     <div style={toolbarStyle}>
-                        <IconButton>
+                        <IconButton onClick={ () => { this.props.dispatch(closeTaskInspectorAsync())}}>
                             <ArrowBackIcon />
                         </IconButton>
                         <PriorityToggle 

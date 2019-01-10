@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import ProjectListItem from './ProjectListItem/ProjectListItem';
 import InviteListItem from './InviteListItem';
 
-import { AppBar, Toolbar, Typography, withTheme, Grid, IconButton, List, ListSubheader, Divider, Fab } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Grid, IconButton, List, ListSubheader, Divider, Fab } from '@material-ui/core';
 
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -12,6 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import { acceptProjectInviteAsync, denyProjectInviteAsync, addNewProjectAsync,
 setIsAppSettingsOpen, selectProject } from 'handball-libs/libs/pounder-redux/action-creators';
+import FullScreenView from '../layout-components/FullScreenView';
 
 const fabStyle = {
     margin: 0,
@@ -32,16 +33,8 @@ class AppDrawer extends Component {
     }
 
     render() {
-        let { theme } = this.props;
-
-        let appDrawerContainerStyle = {
-            width: '100vw',
-            height: '100vh',
-            background: theme.palette.background.default,
-        }
-
         return (
-            <div style={appDrawerContainerStyle}>
+            <FullScreenView>
                 <AppBar>
                     <Toolbar>
                         <Typography variant="h6"> Handball </Typography>
@@ -79,7 +72,7 @@ class AppDrawer extends Component {
                 <Fab style={fabStyle} onClick={() => { this.props.dispatch(addNewProjectAsync()) }}>
                     <AddIcon/>
                 </Fab>
-            </div>
+            </FullScreenView>
         );
     }
 
@@ -163,7 +156,6 @@ let mapStateToProps = (state) => {
     }
 }
 
-let AppDrawerWithTheme = withTheme()(AppDrawer);
-let VisibleAppDrawer = connect(mapStateToProps)(AppDrawerWithTheme);
+let VisibleAppDrawer = connect(mapStateToProps)(AppDrawer);
 
 export default VisibleAppDrawer;

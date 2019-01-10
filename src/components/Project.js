@@ -22,6 +22,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import MoveTaskIcon from '../icons/MoveTaskIcon';
+import AddNewTaskButton from './AddNewTaskButton.js';
 
 const primaryFabStyle = {
     margin: 0,
@@ -55,8 +56,13 @@ class Project extends React.Component {
         let contentGridStyle = {
             height: '100%',
             background: theme.palette.background.default,
-            marginTop: '56px', // Clear the AppBar
-            marginBottom: '120px' // Clear the Fabs at lowest Scroll Point
+            paddingTop: '56px', // Clear the AppBar
+            paddingBottom: '160px', // Clear the Fabs at lowest Scroll Point
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            overflowY: 'scroll',
         }
 
         return (
@@ -70,20 +76,23 @@ class Project extends React.Component {
                     </Toolbar>
                 </AppBar>
 
-                <Grid style={contentGridStyle}
-                    container
-                    direction="column"
-                    justify="flex-start"
-                    alignItems="center">
+                <div style={contentGridStyle}>
                     {this.getTaskListsJSX()}
-                    <AddNewTaskListButton/>
-                </Grid>
+                    <AddNewTaskListButton onClick={this.props.onAddNewTaskListButtonClick} />
+                </div>
+                        
+                
 
-                <Fab color="primary" style={primaryFabStyle}>
+                <Fab 
+                color="primary" 
+                style={primaryFabStyle} 
+                onClick={this.props.onAddNewTaskButtonClick}>
                     <AddIcon/>
                  </Fab>
 
-                 <Fab style={secondaryFabStyle}>
+                 <Fab 
+                 style={secondaryFabStyle}
+                 onClick={this.props.onAddNewTaskListButtonClick}>
                     <AddTaskListIcon/>
                  </Fab>
 
@@ -102,7 +111,11 @@ class Project extends React.Component {
             let taskListSettings = item.settings;
 
             return (
-                <TaskList key={item.uid} name={item.taskListName}>
+                <TaskList 
+                key={item.uid}
+                name={item.taskListName}
+                isFocused={isFocused}
+                onClick={ () => { this.props.onTaskListClick(item.uid) }}>
                     { this.getTasksJSX(item.uid) }
                 </TaskList>
             )
@@ -121,6 +134,10 @@ class Project extends React.Component {
             let filteredTasks = this.props.tasks.filter( item => {
                 return item.taskList === taskListId;
             })
+
+            if (filteredTasks.length === 0) {
+                return ( <AddNewTaskButton onClick={ () => { this.props.onAddNewTaskButtonClick(taskListId) }}/>)
+            }
 
             let builtTasks = filteredTasks.map((item, index, array) => {
                 // Render Element.
@@ -179,6 +196,8 @@ class Project extends React.Component {
                             taskText={taskText}
                             dueDate={dueDate}
                             indicatorPanel={indicatorPanel}
+                            onTextContainerTap={ () => { this.props.onTaskTextContainerTap(item.uid, item.taskList, item.taskName, item.metadata) }}
+                            onDueDateContainerTap={ () => { this.props.onDueDateContainerTap(item.uid) }}
                         />
                     </SwipeableListItem>
                 )

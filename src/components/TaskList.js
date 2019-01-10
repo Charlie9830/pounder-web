@@ -20,14 +20,16 @@ class TaskList extends Component {
         }
 
         return (
-            <Paper style={paperStyle}>
+            <Paper style={paperStyle} onClick={this.props.onClick}>
                 <div style={containerStyle}>
                     <div style={{ gridRow: 'Toolbar' }}>
-                        <TaskListToolbar name={this.props.name} />
+                        <TaskListToolbar
+                        name={this.props.name}
+                        isFocused={this.props.isFocused} />
                     </div>
 
                     <div style={{ gridRow: 'Tasks' }}>
-                        {this.props.children}
+                        { this.props.children }
                     </div>
 
                 </div>

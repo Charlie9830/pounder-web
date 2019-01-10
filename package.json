@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
+    "@date-io/moment": "^0.0.2",
     "@material-ui/core": "^3.5.1",
     "@material-ui/icons": "^3.0.1",
     "autoprefixer": "7.1.2",
@@ -31,6 +32,7 @@
     "hammerjs": "^2.0.8",
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
+    "material-ui-pickers": "^2.0.5",
     "moment": "^2.20.1",
     "mousetrap": "^1.6.1",
     "object-assign": "4.1.1",
@@ -52,7 +54,6 @@
     "react-scroll-to-component": "^1.0.2",
     "react-slidedown": "^1.3.0",
     "react-swipe": "^6.0.3",
-    "react-swipe-to-reveal-options": "^0.3.6",
     "react-swipeable": "^4.3.1",
     "react-tabs": "^2.3.0",
     "react-toggle": "^4.0.2",

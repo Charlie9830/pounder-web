@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Hammer from 'hammerjs';
 
 let ContainerGridStyle = {
     width: '100%',
@@ -10,7 +11,39 @@ let ContainerGridStyle = {
                         'PriorityIndicator IndicatorPanel IndicatorPanel IndicatorPanel'`
 }
 
+let TextContainerStyle = {
+    gridArea: 'Text',
+    placeSelf: 'center flex-start',
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+}
+
 class TaskBase extends Component {
+    constructor(props) {
+        super(props);
+        
+        // Refs.
+        this.textContainerRef = React.createRef();
+        this.dueDateContainerRef = React.createRef();
+    }
+
+    componentDidMount() {
+        let textContainerHammer = new Hammer(this.textContainerRef.current);
+        textContainerHammer.on('tap', event => {
+            this.props.onTextContainerTap();
+        })
+
+        let dueDateContainerHammer = new Hammer(this.dueDateContainerRef.current);
+        dueDateContainerHammer.on('tap', event => {
+            this.props.onDueDateContainerTap();
+        })
+    }
+    
+    
     render() {
         return (
             <div style={ContainerGridStyle}>
@@ -20,17 +53,20 @@ class TaskBase extends Component {
                 </div>
 
                 {/* Checkbox  */} 
-                <div style={{gridArea: 'Checkbox', placeSelf: 'center'}}>
+                <div
+                style={{gridArea: 'Checkbox', placeSelf: 'center'}}>
                     { this.props.checkbox }
                 </div>
 
                 {/* Text  */}
-                <div style={{gridArea: 'Text', placeSelf: 'center flex-start'}}>
+                <div ref={this.textContainerRef}
+                 style={TextContainerStyle}>
                     { this.props.taskText }
                 </div> 
 
                 {/* DueDate  */}
-                <div style={{gridArea: 'DueDate', placeSelf: 'center'}}>
+                <div ref={this.dueDateContainerRef}
+                style={{gridArea: 'DueDate', placeSelf: 'center'}}>
                     { this.props.dueDate }
                 </div>
                 

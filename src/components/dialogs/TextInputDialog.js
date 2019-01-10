@@ -5,11 +5,9 @@ class TextInputDialog extends Component {
     constructor(props) {
         super(props);
 
-        // State.
-        this.state = {
-            value: "",
-        }
-    }
+        // Refs.
+        this.textInputRef = React.createRef();
+    }    
     
     render() {
         let { theme } = this.props;
@@ -53,16 +51,17 @@ class TextInputDialog extends Component {
                     <Collapse in={this.props.isOpen} collapsedHeight="0px" >
                         <div style={gridStyle}>
                             <div style={titleContainer}>
-                                <Typography> {this.props.title} </Typography>
+                                <Typography style={{marginBottom: '16px'}} color="textSecondary"> {this.props.title} </Typography>
                             </div>
                             <div style={inputContainer}>
                                 <TextField
+                                    inputRef={this.textInputRef}
                                     autoFocus
                                     style={textFieldStyle}
                                     multiline
                                     label={this.props.label}
                                     defaultValue={this.props.text}
-                                    onChange={(e) => { this.setState({ value: e.target.value })}} />
+                                    />
                             </div>
 
                             <div style={actionsContainer}>
@@ -70,7 +69,7 @@ class TextInputDialog extends Component {
                                     <Button variant="text" color="default" 
                                     onClick={() => { this.props.onCancel()}}> Cancel </Button>
                                     <Button variant="text" color="primary"
-                                    onClick={() => { this.props.onOkay(this.state.value)}}> Okay </Button>
+                                    onClick={() => { this.props.onOkay(this.textInputRef.current.value)}}> Okay </Button>
                                 </DialogActions>
                             </div>
                         </div>

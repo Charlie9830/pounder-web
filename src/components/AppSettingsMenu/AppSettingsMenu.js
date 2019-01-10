@@ -10,6 +10,7 @@ import { setAppSettingsMenuPage, setFavouriteProjectIdAsync, setGeneralConfigAsy
 import { AppBar, IconButton, Typography, Grid, Toolbar, Tabs, Tab } from '@material-ui/core';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import FullScreenView from '../../layout-components/FullScreenView';
 
 const issuesURL = "https://www.github.com/Charlie9830/Pounder/issues";
 
@@ -52,40 +53,43 @@ class AppSettingsMenu extends React.Component {
         var contentsJSX = this.getPageJSX()
         
         return (
-            <Grid container
-            direction="column"
-            justify="flex-start"
-            alignItems="stretch"
-            style={{width: '100vw', height: '100vh'}}>
+            <FullScreenView>
 
-                <Grid item>
-                    <AppBar position="sticky">
-                        <Toolbar>
-                            <IconButton 
-                            onClick={() => { this.props.dispatch(setIsAppSettingsOpen(false)) }}>
-                                <ArrowBackIcon />
-                            </IconButton>
+                <Grid container
+                    direction="column"
+                    justify="flex-start"
+                    alignItems="stretch"
+                    style={{ width: '100%', height: '100%' }}>
 
-                            <Typography variant="h6">
-                                Settings
+                    <Grid item>
+                        <AppBar position="sticky">
+                            <Toolbar>
+                                <IconButton
+                                    onClick={() => { this.props.dispatch(setIsAppSettingsOpen(false)) }}>
+                                    <ArrowBackIcon />
+                                </IconButton>
+
+                                <Typography variant="h6">
+                                    Settings
                             </Typography>
-                        </Toolbar>
-                        <Tabs 
-                        variant="fullWidth"
-                        value={this.props.menuPage}
-                        onChange={(e, newValue) => { this.props.dispatch(setAppSettingsMenuPage(newValue)) }}>
-                            <Tab label="General" value="general" />
-                            <Tab label="Account" value="account" />
-                            <Tab label="About" value="about" />
-                        </Tabs>
-                    </AppBar>
-            </Grid>
-            
-            <Grid item>
-                {contentsJSX}
-            </Grid>
-                
-            </Grid>
+                            </Toolbar>
+                            <Tabs
+                                variant="fullWidth"
+                                value={this.props.menuPage}
+                                onChange={(e, newValue) => { this.props.dispatch(setAppSettingsMenuPage(newValue)) }}>
+                                <Tab label="General" value="general" />
+                                <Tab label="Account" value="account" />
+                                <Tab label="About" value="about" />
+                            </Tabs>
+                        </AppBar>
+                    </Grid>
+
+                    <Grid item>
+                        {contentsJSX}
+                    </Grid>
+
+                </Grid>
+            </FullScreenView>
                 
         )
     }

@@ -10,6 +10,9 @@ import { createMuiTheme, MuiThemeProvider }  from '@material-ui/core/styles';
 import PrimaryColor from '@material-ui/core/colors/orange';
 import SecondaryColor from '@material-ui/core/colors/indigo';
 
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import MomentUtils from '@date-io/moment';
+
 if (process.env.NODE_ENV === 'production') {
     // eslint-disable-next-line
     const handballVersion = HANDBALL_VERSION;
@@ -61,5 +64,13 @@ let theme = createMuiTheme({
     }
 })
 
-ReactDOM.render(<Provider store={appStore}><MuiThemeProvider theme={theme}><VisibleApp /></MuiThemeProvider></Provider>, document.getElementById('root'));
+ReactDOM.render(
+    <MuiPickersUtilsProvider utils={MomentUtils}>
+        <Provider store={appStore}>
+            <MuiThemeProvider theme={theme}>
+                <VisibleApp />
+            </MuiThemeProvider>
+        </Provider>
+    </MuiPickersUtilsProvider>,
+    document.getElementById('root'));
 registerServiceWorker(onUpdateAvailable);

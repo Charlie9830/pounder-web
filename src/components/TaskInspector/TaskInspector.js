@@ -11,14 +11,11 @@ import { updateTaskDueDateAsync, updateTaskPriorityAsync, updateTaskAssignedToAs
     updateTaskNoteAsync, closeTaskInspectorAsync } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import CalendarIcon from '@material-ui/icons/CalendarToday';
-import NoteIcon from '@material-ui/icons/Edit';
 import PersonIcon from '@material-ui/icons/Person';
-import ClockIcon from '@material-ui/icons/AccessTime';
 import DateInputListItem from '../DateInputListItem';
 import ExpandingTextInputListItem from '../ExpandingTextInputListItem';
-import CommentPanel from '../CommentPanel/CommentPanel';
 import ExpandingCommentPanel from '../CommentPanel/ExpandingCommentPanel';
+import ExpandingMetadataListItem from './ExpandingMetadataListItem';
 
 
 let toolbarStyle = {
@@ -70,9 +67,8 @@ class TaskInspector extends Component {
                             <ListItemIcon>
                                 <PersonIcon />
                             </ListItemIcon>
-                            <Typography color="textSecondary"> Assign to somebody </Typography>
+                            <Typography color="textSecondary"> Assign to someone</Typography>
                         </ListItem>
-
                     </List>
                 </Paper>
 
@@ -86,7 +82,12 @@ class TaskInspector extends Component {
                             onPaginateComments={() => { this.props.dispatch(paginateTaskCommentsAsync(task.uid)) }}
                         />
                     </div>
-                    
+                </Paper>
+
+                <Paper style={paperStyle}>
+                    <List>
+                        <ExpandingMetadataListItem metadata={task.metadata}/>
+                    </List>
                 </Paper>
             </FullScreenView>
         );

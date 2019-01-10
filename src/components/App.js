@@ -92,8 +92,8 @@ class App extends React.Component {
     }
 
     handleAddNewTaskButtonClick(taskListId) {
-        if (taskListId === undefined) {
-            // No taskListId Provided. Request coming from a FAB.
+        if (typeof taskListId !== "string") {
+            // No taskListId Provided. (Could accidentely be an event object coming through) Request coming from a FAB.
             this.props.dispatch(addNewTaskAsync());
         }
 

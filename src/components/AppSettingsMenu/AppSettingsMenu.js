@@ -63,7 +63,8 @@ class AppSettingsMenu extends React.Component {
 
                     <Grid item>
                         <AppBar position="sticky">
-                            <Toolbar>
+                            <Toolbar
+                            disableGutters={true}>
                                 <IconButton
                                     onClick={() => { this.props.dispatch(setIsAppSettingsOpen(false)) }}>
                                     <ArrowBackIcon />

@@ -35,7 +35,8 @@ const Expander = (props) => {
             <div
             style={gridStyle}>
                 <div style={{ gridRow: 'Toolbar', placeSelf: 'center stretch' }}>
-                    <Toolbar>
+                    <Toolbar
+                    disableGutters={true}>
                         <IconButton onClick={(e) => { e.stopPropagation(); props.onClose() }}>
                             <ArrowBackIcon />
                         </IconButton>

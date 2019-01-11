@@ -66,17 +66,20 @@ class ShareMenu extends React.Component {
         this.handleInviteButtonClick = this.handleInviteButtonClick.bind(this);
         this.handleInviteButtonClick = this.handleInviteButtonClick.bind(this);
         this.handleDeleteProjectButtonClick = this.handleDeleteProjectButtonClick.bind(this);
+        this.handleLeaveProjectButtonClick = this.handleLeaveProjectButtonClick.bind(this);
         this.handleMakePersonalButtonClick = this.handleMakePersonalButtonClick.bind(this);
         this.getMembersJSX = this.getMembersJSX.bind(this);
     }
 
     render() {
         let filteredMembers = this.getFilteredMembers();
+
         return (
             <FullScreenView>
                 <div style={grid}>
                     <div style={{ gridRow: 'Toolbar' }}>
-                        <Toolbar>
+                        <Toolbar
+                        disableGutters={true}>
                             <IconButton
                                 onClick={() => { this.props.dispatch(setIsShareMenuOpen(false)) }}>
                                 <ArrowBackIcon />
@@ -103,11 +106,11 @@ class ShareMenu extends React.Component {
                             <List style={{padding: '8px 0px 8px 0px'}}>
                                 <ListSubheader disableSticky={true}> Owners </ListSubheader>
                                 <Divider />
-                                {this.getMembersJSX(filteredMembers, 'owner')}
+                                { this.getMembersJSX(filteredMembers, 'owner') }
 
                                 <ListSubheader disableSticky={true}> Members </ListSubheader>
                                 <Divider />
-                                {this.getMembersJSX(filteredMembers, 'member')}
+                                { this.getMembersJSX(filteredMembers, 'member') }
                             </List>
                             
                         </Paper>
@@ -118,19 +121,19 @@ class ShareMenu extends React.Component {
                                 
 
                                 <ActionButton
-                                    onClick={this.handleLeaveProjectButtonClick}>
+                                    onClick={() => {this.handleLeaveProjectButtonClick(filteredMembers)}}>
                                     Leave
                         </ActionButton>
 
                                 <ActionButton
-                                    onClick={this.handleMakePersonalButtonClick}>
+                                    onClick={() => { this.handleMakePersonalButtonClick(filteredMembers)}}>
                                     Make Personal
                         </ActionButton>
 
                         <ActionButton
                                     color="secondary"
                                     hidden={!this.isCurrentUserAnOwner(filteredMembers)}
-                                    onClick={this.handleDeleteProjectButtonClick}>
+                                    onClick={() => {this.handleDeleteProjectButtonClick(filteredMembers)}}>
                                     Delete
                         </ActionButton>
                             </div>
@@ -141,17 +144,20 @@ class ShareMenu extends React.Component {
                 <WaitingOverlay open={this.props.isShareMenuWaiting} message={this.props.shareMenuMessage}
                     subMessage={this.props.shareMenuSubMessage} />
 
-            </FullScreenView>
-                
+            </FullScreenView>      
         )
     }
 
-    handleMakePersonalButtonClick() {
+    handleMakePersonalButtonClick(filteredMembers) {
+        
+    }
+
+    handleLeaveProjectButtonClick(filteredMembers) {
 
     }
 
-    handleDeleteProjectButtonClick() {
-
+    handleDeleteProjectButtonClick(filteredMembers) {
+        this.props.dispatch(removeRemoteProjectAsync(this.props.selectedProjectId, this.isCurrentUserAnOwner(filteredMembers)))
     }
 
     handleInviteButtonClick() {
@@ -185,6 +191,7 @@ class ShareMenu extends React.Component {
                     displayName={item.displayName}
                     email={item.email}
                     role={item.role}
+                    allowElevatedPrivileges={ isCurrentUserOwner }
                     canBeKicked={ isCurrentUserOwner && item.userId !== getUserUid() }
                     onKick={ () => { this.props.dispatch(kickUserFromProjectAsync(this.props.selectedProjectId, item.userId)) }}
                     onPromote={ () => { this.props.dispatch(updateMemberRoleAsync(item.userId, this.props.selectedProjectId, 'owner')) }}

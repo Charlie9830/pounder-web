@@ -16,6 +16,8 @@ import { Drawer, CssBaseline } from '@material-ui/core';
 import VisibleAppDrawer from './AppDrawer';
 import VisibleAppSettingsMenu from './AppSettingsMenu/AppSettingsMenu';
 import VisibleShareMenu from './ShareMenu/ShareMenu';
+import InformationDialog from './dialogs/InformationDialog';
+import ConfirmationDialog from './dialogs/ConfirmationDialog';
 
 class App extends React.Component {
     constructor(props) {
@@ -88,6 +90,23 @@ class App extends React.Component {
                     label={this.props.textInputDialog.label}
                     onCancel={this.props.textInputDialog.onCancel}
                     onOkay={this.props.textInputDialog.onOkay}
+                />
+
+                <InformationDialog
+                    isOpen={this.props.informationDialog.isOpen}
+                    title={this.props.informationDialog.title}
+                    text={this.props.informationDialog.text}
+                    onOkay={this.props.informationDialog.onOkay}
+                />
+
+                <ConfirmationDialog
+                    isOpen={this.props.confirmationDialog.isOpen}
+                    title={this.props.confirmationDialog.title}
+                    text={this.props.confirmationDialog.text}
+                    affirmativeButtonText={this.props.confirmationDialog.affirmativeButtonText}
+                    negativeButtonText={this.props.confirmationDialog.negativeButtonText}
+                    onAffirmative={this.props.confirmationDialog.onAffirmative}
+                    onNegative={this.props.confirmationDialog.onNegative}
                 />
             </React.Fragment>
         )
@@ -192,6 +211,8 @@ const mapStateToProps = state => {
         openTaskInspectorId: state.openTaskInspectorId,
         openTaskInspectorEntity: state.openTaskInspectorEntity,
         isShareMenuOpen: state.isShareMenuOpen,
+        informationDialog: state.informationDialog,
+        confirmationDialog: state.confirmationDialog,
     }
 }
 

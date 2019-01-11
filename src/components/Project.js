@@ -77,7 +77,8 @@ class Project extends React.Component {
         return (
             <React.Fragment>
                 <AppBar>
-                    <Toolbar>
+                    <Toolbar
+                    disableGutters={true}>
                         <IconButton
                          onClick={this.props.onMenuButtonClick}>
                             <MenuIcon/>
@@ -155,7 +156,6 @@ class Project extends React.Component {
             }
 
             let builtTasks = filteredTasks.map((item, index, array) => {
-                console.log( item); 
                 // Render Element.
                 var isTaskSelected = item.uid === this.props.selectedTaskId;
                 var isTaskMoving = item.uid === this.props.movingTaskId;

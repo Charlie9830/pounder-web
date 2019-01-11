@@ -5,6 +5,19 @@ import KickUserButton from './KickUserButton';
 import ChangeRankButton from './ChangeRankButton';
 
 const MemberListItem = (props) => {
+    let changeRankButton = (
+        <ChangeRankButton
+                    canPromote={props.role === "member"}
+                    onPromote={props.onPromote}
+                    onDemote={props.onDemote} />
+    )
+
+    let kickUserButton = (
+        <KickUserButton
+        canKick={props.canBeKicked}
+        onClick={props.onKick} />
+    )
+
     return (
         <ListItem disabled={props.isUpdating}>
             <ListItemIcon>
@@ -14,16 +27,8 @@ const MemberListItem = (props) => {
             <ListItemText primary={props.displayName} secondary={props.email} />
 
             <ListItemSecondaryAction>
-
-                <ChangeRankButton
-                    canPromote={props.role === "owner"}
-                    onPromote={props.onPromote}
-                    onDemote={props.onDemote} />
-
-                <KickUserButton
-                    canKick={props.canBeKicked}
-                    onClick={props.onKick} />
-
+                { props.allowElevatedPrivileges && kickUserButton }
+                { props.allowElevatedPrivileges && changeRankButton }
             </ListItemSecondaryAction>
         </ListItem>
     );

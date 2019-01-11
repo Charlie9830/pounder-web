@@ -39,6 +39,8 @@ class ProjectMenu extends Component {
                         <Typography> Show only my tasks </Typography>
                         <Switch/>
                     </MenuItem>
+
+                    <MenuItem onClick={() => { this.handleMenuSelection('renameProject')}}> Rename project </MenuItem>
                 </Menu>
             </React.Fragment>
         );

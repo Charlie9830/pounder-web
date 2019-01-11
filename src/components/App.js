@@ -15,6 +15,7 @@ import {
 import { Drawer, CssBaseline } from '@material-ui/core';
 import VisibleAppDrawer from './AppDrawer';
 import VisibleAppSettingsMenu from './AppSettingsMenu/AppSettingsMenu';
+import VisibleShareMenu from './ShareMenu/ShareMenu';
 
 class App extends React.Component {
     constructor(props) {
@@ -42,6 +43,12 @@ class App extends React.Component {
         return (
             <React.Fragment>
                 <CssBaseline/>
+
+                <Drawer
+                    open={this.props.isShareMenuOpen}
+                    anchor="left">
+                        <VisibleShareMenu/>
+                    </Drawer>
         
                 <Drawer
                     open={this.props.openTaskInspectorId !== -1 && this.props.openTaskInspectorEntity !== null}
@@ -184,6 +191,7 @@ const mapStateToProps = state => {
         focusedTaskListId: state.focusedTaskListId,
         openTaskInspectorId: state.openTaskInspectorId,
         openTaskInspectorEntity: state.openTaskInspectorEntity,
+        isShareMenuOpen: state.isShareMenuOpen,
     }
 }
 

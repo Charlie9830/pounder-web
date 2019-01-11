@@ -13,6 +13,7 @@ import SwipeableListItemAction from './SwipeableListItem/SwipeableListItemAction
 import { GetDisplayNameFromLookup } from 'handball-libs/libs/pounder-utilities';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import { TaskMetadataStore } from 'handball-libs/libs/pounder-stores';
+import { ParseDueDate } from 'handball-libs/libs/pounder-utilities';
 
 import { AppBar, Toolbar, Typography, Grid, withTheme, IconButton, Fab } from '@material-ui/core';
 
@@ -140,6 +141,7 @@ class Project extends React.Component {
             }
 
             let builtTasks = filteredTasks.map((item, index, array) => {
+                console.log( item); 
                 // Render Element.
                 var isTaskSelected = item.uid === this.props.selectedTaskId;
                 var isTaskMoving = item.uid === this.props.movingTaskId;
@@ -166,7 +168,7 @@ class Project extends React.Component {
                 />
 
                 let dueDate = <DueDate
-                    text={'1d'} color="#0F0" />
+                    {...this.getDueDateProps(item.isComplete, item.dueDate, this.props.theme)}/>
 
                 let indicatorPanel = <IndicatorPanel
                     hasUnseenComments={hasUnseenComments}
@@ -205,6 +207,21 @@ class Project extends React.Component {
 
             return builtTasks;
         }        
+    }
+
+    getDueDateProps(isComplete, dueDate, theme) {
+        let result = ParseDueDate(isComplete, dueDate);
+
+        if (result.type === 'unset') {
+            return {
+                type: 'unset'
+            } 
+        }
+
+        return {
+            color: theme.palette.custom[result.type], // Extract color from Theme
+            text: result.text,
+        }
     }
 }
 

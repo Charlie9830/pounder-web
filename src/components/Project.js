@@ -24,6 +24,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import MoveTaskIcon from '../icons/MoveTaskIcon';
 import AddNewTaskButton from './AddNewTaskButton.js';
+import ProjectMenu from './ProjectMenu';
 
 const primaryFabStyle = {
     margin: 0,
@@ -42,6 +43,13 @@ const secondaryFabStyle = {
     left: 'auto',
     position: 'fixed',
 };
+
+const projectMenuButtonContainer = {
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+}
 
 class Project extends React.Component {
     constructor(props) {
@@ -70,10 +78,16 @@ class Project extends React.Component {
             <React.Fragment>
                 <AppBar>
                     <Toolbar>
-                        <IconButton onClick={this.props.onMenuButtonClick}>
+                        <IconButton
+                         onClick={this.props.onMenuButtonClick}>
                             <MenuIcon/>
                         </IconButton>
-                        <Typography variant="h6"> {this.props.projectName} </Typography>
+                        <Typography variant="h6" style={{flexGrow: 1}}> {this.props.projectName} </Typography>
+                            <div style={projectMenuButtonContainer}>
+                                <ProjectMenu
+                                onShareMenuButtonClick={this.props.onShareMenuButtonClick}/>  
+                            </div>
+                            
                     </Toolbar>
                 </AppBar>
 

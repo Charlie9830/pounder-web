@@ -37,7 +37,8 @@ class AppDrawer extends Component {
             <FullScreenView>
                 <AppBar>
                     <Toolbar>
-                        <Typography variant="h6"> Handball </Typography>
+                        <Typography
+                        variant="h6"> Handball </Typography>
                         <Grid container
                         direction="row-reverse"
                         justify="flex-start"
@@ -47,9 +48,6 @@ class AppDrawer extends Component {
                             </IconButton>
                             <IconButton>
                                 <AccountIcon />
-                            </IconButton>
-                            <IconButton>
-                                <ShareIcon />
                             </IconButton>
                         </Grid>
                     </Toolbar>

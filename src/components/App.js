@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import {
     updateTaskCompleteAsync, setIsAppDrawerOpen, attachAuthListenerAsync, setFocusedTaskListId,
     updateTaskNameAsync, addNewTaskAsync, addNewTaskListAsync, openTaskInspectorAsync, selectProject,
-    setIsShareMenuOpen,
+    setIsShareMenuOpen, updateProjectNameAsync,
 } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import { Drawer, CssBaseline } from '@material-ui/core';
@@ -34,6 +34,7 @@ class App extends React.Component {
         this.handleAddNewTaskListButtonClick = this.handleAddNewTaskListButtonClick.bind(this);
         this.handleDueDateContainerTap = this.handleDueDateContainerTap.bind(this);
         this.handleShareMenuButtonClick = this.handleShareMenuButtonClick.bind(this);
+        this.handleRenameProjectButtonClick = this.handleRenameProjectButtonClick.bind(this);
     }
 
     componentDidMount() {
@@ -83,6 +84,7 @@ class App extends React.Component {
                     onDueDateContainerTap={this.handleDueDateContainerTap}
                     onShareMenuButtonClick={this.handleShareMenuButtonClick}
                     isASnackbarOpen={this.props.isASnackbarOpen}
+                    onRenameProjectButtonClick={this.handleRenameProjectButtonClick}
                 />
 
                 <TextInputDialog
@@ -120,6 +122,10 @@ class App extends React.Component {
                 />
             </React.Fragment>
         )
+    }
+
+    handleRenameProjectButtonClick(selectedProjectId) {
+        this.props.dispatch(updateProjectNameAsync(selectedProjectId))
     }
     
     handleShareMenuButtonClick() {

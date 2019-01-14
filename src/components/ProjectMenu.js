@@ -52,6 +52,10 @@ class ProjectMenu extends Component {
         if (selection === 'share') {
             this.props.onShareMenuButtonClick();
         }
+
+        if (selection === 'renameProject') {
+            this.props.onRenameProjectButtonClick();
+        }
         
     }
 }

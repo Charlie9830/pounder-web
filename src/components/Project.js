@@ -130,7 +130,8 @@ class Project extends React.Component {
                         <Typography variant="h6" style={{flexGrow: 1}}> {this.props.projectName} </Typography>
                             <div style={projectMenuButtonContainer}>
                                 <ProjectMenu
-                                onShareMenuButtonClick={this.props.onShareMenuButtonClick}/>  
+                                onShareMenuButtonClick={this.props.onShareMenuButtonClick}
+                                onRenameProjectButtonClick={() => { this.props.onRenameProjectButtonClick(this.props.projectId, this.props.projectName) }}/>  
                             </div>
                             
                     </Toolbar>

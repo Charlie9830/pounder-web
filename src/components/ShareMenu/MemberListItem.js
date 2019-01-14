@@ -7,6 +7,7 @@ import ChangeRankButton from './ChangeRankButton';
 const MemberListItem = (props) => {
     let changeRankButton = (
         <ChangeRankButton
+                    canBeDemoted={props.canBeDemoted}
                     canPromote={props.role === "member"}
                     onPromote={props.onPromote}
                     onDemote={props.onDemote} />

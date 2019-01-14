@@ -4,23 +4,45 @@ import ProjectListItem from './ProjectListItem/ProjectListItem';
 import InviteListItem from './InviteListItem';
 
 import { AppBar, Toolbar, Typography, Grid, IconButton, List, ListSubheader, Divider, Fab } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
-import ShareIcon from '@material-ui/icons/Share';
 import AddIcon from '@material-ui/icons/Add';
 
 import { acceptProjectInviteAsync, denyProjectInviteAsync, addNewProjectAsync,
 setIsAppSettingsOpen, selectProject } from 'handball-libs/libs/pounder-redux/action-creators';
 import FullScreenView from '../layout-components/FullScreenView';
 
-const fabStyle = {
-    margin: 0,
-    top: 'auto',
-    right: 20,
-    bottom: 20,
-    left: 'auto',
-    position: 'fixed',
+let styles = theme => {
+    let fabBase = {
+        margin: 0,
+        top: 'auto',
+        right: 20,
+        bottom: 20,
+        left: 'auto',
+        position: 'fixed',
+    }
+
+    return {
+        fabMoveUp: {
+            ...fabBase,
+            transform: 'translate3d(0, -46px, 0)',
+            transition: theme.transitions.create('transform', {
+                duration: theme.transitions.duration.enteringScreen,
+                easing: theme.transitions.easing.easeOut,
+            }),
+        },
+    
+        fabMoveDown: {
+            ...fabBase,
+            transform: 'translate3d(0, 0, 0)',
+            transition: theme.transitions.create('transform', {
+                duration: theme.transitions.duration.leavingScreen,
+                easing: theme.transitions.easing.sharp,
+            }),
+        },
+    }
 };
 
 class AppDrawer extends Component {
@@ -33,6 +55,9 @@ class AppDrawer extends Component {
     }
 
     render() {
+        let { classes } = this.props;
+        let fabClassName = this.props.isASnackbarOpen ? 'fabMoveUp' : 'fabMoveDown';
+
         return (
             <FullScreenView>
                 <AppBar>
@@ -67,7 +92,8 @@ class AppDrawer extends Component {
                     { this.props.remoteProjects.length > 0 && this.getRemoteProjectsSubheading() && this.projectMapper(this.props.remoteProjects) }
                 </List>
 
-                <Fab style={fabStyle} onClick={() => { this.props.dispatch(addNewProjectAsync()) }}>
+                <Fab className={classes[fabClassName]}
+                onClick={() => { this.props.dispatch(addNewProjectAsync()) }}>
                     <AddIcon/>
                 </Fab>
             </FullScreenView>
@@ -151,9 +177,10 @@ let mapStateToProps = (state) => {
         favouriteProjectId: state.favouriteProjectId,
         selectedProjectId: state.selectedProjectId,
         updatingInviteIds: state.updatingInviteIds,
+        isASnackbarOpen: state.isASnackbarOpen,
     }
 }
 
-let VisibleAppDrawer = connect(mapStateToProps)(AppDrawer);
+let VisibleAppDrawer = connect(mapStateToProps)(withStyles(styles)(AppDrawer));
 
 export default VisibleAppDrawer;

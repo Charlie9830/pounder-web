@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { inviteUserToProjectAsync, kickUserFromProjectAsync, updateMemberRoleAsync, setIsShareMenuOpen,
-removeRemoteProjectAsync, migrateProjectBackToLocalAsync } from 'handball-libs/libs/pounder-redux/action-creators';
+removeRemoteProjectAsync, migrateProjectBackToLocalAsync, leaveRemoteProjectAsync } from 'handball-libs/libs/pounder-redux/action-creators';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import MemberStatusIcon from './MemberStatusIcon';
 import WaitingOverlay from './WaitingOverlay';
@@ -126,13 +126,14 @@ class ShareMenu extends React.Component {
                         </ActionButton>
 
                                 <ActionButton
+                                    disabled={!this.isCurrentUserAnOwner(filteredMembers)}
                                     onClick={() => { this.handleMakePersonalButtonClick(filteredMembers)}}>
                                     Make Personal
                         </ActionButton>
 
                         <ActionButton
                                     color="secondary"
-                                    hidden={!this.isCurrentUserAnOwner(filteredMembers)}
+                                    disabled={!this.isCurrentUserAnOwner(filteredMembers)}
                                     onClick={() => {this.handleDeleteProjectButtonClick(filteredMembers)}}>
                                     Delete
                         </ActionButton>
@@ -149,11 +150,13 @@ class ShareMenu extends React.Component {
     }
 
     handleMakePersonalButtonClick(filteredMembers) {
-        
+        if (this.isCurrentUserAnOwner(filteredMembers)) {
+            this.props.dispatch(migrateProjectBackToLocalAsync(this.props.selectedProjectId));
+        }   
     }
 
     handleLeaveProjectButtonClick(filteredMembers) {
-
+        this.props.dispatch(leaveRemoteProjectAsync(this.props.selectedProjectId, getUserUid()));
     }
 
     handleDeleteProjectButtonClick(filteredMembers) {
@@ -192,6 +195,7 @@ class ShareMenu extends React.Component {
                     email={item.email}
                     role={item.role}
                     allowElevatedPrivileges={ isCurrentUserOwner }
+                    canBeDemoted={ !this.isCurrentUserTheOnlyOwner(filteredMembers) }
                     canBeKicked={ isCurrentUserOwner && item.userId !== getUserUid() }
                     onKick={ () => { this.props.dispatch(kickUserFromProjectAsync(this.props.selectedProjectId, item.userId)) }}
                     onPromote={ () => { this.props.dispatch(updateMemberRoleAsync(item.userId, this.props.selectedProjectId, 'owner')) }}

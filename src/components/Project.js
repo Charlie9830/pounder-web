@@ -8,14 +8,14 @@ import TaskCheckbox from './Task/TaskCheckbox';
 import TaskText from './Task/TaskText';
 import AddNewTaskListButton from './AddNewTaskListButton';
 import SwipeableListItem from './SwipeableListItem/SwipeableListItem';
-import SwipeableListItemAction from './SwipeableListItem/SwipeableListItemAction';
 
 import { GetDisplayNameFromLookup } from 'handball-libs/libs/pounder-utilities';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import { TaskMetadataStore } from 'handball-libs/libs/pounder-stores';
 import { ParseDueDate } from 'handball-libs/libs/pounder-utilities';
 
-import { AppBar, Toolbar, Typography, Grid, withTheme, IconButton, Fab } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, withTheme, IconButton, Fab} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
 import AddIcon from '@material-ui/icons/Add';
 import AddTaskListIcon from '@material-ui/icons/PlaylistAdd';
@@ -26,22 +26,63 @@ import MoveTaskIcon from '../icons/MoveTaskIcon';
 import AddNewTaskButton from './AddNewTaskButton.js';
 import ProjectMenu from './ProjectMenu';
 
-const primaryFabStyle = {
-    margin: 0,
-    top: 'auto',
-    right: 20,
-    bottom: 20,
-    left: 'auto',
-    position: 'fixed',
-};
+let styles = theme => {
+    console.log(theme);
+    let primaryFabBase = {
+        margin: 0,
+        top: 'auto',
+        right: 20,
+        bottom: 20,
+        left: 'auto',
+        position: 'fixed',
+    }
 
-const secondaryFabStyle = {
-    margin: 0,
-    top: 'auto',
-    right: 20,
-    bottom: 90,
-    left: 'auto',
-    position: 'fixed',
+    let secondaryFabBase = {
+        margin: 0,
+        top: 'auto',
+        right: 20,
+        bottom: 90,
+        left: 'auto',
+        position: 'fixed',
+    }
+
+    return {
+        primaryFabMoveUp: {
+            ...primaryFabBase,
+            transform: 'translate3d(0, -46px, 0)',
+            transition: theme.transitions.create('transform', {
+                duration: theme.transitions.duration.enteringScreen,
+                easing: theme.transitions.easing.easeOut,
+            }),
+        },
+    
+        primaryFabMoveDown: {
+            ...primaryFabBase,
+            transform: 'translate3d(0, 0, 0)',
+            transition: theme.transitions.create('transform', {
+                duration: theme.transitions.duration.leavingScreen,
+                easing: theme.transitions.easing.sharp,
+            }),
+        },
+
+        secondaryFabMoveUp: {
+            ...secondaryFabBase,
+            transform: 'translate3d(0, -46px, 0)',
+            transition: theme.transitions.create('transform', {
+                duration: theme.transitions.duration.enteringScreen,
+                easing: theme.transitions.easing.easeOut,
+            }),
+        },
+
+        secondaryFabMoveDown: {
+            ...secondaryFabBase,
+            transform: 'translate3d(0, 0, 0)',
+            transition: theme.transitions.create('transform', {
+                duration: theme.transitions.duration.leavingScreen,
+                easing: theme.transitions.easing.sharp,
+            }),
+        }
+    }
 };
 
 const projectMenuButtonContainer = {
@@ -61,7 +102,10 @@ class Project extends React.Component {
     }
 
     render() {
-        let { theme } = this.props;
+        let { theme, classes } = this.props;
+        const primaryFabClassName = this.props.isASnackbarOpen ? classes['primaryFabMoveUp'] : classes['primaryFabMoveDown'];
+        const secondaryFabClassName = this.props.isASnackbarOpen ? classes['secondaryFabMoveUp'] : classes['secondaryFabMoveDown'];
+
         let contentGridStyle = {
             height: '100%',
             background: theme.palette.background.default,
@@ -97,20 +141,18 @@ class Project extends React.Component {
                     <AddNewTaskListButton onClick={this.props.onAddNewTaskListButtonClick} />
                 </div>
                         
+                <Fab
+                    className={primaryFabClassName}
+                    color="primary"
+                    onClick={this.props.onAddNewTaskButtonClick}>
+                    <AddIcon />
+                </Fab>
                 
-
-                <Fab 
-                color="primary" 
-                style={primaryFabStyle} 
-                onClick={this.props.onAddNewTaskButtonClick}>
-                    <AddIcon/>
-                 </Fab>
-
-                 <Fab 
-                 style={secondaryFabStyle}
-                 onClick={this.props.onAddNewTaskListButtonClick}>
-                    <AddTaskListIcon/>
-                 </Fab>
+                <Fab
+                    className={secondaryFabClassName}
+                    onClick={this.props.onAddNewTaskListButtonClick}>
+                    <AddTaskListIcon />
+                </Fab>
 
             </React.Fragment>
         )
@@ -239,4 +281,4 @@ class Project extends React.Component {
     }
 }
 
-export default withTheme()(Project);
+export default (withTheme()(withStyles(styles)(Project)));

@@ -13,11 +13,16 @@ const ChangeRankButton = (props) => {
         )
     }
 
-    return (
-        <IconButton onClick={props.onDemote}>
-            <ArrowDownIcon fontSize="small"/>
-        </IconButton>  
-    );
+    if (props.canBeDemoted === true) {
+        return (
+            <IconButton onClick={props.onDemote}>
+                <ArrowDownIcon fontSize="small"/>
+            </IconButton>  
+        );
+    }
+
+    return null;
+    
 };
 
 export default ChangeRankButton;

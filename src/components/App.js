@@ -18,6 +18,7 @@ import VisibleAppSettingsMenu from './AppSettingsMenu/AppSettingsMenu';
 import VisibleShareMenu from './ShareMenu/ShareMenu';
 import InformationDialog from './dialogs/InformationDialog';
 import ConfirmationDialog from './dialogs/ConfirmationDialog';
+import GeneralSnackbar from './Snackbars/GeneralSnackbar';
 
 class App extends React.Component {
     constructor(props) {
@@ -81,6 +82,7 @@ class App extends React.Component {
                     onAddNewTaskListButtonClick={this.handleAddNewTaskListButtonClick}
                     onDueDateContainerTap={this.handleDueDateContainerTap}
                     onShareMenuButtonClick={this.handleShareMenuButtonClick}
+                    isASnackbarOpen={this.props.isASnackbarOpen}
                 />
 
                 <TextInputDialog
@@ -107,6 +109,14 @@ class App extends React.Component {
                     negativeButtonText={this.props.confirmationDialog.negativeButtonText}
                     onAffirmative={this.props.confirmationDialog.onAffirmative}
                     onNegative={this.props.confirmationDialog.onNegative}
+                />
+
+                <GeneralSnackbar
+                isOpen={this.props.generalSnackbar.isOpen}
+                type={this.props.generalSnackbar.type}
+                text={this.props.generalSnackbar.text}
+                actionButtonText={this.props.generalSnackbar.actionOptions.actionButtonText}
+                onAction={this.props.generalSnackbar.actionOptions.onAction}
                 />
             </React.Fragment>
         )
@@ -213,6 +223,8 @@ const mapStateToProps = state => {
         isShareMenuOpen: state.isShareMenuOpen,
         informationDialog: state.informationDialog,
         confirmationDialog: state.confirmationDialog,
+        isASnackbarOpen: state.isASnackbarOpen,
+        generalSnackbar: state.generalSnackbar,
     }
 }
 

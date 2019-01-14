@@ -173,7 +173,6 @@ class Project extends React.Component {
         let taskListsJSX = filteredTaskLists.map(item => {
             // Widget Layer.
             let isFocused = this.props.focusedTaskListId === item.uid;
-            let taskListSettings = item.settings;
 
             return (
                 <TaskList 
@@ -259,7 +258,8 @@ class Project extends React.Component {
                             taskText={taskText}
                             dueDate={dueDate}
                             indicatorPanel={indicatorPanel}
-                            onTextContainerTap={ () => { this.props.onTaskTextContainerTap(item.uid, item.taskList, item.taskName, item.metadata) }}
+                            onTextContainerTap={ () => { this.props.onTaskTextContainerTap() }}
+                            onPress={ () => { this.props.onTaskPress(item.uid, item.taskList, item.taskName, item.metadata) }}
                             onDueDateContainerTap={ () => { this.props.onDueDateContainerTap(item.uid) }}
                         />
                     </SwipeableListItem>

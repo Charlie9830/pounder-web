@@ -37,6 +37,7 @@ class App extends React.Component {
         this.handleRenameProjectButtonClick = this.handleRenameProjectButtonClick.bind(this);
         this.handleCompletedTasksButtonClick = this.handleCompletedTasksButtonClick.bind(this);
         this.handleShowOnlySelfTasksButtonClick = this.handleShowOnlySelfTasksButtonClick.bind(this);
+        this.handleTaskPress = this.handleTaskPress.bind(this);
     }
 
     componentDidMount() {
@@ -81,6 +82,7 @@ class App extends React.Component {
                     onMenuButtonClick={this.handleProjectMenuButtonClick}
                     onTaskListClick={this.handleTaskListClick}
                     onTaskTextContainerTap={this.handleTaskTextContainerTap}
+                    onTaskPress={this.handleTaskPress}
                     onAddNewTaskButtonClick={this.handleAddNewTaskButtonClick}
                     onAddNewTaskListButtonClick={this.handleAddNewTaskListButtonClick}
                     onDueDateContainerTap={this.handleDueDateContainerTap}
@@ -169,10 +171,13 @@ class App extends React.Component {
         
     }
 
-    handleTaskTextContainerTap(taskId, taskListId, currentValue, currentMetadata) {
+    handleTaskTextContainerTap() {
+        
+    }
+
+    handleTaskPress(taskId, taskListId, currentValue, currentMetadata) {
         this.props.dispatch(setFocusedTaskListId(taskListId));
         this.props.dispatch(updateTaskNameAsync(taskId, currentValue, currentMetadata));
-        
     }
 
     handleTaskListClick(taskListId) {

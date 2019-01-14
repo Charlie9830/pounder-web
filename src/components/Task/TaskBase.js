@@ -27,11 +27,17 @@ class TaskBase extends Component {
         super(props);
         
         // Refs.
+        this.taskContainerRef = React.createRef();
         this.textContainerRef = React.createRef();
         this.dueDateContainerRef = React.createRef();
     }
 
     componentDidMount() {
+        let taskContainerHammer = new Hammer(this.taskContainerRef.current);
+        taskContainerHammer.on('press', event => {
+            this.props.onPress();
+        })
+
         let textContainerHammer = new Hammer(this.textContainerRef.current);
         textContainerHammer.on('tap', event => {
             this.props.onTextContainerTap();
@@ -42,11 +48,18 @@ class TaskBase extends Component {
             this.props.onDueDateContainerTap();
         })
     }
-    
+
+    componentWillUnmount() {
+        Hammer.off(this.taskContainerRef.current, 'press');
+        Hammer.off(this.textContainerRef.current, 'tap');
+        Hammer.off(this.dueDateContainerRef.current, 'tap');
+    }
     
     render() {
         return (
-            <div style={ContainerGridStyle}>
+            <div
+            style={ContainerGridStyle}
+            ref={this.taskContainerRef}>
                 {/* Priority Indicator  */} 
                 <div style={{gridArea: 'PriorityIndicator'}}>
                     { this.props.priorityIndicator }

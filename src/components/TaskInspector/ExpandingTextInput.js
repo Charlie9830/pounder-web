@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Typography, TextField, Grow, ClickAwayListener, Popover } from '@material-ui/core';
-import Expander from './Expander';
+import Expander from '../Expander';
 
 let textFieldStyle = {
     width: '100%',

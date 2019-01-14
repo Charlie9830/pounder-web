@@ -13,16 +13,16 @@ const styles = {
     }
 }
 
-let gridStyle = {
-    width: '100vw',
-    height: '99.9vh',
-    maxHeight: '99.9vh',
-    display: 'grid',
-    gridTemplateRows: '[Toolbar]56px [Children]1fr',
-}
-
 const Expander = (props) => {
     let { classes } = props;
+
+    let gridStyle = {
+        width: '100vw',
+        height: '99.9vh',
+        maxHeight: '99.9vh',
+        display: 'grid',
+        gridTemplateRows: '[Toolbar]56px [Children]1fr',
+    }
 
     return (
         <Popover
@@ -43,7 +43,9 @@ const Expander = (props) => {
                     </Toolbar>
                 </div>
 
-                <div style={{ gridRow: 'Children', placeSelf: 'stretch' }}>
+                <div
+                style={{ gridRow: 'Children', placeSelf: 'stretch' }}
+                onClick={(e) => { e.stopPropagation() }}>
                     { props.children }
                 </div>
             </div>

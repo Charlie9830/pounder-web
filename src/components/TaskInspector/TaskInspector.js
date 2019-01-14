@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
-import { Typography, AppBar, Toolbar, IconButton, Tabs, Tab, List, ListItem, ListItemIcon, ListItemText, Paper, ListSubheader, Grid } from '@material-ui/core';
+import { Typography, Toolbar, IconButton, List, ListItem, ListItemIcon, Paper} from '@material-ui/core';
 import FullScreenView from '../../layout-components/FullScreenView';
 import PriorityToggle from './PriorityToggle';
-import ExpandingTextInput from '../ExpandingTextInput';
-import DateInput from '../DateInput';
 import { connect } from 'react-redux';
 
 import { updateTaskDueDateAsync, updateTaskPriorityAsync, updateTaskAssignedToAsync,
     postNewCommentAsync, paginateTaskCommentsAsync, deleteTaskCommentAsync,
     updateTaskNoteAsync, closeTaskInspectorAsync } from 'handball-libs/libs/pounder-redux/action-creators';
 
+import { GetProjectMembers } from 'handball-libs/libs/pounder-utilities';
+
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import PersonIcon from '@material-ui/icons/Person';
 import DateInputListItem from '../DateInputListItem';
-import ExpandingTextInputListItem from '../ExpandingTextInputListItem';
+import ExpandingNoteInputListItem from './ExpandingNoteInputListItem';
 import ExpandingCommentPanel from '../CommentPanel/ExpandingCommentPanel';
 import ExpandingMetadataListItem from './ExpandingMetadataListItem';
+import ExpandingAssignmentSelectorListItem from './ExpandingAssignmentSelectorListItem';
+import { GetDisplayNameFromLookup } from 'handball-libs/libs/pounder-utilities';
 
 
 let toolbarStyle = {
@@ -46,8 +48,7 @@ let NoTaskEntityFallback = (props) => {
     )
 }
 
-class TaskInspector extends Component {
-    
+class TaskInspector extends Component {  
     render() {
         let task = this.props.openTaskInspectorEntity;
 
@@ -57,6 +58,14 @@ class TaskInspector extends Component {
                 onBackArrowClick={ () => {this.props.dispatch(closeTaskInspectorAsync())}}/>
             )
         }
+
+        let assignmentInput = (
+            <ExpandingAssignmentSelectorListItem
+                        members={GetProjectMembers(this.props.members, task.project)}
+                        value={GetDisplayNameFromLookup(task.assignedTo, this.props.memberLookup)}
+                        onChange={(newValue) => { this.props.dispatch(updateTaskAssignedToAsync(newValue, task.assignedTo, task.uid))}}
+                        />
+        )
 
         return (
             <FullScreenView>
@@ -81,17 +90,13 @@ class TaskInspector extends Component {
                         onChange={(newValue) => { this.props.dispatch(updateTaskDueDateAsync(task.uid, newValue, task.dueDate))}}
                         />
                         
-                        <ExpandingTextInputListItem
+                        <ExpandingNoteInputListItem
                         placeholder="Add details"
                         value={task.note}
                         onChange={ (newValue) => { this.props.dispatch(updateTaskNoteAsync(newValue, task.note, task.uid))} }/>
 
-                        <ListItem>
-                            <ListItemIcon>
-                                <PersonIcon />
-                            </ListItemIcon>
-                            <Typography color="textSecondary"> Assign to someone</Typography>
-                        </ListItem>
+                        { this.props.isSelectedProjectRemote && assignmentInput }
+                        
                     </List>
                 </Paper>
 
@@ -123,6 +128,9 @@ const mapStateToProps = (state) => {
         openTaskInspectorEntity: state.openTaskInspectorEntity,
         taskComments: state.taskComments,
         isGettingTaskComments: state.isGettingTaskComments,
+        memberLookup: state.memberLookup,
+        members: state.members,
+        isSelectedProjectRemote: state.isSelectedProjectRemote,
     }
 }
 

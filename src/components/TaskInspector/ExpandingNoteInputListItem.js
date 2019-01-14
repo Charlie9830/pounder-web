@@ -4,7 +4,7 @@ import { ListItem, ListItemIcon } from '@material-ui/core';
 
 import EditIcon from '@material-ui/icons/Edit';
 
-class ExpandingTextInputListItem extends Component {
+class ExpandingNoteInputListItem extends Component {
     constructor(props) {
         super(props);
         
@@ -39,4 +39,4 @@ class ExpandingTextInputListItem extends Component {
     }
 }
 
-export default ExpandingTextInputListItem;
+export default ExpandingNoteInputListItem;

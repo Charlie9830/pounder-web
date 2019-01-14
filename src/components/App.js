@@ -88,6 +88,7 @@ class App extends React.Component {
                     onRenameProjectButtonClick={this.handleRenameProjectButtonClick}
                     onCompletedTasksButtonClick={this.handleCompletedTasksButtonClick}
                     showCompletedTasks={this.props.showCompletedTasks}
+                    memberLookup={this.props.memberLookup}
                 />
 
                 <TextInputDialog
@@ -239,6 +240,7 @@ const mapStateToProps = state => {
         isASnackbarOpen: state.isASnackbarOpen,
         generalSnackbar: state.generalSnackbar,
         showCompletedTasks: state.showCompletedTasks,
+        memberLookup: state.memberLookup,
     }
 }
 

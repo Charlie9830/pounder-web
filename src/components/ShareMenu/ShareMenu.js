@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { inviteUserToProjectAsync, kickUserFromProjectAsync, updateMemberRoleAsync, setIsShareMenuOpen,
 removeRemoteProjectAsync, migrateProjectBackToLocalAsync, leaveRemoteProjectAsync } from 'handball-libs/libs/pounder-redux/action-creators';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
-import MemberStatusIcon from './MemberStatusIcon';
+import { GetProjectMembers } from 'handball-libs/libs/pounder-utilities';
 import WaitingOverlay from './WaitingOverlay';
 
 
@@ -58,7 +58,6 @@ class ShareMenu extends React.Component {
         // Method Bindings.
         this.getProjectName = this.getProjectName.bind(this);
         this.getMembersJSX = this.getMembersJSX.bind(this);
-        this.getFilteredMembers = this.getFilteredMembers.bind(this);
         this.isCurrentUserAnOwner = this.isCurrentUserAnOwner.bind(this);
         this.isUserAlreadyAMember = this.isUserAlreadyAMember.bind(this);
         this.getIsMemberUpdating = this.getIsMemberUpdating.bind(this);
@@ -72,7 +71,7 @@ class ShareMenu extends React.Component {
     }
 
     render() {
-        let filteredMembers = this.getFilteredMembers();
+        let filteredMembers = GetProjectMembers(this.props.members, this.props.selectedProjectId);
 
         return (
             <FullScreenView>
@@ -237,15 +236,6 @@ class ShareMenu extends React.Component {
         else {
             return false;
         }
-    }
-
-    getFilteredMembers() {
-        var filteredMembers = [];
-        filteredMembers =  this.props.members.filter(item => {
-            return item.project === this.props.selectedProjectId;
-        })
-
-        return filteredMembers;
     }
 
     isUserAlreadyAMember(email) {

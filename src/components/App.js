@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import {
     updateTaskCompleteAsync, setIsAppDrawerOpen, attachAuthListenerAsync, setFocusedTaskListId,
     updateTaskNameAsync, addNewTaskAsync, addNewTaskListAsync, openTaskInspectorAsync, selectProject,
-    setIsShareMenuOpen, updateProjectNameAsync,
+    setIsShareMenuOpen, updateProjectNameAsync, setShowCompletedTasksAsync,
 } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import { Drawer, CssBaseline } from '@material-ui/core';
@@ -35,6 +35,7 @@ class App extends React.Component {
         this.handleDueDateContainerTap = this.handleDueDateContainerTap.bind(this);
         this.handleShareMenuButtonClick = this.handleShareMenuButtonClick.bind(this);
         this.handleRenameProjectButtonClick = this.handleRenameProjectButtonClick.bind(this);
+        this.handleCompletedTasksButtonClick = this.handleCompletedTasksButtonClick.bind(this);
     }
 
     componentDidMount() {
@@ -85,6 +86,8 @@ class App extends React.Component {
                     onShareMenuButtonClick={this.handleShareMenuButtonClick}
                     isASnackbarOpen={this.props.isASnackbarOpen}
                     onRenameProjectButtonClick={this.handleRenameProjectButtonClick}
+                    onCompletedTasksButtonClick={this.handleCompletedTasksButtonClick}
+                    showCompletedTasks={this.props.showCompletedTasks}
                 />
 
                 <TextInputDialog
@@ -122,6 +125,10 @@ class App extends React.Component {
                 />
             </React.Fragment>
         )
+    }
+
+    handleCompletedTasksButtonClick(existingValue) {
+        this.props.dispatch(setShowCompletedTasksAsync(!existingValue));
     }
 
     handleRenameProjectButtonClick(selectedProjectId) {
@@ -231,6 +238,7 @@ const mapStateToProps = state => {
         confirmationDialog: state.confirmationDialog,
         isASnackbarOpen: state.isASnackbarOpen,
         generalSnackbar: state.generalSnackbar,
+        showCompletedTasks: state.showCompletedTasks,
     }
 }
 

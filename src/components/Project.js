@@ -131,7 +131,10 @@ class Project extends React.Component {
                             <div style={projectMenuButtonContainer}>
                                 <ProjectMenu
                                 onShareMenuButtonClick={this.props.onShareMenuButtonClick}
-                                onRenameProjectButtonClick={() => { this.props.onRenameProjectButtonClick(this.props.projectId, this.props.projectName) }}/>  
+                                onRenameProjectButtonClick={() => { this.props.onRenameProjectButtonClick(this.props.projectId, this.props.projectName) }}
+                                onCompletedTasksButtonClick={this.props.onCompletedTasksButtonClick}
+                                showCompletedTasks={this.props.showCompletedTasks}/>  
+                                
                             </div>
                             
                     </Toolbar>

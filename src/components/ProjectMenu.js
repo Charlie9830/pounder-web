@@ -19,6 +19,8 @@ class ProjectMenu extends Component {
     }
 
     render() {
+        let completedTasksText = this.props.showCompletedTasks ? 'Hide completed tasks' : 'Show completed tasks';
+        
         return (
             <React.Fragment>
                 <IconButton
@@ -33,7 +35,7 @@ class ProjectMenu extends Component {
                 onClose={ () => { this.setState({ isOpen: false })}}>
                     <MenuItem onClick={() => { this.handleMenuSelection('share') }}> Share </MenuItem>
 
-                    <MenuItem onClick={() => { this.handleMenuSelection('completedTasks') }}> Show completed tasks </MenuItem>
+                    <MenuItem onClick={() => { this.handleMenuSelection('completedTasks') }}> {completedTasksText} </MenuItem>
 
                     <MenuItem onClick={() => { this.handleMenuSelection('assignedTasks')}}>
                         <Typography> Show only my tasks </Typography>
@@ -51,6 +53,10 @@ class ProjectMenu extends Component {
 
         if (selection === 'share') {
             this.props.onShareMenuButtonClick();
+        }
+
+        if (selection === 'completedTasks') {
+            this.props.onCompletedTasksButtonClick(this.props.showCompletedTasks);
         }
 
         if (selection === 'renameProject') {

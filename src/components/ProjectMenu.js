@@ -39,7 +39,7 @@ class ProjectMenu extends Component {
 
                     <MenuItem onClick={() => { this.handleMenuSelection('assignedTasks')}}>
                         <Typography> Show only my tasks </Typography>
-                        <Switch/>
+                        <Switch checked={this.props.showOnlySelfTasks}/>
                     </MenuItem>
 
                     <MenuItem onClick={() => { this.handleMenuSelection('renameProject')}}> Rename project </MenuItem>
@@ -53,6 +53,10 @@ class ProjectMenu extends Component {
 
         if (selection === 'share') {
             this.props.onShareMenuButtonClick();
+        }
+
+        if (selection === 'assignedTasks') {
+            this.props.onShowOnlySelfTasksButtonClick(this.props.showOnlySelfTasks);
         }
 
         if (selection === 'completedTasks') {

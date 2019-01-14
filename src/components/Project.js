@@ -99,6 +99,7 @@ class Project extends React.Component {
         // Method Bindings.
         this.getTaskListsJSX = this.getTaskListsJSX.bind(this);
         this.getTasksJSX = this.getTasksJSX.bind(this);
+        this.getTaskSorter = this.getTaskSorter.bind(this);
     }
 
     render() {
@@ -133,7 +134,9 @@ class Project extends React.Component {
                                 onShareMenuButtonClick={this.props.onShareMenuButtonClick}
                                 onRenameProjectButtonClick={() => { this.props.onRenameProjectButtonClick(this.props.projectId, this.props.projectName) }}
                                 onCompletedTasksButtonClick={this.props.onCompletedTasksButtonClick}
-                                showCompletedTasks={this.props.showCompletedTasks}/>  
+                                showCompletedTasks={this.props.showCompletedTasks}
+                                onShowOnlySelfTasksButtonClick={this.props.onShowOnlySelfTasksButtonClick}
+                                showOnlySelfTasks={this.props.showOnlySelfTasks}/>  
                                 
                             </div>
                             
@@ -187,14 +190,12 @@ class Project extends React.Component {
     }
 
     getTasksJSX(taskListId) {
-        // eslint-disable-next-line
         if (this.props.tasks !== undefined) {
-            // // Sort Tasks.
-            // var taskSorter = this.getTaskSorter(this.props)
-            // var sortedTasks = this.props.tasks.concat().sort(taskSorter);
+            // Sort Tasks.
+            let taskSorter = this.getTaskSorter();
 
-            let filteredTasks = this.props.tasks.filter( item => {
-                return item.taskList === taskListId;
+            let filteredTasks = this.props.tasks.filter((item) => {
+                return taskSorter(item, taskListId)
             })
 
             if (filteredTasks.length === 0) {
@@ -205,14 +206,13 @@ class Project extends React.Component {
                 // Render Element.
                 var isTaskSelected = item.uid === this.props.selectedTaskId;
                 var isTaskMoving = item.uid === this.props.movingTaskId;
-                var showDivider = array.length !== 1 && index !== array.length - 1;
 
                 var hasUnseenComments = item.unseenTaskCommentMembers !== undefined &&
                  item.unseenTaskCommentMembers[getUserUid()] !== undefined;
 
                 var metadata = item.metadata === undefined ?  { ...new TaskMetadataStore("", "", "", "", "") }
                 : item.metadata; 
-                var assignedToDisplayName = GetDisplayNameFromLookup(item.assignedTo, this.props.memberLookup);
+                let assignedToDisplayName = GetDisplayNameFromLookup(item.assignedTo, this.props.memberLookup);
 
                 let priorityIndicator = <PriorityIndicator
                     isHighPriority={item.isHighPriority}
@@ -234,6 +234,7 @@ class Project extends React.Component {
                     hasUnseenComments={hasUnseenComments}
                     hasNote={item.note !== undefined && item.note.length > 0}
                     assignedTo={item.assignedTo}
+                    assignedToDisplayName={assignedToDisplayName}
                 />
 
                 let leftActions = [
@@ -267,6 +268,24 @@ class Project extends React.Component {
 
             return builtTasks;
         }        
+    }
+
+    getTaskSorter() {
+        if (this.props.showOnlySelfTasks === true) {
+            return this.showOnlySelfTasksFilter;
+        }
+
+        else {
+            return this.standardTaskFilter;
+        }
+    }
+
+    standardTaskFilter(task, taskListId) {
+        return task.taskList === taskListId;
+    }
+
+    showOnlySelfTasksFilter(task, taskListId) {
+        return task.taskList === taskListId && task.assignedTo === getUserUid();
     }
 
     getDueDateProps(isComplete, dueDate, theme) {

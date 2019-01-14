@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import {
     updateTaskCompleteAsync, setIsAppDrawerOpen, attachAuthListenerAsync, setFocusedTaskListId,
     updateTaskNameAsync, addNewTaskAsync, addNewTaskListAsync, openTaskInspectorAsync, selectProject,
-    setIsShareMenuOpen, updateProjectNameAsync, setShowCompletedTasksAsync,
+    setIsShareMenuOpen, updateProjectNameAsync, setShowCompletedTasksAsync, setShowOnlySelfTasks,
 } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import { Drawer, CssBaseline } from '@material-ui/core';
@@ -36,6 +36,7 @@ class App extends React.Component {
         this.handleShareMenuButtonClick = this.handleShareMenuButtonClick.bind(this);
         this.handleRenameProjectButtonClick = this.handleRenameProjectButtonClick.bind(this);
         this.handleCompletedTasksButtonClick = this.handleCompletedTasksButtonClick.bind(this);
+        this.handleShowOnlySelfTasksButtonClick = this.handleShowOnlySelfTasksButtonClick.bind(this);
     }
 
     componentDidMount() {
@@ -89,6 +90,8 @@ class App extends React.Component {
                     onCompletedTasksButtonClick={this.handleCompletedTasksButtonClick}
                     showCompletedTasks={this.props.showCompletedTasks}
                     memberLookup={this.props.memberLookup}
+                    onShowOnlySelfTasksButtonClick={this.handleShowOnlySelfTasksButtonClick}
+                    showOnlySelfTasks={this.props.showOnlySelfTasks}
                 />
 
                 <TextInputDialog
@@ -126,6 +129,10 @@ class App extends React.Component {
                 />
             </React.Fragment>
         )
+    }
+
+    handleShowOnlySelfTasksButtonClick(existingValue) {
+        this.props.dispatch(setShowOnlySelfTasks(!existingValue));
     }
 
     handleCompletedTasksButtonClick(existingValue) {
@@ -241,6 +248,7 @@ const mapStateToProps = state => {
         generalSnackbar: state.generalSnackbar,
         showCompletedTasks: state.showCompletedTasks,
         memberLookup: state.memberLookup,
+        showOnlySelfTasks: state.showOnlySelfTasks,
     }
 }
 

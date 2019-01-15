@@ -198,7 +198,11 @@ class Project extends React.Component {
             })
 
             if (filteredTasks.length === 0) {
-                return ( <AddNewTaskButton onClick={ () => { this.props.onAddNewTaskButtonClick(taskListId) }}/>)
+                return (
+                    <AddNewTaskButton
+                    disabled={this.props.movingTaskId !== -1}
+                    onClick={() => { this.props.onAddNewTaskButtonClick(taskListId) }} />
+                )
             }
 
             let builtTasks = filteredTasks.map((item, index, array) => {
@@ -249,7 +253,7 @@ class Project extends React.Component {
                         key={item.uid}
                         leftActions={leftActions}
                         rightActions={rightActions}
-                        onActionClick={(type) => { this.props.onTaskActionClick(item.uid, type)}}>
+                        onActionClick={(value) => { this.props.onTaskActionClick(value, item.uid, item.taskList) }}>
                         <TaskBase
                             selected={isTaskSelected}
                             isMoving={isTaskMoving}

@@ -5,8 +5,13 @@ import AddIcon from '@material-ui/icons/Add';
 
 const AddNewTaskButton = (props) => {
     return (
-        <Button variant="text" color="secondary" onClick={props.onClick}>
-            <AddIcon /> Create Task
+        <Button
+            variant="text"
+            color="secondary"
+            onClick={props.onClick}
+            disabled={props.disabled}>
+            <AddIcon />
+            Create Task
         </Button>
     );
 };

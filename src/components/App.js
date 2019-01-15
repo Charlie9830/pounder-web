@@ -10,6 +10,7 @@ import {
     updateTaskCompleteAsync, setIsAppDrawerOpen, attachAuthListenerAsync, setFocusedTaskListId,
     updateTaskNameAsync, addNewTaskAsync, addNewTaskListAsync, openTaskInspectorAsync, selectProject,
     setIsShareMenuOpen, updateProjectNameAsync, setShowCompletedTasksAsync, setShowOnlySelfTasks,
+    startTaskMoveAsync, moveTaskAsync,
 } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import { Drawer, CssBaseline } from '@material-ui/core';
@@ -94,6 +95,7 @@ class App extends React.Component {
                     memberLookup={this.props.memberLookup}
                     onShowOnlySelfTasksButtonClick={this.handleShowOnlySelfTasksButtonClick}
                     showOnlySelfTasks={this.props.showOnlySelfTasks}
+                    movingTaskId={this.props.movingTaskId}
                 />
 
                 <TextInputDialog
@@ -182,6 +184,10 @@ class App extends React.Component {
 
     handleTaskListClick(taskListId) {
         this.props.dispatch(setFocusedTaskListId(taskListId));
+        
+        if (this.props.isATaskMoving) {
+            this.props.dispatch(moveTaskAsync(taskListId, this.props.movingTaskId));
+        }
     }
 
     getProjectRelatedTasks(tasks, projectId) {
@@ -218,9 +224,11 @@ class App extends React.Component {
         this.props.dispatch(setIsAppDrawerOpen(true));
     }
 
-    handleTaskActionClick(uid, type) {
+    handleTaskActionClick(type, taskId, taskListId) {
         if (type === 'moveTask') {
-
+            if (this.props.isATaskMoving === false) {
+                this.props.dispatch(startTaskMoveAsync(taskId, taskListId))
+            }
         }
 
         if (type === 'deleteTask') {
@@ -254,6 +262,8 @@ const mapStateToProps = state => {
         showCompletedTasks: state.showCompletedTasks,
         memberLookup: state.memberLookup,
         showOnlySelfTasks: state.showOnlySelfTasks,
+        movingTaskId: state.movingTaskId,
+        isATaskMoving: state.isATaskMoving,
     }
 }
 

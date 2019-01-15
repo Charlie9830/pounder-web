@@ -1,26 +1,6 @@
 import React, { Component } from 'react';
 import Hammer from 'hammerjs';
-
-let ContainerGridStyle = {
-    width: '100%',
-    height: 'fit-content',
-    display: 'grid',
-    gridTemplateRows: '[Content]1fr [IndicatorPanel]auto',
-    gridTemplateColumns: '[PriorityIndicator]auto [Checkbox]auto [Text]1fr [DueDate]auto',
-    gridTemplateAreas: `'PriorityIndicator Checkbox       Text           DueDate'
-                        'PriorityIndicator IndicatorPanel IndicatorPanel IndicatorPanel'`
-}
-
-let TextContainerStyle = {
-    gridArea: 'Text',
-    placeSelf: 'center flex-start',
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-}
+import { withTheme } from '@material-ui/core';
 
 class TaskBase extends Component {
     constructor(props) {
@@ -56,6 +36,30 @@ class TaskBase extends Component {
     }
     
     render() {
+        let { theme } = this.props;
+
+        let ContainerGridStyle = {
+            width: '100%',
+            height: 'fit-content',
+            display: 'grid',
+            gridTemplateRows: '[Content]1fr [IndicatorPanel]auto',
+            gridTemplateColumns: '[PriorityIndicator]auto [Checkbox]auto [Text]1fr [DueDate]auto',
+            gridTemplateAreas: `'PriorityIndicator Checkbox       Text           DueDate'
+                                'PriorityIndicator IndicatorPanel IndicatorPanel IndicatorPanel'`,
+            background: this.props.isMoving ? theme.palette.primary.dark : 'unset',
+        }
+        
+        let TextContainerStyle = {
+            gridArea: 'Text',
+            placeSelf: 'center flex-start',
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+        }
+
         return (
             <div
             style={ContainerGridStyle}
@@ -87,10 +91,9 @@ class TaskBase extends Component {
                 <div style={{gridArea: 'IndicatorPanel'}}>
                     { this.props.indicatorPanel }
                 </div> 
-
             </div>
         );
     }
 }
 
-export default TaskBase;
+export default withTheme()(TaskBase);

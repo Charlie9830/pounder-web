@@ -1,6 +1,11 @@
 import React from 'react';
-import { Grid,List, ListItem, Select, ListItemText, ListItemSecondaryAction, Checkbox } from '@material-ui/core';
+import { Grid,List, ListItem, Select, ListItemText, ListItemSecondaryAction, Checkbox, Paper } from '@material-ui/core';
+import VisibleThemeSettings from './ThemeSettings';
 
+let paperStyle = {
+    padding: '8px',
+    margin: '8px',
+}
 
 class GeneralSettingsPage extends React.Component {
     constructor(props) {
@@ -19,26 +24,33 @@ class GeneralSettingsPage extends React.Component {
     render() {
         return (
             <Grid container
-            direction="column"
-            justify="flex-start"
-            alignItems="stretch">
+                direction="column"
+                justify="flex-start"
+                alignItems="stretch">
+                <Paper style={paperStyle}>
                     <List>
                         <ListItem>
                             <ListItemText primary="Favourite Project"
-                            secondary="Auto select this project on launch"/>
+                                secondary="Auto select this project on launch" />
                             <ListItemSecondaryAction>
-                                { this.getFavouriteProjectSelectorJSX() }
+                                {this.getFavouriteProjectSelectorJSX()}
                             </ListItemSecondaryAction>
-                            
+
                         </ListItem>
 
                         <ListItem>
-                            <ListItemText primary="Sort projects by"/>
+                            <ListItemText primary="Sort projects by" />
                             <ListItemSecondaryAction>
-                                { this.getSortProjectsBySelectorJSX() }
+                                {this.getSortProjectsBySelectorJSX()}
                             </ListItemSecondaryAction>
                         </ListItem>
                     </List>
+                </Paper>
+
+                <Paper style={paperStyle}>
+                    <VisibleThemeSettings/>
+                    
+                </Paper>
             </Grid>
         )
     }

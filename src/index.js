@@ -5,11 +5,6 @@ import VisibleApp from './components/App';
 import { Provider } from 'react-redux';
 import { setupBackend ,appStore } from 'handball-libs/libs/pounder-redux';
 import registerServiceWorker from './registerServiceWorker';
-
-import { createMuiTheme, MuiThemeProvider }  from '@material-ui/core/styles';
-import PrimaryColor from '@material-ui/core/colors/orange';
-import SecondaryColor from '@material-ui/core/colors/indigo';
-
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 
@@ -46,34 +41,10 @@ require('typeface-open-sans');
 
 setupBackend("development", "mobile");
 
-let theme = createMuiTheme({
-    'palette': {
-        'primary': PrimaryColor,
-        'secondary': SecondaryColor,
-        'type': 'dark',
-        'background': {
-            'default': "rgb(30,30,30)",
-            'paper': 'rgb(42,42,42)'
-        },
-        'custom': {
-            "today": '#1455c0',
-            "soon": '#FF9300',
-            "overdue": '#F00',
-            "later": '#22B30B',
-            "unreadItem": '#1455c0',
-        }
-    },
-    // 'typography': {
-    //     useNextVariants: true
-    // }
-})
-
 ReactDOM.render(
     <MuiPickersUtilsProvider utils={MomentUtils}>
         <Provider store={appStore}>
-            <MuiThemeProvider theme={theme}>
                 <VisibleApp />
-            </MuiThemeProvider>
         </Provider>
     </MuiPickersUtilsProvider>,
     document.getElementById('root'));

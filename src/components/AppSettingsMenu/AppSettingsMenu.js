@@ -114,7 +114,8 @@ class AppSettingsMenu extends React.Component {
                     generalConfig={this.props.generalConfig}
                     onFavouriteProjectSelectChange={this.handleFavouriteProjectSelectChange}
                     accountConfig={this.props.accountConfig}
-                    onSortProjectsBySelectorChange={this.handleSortProjectsBySelectorChange}/>
+                    onSortProjectsBySelectorChange={this.handleSortProjectsBySelectorChange}
+                    />
                 )
 
             case "account":

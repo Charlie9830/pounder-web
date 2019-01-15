@@ -62,7 +62,10 @@ let theme = createMuiTheme({
             "later": '#22B30B',
             "unreadItem": '#1455c0',
         }
-    }
+    },
+    // 'typography': {
+    //     useNextVariants: true
+    // }
 })
 
 ReactDOM.render(

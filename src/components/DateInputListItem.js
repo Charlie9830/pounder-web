@@ -20,7 +20,9 @@ class DateInputListItem extends Component {
 
     render() {
         return (
-            <ListItem onClick={() => { this.setState({ isInputOpen: true })}}>
+            <ListItem 
+            disabled={this.props.disabled}
+            onClick={() => { this.setState({ isInputOpen: true })}}>
                 <ListItemIcon>
                     <CalendarIcon />
                 </ListItemIcon>

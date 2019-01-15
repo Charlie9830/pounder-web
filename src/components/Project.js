@@ -8,8 +8,15 @@ import TaskCheckbox from './Task/TaskCheckbox';
 import TaskText from './Task/TaskText';
 import AddNewTaskListButton from './AddNewTaskListButton';
 import SwipeableListItem from './SwipeableListItem/SwipeableListItem';
+import RenewChecklistButton from './RenewChecklistButton'
+import MoveTaskIcon from '../icons/MoveTaskIcon';
+import AddNewTaskButton from './AddNewTaskButton.js';
+import ProjectMenu from './ProjectMenu';
 
-import { GetDisplayNameFromLookup } from 'handball-libs/libs/pounder-utilities';
+import {
+    GetDisplayNameFromLookup, TaskDueDateSorter, TaskCompletedSorter, TaskDateAddedSorter, TaskAssigneeSorter,
+    TaskPrioritySorter, TaskAlphabeticalSorter
+} from 'handball-libs/libs/pounder-utilities';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import { TaskMetadataStore } from 'handball-libs/libs/pounder-stores';
 import { ParseDueDate } from 'handball-libs/libs/pounder-utilities';
@@ -21,10 +28,6 @@ import AddIcon from '@material-ui/icons/Add';
 import AddTaskListIcon from '@material-ui/icons/PlaylistAdd';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MenuIcon from '@material-ui/icons/Menu';
-
-import MoveTaskIcon from '../icons/MoveTaskIcon';
-import AddNewTaskButton from './AddNewTaskButton.js';
-import ProjectMenu from './ProjectMenu';
 
 let styles = theme => {
     console.log(theme);
@@ -99,6 +102,7 @@ class Project extends React.Component {
         // Method Bindings.
         this.getTaskListsJSX = this.getTaskListsJSX.bind(this);
         this.getTasksJSX = this.getTasksJSX.bind(this);
+        this.getTaskFilter = this.getTaskFilter.bind(this);
         this.getTaskSorter = this.getTaskSorter.bind(this);
     }
 
@@ -173,14 +177,23 @@ class Project extends React.Component {
         let taskListsJSX = filteredTaskLists.map(item => {
             // Widget Layer.
             let isFocused = this.props.focusedTaskListId === item.uid;
+            let isSettingsMenuOpen = this.props.openTaskListSettingsMenuId === item.uid;
 
             return (
                 <TaskList 
                 key={item.uid}
                 name={item.taskListName}
                 isFocused={isFocused}
-                onClick={ () => { this.props.onTaskListClick(item.uid) }}>
-                    { this.getTasksJSX(item.uid) }
+                onClick={ () => { this.props.onTaskListClick(item.uid) }}
+                onTaskListSettingsChanged={(newValue) => { this.props.onTaskListSettingsChanged(item.uid, newValue) }}
+                taskListSettings={item.settings}
+                isSettingsMenuOpen={isSettingsMenuOpen}
+                onSettingsMenuOpen={() => { this.props.onTaskListSettingsMenuOpen(item.uid) }}
+                onSettingsMenuClose={this.props.onTaskListSettingsMenuClose}
+                onRenameTaskListButtonClick={() => { this.props.onRenameTaskListButtonClick(item.uid, item.taskListName) }}
+                onDeleteButtonClick={() => { this.props.onDeleteTaskListButtonClick(item.uid) }}
+                onChecklistSettingsButtonClick={() => { this.props.onChecklistSettingsButtonClick(item.uid, item.settings.checklistSettings)}}>
+                    { this.getTasksJSX(item.uid, item.settings.sortBy, item.settings.checklistSettings.isChecklist) }
                 </TaskList>
             )
         })
@@ -188,22 +201,34 @@ class Project extends React.Component {
         return taskListsJSX;
     }
 
-    getTasksJSX(taskListId) {
+    getTasksJSX(taskListId, sortBy, isChecklist) {
         if (this.props.tasks !== undefined) {
-            // Sort Tasks.
-            let taskSorter = this.getTaskSorter();
-
+            // Filter.
+            let taskFilter = this.getTaskFilter();
             let filteredTasks = this.props.tasks.filter((item) => {
-                return taskSorter(item, taskListId)
+                return taskFilter(item, taskListId)
             })
 
             if (filteredTasks.length === 0) {
-                return (
-                    <AddNewTaskButton
-                    disabled={this.props.movingTaskId !== -1}
-                    onClick={() => { this.props.onAddNewTaskButtonClick(taskListId) }} />
-                )
+                if (isChecklist) {
+                    return (
+                        <RenewChecklistButton
+                        disabled={this.props.movingTaskId !== -1}
+                        onClick={() => { this.props.onRenewChecklistButtonClick(taskListId)}} />
+                    )
+                }
+
+                else {
+                    return (
+                        <AddNewTaskButton
+                        disabled={this.props.movingTaskId !== -1}
+                        onClick={() => { this.props.onAddNewTaskButtonClick(taskListId) }} />
+                    )
+                }
             }
+
+            // Sort.
+            filteredTasks.sort(this.getTaskSorter(sortBy));
 
             let builtTasks = filteredTasks.map((item, index, array) => {
                 // Render Element.
@@ -274,7 +299,32 @@ class Project extends React.Component {
         }        
     }
 
-    getTaskSorter() {
+    getTaskSorter(sortBy) {
+        switch(sortBy) {
+            case 'completed':
+            return TaskCompletedSorter;
+
+            case 'due date':
+            return TaskDueDateSorter;
+
+            case 'date added':
+            return TaskDateAddedSorter;
+
+            case 'priority':
+            return TaskPrioritySorter;
+
+            case 'assignee':
+            return TaskAssigneeSorter;
+
+            case 'alphabetical':
+            return TaskAlphabeticalSorter;
+
+            default:
+            return TaskPrioritySorter;
+        }
+    }
+
+    getTaskFilter() {
         if (this.props.showOnlySelfTasks === true) {
             return this.showOnlySelfTasksFilter;
         }

@@ -10,7 +10,8 @@ import {
     updateTaskCompleteAsync, setIsAppDrawerOpen, attachAuthListenerAsync, setFocusedTaskListId,
     updateTaskNameAsync, addNewTaskAsync, addNewTaskListAsync, openTaskInspectorAsync, selectProject,
     setIsShareMenuOpen, updateProjectNameAsync, setShowCompletedTasksAsync, setShowOnlySelfTasks,
-    startTaskMoveAsync, moveTaskAsync,
+    startTaskMoveAsync, moveTaskAsync, updateTaskListSettingsAsync, setOpenTaskListSettingsMenuId,
+    updateTaskListNameAsync, removeTaskListAsync, openChecklistSettings, manuallyRenewChecklistAsync,
 } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import { Drawer, CssBaseline } from '@material-ui/core';
@@ -20,6 +21,7 @@ import VisibleShareMenu from './ShareMenu/ShareMenu';
 import InformationDialog from './dialogs/InformationDialog';
 import ConfirmationDialog from './dialogs/ConfirmationDialog';
 import GeneralSnackbar from './Snackbars/GeneralSnackbar';
+import VisibleChecklistSettingsMenu from './ChecklistSettingsMenu.js/ChecklistSettingsMenu';
 
 class App extends React.Component {
     constructor(props) {
@@ -39,6 +41,13 @@ class App extends React.Component {
         this.handleCompletedTasksButtonClick = this.handleCompletedTasksButtonClick.bind(this);
         this.handleShowOnlySelfTasksButtonClick = this.handleShowOnlySelfTasksButtonClick.bind(this);
         this.handleTaskPress = this.handleTaskPress.bind(this);
+        this.handleTaskListSettingsChanged = this.handleTaskListSettingsChanged.bind(this);
+        this.handleTaskListSettingsMenuOpen = this.handleTaskListSettingsMenuOpen.bind(this);
+        this.handleTaskListSettingsMenuClose = this.handleTaskListSettingsMenuClose.bind(this);
+        this.handleRenameTaskListButtonClick = this.handleRenameTaskListButtonClick.bind(this);
+        this.handleDeleteTaskListButtonClick = this.handleDeleteTaskListButtonClick.bind(this);
+        this.handleChecklistSettingsButtonClick = this.handleChecklistSettingsButtonClick.bind(this);
+        this.handleRenewChecklistButtonClick = this.handleRenewChecklistButtonClick.bind(this);
     }
 
     componentDidMount() {
@@ -72,6 +81,10 @@ class App extends React.Component {
                     <VisibleAppSettingsMenu/>
                 </Drawer>
 
+                <Drawer open={this.props.openChecklistSettingsId !== -1} anchor="left">
+                    <VisibleChecklistSettingsMenu/>
+                </Drawer>
+
                 <Project
                     projectId={this.props.selectedProjectId}
                     projectName={ this.getProjectName(this.props.projects, this.props.selectedProjectId) }
@@ -96,6 +109,14 @@ class App extends React.Component {
                     onShowOnlySelfTasksButtonClick={this.handleShowOnlySelfTasksButtonClick}
                     showOnlySelfTasks={this.props.showOnlySelfTasks}
                     movingTaskId={this.props.movingTaskId}
+                    onTaskListSettingsChanged={this.handleTaskListSettingsChanged}
+                    openTaskListSettingsMenuId={this.props.openTaskListSettingsMenuId}
+                    onTaskListSettingsMenuOpen={this.handleTaskListSettingsMenuOpen}
+                    onTaskListSettingsMenuClose={this.handleTaskListSettingsMenuClose}
+                    onRenameTaskListButtonClick={this.handleRenameTaskListButtonClick}
+                    onDeleteTaskListButtonClick={this.handleDeleteTaskListButtonClick}
+                    onChecklistSettingsButtonClick={this.handleChecklistSettingsButtonClick}
+                    onRenewChecklistButtonClick={this.handleRenewChecklistButtonClick}
                 />
 
                 <TextInputDialog
@@ -133,6 +154,38 @@ class App extends React.Component {
                 />
             </React.Fragment>
         )
+    }
+
+    handleRenewChecklistButtonClick(taskListId) {
+        this.props.dispatch(manuallyRenewChecklistAsync(taskListId));
+    }
+
+    handleChecklistSettingsButtonClick(taskListId, existingChecklistSettings) {
+        this.props.dispatch(setOpenTaskListSettingsMenuId(-1));
+        this.props.dispatch(openChecklistSettings(taskListId, existingChecklistSettings));
+    }
+
+    handleDeleteTaskListButtonClick(taskListId) {
+        this.props.dispatch(setOpenTaskListSettingsMenuId(-1));
+        this.props.dispatch(removeTaskListAsync(taskListId));
+    }
+
+    handleRenameTaskListButtonClick(taskListId, currentValue) {
+        this.props.dispatch(setOpenTaskListSettingsMenuId(-1));
+        this.props.dispatch(updateTaskListNameAsync(taskListId, currentValue))
+    }
+
+    handleTaskListSettingsMenuClose() {
+        this.props.dispatch(setOpenTaskListSettingsMenuId(-1));
+    }
+
+    handleTaskListSettingsMenuOpen(taskListId) {
+        this.props.dispatch(setOpenTaskListSettingsMenuId(taskListId));
+    }
+
+    handleTaskListSettingsChanged(taskListId, newValue) {
+        this.props.dispatch(setOpenTaskListSettingsMenuId(-1));
+        this.props.dispatch(updateTaskListSettingsAsync(taskListId, newValue));
     }
 
     handleShowOnlySelfTasksButtonClick(existingValue) {
@@ -264,6 +317,8 @@ const mapStateToProps = state => {
         showOnlySelfTasks: state.showOnlySelfTasks,
         movingTaskId: state.movingTaskId,
         isATaskMoving: state.isATaskMoving,
+        openTaskListSettingsMenuId: state.openTaskListSettingsMenuId,
+        openChecklistSettingsId: state.openChecklistSettingsId,
     }
 }
 

@@ -46,8 +46,16 @@ class TaskList extends Component {
                 <div style={containerStyle}>
                     <div style={{ gridRow: 'Toolbar' }}>
                         <TaskListToolbar
+                        onSettingsMenuOpen={this.props.onSettingsMenuOpen}
+                        onSettingsMenuClose={this.props.onSettingsMenuClose}
                         name={this.props.name}
-                        isFocused={this.props.isFocused} />
+                        isFocused={this.props.isFocused}
+                        taskListSettings={this.props.taskListSettings}
+                        onTaskListSettingsChanged={this.props.onTaskListSettingsChanged} 
+                        isSettingsMenuOpen={this.props.isSettingsMenuOpen}
+                        onRenameButtonClick={this.props.onRenameTaskListButtonClick}
+                        onDeleteButtonClick={this.props.onDeleteButtonClick}
+                        onChecklistSettingsButtonClick={this.props.onChecklistSettingsButtonClick}/>
                     </div>
 
                     <div style={{ gridRow: 'Tasks' }}>

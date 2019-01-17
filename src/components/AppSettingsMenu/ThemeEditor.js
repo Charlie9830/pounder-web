@@ -1,0 +1,195 @@
+import React, { Component } from 'react';
+import { List, ListItem, FormControlLabel, Switch, ListSubheader, Button, ListItemText, ListItemSecondaryAction } from '@material-ui/core';
+import MuiColorSelector from './MuiColorSelector';
+import TouchNumberInput from '../TouchNumberInput';
+import ColorPicker from '../ColorPicker';
+
+import AddIcon from '@material-ui/icons/Add';
+
+class ThemeEditor extends Component {
+    constructor(props) {
+        super(props);
+
+        // Method Bindings.
+        this.handleColorChange = this.handleColorChange.bind(this);
+        this.handleIsDarkChange = this.handleIsDarkChange.bind(this);
+        this.handleCustomColorChange = this.handleCustomColorChange.bind(this);
+    }
+    
+    render() {
+        if (this.props.isOpen === false) {
+            return (
+                <Button
+                    variant="text"
+                    onClick={this.props.onCreate}
+                    color="secondary">
+                    <AddIcon/> Add
+                </Button>
+            )
+        }
+
+        return (
+            <List
+                style={{ width: '100%' }}>
+                <ListItem>
+                    <FormControlLabel
+                        label='Go dark'
+                        control={<Switch
+                            checked={this.props.muiTheme.type === 'dark'}
+                            onChange={(e) => { this.handleIsDarkChange(e.target.checked) }}
+                        />} />
+                </ListItem>
+
+                <ListSubheader disableSticky={true}> Primary Colour </ListSubheader>
+                <ListItem style={{ maxWidth: '100%' }}>
+                    <MuiColorSelector
+                        muiColors={this.props.muiColors}
+                        value={this.props.muiTheme.palette.primaryColorId}
+                        onChange={(newColor) => { this.handleColorChange(newColor, 'primary') }}
+                    />
+                </ListItem>
+
+                <ListSubheader disableSticky={true}> Secondary Colour </ListSubheader>
+                <ListItem style={{ maxWidth: '100%' }}>
+                    <MuiColorSelector
+                        muiColors={this.props.muiColors}
+                        value={this.props.muiTheme.palette.secondaryColorId}
+                        onChange={(newColor) => { this.handleColorChange(newColor, 'secondary') }}
+                    />
+                </ListItem>
+
+                <ListSubheader disableSticky={true}> Background Colour </ListSubheader>
+                <ListItem style={{ maxWidth: '100%' }}>
+                    <MuiColorSelector
+                        muiColors={this.props.muiColors}
+                        value={this.props.muiTheme.palette.backgroundColorId}
+                        onChange={(newColor) => { this.handleColorChange(newColor, 'background') }}
+                    />
+                </ListItem>
+
+                <ListItem>
+                    <FormControlLabel
+                        label="Enable high Density"
+                        control={
+                            <Switch
+                                checked={this.props.muiTheme.isDense}
+                                onChange={(e) => { this.handleisDenseChange(e.target.checked) }} />
+                        } />
+                </ListItem>
+
+                <ListSubheader> Indicator Colours </ListSubheader>
+                <ListItem>
+                    <FormControlLabel
+                        label="Due later"
+                        control={
+                            <ColorPicker
+                                value={this.props.muiTheme.palette.custom.later}
+                                onChange={(newColor) => { this.handleCustomColorChange(newColor, 'later') }} />
+                        }
+                    />
+                </ListItem>
+
+                <ListItem>
+                    <FormControlLabel
+                        label="Due soon"
+                        control={
+                            <ColorPicker
+                                value={this.props.muiTheme.palette.custom.soon}
+                                onChange={(newColor) => { this.handleCustomColorChange(newColor, 'soon') }} />
+                        }
+                    />
+                </ListItem>
+
+                <ListItem>
+                    <FormControlLabel
+                        label="Due Today"
+                        control={
+                            <ColorPicker
+                                value={this.props.muiTheme.palette.custom.today}
+                                onChange={(newColor) => { this.handleCustomColorChange(newColor, 'today') }} />
+                        }
+                    />
+                </ListItem>
+
+                <ListItem>
+                    <FormControlLabel
+                        label="Overdue"
+                        control={
+                            <ColorPicker
+                                value={this.props.muiTheme.palette.custom.overdue}
+                                onChange={(newColor) => { this.handleCustomColorChange(newColor, 'overdue') }} />
+                        }
+                    />
+                </ListItem>
+
+                <ListItem>
+                    <FormControlLabel
+                        label="Unread item"
+                        control={
+                            <ColorPicker
+                                value={this.props.muiTheme.palette.custom.unreadItem}
+                                onChange={(newColor) => { this.handleCustomColorChange(newColor, 'unreadItem') }} />
+                        }
+                    />
+                </ListItem>
+
+                <ListItem>
+                    <FormControlLabel
+                        label="Important"
+                        control={
+                            <ColorPicker
+                                value={this.props.muiTheme.palette.custom.highPriority}
+                                onChange={(newColor) => { this.handleCustomColorChange(newColor, 'highPriority') }} />
+                        }
+                    />
+                </ListItem>
+            </List>
+        );
+    }
+
+    handleCustomColorChange(newValue, type) {
+        let theme = { ...this.props.muiTheme }
+        theme.palette.custom[type] = newValue;
+
+        this.props.onThemeChange(theme);
+    }
+
+    handleisDenseChange(newValue) {
+        let theme = { ...this.props.muiTheme }
+        theme.isDense = newValue;
+
+        this.props.onThemeChange(theme);
+    }
+
+    handleIsDarkChange(newValue) {
+        let theme = { ...this.props.muiTheme }
+        theme.type = newValue === true ? 'dark' : 'light';
+
+        this.props.onThemeChange(theme);
+    }
+
+    handleColorChange(newColor, type) {
+        let theme = { ...this.props.muiTheme };
+        
+        switch(type) {
+            case 'primary':
+            theme.palette.primaryColorId = newColor;
+            break;
+
+            case 'secondary':
+            theme.palette.secondaryColorId = newColor;
+            break;
+
+            case 'background':
+            theme.palette.backgroundColorId = newColor;
+            break;
+
+            default:
+            break;
+        }
+
+        this.props.onThemeChange(theme);
+    }
+}
+
+export default ThemeEditor;

@@ -13,7 +13,7 @@ const UnreadIndicator = (props) => {
         width: '8px',
         height: '100%',
         background: theme.palette.custom.unreadItem,
-        marginRight: '8px'
+        marginRight: `${theme.spacing.unit}px`
     }
 
     return (

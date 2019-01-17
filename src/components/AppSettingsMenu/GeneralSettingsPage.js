@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid,List, ListItem, Select, ListItemText, ListItemSecondaryAction, Checkbox, Paper } from '@material-ui/core';
+import { Grid,List, ListItem, Select, ListItemText, ListItemSecondaryAction, Checkbox, Paper, Typography } from '@material-ui/core';
 import VisibleThemeSettings from './ThemeSettings';
 
 let paperStyle = {
@@ -23,10 +23,7 @@ class GeneralSettingsPage extends React.Component {
 
     render() {
         return (
-            <Grid container
-                direction="column"
-                justify="flex-start"
-                alignItems="stretch">
+            <React.Fragment>
                 <Paper style={paperStyle}>
                     <List>
                         <ListItem>
@@ -48,10 +45,11 @@ class GeneralSettingsPage extends React.Component {
                 </Paper>
 
                 <Paper style={paperStyle}>
+                
+                    <Typography variant="subtitle1"> Theme </Typography>
                     <VisibleThemeSettings/>
-                    
                 </Paper>
-            </Grid>
+            </React.Fragment>
         )
     }
 

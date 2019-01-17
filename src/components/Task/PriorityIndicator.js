@@ -1,6 +1,9 @@
 import React from 'react';
+import { withTheme } from '@material-ui/core';
 
 const PriorityIndicator = (props) => {
+    let { theme } = props;
+
     if (props.isHighPriority === false) {
         return null;
     }
@@ -10,7 +13,7 @@ const PriorityIndicator = (props) => {
         let priorityStyle = {
             width: '8px',
             height: '100%',
-            background: 'orange',
+            background: theme.palette.custom.highPriority,
         }
 
         return (
@@ -19,4 +22,4 @@ const PriorityIndicator = (props) => {
     }
 };
 
-export default PriorityIndicator;
+export default withTheme()(PriorityIndicator);

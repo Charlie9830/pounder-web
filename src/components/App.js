@@ -12,10 +12,8 @@ import {
     setIsShareMenuOpen, updateProjectNameAsync, setShowCompletedTasksAsync, setShowOnlySelfTasks,
     startTaskMoveAsync, moveTaskAsync, updateTaskListSettingsAsync, setOpenTaskListSettingsMenuId,
     updateTaskListNameAsync, removeTaskListAsync, openChecklistSettings, manuallyRenewChecklistAsync,
-    setIsAppSettingsOpen, setAppSettingsMenuPage,
+    setIsAppSettingsOpen, setAppSettingsMenuPage, getLocalMuiThemes, getGeneralConfigAsync,
 } from 'handball-libs/libs/pounder-redux/action-creators';
-
-import { MuiThemeProvider }  from '@material-ui/core/styles';
 
 import { Drawer, CssBaseline } from '@material-ui/core';
 import VisibleAppDrawer from './AppDrawer';
@@ -25,7 +23,6 @@ import InformationDialog from './dialogs/InformationDialog';
 import ConfirmationDialog from './dialogs/ConfirmationDialog';
 import GeneralSnackbar from './Snackbars/GeneralSnackbar';
 import VisibleChecklistSettingsMenu from './ChecklistSettingsMenu.js/ChecklistSettingsMenu';
-import { BuildMuiTheme } from '../utilities/BuildMuiTheme';
 
 class App extends React.Component {
     constructor(props) {
@@ -52,12 +49,17 @@ class App extends React.Component {
         this.handleDeleteTaskListButtonClick = this.handleDeleteTaskListButtonClick.bind(this);
         this.handleChecklistSettingsButtonClick = this.handleChecklistSettingsButtonClick.bind(this);
         this.handleRenewChecklistButtonClick = this.handleRenewChecklistButtonClick.bind(this);
-        this.getTheme = this.getTheme.bind(this);
     }
 
     componentDidMount() {
         // Attach an Authentication state listener. Will pull down database when Logged in.
         this.props.dispatch(attachAuthListenerAsync());
+
+        // Get General Config
+        this.props.dispatch(getGeneralConfigAsync());
+
+        // Get Mui Themes.
+        this.props.dispatch(getLocalMuiThemes());
 
         this.props.dispatch(setIsAppSettingsOpen(true));
         this.props.dispatch(setAppSettingsMenuPage('general'));
@@ -65,9 +67,7 @@ class App extends React.Component {
     
 
     render() {
-
         return (
-            <MuiThemeProvider theme={this.getTheme()}>
                 <React.Fragment>
                     <CssBaseline />
 
@@ -163,16 +163,7 @@ class App extends React.Component {
                         onAction={this.props.generalSnackbar.actionOptions.onAction}
                     />
                 </React.Fragment>
-            </MuiThemeProvider>
         )
-    }
-
-    getTheme() {
-        let storedTheme = this.props.muiThemes.find( item => {
-            return item.uid === this.props.selectedMuiThemeId;
-        })
-
-        return BuildMuiTheme(storedTheme);
     }
 
     handleRenewChecklistButtonClick(taskListId) {
@@ -338,8 +329,7 @@ const mapStateToProps = state => {
         isATaskMoving: state.isATaskMoving,
         openTaskListSettingsMenuId: state.openTaskListSettingsMenuId,
         openChecklistSettingsId: state.openChecklistSettingsId,
-        selectedMuiThemeId: state.selectedMuiThemeId,
-        muiThemes: state.muiThemes,
+
     }
 }
 

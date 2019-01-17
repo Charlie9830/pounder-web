@@ -54,44 +54,30 @@ class AppSettingsMenu extends React.Component {
         
         return (
             <FullScreenView>
+                <AppBar position="relative">
+                    <Toolbar
+                        disableGutters={true}>
+                        <IconButton
+                            onClick={() => { this.props.dispatch(setIsAppSettingsOpen(false)) }}>
+                            <ArrowBackIcon />
+                        </IconButton>
 
-                <Grid container
-                    direction="column"
-                    justify="flex-start"
-                    alignItems="stretch"
-                    style={{ width: '100%', height: '100%' }}>
-
-                    <Grid item>
-                        <AppBar position="sticky">
-                            <Toolbar
-                            disableGutters={true}>
-                                <IconButton
-                                    onClick={() => { this.props.dispatch(setIsAppSettingsOpen(false)) }}>
-                                    <ArrowBackIcon />
-                                </IconButton>
-
-                                <Typography variant="h6">
-                                    Settings
+                        <Typography variant="h6">
+                            Settings
                             </Typography>
-                            </Toolbar>
-                            <Tabs
-                                variant="fullWidth"
-                                value={this.props.menuPage}
-                                onChange={(e, newValue) => { this.props.dispatch(setAppSettingsMenuPage(newValue)) }}>
-                                <Tab label="General" value="general" />
-                                <Tab label="Account" value="account" />
-                                <Tab label="About" value="about" />
-                            </Tabs>
-                        </AppBar>
-                    </Grid>
+                    </Toolbar>
+                    <Tabs
+                        variant="fullWidth"
+                        value={this.props.menuPage}
+                        onChange={(e, newValue) => { this.props.dispatch(setAppSettingsMenuPage(newValue)) }}>
+                        <Tab label="General" value="general" />
+                        <Tab label="Account" value="account" />
+                        <Tab label="About" value="about" />
+                    </Tabs>
+                </AppBar>
 
-                    <Grid item>
-                        {contentsJSX}
-                    </Grid>
-
-                </Grid>
-            </FullScreenView>
-                
+                {contentsJSX}
+            </FullScreenView>  
         )
     }
 

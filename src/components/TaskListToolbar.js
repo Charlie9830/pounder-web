@@ -10,7 +10,7 @@ const TaskListToolbar = (props) => {
     let toolbarStyle = {
         display: 'grid',
         gridTemplateColumns: '[Menu]auto [Title]1fr [ChecklistIndicator]auto',
-        background: props.isFocused ? theme.palette.secondary.light : 'unset',
+        background: props.isFocused ? theme.palette.action.selected : 'unset',
     }
 
     let checklistIndicator = (
@@ -37,7 +37,7 @@ const TaskListToolbar = (props) => {
         
             <div
             style={{gridColumn: 'Title', placeSelf: 'center', marginLeft: '-48px'}}>
-                <Typography variant="subheading"> {props.name} </Typography>
+                <Typography variant="subtitle1"> {props.name} </Typography>
             </div>
             
             <div

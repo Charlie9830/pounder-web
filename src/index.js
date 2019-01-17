@@ -1,12 +1,13 @@
 import '@babel/polyfill'; // Stops renerator runtime error when using async/await.
 import React from 'react';
 import ReactDOM from 'react-dom';
-import VisibleApp from './components/App';
 import { Provider } from 'react-redux';
 import { setupBackend ,appStore } from 'handball-libs/libs/pounder-redux';
 import registerServiceWorker from './registerServiceWorker';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
+import VisibleAppThemeInjector from './components/AppThemeInjector';
+require('typeface-roboto');
 
 if (process.env.NODE_ENV === 'production') {
     // eslint-disable-next-line
@@ -44,7 +45,7 @@ setupBackend("development", "mobile");
 ReactDOM.render(
     <MuiPickersUtilsProvider utils={MomentUtils}>
         <Provider store={appStore}>
-                <VisibleApp />
+                <VisibleAppThemeInjector />
         </Provider>
     </MuiPickersUtilsProvider>,
     document.getElementById('root'));

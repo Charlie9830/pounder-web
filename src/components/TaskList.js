@@ -13,14 +13,16 @@ let containerStyle = {
     overflowX: 'hidden',
 }
 
-let basePaperStyle = {
-    width: 'calc(100% - 16px)',
-    marginLeft: '8px',
-    marginRight: '8px',
-    marginTop: '8px',
-}
+
 
 const styles = theme => {
+    
+    let basePaperStyle = {
+        width: `calc(100% - ${theme.spacing.unit * 2}px)`,
+        marginLeft: `${theme.spacing.unit}px`,
+        marginRight: `${theme.spacing.unit}px`,
+        marginTop: `${theme.spacing.unit}px`,
+    }
     return {
         unFocused: {
             ...basePaperStyle,
@@ -29,7 +31,7 @@ const styles = theme => {
 
         focused: {
             ...basePaperStyle,
-            background: getFocusedBackgroundColor(theme.palette.background.paper),
+            background: theme.palette.action.selected,//getFocusedBackgroundColor(theme.palette.background.paper),
         }
     }
 }

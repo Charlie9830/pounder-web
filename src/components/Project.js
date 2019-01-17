@@ -30,7 +30,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import MenuIcon from '@material-ui/icons/Menu';
 
 let styles = theme => {
-    console.log(theme);
     let primaryFabBase = {
         margin: 0,
         top: 'auto',

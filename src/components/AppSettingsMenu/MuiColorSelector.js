@@ -19,7 +19,7 @@ const MuiColorSelector = (props) => {
         return (
             <MuiColorChit
             key={index}
-            isSelected = { item.id === props.value }
+            isSelected={ item.id === props.value }
             color={item.color[500]}
             onClick={() => { props.onChange(item.id)}}/>
         )

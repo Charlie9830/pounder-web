@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, ListItem, FormControlLabel, Switch, ListSubheader } from '@material-ui/core';
+import { List, ListItem, FormControlLabel, Switch, ListSubheader, Button } from '@material-ui/core';
 import { GetMuiColorArray, GetMuiColorMap } from '../../utilities/MuiColors';
 import { connect } from 'react-redux';
 import {
@@ -18,6 +18,7 @@ class ThemeSettings extends Component {
         // Method Bindings.
         this.extractSelectedMuiTheme = this.extractSelectedMuiTheme.bind(this);
         this.getThemesJSX = this.getThemesJSX.bind(this);
+        this.randomize = this.randomize.bind(this);
     }
     
     componentWillUnmount() {
@@ -43,6 +44,8 @@ class ThemeSettings extends Component {
                     isOpen={muiThemeEntity.isInbuilt === false}
                     muiColors={muiColors}
                     onThemeChange={(newTheme) => { this.props.dispatch(updateMuiThemeAsync(this.props.selectedMuiThemeId, newTheme)) }} />
+                
+                <Button variant="contained" onClick={() => {this.randomize()}} > I'm Feeling Lucky </Button>
             </React.Fragment>
         );
     }
@@ -76,6 +79,25 @@ class ThemeSettings extends Component {
         })
 
         return jsx;
+    }
+
+    randomize() {
+        let  getRandomInt = (min, max) => {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        let newTheme = {...this.extractSelectedMuiTheme()};
+
+        let colors = GetMuiColorArray();
+        let maxRand = colors.length - 1;
+
+        newTheme.theme.palette.primaryColorId = colors[getRandomInt(0, maxRand)].id;
+        newTheme.theme.palette.secondaryColorId = colors[getRandomInt(0, maxRand)].id;
+        newTheme.theme.palette.backgroundColorId = colors[getRandomInt(0, maxRand)].id;
+
+        this.props.dispatch(updateMuiThemeAsync(newTheme.id, newTheme.theme));
     }
     
     extractSelectedMuiTheme() {

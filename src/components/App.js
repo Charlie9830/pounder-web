@@ -15,7 +15,7 @@ import {
     setIsAppSettingsOpen, setAppSettingsMenuPage, getLocalMuiThemes, getGeneralConfigAsync,
 } from 'handball-libs/libs/pounder-redux/action-creators';
 
-import { Drawer, CssBaseline } from '@material-ui/core';
+import { Drawer, CssBaseline, withTheme } from '@material-ui/core';
 import VisibleAppDrawer from './AppDrawer';
 import VisibleAppSettingsMenu from './AppSettingsMenu/AppSettingsMenu';
 import VisibleShareMenu from './ShareMenu/ShareMenu';
@@ -23,6 +23,7 @@ import InformationDialog from './dialogs/InformationDialog';
 import ConfirmationDialog from './dialogs/ConfirmationDialog';
 import GeneralSnackbar from './Snackbars/GeneralSnackbar';
 import VisibleChecklistSettingsMenu from './ChecklistSettingsMenu.js/ChecklistSettingsMenu';
+import VisibleThemeSettings from './AppSettingsMenu/ThemeSettings';
 
 class App extends React.Component {
     constructor(props) {
@@ -61,8 +62,8 @@ class App extends React.Component {
         // Get Mui Themes.
         this.props.dispatch(getLocalMuiThemes());
 
-        this.props.dispatch(setIsAppSettingsOpen(true));
-        this.props.dispatch(setAppSettingsMenuPage('general'));
+        // this.props.dispatch(setIsAppSettingsOpen(true));
+        // this.props.dispatch(setAppSettingsMenuPage('general'));
     }
     
 
@@ -94,6 +95,18 @@ class App extends React.Component {
                     <Drawer open={this.props.openChecklistSettingsId !== -1} anchor="left">
                         <VisibleChecklistSettingsMenu />
                     </Drawer>
+
+                <div style={{
+                    position: "absolute",
+                    width: '100%',
+                    height: '25%',
+                    overflowY: 'scroll',
+                    bottom: 0, left: 0,
+                    background: this.props.theme.palette.background.paper,
+                    zIndex: 5000
+                }}>
+                        <VisibleThemeSettings/>
+                    </div>
 
                     <Project
                         projectId={this.props.selectedProjectId}
@@ -334,4 +347,4 @@ const mapStateToProps = state => {
 }
 
 let VisibleApp = connect(mapStateToProps)(App);
-export default VisibleApp;
+export default withTheme()(VisibleApp);

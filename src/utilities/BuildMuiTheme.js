@@ -58,7 +58,7 @@ function getBackground(desiredMuiBackground, themeType) {
 
     else {
         return {
-            default: desiredMuiBackground.color[200],
+            default: desiredMuiBackground.color[100],
             paper: desiredMuiBackground.color[50],
         }
     }

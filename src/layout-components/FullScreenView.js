@@ -9,6 +9,7 @@ class FullScreenView extends Component {
             width: '100vw',
             height: '100vh',
             background: theme.palette.background.default,
+            overflowY: 'scroll'
         }
 
         return (

@@ -39,6 +39,8 @@ class AppThemeInjector extends Component {
             return undefined;
         }
 
+        console.log(storedTheme);
+
         return BuildMuiTheme(storedTheme.theme);
     }
 }

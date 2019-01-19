@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { List, ListItem, FormControlLabel, Switch, ListSubheader, Button } from '@material-ui/core';
-import { GetMuiColorArray, GetMuiColorMap } from '../../utilities/MuiColors';
+import { GetMuiColorArray, GetColor } from '../../utilities/MuiColors';
 import { connect } from 'react-redux';
 import {
     createNewMuiThemeAsync, updateMuiThemeAsync, selectMuiTheme, renameMuiThemeAsync,
@@ -50,9 +50,7 @@ class ThemeSettings extends Component {
         );
     }
 
-    getThemesJSX() {
-        let colorMap = GetMuiColorMap();
-        
+    getThemesJSX() {        
         if (this.props.muiThemes === undefined) {
             return null;
         }
@@ -69,9 +67,9 @@ class ThemeSettings extends Component {
                 name={item.name}
                 canDelete={ item.isInbuilt === false }
                 isSelected={ item.id === this.props.selectedMuiThemeId }
-                primaryColor={ colorMap[item.theme.palette.primaryColorId].color[500] }
-                secondaryColor={ colorMap[item.theme.palette.secondaryColorId].color[500] }
-                backgroundColor={ colorMap[item.theme.palette.backgroundColorId].color[500] }
+                primaryColor={ GetColor(item.theme.palette.primaryColor.id, item.theme.palette.primaryColor.shadeIndex)}
+                secondaryColor={ GetColor(item.theme.palette.secondaryColor.id, item.theme.palette.secondaryColor.shadeIndex) }
+                backgroundColor={ GetColor(item.theme.palette.backgroundColor.id, item.theme.palette.backgroundColor.shadeIndex) }
                 onClick={() => { this.props.dispatch(selectMuiTheme(item.id))}}
                 onPress={() => { this.props.dispatch(renameMuiThemeAsync(item.id))}}
                 onDelete={() => { this.props.dispatch(removeMuiThemeAsync(item.id))}}/>
@@ -91,11 +89,23 @@ class ThemeSettings extends Component {
         let newTheme = {...this.extractSelectedMuiTheme()};
 
         let colors = GetMuiColorArray();
-        let maxRand = colors.length - 1;
+        let colorMax = colors.length - 1;
+        let shadeMax = 13;
 
-        newTheme.theme.palette.primaryColorId = colors[getRandomInt(0, maxRand)].id;
-        newTheme.theme.palette.secondaryColorId = colors[getRandomInt(0, maxRand)].id;
-        newTheme.theme.palette.backgroundColorId = colors[getRandomInt(0, maxRand)].id;
+        newTheme.theme.palette.primaryColor = {
+            id: colors[getRandomInt(0, colorMax)].id,
+            shadeIndex: getRandomInt(0, shadeMax)
+        }
+
+        newTheme.theme.palette.secondaryColor = {
+            id: colors[getRandomInt(0, colorMax)].id,
+            shadeIndex: getRandomInt(0, shadeMax)
+        }
+
+        newTheme.theme.palette.backgroundColor = {
+            id: colors[getRandomInt(0, colorMax)].id,
+            shadeIndex: getRandomInt(0, shadeMax)
+        }
 
         this.props.dispatch(updateMuiThemeAsync(newTheme.id, newTheme.theme));
     }

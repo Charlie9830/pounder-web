@@ -11,7 +11,7 @@ const InformationDialog = (props) => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button color="primary" onClick={props.onOkay}> Okay </Button>
+                <Button color="secondary" onClick={props.onOkay}> Okay </Button>
             </DialogActions>
         </Dialog>
     );

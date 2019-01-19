@@ -68,7 +68,7 @@ class TextInputDialog extends Component {
                                 <DialogActions>
                                     <Button variant="text" color="default" 
                                     onClick={() => { this.props.onCancel()}}> Cancel </Button>
-                                    <Button variant="text" color="primary"
+                                    <Button variant="text" color="secondary"
                                     onClick={() => { this.props.onOkay(this.textInputRef.current.value)}}> Okay </Button>
                                 </DialogActions>
                             </div>

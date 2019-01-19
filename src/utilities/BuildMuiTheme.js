@@ -1,16 +1,25 @@
 import { createMuiTheme }  from '@material-ui/core/styles';
-import { GetMuiColorMap } from './MuiColors';
+import { GetColor } from './MuiColors';
 
 
 export function BuildMuiTheme(storedTheme) {
-    let colorMap = GetMuiColorMap();
+    let primaryColorId = storedTheme.palette.primaryColor.id;
+    let primaryColorShadeIndex = storedTheme.palette.primaryColor.shadeIndex;
+
+    let secondaryColorId = storedTheme.palette.secondaryColor.id;
+    let secondaryColorShadeIndex = storedTheme.palette.secondaryColor.shadeIndex;
 
     return createMuiTheme({
         'palette': {
-            'primary': colorMap[storedTheme.palette.primaryColorId].color,
-            'secondary': colorMap[storedTheme.palette.secondaryColorId].color,
+            'primary': {
+                main: GetColor(primaryColorId, primaryColorShadeIndex),
+            },
+            'secondary': {
+                main: GetColor(secondaryColorId, secondaryColorShadeIndex),
+            },
+            'background': getBackground(storedTheme.palette.backgroundColor, storedTheme.palette.type),
+
             'type': storedTheme.type,
-            'background': getBackground(colorMap[storedTheme.palette.backgroundColorId], storedTheme.type),
             'custom': {
                 "today": mergeValues('#1455c0', storedTheme.palette.custom.today),
                 "soon": mergeValues('#FF9300', storedTheme.palette.custom.soon),
@@ -48,20 +57,33 @@ function getMuiIconButtonPadding(isDense) {
     return isDense ? '8px' : '12px';
 }
 
-function getBackground(desiredMuiBackground, themeType) {
+function getBackground(backgroundColor, themeType) {
+    let clonedColor = {... backgroundColor};
+    let backgroundDummyTheme = createMuiTheme({
+        palette: {
+            'primary': {
+                main: GetColor(clonedColor.id, clonedColor.shadeIndex),
+            }
+        },
+        typography: {
+            useNextVariants: true, // Silences Typography Variant deprecation warnings in Dev.
+        }
+    })
+
     if (themeType === 'dark') {
         return {
-            default: desiredMuiBackground.color[900],
-            paper: desiredMuiBackground.color['A400'],
+            default: backgroundDummyTheme.palette.primary.dark,
+            paper: backgroundDummyTheme.palette.primary.main,
         }
     }
 
     else {
         return {
-            default: desiredMuiBackground.color[100],
-            paper: desiredMuiBackground.color[50],
+            default: backgroundDummyTheme.palette.primary.main,
+            paper: backgroundDummyTheme.palette.primary.light,
         }
     }
+    
 }
 
 function mergeValues(defaultValue, storedValue) {

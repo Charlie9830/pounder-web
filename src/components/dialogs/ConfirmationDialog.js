@@ -11,7 +11,7 @@ const ConfirmationDialog = (props) => {
 
             <DialogActions>
                 <Button onClick={props.onNegative}> {props.negativeButtonText} </Button>
-                <Button onClick={props.onAffirmative} color="primary"> {props.affirmativeButtonText} </Button>
+                <Button onClick={props.onAffirmative} color="secondary"> {props.affirmativeButtonText} </Button>
             </DialogActions>
         </Dialog>
     );

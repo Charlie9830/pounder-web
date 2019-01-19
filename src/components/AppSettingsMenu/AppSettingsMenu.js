@@ -14,6 +14,14 @@ import FullScreenView from '../../layout-components/FullScreenView';
 
 const issuesURL = "https://www.github.com/Charlie9830/Pounder/issues";
 
+let grid = {
+    width: '100%',
+    height: '100%',
+    display: 'grid',
+    gridTemplateRows: '[Toolbar]auto [Content]1fr',
+}
+
+
 class AppSettingsMenu extends React.Component {
     constructor(props) {
         super(props);
@@ -54,7 +62,7 @@ class AppSettingsMenu extends React.Component {
         
         return (
             <FullScreenView>
-                <AppBar position="relative">
+                <AppBar position="sticky">
                     <Toolbar
                         disableGutters={true}>
                         <IconButton

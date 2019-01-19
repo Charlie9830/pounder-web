@@ -1,7 +1,30 @@
 import React from 'react';
 import MuiColorChit from './MuiColorChit';
 
+import Slider from 'rc-slider';
+import { GetNumberFromIndex } from '../../utilities/MuiColors';
+import '../../assets/css/rc-slider/index.css';
+import { FormControlLabel } from '@material-ui/core';
+
 let container = {
+    flexGrow: '1',
+    width: '100%',
+    display: 'grid',
+    gridTemplateRows: '[Slider]1fr [Chits]1fr',
+}
+
+let sliderContainer = {
+    gridRow: 'Slider',
+    placeSelf: 'stretch',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+}
+
+let chitContainer = {
+    gridRow: 'Chits',
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
@@ -15,21 +38,41 @@ const MuiColorSelector = (props) => {
         return null;
     }
 
+    let muiNumber = GetNumberFromIndex(props.shadeIndex);
     let colorChits = props.muiColors.map( (item, index) => {
         return (
             <MuiColorChit
             key={index}
-            isSelected={ item.id === props.value }
-            color={item.color[500]}
-            onClick={() => { props.onChange(item.id)}}/>
+            isSelected={ item.id === props.colorId }
+            color={item.color[muiNumber]}
+            onClick={() => { props.onChange(item.id, props.shadeIndex )}}/>
         )
     })
 
     return (
-        <div
-        style={container}>
-            {colorChits}
+        <div style={container}>
+            <div
+                style={sliderContainer}>
+                <FormControlLabel
+                    style={{width: '100%'}}
+                    label="Shade"
+                    labelPlacement="top"
+                    control={
+                        <Slider
+                            onChange={(value) => { props.onChange(props.colorId, value) }}
+                            value={props.shadeIndex}
+                            min={0}
+                            max={13}
+                            step={1} />
+                    } />
+
+            </div>
+            <div
+                style={chitContainer}>
+                {colorChits}
+            </div>
         </div>
+        
     );
 };
 

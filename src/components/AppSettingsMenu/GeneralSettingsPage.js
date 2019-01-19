@@ -2,10 +2,12 @@ import React from 'react';
 import { Grid,List, ListItem, Select, ListItemText, ListItemSecondaryAction, Checkbox, Paper, Typography } from '@material-ui/core';
 import VisibleThemeSettings from './ThemeSettings';
 
+
 let paperStyle = {
     padding: '8px',
     margin: '8px',
 }
+
 
 class GeneralSettingsPage extends React.Component {
     constructor(props) {
@@ -45,9 +47,9 @@ class GeneralSettingsPage extends React.Component {
                 </Paper>
 
                 <Paper style={paperStyle}>
-                
-                    <Typography variant="subtitle1"> Theme </Typography>
-                    <VisibleThemeSettings/>
+
+                    <Typography variant="subtitle1"> Themes </Typography>
+                    <VisibleThemeSettings />
                 </Paper>
             </React.Fragment>
         )

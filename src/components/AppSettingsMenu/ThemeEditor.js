@@ -44,8 +44,9 @@ class ThemeEditor extends Component {
                 <ListItem style={{ maxWidth: '100%' }}>
                     <MuiColorSelector
                         muiColors={this.props.muiColors}
-                        value={this.props.muiTheme.palette.primaryColorId}
-                        onChange={(newColor) => { this.handleColorChange(newColor, 'primary') }}
+                        colorId={this.props.muiTheme.palette.primaryColor.id}
+                        shadeIndex={this.props.muiTheme.palette.primaryColor.shadeIndex}
+                        onChange={(colorId, shadeIndex) => { this.handleColorChange(colorId, shadeIndex, 'primary') }}
                     />
                 </ListItem>
 
@@ -53,8 +54,9 @@ class ThemeEditor extends Component {
                 <ListItem style={{ maxWidth: '100%' }}>
                     <MuiColorSelector
                         muiColors={this.props.muiColors}
-                        value={this.props.muiTheme.palette.secondaryColorId}
-                        onChange={(newColor) => { this.handleColorChange(newColor, 'secondary') }}
+                        colorId={this.props.muiTheme.palette.secondaryColor.id}
+                        shadeIndex={this.props.muiTheme.palette.secondaryColor.shadeIndex}
+                        onChange={(colorId, shadeIndex) => { this.handleColorChange(colorId, shadeIndex, 'secondary') }}
                     />
                 </ListItem>
 
@@ -62,8 +64,9 @@ class ThemeEditor extends Component {
                 <ListItem style={{ maxWidth: '100%' }}>
                     <MuiColorSelector
                         muiColors={this.props.muiColors}
-                        value={this.props.muiTheme.palette.backgroundColorId}
-                        onChange={(newColor) => { this.handleColorChange(newColor, 'background') }}
+                        colorId={this.props.muiTheme.palette.backgroundColor.id}
+                        shadeIndex={this.props.muiTheme.palette.backgroundColor.shadeIndex}
+                        onChange={(colorId, shadeIndex) => { this.handleColorChange(colorId, shadeIndex, 'background') }}
                     />
                 </ListItem>
 
@@ -77,7 +80,7 @@ class ThemeEditor extends Component {
                         } />
                 </ListItem>
 
-                <ListSubheader> Indicator Colours </ListSubheader>
+                <ListSubheader disableSticky={true}> Indicator Colours </ListSubheader>
                 <ListItem>
                     <FormControlLabel
                         label="Due later"
@@ -168,24 +171,33 @@ class ThemeEditor extends Component {
         this.props.onThemeChange(theme);
     }
 
-    handleColorChange(newColor, type) {
+    handleColorChange(colorId, shadeIndex, type) {
         let theme = { ...this.props.muiTheme };
         
-        switch(type) {
+        switch (type) {
             case 'primary':
-            theme.palette.primaryColorId = newColor;
-            break;
+                theme.palette.primaryColor = {
+                    id: colorId,
+                    shadeIndex: shadeIndex,
+                }
+                break;
 
             case 'secondary':
-            theme.palette.secondaryColorId = newColor;
-            break;
+                theme.palette.secondaryColor = {
+                    id: colorId,
+                    shadeIndex: shadeIndex,
+                }
+                break;
 
             case 'background':
-            theme.palette.backgroundColorId = newColor;
-            break;
+                theme.palette.backgroundColor = {
+                    id: colorId,
+                    shadeIndex: shadeIndex,
+                }
+                break;
 
             default:
-            break;
+                break;
         }
 
         this.props.onThemeChange(theme);

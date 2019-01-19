@@ -3,6 +3,7 @@ import { Menu, IconButton, ListSubheader, MenuItem, Divider, ListItemIcon } from
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 class TaskListSettingsMenu extends Component {
     constructor(props) {
@@ -72,6 +73,14 @@ class TaskListSettingsMenu extends Component {
                         onClick={this.props.onChecklistSettingsButtonClick}>
                         Checklist Settings
                      </MenuItem>
+
+                    <MenuItem
+                    onClick={this.props.onMoveTaskListButtonClick}>
+                        <ListItemIcon>
+                            <ArrowForwardIcon/>
+                        </ListItemIcon>
+                        Move to project
+                    </MenuItem>
 
                     <MenuItem
                         onClick={this.props.onDeleteButtonClick}>

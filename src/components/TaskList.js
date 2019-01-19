@@ -57,7 +57,8 @@ class TaskList extends Component {
                         isSettingsMenuOpen={this.props.isSettingsMenuOpen}
                         onRenameButtonClick={this.props.onRenameTaskListButtonClick}
                         onDeleteButtonClick={this.props.onDeleteButtonClick}
-                        onChecklistSettingsButtonClick={this.props.onChecklistSettingsButtonClick}/>
+                        onChecklistSettingsButtonClick={this.props.onChecklistSettingsButtonClick}
+                        onMoveTaskListButtonClick={this.props.onMoveTaskListButtonClick}/>
                     </div>
 
                     <div style={{ gridRow: 'Tasks' }}>

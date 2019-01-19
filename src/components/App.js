@@ -12,7 +12,7 @@ import {
     setIsShareMenuOpen, updateProjectNameAsync, setShowCompletedTasksAsync, setShowOnlySelfTasks,
     startTaskMoveAsync, moveTaskAsync, updateTaskListSettingsAsync, setOpenTaskListSettingsMenuId,
     updateTaskListNameAsync, removeTaskListAsync, openChecklistSettings, manuallyRenewChecklistAsync,
-    setIsAppSettingsOpen, setAppSettingsMenuPage, getLocalMuiThemes, getGeneralConfigAsync,
+    setIsAppSettingsOpen, setAppSettingsMenuPage, getLocalMuiThemes, getGeneralConfigAsync, moveTaskListToProjectAsync,
 } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import { Drawer, CssBaseline, withTheme } from '@material-ui/core';
@@ -24,6 +24,7 @@ import ConfirmationDialog from './dialogs/ConfirmationDialog';
 import GeneralSnackbar from './Snackbars/GeneralSnackbar';
 import VisibleChecklistSettingsMenu from './ChecklistSettingsMenu.js/ChecklistSettingsMenu';
 import VisibleThemeSettings from './AppSettingsMenu/ThemeSettings';
+import ItemSelectDialog from './dialogs/ItemSelectDialog';
 
 class App extends React.Component {
     constructor(props) {
@@ -50,6 +51,7 @@ class App extends React.Component {
         this.handleDeleteTaskListButtonClick = this.handleDeleteTaskListButtonClick.bind(this);
         this.handleChecklistSettingsButtonClick = this.handleChecklistSettingsButtonClick.bind(this);
         this.handleRenewChecklistButtonClick = this.handleRenewChecklistButtonClick.bind(this);
+        this.handleMoveTaskListButtonClick = this.handleMoveTaskListButtonClick.bind(this);
     }
 
     componentDidMount() {
@@ -130,6 +132,7 @@ class App extends React.Component {
                         onDeleteTaskListButtonClick={this.handleDeleteTaskListButtonClick}
                         onChecklistSettingsButtonClick={this.handleChecklistSettingsButtonClick}
                         onRenewChecklistButtonClick={this.handleRenewChecklistButtonClick}
+                        onMoveTaskListButtonClick={this.handleMoveTaskListButtonClick}
                     />
 
                     <TextInputDialog
@@ -158,6 +161,16 @@ class App extends React.Component {
                         onNegative={this.props.confirmationDialog.onNegative}
                     />
 
+                <ItemSelectDialog
+                    isOpen={this.props.itemSelectDialog.isOpen}
+                    title={this.props.itemSelectDialog.title}
+                    text={this.props.itemSelectDialog.text}
+                    items={this.props.itemSelectDialog.items}
+                    affirmativeButtonText={this.props.itemSelectDialog.affirmativeButtonText}
+                    negativeButtonText={this.props.itemSelectDialog.negativeButtonText}
+                    onAffirmative={this.props.itemSelectDialog.onAffirmative}
+                    onNegative={this.props.itemSelectDialog.onNegative} />
+
                     <GeneralSnackbar
                         isOpen={this.props.generalSnackbar.isOpen}
                         type={this.props.generalSnackbar.type}
@@ -167,6 +180,11 @@ class App extends React.Component {
                     />
                 </React.Fragment>
         )
+    }
+
+    handleMoveTaskListButtonClick(taskListId, projectId) {
+        this.props.dispatch(setOpenTaskListSettingsMenuId(-1));
+        this.props.dispatch(moveTaskListToProjectAsync(taskListId, projectId))
     }
 
     handleRenewChecklistButtonClick(taskListId) {
@@ -332,7 +350,7 @@ const mapStateToProps = state => {
         isATaskMoving: state.isATaskMoving,
         openTaskListSettingsMenuId: state.openTaskListSettingsMenuId,
         openChecklistSettingsId: state.openChecklistSettingsId,
-
+        itemSelectDialog: state.itemSelectDialog,
     }
 }
 

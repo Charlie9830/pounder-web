@@ -32,7 +32,8 @@ const TaskListToolbar = (props) => {
                 onRenameButtonClick={props.onRenameButtonClick}
                 onSettingsChanged={props.onTaskListSettingsChanged}
                 onDeleteButtonClick={props.onDeleteButtonClick}
-                onChecklistSettingsButtonClick={props.onChecklistSettingsButtonClick} />
+                onChecklistSettingsButtonClick={props.onChecklistSettingsButtonClick}
+                onMoveTaskListButtonClick={props.onMoveTaskListButtonClick} />
             </div>
         
             <div

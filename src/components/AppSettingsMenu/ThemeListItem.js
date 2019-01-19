@@ -5,6 +5,21 @@ import { ListItem, ListItemText, ListItemSecondaryAction, IconButton } from '@ma
 import DeleteIcon from '@material-ui/icons/Delete';
 import MuiColorChit from './MuiColorChit';
 
+let grid = {
+    width: '100%',
+    display: 'grid',
+    gridTemplateColumns: '[Text]1fr [Chits]auto [DeleteButton]auto'
+}
+
+let chitContainer = {
+    gridColumn: 'Chits',
+    placeSelf: 'center stretch',
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+}
+
 class ThemeListItem extends Component {
     constructor(props) {
         super(props);
@@ -18,40 +33,52 @@ class ThemeListItem extends Component {
         containerHammer.on('press', (e) => {
             this.props.onPress();
         })
+
+        containerHammer.on('tap', (e) => {
+            this.props.onClick();
+        })
     }
 
     componentWillUnmount() {
         Hammer.off(this.containerRef.current, 'press');
+        Hammer.off(this.containerRef.current, 'tap');
     }
 
     render() {
         let secondaryAction = (
-            <ListItemSecondaryAction
-            style={{marginLeft: '16px'}}>
-                <IconButton
+            <IconButton
                 onClick={this.props.onDelete}>
-                    <DeleteIcon/>
-                </IconButton>
-            </ListItemSecondaryAction>
+                <DeleteIcon />
+            </IconButton>
         )
 
         return (
             <div
-            ref={this.containerRef}>
+                ref={this.containerRef}>
                 <ListItem
                     selected={this.props.isSelected}>
-                    <ListItemText
-                        primary={this.props.name}
-                        onClick={this.props.onClick} />
-                    
-                    <MuiColorChit 
-                    color={this.props.primaryColor}/>
-                    <MuiColorChit 
-                    color={this.props.secondaryColor}/>
-                    <MuiColorChit 
-                    color={this.props.backgroundColor}/>
+                    <div
+                        style={grid}>
+                        <div style={{ gridColumn: 'Text', placeSelf: 'center flex-start' }}>
+                            <ListItemText
+                                primary={this.props.name}
+                            />
+                        </div>
 
-                        { this.props.isSelected && this.props.canDelete && secondaryAction }
+                        <div style={chitContainer}>
+                            <MuiColorChit
+                                color={this.props.primaryColor} />
+                            <MuiColorChit
+                                color={this.props.secondaryColor} />
+                            <MuiColorChit
+                                color={this.props.backgroundColor} />
+                        </div>
+
+                        <div
+                            style={{ gridColumn: 'DeleteButton', placeSelf: 'center' }}>
+                            {this.props.isSelected && this.props.canDelete && secondaryAction}
+                        </div>
+                    </div>
                 </ListItem>
             </div>
         );

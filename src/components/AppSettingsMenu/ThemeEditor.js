@@ -16,18 +16,16 @@ class ThemeEditor extends Component {
     }
     
     render() {
-        if (this.props.isOpen === false) {
-            return (
-                <Button
-                    variant="text"
-                    onClick={this.props.onCreate}
-                    color="secondary">
-                    <AddIcon/> Add
+        let buttonJSX = (
+            <Button
+                variant="text"
+                onClick={this.props.onCreate}
+                color="secondary">
+                <AddIcon /> Add
                 </Button>
-            )
-        }
+        )
 
-        return (
+        let editorJSX = (
             <List
                 style={{ width: '100%' }}>
                 <ListItem>
@@ -146,7 +144,26 @@ class ThemeEditor extends Component {
                     />
                 </ListItem>
             </List>
-        );
+        )
+
+        if (this.props.isOpen === true) {
+            return (
+                <React.Fragment>
+                    {buttonJSX}
+                    {editorJSX}
+                </React.Fragment>
+            )
+        }
+
+        else {
+            return (
+                <React.Fragment>
+                    {buttonJSX}
+                </React.Fragment>
+            )
+        }
+
+        
     }
 
     handleCustomColorChange(newValue, type) {

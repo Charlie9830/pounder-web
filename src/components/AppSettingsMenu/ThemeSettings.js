@@ -36,7 +36,7 @@ class ThemeSettings extends Component {
         return (
             <React.Fragment>
                 <List>
-                    { this.getThemesJSX() }
+                    {this.getThemesJSX()}
                 </List>
                 <ThemeEditor
                     muiTheme={muiThemeEntity.theme}
@@ -44,8 +44,10 @@ class ThemeSettings extends Component {
                     isOpen={muiThemeEntity.isInbuilt === false}
                     muiColors={muiColors}
                     onThemeChange={(newTheme) => { this.props.dispatch(updateMuiThemeAsync(this.props.selectedMuiThemeId, newTheme)) }} />
-                
-                <Button variant="contained" onClick={() => {this.randomize()}} > I'm Feeling Lucky </Button>
+                {/* 
+                    <Button variant="contained" onClick={() => {this.randomize()}} > I'm Feeling Lucky </Button>
+                */}
+
             </React.Fragment>
         );
     }

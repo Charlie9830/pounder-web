@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, ListItem, FormControlLabel, Switch, ListSubheader, Button } from '@material-ui/core';
+import { List } from '@material-ui/core';
 import { GetMuiColorArray, GetColor } from '../../utilities/MuiColors';
 import { connect } from 'react-redux';
 import {

@@ -7,20 +7,12 @@ import { setAppSettingsMenuPage, setFavouriteProjectIdAsync, setGeneralConfigAsy
     setIsAppSettingsOpen, logInUserAsync, logOutUserAsync, registerNewUserAsync,
     sendPasswordResetEmailAsync, setIsInRegisterMode } from 'handball-libs/libs/pounder-redux/action-creators';
 
-import { AppBar, IconButton, Typography, Grid, Toolbar, Tabs, Tab } from '@material-ui/core';
+import { AppBar, IconButton, Typography, Toolbar, Tabs, Tab } from '@material-ui/core';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import FullScreenView from '../../layout-components/FullScreenView';
 
 const issuesURL = "https://www.github.com/Charlie9830/Pounder/issues";
-
-let grid = {
-    width: '100%',
-    height: '100%',
-    display: 'grid',
-    gridTemplateRows: '[Toolbar]auto [Content]1fr',
-}
-
 
 class AppSettingsMenu extends React.Component {
     constructor(props) {

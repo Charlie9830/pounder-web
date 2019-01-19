@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Hammer from 'hammerjs';
-import { ListItem, ListItemText, ListItemSecondaryAction, IconButton } from '@material-ui/core';
+import { ListItem, ListItemText, IconButton } from '@material-ui/core';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import MuiColorChit from './MuiColorChit';

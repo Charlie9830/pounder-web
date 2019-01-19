@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, ListItem, FormControlLabel, Switch, ListSubheader, Button, ListItemText, ListItemSecondaryAction } from '@material-ui/core';
+import { List, ListItem, FormControlLabel, Switch, ListSubheader, Button } from '@material-ui/core';
 import MuiColorSelector from './MuiColorSelector';
 import ColorPicker from '../ColorPicker';
 

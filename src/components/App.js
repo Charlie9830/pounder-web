@@ -12,7 +12,8 @@ import {
     setIsShareMenuOpen, updateProjectNameAsync, setShowCompletedTasksAsync, setShowOnlySelfTasks,
     startTaskMoveAsync, moveTaskAsync, updateTaskListSettingsAsync, setOpenTaskListSettingsMenuId,
     updateTaskListNameAsync, removeTaskListAsync, openChecklistSettings, manuallyRenewChecklistAsync,
-    setIsAppSettingsOpen, setAppSettingsMenuPage, getLocalMuiThemes, getGeneralConfigAsync, moveTaskListToProjectAsync,
+    getLocalMuiThemes, getGeneralConfigAsync, moveTaskListToProjectAsync,
+    openJumpMenu, closeJumpMenu,
 } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import { Drawer, CssBaseline, withTheme } from '@material-ui/core';
@@ -52,6 +53,8 @@ class App extends React.Component {
         this.handleChecklistSettingsButtonClick = this.handleChecklistSettingsButtonClick.bind(this);
         this.handleRenewChecklistButtonClick = this.handleRenewChecklistButtonClick.bind(this);
         this.handleMoveTaskListButtonClick = this.handleMoveTaskListButtonClick.bind(this);
+        this.handleJumpMenuOpen = this.handleJumpMenuOpen.bind(this);
+        this.handleJumpMenuClose = this.handleJumpMenuClose.bind(this);
     }
 
     componentDidMount() {
@@ -133,6 +136,9 @@ class App extends React.Component {
                         onChecklistSettingsButtonClick={this.handleChecklistSettingsButtonClick}
                         onRenewChecklistButtonClick={this.handleRenewChecklistButtonClick}
                         onMoveTaskListButtonClick={this.handleMoveTaskListButtonClick}
+                        onJumpMenuOpen={this.handleJumpMenuOpen}
+                        onJumpMenuClose={this.handleJumpMenuClose}
+                        isJumpMenuOpen={this.props.isJumpMenuOpen}
                     />
 
                     <TextInputDialog
@@ -180,6 +186,14 @@ class App extends React.Component {
                     />
                 </React.Fragment>
         )
+    }
+
+    handleJumpMenuOpen() {
+        this.props.dispatch(openJumpMenu())
+    }
+
+    handleJumpMenuClose() {
+        this.props.dispatch(closeJumpMenu());
     }
 
     handleMoveTaskListButtonClick(taskListId, projectId) {
@@ -351,6 +365,7 @@ const mapStateToProps = state => {
         openTaskListSettingsMenuId: state.openTaskListSettingsMenuId,
         openChecklistSettingsId: state.openChecklistSettingsId,
         itemSelectDialog: state.itemSelectDialog,
+        isJumpMenuOpen: state.isJumpMenuOpen,
     }
 }
 

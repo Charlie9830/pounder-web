@@ -12,6 +12,7 @@ import RenewChecklistButton from './RenewChecklistButton'
 import MoveTaskIcon from '../icons/MoveTaskIcon';
 import AddNewTaskButton from './AddNewTaskButton.js';
 import ProjectMenu from './ProjectMenu';
+import scrollToComponent from 'react-scroll-to-component';
 
 import {
     GetDisplayNameFromLookup, TaskDueDateSorter, TaskCompletedSorter, TaskDateAddedSorter, TaskAssigneeSorter,
@@ -28,6 +29,7 @@ import AddIcon from '@material-ui/icons/Add';
 import AddTaskListIcon from '@material-ui/icons/PlaylistAdd';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MenuIcon from '@material-ui/icons/Menu';
+import JumpMenu from './JumpMenu';
 
 let styles = theme => {
     let primaryFabBase = {
@@ -87,7 +89,7 @@ let styles = theme => {
     }
 };
 
-const projectMenuButtonContainer = {
+const projectRightButtonsContainer = {
     display: 'flex',
     flexDirection: 'row-reverse',
     justifyContent: 'flex-start',
@@ -98,17 +100,24 @@ class Project extends React.Component {
     constructor(props) {
         super(props);
 
+        // Refs.
+        this.contentContainerRef = React.createRef();
+
         // Method Bindings.
         this.getTaskListsJSX = this.getTaskListsJSX.bind(this);
         this.getTasksJSX = this.getTasksJSX.bind(this);
         this.getTaskFilter = this.getTaskFilter.bind(this);
         this.getTaskSorter = this.getTaskSorter.bind(this);
+        this.getFilteredTaskLists = this.getFilteredTaskLists.bind(this);
+        this.handleJumpMenuItemClick = this.handleJumpMenuItemClick.bind(this);
     }
 
     render() {
         let { theme, classes } = this.props;
         const primaryFabClassName = this.props.isASnackbarOpen ? classes['primaryFabMoveUp'] : classes['primaryFabMoveDown'];
         const secondaryFabClassName = this.props.isASnackbarOpen ? classes['secondaryFabMoveUp'] : classes['secondaryFabMoveDown'];
+
+        let filteredTaskLists = this.getFilteredTaskLists();
 
         let contentGridStyle = {
             height: '100%',
@@ -132,22 +141,30 @@ class Project extends React.Component {
                             <MenuIcon/>
                         </IconButton>
                         <Typography variant="h6" style={{flexGrow: 1}}> {this.props.projectName} </Typography>
-                            <div style={projectMenuButtonContainer}>
+                            <div style={projectRightButtonsContainer}>
                                 <ProjectMenu
                                 onShareMenuButtonClick={this.props.onShareMenuButtonClick}
                                 onRenameProjectButtonClick={() => { this.props.onRenameProjectButtonClick(this.props.projectId, this.props.projectName) }}
                                 onCompletedTasksButtonClick={this.props.onCompletedTasksButtonClick}
                                 showCompletedTasks={this.props.showCompletedTasks}
                                 onShowOnlySelfTasksButtonClick={this.props.onShowOnlySelfTasksButtonClick}
-                                showOnlySelfTasks={this.props.showOnlySelfTasks}/>  
+                                showOnlySelfTasks={this.props.showOnlySelfTasks}/> 
                                 
+                                <JumpMenu
+                                isOpen={this.props.isJumpMenuOpen}
+                                onOpen={this.props.onJumpMenuOpen}
+                                onClose={this.props.onJumpMenuClose}
+                                taskLists={filteredTaskLists}
+                                onItemClick={this.handleJumpMenuItemClick}/>
                             </div>
                             
                     </Toolbar>
                 </AppBar>
 
-                <div style={contentGridStyle}>
-                    {this.getTaskListsJSX()}
+                <div 
+                style={contentGridStyle}
+                ref={this.contentContainerRef}>
+                    {this.getTaskListsJSX(filteredTaskLists)}
                     <AddNewTaskListButton onClick={this.props.onAddNewTaskListButtonClick} />
                 </div>
                         
@@ -168,18 +185,27 @@ class Project extends React.Component {
         )
     }
 
-    getTaskListsJSX() {
-        let filteredTaskLists = this.props.taskLists.filter(item => {
-            return item.project === this.props.projectId
-        })
+    handleJumpMenuItemClick(id) {
+        this.props.onJumpMenuClose();
+        this.props.onTaskListClick(id);
+        
+        let targetElement = document.getElementById(id);
+        if (targetElement === undefined) {
+            return;
+        }
 
-        let taskListsJSX = filteredTaskLists.map(item => {
+        this.contentContainerRef.current.scrollTop = targetElement.offsetTop - (56 + 8); // Toolbar Height + List top margin.
+    }
+
+    getTaskListsJSX(taskLists) {
+        let taskListsJSX = taskLists.map(item => {
             // Widget Layer.
             let isFocused = this.props.focusedTaskListId === item.uid;
             let isSettingsMenuOpen = this.props.openTaskListSettingsMenuId === item.uid;
 
             return (
                 <TaskList 
+                scrollTargetId={item.uid}
                 key={item.uid}
                 name={item.taskListName}
                 isFocused={isFocused}
@@ -297,6 +323,12 @@ class Project extends React.Component {
 
             return builtTasks;
         }        
+    }
+
+    getFilteredTaskLists() {
+        return this.props.taskLists.filter(item => {
+            return item.project === this.props.projectId
+        })
     }
 
     getTaskSorter(sortBy) {

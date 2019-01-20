@@ -45,7 +45,9 @@ class TaskList extends Component {
             <Paper 
             className={paperClassName}
             onClick={this.props.onClick}>
-                <div style={containerStyle}>
+                <div
+                id={this.props.scrollTargetId} 
+                style={containerStyle}>
                     <div style={{ gridRow: 'Toolbar' }}>
                         <TaskListToolbar
                         onSettingsMenuOpen={this.props.onSettingsMenuOpen}

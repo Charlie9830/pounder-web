@@ -66,9 +66,9 @@ class ThemeSettings extends Component {
 
         let jsx = muiThemes.map( item => {
             return (
-                <ListItemTransition>
+                <ListItemTransition
+                key={item.id}>
                     <ThemeListItem
-                        key={item.id}
                         name={item.name}
                         canDelete={item.isInbuilt === false}
                         isSelected={item.id === this.props.selectedMuiThemeId}

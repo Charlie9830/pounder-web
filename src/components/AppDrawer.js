@@ -148,9 +148,9 @@ class AppDrawer extends Component {
     getInvitesJSX() {
         let jsx = this.props.invites.map( item => {
             return (
-                <ListItemTransition>
+                <ListItemTransition
+                    key={item.projectId}>
                     <InviteListItem
-                        key={item.projectId}
                         sourceEmail={item.sourceEmail}
                         projectName={item.projectName}
                         onAccept={() => { this.props.dispatch(acceptProjectInviteAsync(item.projectId)) }}
@@ -167,10 +167,10 @@ class AppDrawer extends Component {
     projectMapper(projects) {
         let jsx = projects.map( item => {
             return (
-                <ListItemTransition>
+                <ListItemTransition
+                    key={item.uid}>
                     <ProjectListItem
                         onClick={() => { this.props.dispatch(selectProject(item.uid)) }}
-                        key={item.uid}
                         name={item.projectName}
                         isFavorite={this.props.favouriteProjectId === item.uid}
                         isSelected={this.props.selectedProjectId === item.uid}

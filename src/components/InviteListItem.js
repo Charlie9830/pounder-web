@@ -3,6 +3,7 @@ import { ListItem, ListItemText, ListItemSecondaryAction, Grid, IconButton, Circ
 
 import AcceptIcon from '@material-ui/icons/Check';
 import DenyIcon from '@material-ui/icons/Close';
+import ListItemTransition from './TransitionList/ListItemTransition';
 
 const InviteListItem = (props) => {
     let { projectName, sourceEmail, isUpdating, onAccept, onDeny }  = props;
@@ -21,17 +22,17 @@ const InviteListItem = (props) => {
     let secondaryActionContent = isUpdating ? <CircularProgress size={20} /> : acceptDenyButtons;
 
     return (
-        <ListItem>
-            <ListItemText primary={projectName} secondary={sourceEmail}/>
-            <ListItemSecondaryAction>
-                <Grid container
-                    direction="row-reverse"
-                    justify="flex-start"
-                    alignItems="center">
+            <ListItem>
+                <ListItemText primary={projectName} secondary={sourceEmail} />
+                <ListItemSecondaryAction>
+                    <Grid container
+                        direction="row-reverse"
+                        justify="flex-start"
+                        alignItems="center">
                         {secondaryActionContent}
-                </Grid>
-            </ListItemSecondaryAction>
-        </ListItem>
+                    </Grid>
+                </ListItemSecondaryAction>
+            </ListItem>
     );
 };
 

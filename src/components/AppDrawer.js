@@ -13,6 +13,8 @@ import AddIcon from '@material-ui/icons/Add';
 import { acceptProjectInviteAsync, denyProjectInviteAsync, addNewProjectAsync,
 setIsAppSettingsOpen, selectProject } from 'handball-libs/libs/pounder-redux/action-creators';
 import FullScreenView from '../layout-components/FullScreenView';
+import TransitionList from './TransitionList/TransitionList';
+import ListItemTransition from './TransitionList/ListItemTransition';
 
 let styles = theme => {
     let fabBase = {
@@ -78,7 +80,7 @@ class AppDrawer extends Component {
                     </Toolbar>
                 </AppBar>
 
-                <List style={{marginTop: '56px'}}>
+                <TransitionList style={{marginTop: '56px'}}>
                     {/* Invites  */} 
                     { this.getInvitesSubheading(this.props.invites.length > 0) }
                     { this.props.invites.length > 0 && this.getInvitesJSX() }
@@ -90,7 +92,7 @@ class AppDrawer extends Component {
                     {/* Remote Projects  */} 
                     { this.getRemoteProjectsSubheading(this.props.remoteProjects.length > 0) }
                     { this.props.remoteProjects.length > 0 && this.getRemoteProjectsSubheading() && this.projectMapper(this.props.remoteProjects) }
-                </List>
+                </TransitionList>
 
                 <Fab className={classes[fabClassName]}
                 onClick={() => { this.props.dispatch(addNewProjectAsync()) }}>
@@ -106,8 +108,11 @@ class AppDrawer extends Component {
         }
 
         return [
-            <ListSubheader key="invites"> Invites </ListSubheader>,
-            <Divider key="invitesdivider"/>
+            <ListItemTransition
+                key="invites">
+                <ListSubheader key="invites"> Invites </ListSubheader>,
+            <Divider key="invitesdivider" />
+            </ListItemTransition>
         ] 
     }
 
@@ -117,8 +122,11 @@ class AppDrawer extends Component {
         }
 
         return [
-            <ListSubheader key="localprojects"> Personal Projects </ListSubheader>,
-            <Divider key="localprojectsdivider"/>
+            <ListItemTransition
+                key="localprojects">
+                <ListSubheader key="localprojects"> Personal Projects </ListSubheader>,
+            <Divider key="localprojectsdivider" />
+            </ListItemTransition>
         ] 
     }
 
@@ -128,22 +136,28 @@ class AppDrawer extends Component {
         }
 
         return [
-            <ListSubheader key="remoteprojects"> Shared Projects </ListSubheader>,
-            <Divider key="remoteprojectsdivider"/>
+            <ListItemTransition
+            key="remoteprojects">
+                <ListSubheader> Shared Projects </ListSubheader>,
+            <Divider />
+            </ListItemTransition>
+            
         ] 
     }
 
     getInvitesJSX() {
         let jsx = this.props.invites.map( item => {
             return (
-                <InviteListItem 
-                key={item.projectId}
-                sourceEmail={item.sourceEmail}
-                projectName={item.projectName}
-                onAccept={() => { this.props.dispatch(acceptProjectInviteAsync(item.projectId)) }}
-                onDeny={() => { this.props.dispatch(denyProjectInviteAsync(item.projectId)) }}
-                isUpdating={this.props.updatingInviteIds.includes(item.projectId)}
-                />
+                <ListItemTransition>
+                    <InviteListItem
+                        key={item.projectId}
+                        sourceEmail={item.sourceEmail}
+                        projectName={item.projectName}
+                        onAccept={() => { this.props.dispatch(acceptProjectInviteAsync(item.projectId)) }}
+                        onDeny={() => { this.props.dispatch(denyProjectInviteAsync(item.projectId)) }}
+                        isUpdating={this.props.updatingInviteIds.includes(item.projectId)}
+                    />
+                </ListItemTransition>
             )
         })
 
@@ -153,14 +167,16 @@ class AppDrawer extends Component {
     projectMapper(projects) {
         let jsx = projects.map( item => {
             return (
-                <ProjectListItem 
-                onClick={() => { this.props.dispatch(selectProject(item.uid))}}
-                key={item.uid}
-                name={item.projectName}
-                isFavorite={this.props.favouriteProjectId === item.uid}
-                isSelected={this.props.selectedProjectId === item.uid}
-                indicators={this.props.projectSelectorIndicators[item.uid]}
-                />
+                <ListItemTransition>
+                    <ProjectListItem
+                        onClick={() => { this.props.dispatch(selectProject(item.uid)) }}
+                        key={item.uid}
+                        name={item.projectName}
+                        isFavorite={this.props.favouriteProjectId === item.uid}
+                        isSelected={this.props.selectedProjectId === item.uid}
+                        indicators={this.props.projectSelectorIndicators[item.uid]}
+                    />
+                </ListItemTransition>
             )
         })
 

@@ -7,6 +7,8 @@ import {
     removeMuiThemeAsync,
     persistMuiThemeSelection
 } from 'handball-libs/libs/pounder-redux/action-creators';
+import TransitionList from '../TransitionList/TransitionList';
+import ListItemTransition from '../TransitionList/ListItemTransition';
 
 import ThemeEditor from './ThemeEditor';
 import ThemeListItem from './ThemeListItem';
@@ -35,9 +37,9 @@ class ThemeSettings extends Component {
 
         return (
             <React.Fragment>
-                <List>
+                <TransitionList>
                     {this.getThemesJSX()}
-                </List>
+                </TransitionList>
                 <ThemeEditor
                     muiTheme={muiThemeEntity.theme}
                     onCreate={() => { this.props.dispatch(createNewMuiThemeAsync()) }}
@@ -64,17 +66,19 @@ class ThemeSettings extends Component {
 
         let jsx = muiThemes.map( item => {
             return (
-                <ThemeListItem
-                key={item.id}
-                name={item.name}
-                canDelete={ item.isInbuilt === false }
-                isSelected={ item.id === this.props.selectedMuiThemeId }
-                primaryColor={ GetColor(item.theme.palette.primaryColor.id, item.theme.palette.primaryColor.shadeIndex)}
-                secondaryColor={ GetColor(item.theme.palette.secondaryColor.id, item.theme.palette.secondaryColor.shadeIndex) }
-                backgroundColor={ GetColor(item.theme.palette.backgroundColor.id, item.theme.palette.backgroundColor.shadeIndex) }
-                onClick={() => { this.props.dispatch(selectMuiTheme(item.id))}}
-                onPress={() => { this.props.dispatch(renameMuiThemeAsync(item.id))}}
-                onDelete={() => { this.props.dispatch(removeMuiThemeAsync(item.id))}}/>
+                <ListItemTransition>
+                    <ThemeListItem
+                        key={item.id}
+                        name={item.name}
+                        canDelete={item.isInbuilt === false}
+                        isSelected={item.id === this.props.selectedMuiThemeId}
+                        primaryColor={GetColor(item.theme.palette.primaryColor.id, item.theme.palette.primaryColor.shadeIndex)}
+                        secondaryColor={GetColor(item.theme.palette.secondaryColor.id, item.theme.palette.secondaryColor.shadeIndex)}
+                        backgroundColor={GetColor(item.theme.palette.backgroundColor.id, item.theme.palette.backgroundColor.shadeIndex)}
+                        onClick={() => { this.props.dispatch(selectMuiTheme(item.id)) }}
+                        onPress={() => { this.props.dispatch(renameMuiThemeAsync(item.id)) }}
+                        onDelete={() => { this.props.dispatch(removeMuiThemeAsync(item.id)) }} />
+                </ListItemTransition>
             )
         })
 

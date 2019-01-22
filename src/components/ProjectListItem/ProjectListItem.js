@@ -4,28 +4,29 @@ import UnseenCommentsChit from './UnseenCommentsChit';
 import { ListItem, ListItemText, ListItemSecondaryAction, ListItemIcon, withTheme, Grid } from '@material-ui/core';
 
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import ListItemTransition from '../TransitionList/ListItemTransition';
 
 
 const ProjectListItem = (props) => {
     let { theme, name, isFavorite, indicators, isSelected, onClick } = props;
     
     return (
-        <ListItem 
-        onClick={onClick}
-        selected={isSelected}>
-            { isFavorite && <ListItemIcon style={{marginRight: '0px'}}><FavoriteIcon fontSize="small"/></ListItemIcon> }
+            <ListItem
+                onClick={onClick}
+                selected={isSelected}>
+                {isFavorite && <ListItemIcon style={{ marginRight: '0px' }}><FavoriteIcon fontSize="small" /></ListItemIcon>}
 
-            <ListItemText primary={name}/>
+                <ListItemText primary={name} />
 
-            <ListItemSecondaryAction>
-                <Grid container
-                    direction="row-reverse"
-                    justify="flex-start"
-                    alignItems="center">
-                    { getDueDateChits(indicators, theme.palette.custom) }
-                </Grid>
-            </ListItemSecondaryAction>
-        </ListItem>
+                <ListItemSecondaryAction>
+                    <Grid container
+                        direction="row-reverse"
+                        justify="flex-start"
+                        alignItems="center">
+                        {getDueDateChits(indicators, theme.palette.custom)}
+                    </Grid>
+                </ListItemSecondaryAction>
+            </ListItem>
     );
 };
 

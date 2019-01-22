@@ -4,6 +4,7 @@ import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core';
 import Color from 'color';
 import colorString from 'color-string';
+import TransitionList from './TransitionList/TransitionList';
 
 let containerStyle = {
     width: '100%',
@@ -64,7 +65,10 @@ class TaskList extends Component {
                     </div>
 
                     <div style={{ gridRow: 'Tasks' }}>
-                        { this.props.children }
+                        <TransitionList>
+                            { this.props.children }
+                        </TransitionList>
+                        
                     </div>
 
                 </div>

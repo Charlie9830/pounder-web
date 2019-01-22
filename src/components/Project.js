@@ -12,7 +12,7 @@ import RenewChecklistButton from './RenewChecklistButton'
 import MoveTaskIcon from '../icons/MoveTaskIcon';
 import AddNewTaskButton from './AddNewTaskButton.js';
 import ProjectMenu from './ProjectMenu';
-import scrollToComponent from 'react-scroll-to-component';
+import ListItemTransition from './TransitionList/ListItemTransition';
 
 import {
     GetDisplayNameFromLookup, TaskDueDateSorter, TaskCompletedSorter, TaskDateAddedSorter, TaskAssigneeSorter,
@@ -300,24 +300,28 @@ class Project extends React.Component {
                 ]
 
                 return (
-                    <SwipeableListItem
-                        key={item.uid}
-                        leftActions={leftActions}
-                        rightActions={rightActions}
-                        onActionClick={(value) => { this.props.onTaskActionClick(value, item.uid, item.taskList) }}>
-                        <TaskBase
-                            selected={isTaskSelected}
-                            isMoving={isTaskMoving}
-                            priorityIndicator={priorityIndicator}
-                            checkbox={checkbox}
-                            taskText={taskText}
-                            dueDate={dueDate}
-                            indicatorPanel={indicatorPanel}
-                            onTextContainerTap={ () => { this.props.onTaskTextContainerTap() }}
-                            onPress={ () => { this.props.onTaskPress(item.uid, item.taskList, item.taskName, item.metadata) }}
-                            onDueDateContainerTap={ () => { this.props.onDueDateContainerTap(item.uid) }}
-                        />
-                    </SwipeableListItem>
+                    <ListItemTransition
+                    key={item.uid}>
+                        <SwipeableListItem
+                            
+                            leftActions={leftActions}
+                            rightActions={rightActions}
+                            onActionClick={(value) => { this.props.onTaskActionClick(value, item.uid, item.taskList) }}>
+                            <TaskBase
+                                selected={isTaskSelected}
+                                isMoving={isTaskMoving}
+                                priorityIndicator={priorityIndicator}
+                                checkbox={checkbox}
+                                taskText={taskText}
+                                dueDate={dueDate}
+                                indicatorPanel={indicatorPanel}
+                                onTextContainerTap={() => { this.props.onTaskTextContainerTap() }}
+                                onPress={() => { this.props.onTaskPress(item.uid, item.taskList, item.taskName, item.metadata) }}
+                                onDueDateContainerTap={() => { this.props.onDueDateContainerTap(item.uid) }}
+                            />
+                        </SwipeableListItem>
+                    </ListItemTransition>
+                    
                 )
             })
 

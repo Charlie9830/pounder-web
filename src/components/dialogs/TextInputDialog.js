@@ -7,6 +7,9 @@ class TextInputDialog extends Component {
 
         // Refs.
         this.textInputRef = React.createRef();
+
+        // Method Bindings.
+        this.handleInputKeyPress = this.handleInputKeyPress.bind(this);
     }    
     
     render() {
@@ -61,6 +64,7 @@ class TextInputDialog extends Component {
                                     multiline
                                     label={this.props.label}
                                     defaultValue={this.props.text}
+                                    onKeyPress={this.handleInputKeyPress}
                                     />
                             </div>
 
@@ -79,6 +83,12 @@ class TextInputDialog extends Component {
             </React.Fragment>
         );
     }
+
+    handleInputKeyPress(e) {
+        if (e.key === 'Enter') {
+            this.props.onOkay(this.textInputRef.current.value);
+        }
+    } 
 }
 
 export default withTheme()(TextInputDialog);

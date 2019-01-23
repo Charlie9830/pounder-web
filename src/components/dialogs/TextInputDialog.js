@@ -52,6 +52,7 @@ class TextInputDialog extends Component {
             <React.Fragment>
                 <Modal 
                 open={this.props.isOpen}
+                onClick={() => { this.textInputRef.current.focus() }}
                 >
                     <Collapse in={this.props.isOpen} collapsedHeight="0px" >
                         <div style={gridStyle}>
@@ -67,7 +68,6 @@ class TextInputDialog extends Component {
                                     label={this.props.label}
                                     defaultValue={this.props.text}
                                     onKeyPress={this.handleInputKeyPress}
-                                    onBlur={() => { this.textInputRef.current.focus() }}
                                     />
                             </div>
 

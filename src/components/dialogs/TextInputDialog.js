@@ -50,7 +50,9 @@ class TextInputDialog extends Component {
 
         return (
             <React.Fragment>
-                <Modal open={this.props.isOpen}>
+                <Modal 
+                open={this.props.isOpen}
+                >
                     <Collapse in={this.props.isOpen} collapsedHeight="0px" >
                         <div style={gridStyle}>
                             <div style={titleContainer}>
@@ -65,15 +67,16 @@ class TextInputDialog extends Component {
                                     label={this.props.label}
                                     defaultValue={this.props.text}
                                     onKeyPress={this.handleInputKeyPress}
+                                    onBlur={() => { this.textInputRef.current.focus() }}
                                     />
                             </div>
 
                             <div style={actionsContainer}>
                                 <DialogActions>
                                     <Button variant="text" color="default" 
-                                    onClick={() => { this.props.onCancel()}}> Cancel </Button>
+                                    onTouchStart={() => { this.props.onCancel()}}> Cancel </Button>
                                     <Button variant="text" color="secondary"
-                                    onClick={() => { this.props.onOkay(this.textInputRef.current.value)}}> Okay </Button>
+                                    onTouchStart={() => { this.props.onOkay(this.textInputRef.current.value)}}> Okay </Button>
                                 </DialogActions>
                             </div>
                         </div>

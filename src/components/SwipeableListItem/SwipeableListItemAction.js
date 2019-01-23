@@ -2,9 +2,8 @@ import React from 'react';
 
 const SwipeableListItemAction = (props) => {
     let containerStyle = {
-        width: '64px',
+        width: '100%',
         height: '100%',
-        maxWidth: '64px',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',

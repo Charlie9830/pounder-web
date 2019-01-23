@@ -292,11 +292,12 @@ class Project extends React.Component {
                 />
 
                 let leftActions = [
-                    { value: 'moveTask', background: this.props.theme.palette.primary.light, icon: <MoveTaskIcon/> }
+                    { value: 'moveTask', background: this.props.theme.palette.primary.light, icon: <MoveTaskIcon/> },
+                    
                 ]
 
                 let rightActions = [
-                    { value: 'deleteTask', background: this.props.theme.palette.error.dark, icon: <DeleteIcon/>}
+                    { value: 'deleteTask', background: this.props.theme.palette.error.dark, icon: <DeleteIcon/>},
                 ]
 
                 return (

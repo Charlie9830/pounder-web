@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import Swipeable from 'react-swipeable';
 import SwipeableListItemAction from './SwipeableListItemAction';
+import { withSize } from 'react-sizeme';
+import { ClickAwayListener, withTheme } from '@material-ui/core';
 
-const leftThreshold = 128;
-const rightThreshold = 128;
+const swipeLeftThreshold = 64 * 1.5; // Todo Make these aware of their Children Sizes.
+const swipeRightThreshold = 64 * 1.5;
+const transitionDuration = 250;
 
 // Actions Arrays expect Array of Object Type {
 //    value: Returned as an argument in the Click handler.
@@ -17,11 +20,11 @@ class SwipeableListItem extends Component {
 
         // State.
         this.state = {
-            leftActionsWidth: 0,
-            rightActionsWidth: 0,
-            isLeftActionsOpen: false,
-            isRightActionsOpen: false,
-            childrenTranslate: 0,
+            isSwiping: false,
+            leftOffset: 0,
+            isLeftOpen: false,
+            rightOffset: 0,
+            isRightOpen: false,
         }
 
         // Refs.
@@ -32,53 +35,82 @@ class SwipeableListItem extends Component {
         this.handleSwipingRight = this.handleSwipingRight.bind(this);
         this.handleSwiped = this.handleSwiped.bind(this);
         this.processActions = this.processActions.bind(this);
+        this.reset = this.reset.bind(this);
     }
 
-    render() {
-        let leftActionsColumnWidth = this.state.isLeftActionsOpen ? 'max-content' : `${this.state.leftActionsWidth}px`;
-        let rightActionsColumnWidth = this.state.isRightActionsOpen ? 'max-content' : `${this.state.rightActionsWidth}px`;
-        let childrenWidth = this.childrenContainerRef.current === null ? `1fr` : `${this.childrenContainerRef.current.offsetWidth}px`;
+    componentDidUpdate(prevProps, prevState) {
+        // if (this.state.isSwiping === false) {
+        //     if (this.state.leftOffset > 0 && this.state.isLeftOpen === false) {
+        //         this.reset();
+        //     }
 
-        let containerGrid = {
-            width: '100%',
+        //     if (this.state.rightOffset > 0 && this.state.isRightOpen === false) {
+        //         this.reset();
+        //     }
+        // }
+    }
+    
+
+    render() {
+        let capturedWidth = 
+        this.state.isSwiping ||
+         this.state.leftOffset > 0 ||
+          this.state.rightOffset > 0 ?
+           this.props.size.width :
+            'unset'; // Capture the Width at Drag start and set it here. 
+                    // This stops the Text flowing downards as it its width is squeezed
+
+        let container = {
             position: 'relative',
-            overflowX: 'hidden',
             display: 'grid',
-            gridTemplateColumns: `[LeftActions]${leftActionsColumnWidth} [Children]${childrenWidth} [RightActions]${rightActionsColumnWidth}`,
+            gridTemplateColumns: `[LeftActions]auto [Children]1fr [RightActions]auto`,
+            width: capturedWidth,
+            overflowX: 'hidden', // With Width set above, container will crop the child, stopping the Document Width increasing.
         }
 
         let leftActionsContainer = {
             gridColumn: 'LeftActions',
+            width: `${this.state.leftOffset}px`,
+            overflowX: 'hidden',
+            transition: this.state.isSwiping ? 'unset' : `width ${transitionDuration}ms, margin-left ${transitionDuration}ms`,
+            marginLeft: `${this.state.rightOffset * -1}px`,
+
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'flex-start',
-            alignItems: 'center'
+            alignItems: 'stretch',
         }
 
         let childrenContainer = {
             gridColumn: 'Children',
-            placeSelf: 'center flex-start',
-            width: '100%',
-            marginLeft: `${(this.state.rightActionsWidth / 2) * -1 }px`
+            transform: 'scaleX(1)',
+            width: capturedWidth,
+            marginLeft: `${this.state.rightOffset * -1}px`,
+            transition:  this.state.isSwiping ? 'unset' : `margin-left ${transitionDuration}ms`,
         }
 
         let rightActionsContainer = {
             gridColumn: 'RightActions',
-            position: 'relative',
+            width: `${this.state.rightOffset}px`,
+            overflowX: 'hidden',
+            transition: this.state.isSwiping ? 'unset' : `width ${transitionDuration}ms`,
+
             display: 'flex',
             flexDirection: 'row-reverse',
             justifyContent: 'flex-start',
-            marginLeft: `${this.state.rightActionsWidth * -1}px`,
-            alignItems: 'center'
+            alignItems: 'stretch',
         }
 
         return (
-            <div style={containerGrid}>
-                <div style={leftActionsContainer}>
-                    { this.processActions(this.props.leftActions) }
-                </div>
+            <ClickAwayListener
+                touchEvent="onTouchStart"
+                onClickAway={() => { this.reset() }}>
+                <div style={container}>
+                    <div style={leftActionsContainer}>
+                        {this.processActions(this.props.leftActions)}
+                    </div>
 
-                <div style={childrenContainer}>
+                    <div style={childrenContainer}>
                         <Swipeable
                             onSwipingLeft={this.handleSwipingLeft}
                             onSwipingRight={this.handleSwipingRight}
@@ -87,25 +119,37 @@ class SwipeableListItem extends Component {
                                 {this.props.children}
                             </div>
                         </Swipeable>
-                </div>
+                    </div>
 
-                <div style={rightActionsContainer}>
-                    { this.processActions(this.props.rightActions) }
+                    <div style={rightActionsContainer}>
+                        {this.processActions(this.props.rightActions)}
+                    </div>
                 </div>
-            </div>
+            </ClickAwayListener>
         );
     }
 
-    handleActionClick(value) {
+    reset() {
         this.setState({
-            leftActionsWidth: 0,
-            rightActionsWidth: 0,
-            isLeftActionsOpen: false,
-            isRightActionsOpen: false,
-            childrenTranslate: 0,
+            isSwiping: false,
+            isLeftOpen: false,
+            isRightOpen: false,
+            leftOffset: 0.1,
+            rightOffset: 0.1,
         })
 
-        this.props.onActionClick(value);
+        // Wait for animation to finish.
+        setTimeout( () => {
+            this.setState({
+                leftOffset: 0,
+                rightOffset: 0,
+            })
+        }, transitionDuration)
+
+    }
+
+    handleActionClick(value) {
+        this.reset();
     }
 
     processActions(actions) {
@@ -124,58 +168,89 @@ class SwipeableListItem extends Component {
     }
 
     handleSwiped(e, deltaX, deltaY) {
-        if (this.state.isLeftActionsOpen) {
-
-        }
-
-        else if (this.state.isRightActionsOpen) {
-
+        if ( !this.state.isLeftOpen && !this.state.isRightOpen) {
+            // Threshold was not acheived.
+            this.reset();
         }
 
         else {
-            // Threshold was not acheived.
-            this.setState({
-                leftActionsWidth: 0,
-                rightActionsWidth: 0,
-                childrenTranslate: 0,
-            })
+            this.setState({ isSwiping: false });
         }
-        
     }
 
     handleSwipingLeft(e, deltaX) {
-        if (deltaX > leftThreshold) {
+        if (deltaX > swipeLeftThreshold) {
             // Threshold Acheived.
             this.setState({
-                isRightActionsOpen: true,
+                isSwiping: false,
+                rightOffset: 64, // TODO: Measure children and set this accordingly.
+                isRightOpen: true,
+                leftOffset: 0,
+                isLeftOpen: false,
             })
         }
 
         else {
             // Keep sliding open.
+            let baseUpdate = {
+                isSwiping: true,
+                rightOffset: deltaX,
+            }
+
+            // Start closing the Left Action if it's open.
+            let optionalUpdate = {};
+            if (this.state.isLeftOpen === true) {
+                let leftOffset = this.state.leftOffset - deltaX;
+                leftOffset = leftOffset > 0 ? leftOffset : 0;
+                optionalUpdate.leftOffset = leftOffset;
+
+                if (leftOffset === 0) {
+                    optionalUpdate.isLeftOpen = false;
+                }
+            }
+
             this.setState({
-                rightActionsWidth: deltaX,
-                childrenTranslate: deltaX * -1,
-            });
+                ...baseUpdate,
+                ...optionalUpdate,
+            })
         }
     }
 
     handleSwipingRight(e, deltaX) {
-        if (deltaX > rightThreshold) {
+        if (deltaX > swipeRightThreshold) {
             // Threshold Acheived.
             this.setState({
-                isLeftActionsOpen: true,
+                isSwiping: false,
+                leftOffset: 64, // TODO: Measure children and set this accordingly.
+                isLeftOpen: true,
             })
         }
 
         else {
             // Keep sliding open.
+            let baseUpdate = {
+                isSwiping: true,
+                leftOffset: deltaX,
+            }
+
+            // Start closing the Right Action if it's open.
+            let optionalUpdate = {};
+            if (this.state.isRightOpen === true ) {
+                let rightOffset = this.state.rightOffset - deltaX;
+                rightOffset = rightOffset > 0 ? rightOffset : 0;
+                optionalUpdate.rightOffset = rightOffset;
+
+                if (rightOffset === 0) {
+                    optionalUpdate.isRightOpen = false;
+                }
+            }
+
             this.setState({
-                leftActionsWidth: deltaX,
-                childrenTranslate: deltaX
-            });
+                ...baseUpdate,
+                ...optionalUpdate,
+            })
         }
     }
 }
 
-export default SwipeableListItem;
+export default withSize()(SwipeableListItem);

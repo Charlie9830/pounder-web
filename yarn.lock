@@ -71,11 +71,11 @@
     "@babel/runtime" "^7.2.0"
     recompose "0.28.0 - 0.30.0"
 
-"@material-ui/lab@^3.0.0-alpha.28":
-  version "3.0.0-alpha.28"
-  resolved "https://registry.yarnpkg.com/@material-ui/lab/-/lab-3.0.0-alpha.28.tgz#27fa74d0dffe8805b89e29b0843eae30d179c613"
+"@material-ui/lab@3.0.0-alpha.27":
+  version "3.0.0-alpha.27"
+  resolved "https://registry.yarnpkg.com/@material-ui/lab/-/lab-3.0.0-alpha.27.tgz#a61f7647d1223fcff30b118bda86ed24957b3ac6"
   dependencies:
-    "@babel/runtime" "^7.2.0"
+    "@babel/runtime" "7.2.0"
     "@material-ui/utils" "^3.0.0-alpha.2"
     classnames "^2.2.5"
     keycode "^2.1.9"
@@ -1169,6 +1169,10 @@ base@^0.11.1:
     isobject "^3.0.1"
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
+
+batch-processor@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/batch-processor/-/batch-processor-1.0.0.tgz#75c95c32b748e0850d10c2b168f6bdbe9891ace8"
 
 batch@0.6.1:
   version "0.6.1"
@@ -2420,6 +2424,12 @@ ee-first@1.1.1:
 electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.24:
   version "1.3.27"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.27.tgz#78ecb8a399066187bb374eede35d9c70565a803d"
+
+element-resize-detector@^1.1.12:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/element-resize-detector/-/element-resize-detector-1.2.0.tgz#63344fd6f4e5ecff6f018d027e17b281fd4fa338"
+  dependencies:
+    batch-processor "1.0.0"
 
 elliptic@^6.0.0:
   version "6.4.0"
@@ -4704,6 +4714,10 @@ lodash.templatesettings@^4.0.0:
   dependencies:
     lodash._reinterpolate "~3.0.0"
 
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+
 lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
@@ -6238,6 +6252,16 @@ react-scroll-to-component@^1.0.2:
   resolved "https://registry.yarnpkg.com/react-scroll-to-component/-/react-scroll-to-component-1.0.2.tgz#f260dc936c62a53e772786d7832fe0884e195354"
   dependencies:
     scroll-to "0.0.2"
+
+react-sizeme@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/react-sizeme/-/react-sizeme-2.5.2.tgz#e7041390cfb895ed15d896aa91d76e147e3b70b5"
+  dependencies:
+    element-resize-detector "^1.1.12"
+    invariant "^2.2.2"
+    lodash.debounce "^4.0.8"
+    lodash.throttle "^4.1.1"
+    shallowequal "^1.0.2"
 
 react-slidedown@^1.3.0:
   version "1.4.1"

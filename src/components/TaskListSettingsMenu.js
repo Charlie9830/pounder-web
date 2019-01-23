@@ -82,6 +82,8 @@ class TaskListSettingsMenu extends Component {
                         Move to project
                     </MenuItem>
 
+                    <Divider/>
+
                     <MenuItem
                         onClick={this.props.onDeleteButtonClick}>
                         <ListItemIcon>

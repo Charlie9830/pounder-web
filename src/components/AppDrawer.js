@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ProjectListItem from './ProjectListItem/ProjectListItem';
 import InviteListItem from './InviteListItem';
 import SwipeableListItem from './SwipeableListItem/SwipeableListItem';
+import AddNewProjectButton from './AddNewProjectButton';
 
 import { AppBar, Toolbar, Typography, Grid, IconButton, withTheme, ListSubheader, Divider, Fab } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
@@ -60,6 +61,7 @@ class AppDrawer extends Component {
         this.projectMapper = this.projectMapper.bind(this);
         this.getInvitesJSX = this.getInvitesJSX.bind(this);
         this.handleProjectActionClick = this.handleProjectActionClick.bind(this);
+        this.getAddProjectHintButtonJSX = this.getAddProjectHintButtonJSX.bind(this);
     }
 
     render() {
@@ -84,6 +86,8 @@ class AppDrawer extends Component {
                 </AppBar>
 
                 <TransitionList style={{marginTop: '56px'}}>
+                    { this.getAddProjectHintButtonJSX() }
+
                     {/* Invites  */} 
                     { this.getInvitesSubheading(this.props.invites.length > 0) }
                     { this.props.invites.length > 0 && this.getInvitesJSX() }
@@ -103,6 +107,23 @@ class AppDrawer extends Component {
                 </Fab>
             </FullScreenView>
         );
+    }
+
+    getAddProjectHintButtonJSX() {
+        if (this.props.invites.length === 0 &&
+        this.props.localProjects.length === 0 &&
+        this.props.remoteProjects.length === 0 ) {
+            return (
+                <ListItemTransition key="addnewhintbutton">
+                    <AddNewProjectButton onClick={() => {this.props.dispatch(addNewProjectAsync())}}/>
+                </ListItemTransition>
+                
+            )
+        }
+        
+        else {
+            return undefined;
+        }
     }
 
     getInvitesSubheading(show) {

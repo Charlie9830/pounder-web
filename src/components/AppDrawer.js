@@ -79,9 +79,6 @@ class AppDrawer extends Component {
                             <IconButton onClick={() => { this.props.dispatch(setIsAppSettingsOpen(true))}}>
                                 <SettingsIcon />
                             </IconButton>
-                            <IconButton>
-                                <AccountIcon />
-                            </IconButton>
                         </Grid>
                     </Toolbar>
                 </AppBar>

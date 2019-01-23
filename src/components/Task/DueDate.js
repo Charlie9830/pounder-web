@@ -1,8 +1,10 @@
 import React from 'react';
 import Color from 'color';
 import colorString from 'color-string';
+import { withTheme } from '@material-ui/core';
 
 const DueDate = (props) => {
+    let { theme } = props;
     let isSet = props.type !== "unset";
     let color = isSet ? props.color : "transparent";
     let textColor = props.type === "unset" ? "unset" : getTextColor(color)
@@ -16,8 +18,9 @@ const DueDate = (props) => {
         borderRadius: '50%',
         borderWidth: '1px',
         borderStyle: 'solid',
-        borderColor: isSet === true ? 'transparent' : 'gray',
+        borderColor: isSet === true ? 'transparent' : theme.palette.text.secondary,
         background: color,
+        margin: `${theme.spacing.unit}px`,
     }
 
     let textStyle = {
@@ -51,4 +54,4 @@ const getTextColor = (backgroundColor) => {
     }
 }
 
-export default DueDate;
+export default withTheme()(DueDate);

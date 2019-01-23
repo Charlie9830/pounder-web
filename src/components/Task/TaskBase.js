@@ -15,7 +15,7 @@ class TaskBase extends Component {
     componentDidMount() {
         let taskContainerHammer = new Hammer(this.taskContainerRef.current);
         taskContainerHammer.on('press', event => {
-            // this.props.onPress();
+            this.props.onPress();
         })
 
         let textContainerHammer = new Hammer(this.textContainerRef.current);

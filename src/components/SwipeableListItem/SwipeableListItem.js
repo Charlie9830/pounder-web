@@ -4,9 +4,20 @@ import SwipeableListItemAction from './SwipeableListItemAction';
 import { withSize } from 'react-sizeme';
 import { ClickAwayListener } from '@material-ui/core';
 
-const swipeLeftThreshold = 64 * 1.5; // Todo Make these aware of their Children Sizes.
-const swipeRightThreshold = 64 * 1.5;
 const transitionDuration = 250;
+const thresholdRatio = 1.5;
+const baseActionWidth = 64;
+const getSwipeLeftThreshold = (props) => {
+    return props.leftActions.length * baseActionWidth * thresholdRatio;
+}
+
+const getOpenChildrenWidth = (childrenCount) => {
+    return childrenCount * baseActionWidth;
+}
+
+const getSwipeRightThreshold = (props) => {
+    return props.rightActions.length * baseActionWidth * thresholdRatio;
+}
 
 // Actions Arrays expect Array of Object Type {
 //    value: Returned as an argument in the Click handler.
@@ -27,6 +38,9 @@ class SwipeableListItem extends Component {
             isRightOpen: false,
         }
 
+        // Class Storage.
+        this.timeouts = {}
+
         // Refs.
         this.childrenContainerRef = React.createRef();
 
@@ -36,6 +50,13 @@ class SwipeableListItem extends Component {
         this.handleSwiped = this.handleSwiped.bind(this);
         this.processActions = this.processActions.bind(this);
         this.reset = this.reset.bind(this);
+    }
+
+    componentWillUnmount() {
+        // Clear any Animation timers set by the 'reset' function.
+        for(let timerId in this.timeouts) {
+            clearTimeout(timerId);
+        }
     }
     
     render() {
@@ -126,12 +147,17 @@ class SwipeableListItem extends Component {
         })
 
         // Wait for animation to finish.
-        setTimeout( () => {
+        let timeoutId = setTimeout( () => {
             this.setState({
                 leftOffset: 0,
                 rightOffset: 0,
             })
-        }, transitionDuration)
+
+            this.timeouts[timeoutId] = undefined;
+
+        }, transitionDuration);
+
+        this.timeouts[timeoutId] = 0;
 
     }
 
@@ -166,11 +192,11 @@ class SwipeableListItem extends Component {
     }
 
     handleSwipingLeft(e, deltaX) {
-        if (deltaX > swipeLeftThreshold) {
+        if (deltaX > getSwipeLeftThreshold(this.props)) {
             // Threshold Acheived.
             this.setState({
                 isSwiping: false,
-                rightOffset: 64, // TODO: Measure children and set this accordingly.
+                rightOffset: getOpenChildrenWidth(this.props.rightActions.length),
                 isRightOpen: true,
                 leftOffset: 0,
                 isLeftOpen: false,
@@ -204,11 +230,11 @@ class SwipeableListItem extends Component {
     }
 
     handleSwipingRight(e, deltaX) {
-        if (deltaX > swipeRightThreshold) {
+        if (deltaX > getSwipeRightThreshold(this.props)) {
             // Threshold Acheived.
             this.setState({
                 isSwiping: false,
-                leftOffset: 64, // TODO: Measure children and set this accordingly.
+                leftOffset: getOpenChildrenWidth(this.props.leftActions.length),
                 isLeftOpen: true,
             })
         }

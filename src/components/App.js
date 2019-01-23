@@ -10,10 +10,10 @@ import {
     updateTaskCompleteAsync, setIsAppDrawerOpen, attachAuthListenerAsync, setFocusedTaskListId,
     updateTaskNameAsync, addNewTaskAsync, addNewTaskListAsync, openTaskInspectorAsync, selectProject,
     setIsShareMenuOpen, updateProjectNameAsync, setShowCompletedTasksAsync, setShowOnlySelfTasks,
-    startTaskMoveAsync, moveTaskAsync, updateTaskListSettingsAsync, setOpenTaskListSettingsMenuId,
+    moveTaskViaDialogAsync, updateTaskListSettingsAsync, setOpenTaskListSettingsMenuId,
     updateTaskListNameAsync, removeTaskListAsync, openChecklistSettings, manuallyRenewChecklistAsync,
     getLocalMuiThemes, getGeneralConfigAsync, moveTaskListToProjectAsync,
-    openJumpMenu, closeJumpMenu, removeProjectAsync,
+    openJumpMenu, closeJumpMenu, removeProjectAsync, removeTaskAsync,
 } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import { Drawer, CssBaseline, withTheme } from '@material-ui/core';
@@ -26,6 +26,7 @@ import GeneralSnackbar from './Snackbars/GeneralSnackbar';
 import VisibleChecklistSettingsMenu from './ChecklistSettingsMenu.js/ChecklistSettingsMenu';
 import VisibleThemeSettings from './AppSettingsMenu/ThemeSettings';
 import ItemSelectDialog from './dialogs/ItemSelectDialog';
+import QuickItemSelectDialog from './dialogs/QuickItemSelectDialog';
 
 class App extends React.Component {
     constructor(props) {
@@ -179,6 +180,15 @@ class App extends React.Component {
                     onAffirmative={this.props.itemSelectDialog.onAffirmative}
                     onNegative={this.props.itemSelectDialog.onNegative} />
 
+                <QuickItemSelectDialog
+                isOpen={this.props.quickItemSelectDialog.isOpen}
+                title={this.props.quickItemSelectDialog.title}
+                text={this.props.quickItemSelectDialog.text}
+                items={this.props.quickItemSelectDialog.items}
+                negativeButtonText={this.props.quickItemSelectDialog.negativeButtonText}
+                onSelect={this.props.quickItemSelectDialog.onSelect}
+                onNegative={this.props.quickItemSelectDialog.onNegative}/>
+
                     <GeneralSnackbar
                         isOpen={this.props.generalSnackbar.isOpen}
                         type={this.props.generalSnackbar.type}
@@ -288,10 +298,6 @@ class App extends React.Component {
 
     handleTaskListClick(taskListId) {
         this.props.dispatch(setFocusedTaskListId(taskListId));
-        
-        if (this.props.isATaskMoving) {
-            this.props.dispatch(moveTaskAsync(taskListId, this.props.movingTaskId));
-        }
     }
 
     getProjectRelatedTasks(tasks, projectId) {
@@ -328,15 +334,13 @@ class App extends React.Component {
         this.props.dispatch(setIsAppDrawerOpen(true));
     }
 
-    handleTaskActionClick(type, taskId, taskListId) {
+    handleTaskActionClick(type, taskId, taskListId, projectId) {
         if (type === 'moveTask') {
-            if (this.props.isATaskMoving === false) {
-                this.props.dispatch(startTaskMoveAsync(taskId, taskListId))
-            }
+            this.props.dispatch(moveTaskViaDialogAsync(taskId, taskListId, projectId));
         }
 
         if (type === 'deleteTask') {
-            
+            this.props.dispatch(removeTaskAsync(taskId));
         }
     }
 
@@ -371,6 +375,7 @@ const mapStateToProps = state => {
         openTaskListSettingsMenuId: state.openTaskListSettingsMenuId,
         openChecklistSettingsId: state.openChecklistSettingsId,
         itemSelectDialog: state.itemSelectDialog,
+        quickItemSelectDialog: state.quickItemSelectDialog,
         isJumpMenuOpen: state.isJumpMenuOpen,
     }
 }

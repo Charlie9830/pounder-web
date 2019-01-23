@@ -305,7 +305,7 @@ class Project extends React.Component {
                         <SwipeableListItem
                             leftActions={leftActions}
                             rightActions={rightActions}
-                            onActionClick={(value) => { this.props.onTaskActionClick(value, item.uid, item.taskList) }}>
+                            onActionClick={(value) => { this.props.onTaskActionClick(value, item.uid, item.taskList, item.project) }}>
                             <TaskBase
                                 selected={isTaskSelected}
                                 isMoving={isTaskMoving}

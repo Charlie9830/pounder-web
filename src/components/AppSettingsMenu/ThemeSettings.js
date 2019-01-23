@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List } from '@material-ui/core';
+import { withTheme } from '@material-ui/core';
 import { GetMuiColorArray, GetColor } from '../../utilities/MuiColors';
 import { connect } from 'react-redux';
 import {
@@ -69,7 +69,7 @@ class ThemeSettings extends Component {
 
         let jsx = muiThemes.map( item => {
             let rightActions = [];
-            if (item.isInBuild === false) {
+            if (item.isInbuilt === false) {
                 rightActions.push({value: 'delete', background: this.props.theme.palette.error.dark, icon: <DeleteIcon/>})
             }
 
@@ -140,5 +140,5 @@ let mapStateToProps = state => {
     }
 }
 
-let VisibleThemeSettings = connect(mapStateToProps)(ThemeSettings);
+let VisibleThemeSettings = connect(mapStateToProps)(withTheme()(ThemeSettings));
 export default VisibleThemeSettings;

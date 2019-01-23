@@ -1,14 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { inviteUserToProjectAsync, kickUserFromProjectAsync, updateMemberRoleAsync, setIsShareMenuOpen,
-removeRemoteProjectAsync, migrateProjectBackToLocalAsync, leaveRemoteProjectAsync } from 'handball-libs/libs/pounder-redux/action-creators';
+import {
+    inviteUserToProjectAsync, kickUserFromProjectAsync, updateMemberRoleAsync, setIsShareMenuOpen,
+    removeRemoteProjectAsync, migrateProjectBackToLocalAsync, leaveRemoteProjectAsync
+} from 'handball-libs/libs/pounder-redux/action-creators';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import { GetProjectMembers } from 'handball-libs/libs/pounder-utilities';
 import WaitingOverlay from './WaitingOverlay';
 
 
 import {
-    Toolbar, IconButton, TextField, Button, List, ListSubheader, Paper, Divider,
+    Toolbar, IconButton, List, ListSubheader, Paper, Divider, Typography
 } from '@material-ui/core';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -16,6 +18,25 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import FullScreenView from '../../layout-components/FullScreenView';
 import ActionButton from './ActionButton';
 import MemberListItem from './MemberListItem';
+import InviteControl from './InviteControl';
+
+
+let simpleGrid = {
+    display: 'grid',
+    width: '100%',
+    height: '100%',
+    gridTemplateRows: '[Toolbar]56px [Icon]auto [Content]1fr',
+}
+
+let simpleContentContainer = {
+    gridRow: 'Content',
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+}
 
 
 let grid = {
@@ -72,68 +93,115 @@ class ShareMenu extends React.Component {
 
     render() {
         let filteredMembers = GetProjectMembers(this.props.members, this.props.selectedProjectId);
+        let toolbarJSX = (
+            <Toolbar
+                disableGutters={true}>
+                <IconButton
+                    onClick={() => { this.props.dispatch(setIsShareMenuOpen(false)) }}>
+                    <ArrowBackIcon />
+                </IconButton>
+            </Toolbar>
+        )
 
+        let waitingOverlayJSX = (
+            <WaitingOverlay open={this.props.isShareMenuWaiting} message={this.props.shareMenuMessage}
+            subMessage={this.props.shareMenuSubMessage} />
+        )
+
+        // Inviting first User
+        if (filteredMembers.length === 0 && this.props.isShareMenuWaiting === true) {
+            return (
+                <FullScreenView>
+                    { toolbarJSX }
+                    { waitingOverlayJSX }
+                </FullScreenView>
+            )
+        }
+
+        // New Users invited yet.
+        if (filteredMembers.length === 0) {
+            return (
+                <FullScreenView>
+                    <div style={simpleGrid}>
+                        <div style={{ gridRow: 'Toolbar' }}>
+                            {toolbarJSX}
+                        </div>
+
+                        <div style={simpleContentContainer}>
+                            <Typography 
+                            variant='subtitle1'
+                            style={{marginBottom: '16px'}}
+                            align='center'>
+                                Add collaborators to your project and start Handballing jobs to eachother!
+                            </Typography>
+                            <Typography
+                            style={{marginBottom: '24px'}}
+                            align='center'
+                            color="textSecondary">
+                                Enter the email they used to sign up with below.
+                            </Typography>
+                            
+                            <InviteControl
+                            autoFocus={true}
+                            onInvite={(email) => { this.props.dispatch(inviteUserToProjectAsync(email)) }} />
+
+                        </div>
+                    </div>
+                </FullScreenView>
+            )
+        }
+
+        // Existing members already.
         return (
             <FullScreenView>
                 <div style={grid}>
                     <div style={{ gridRow: 'Toolbar' }}>
-                        <Toolbar
-                        disableGutters={true}>
-                            <IconButton
-                                onClick={() => { this.props.dispatch(setIsShareMenuOpen(false)) }}>
-                                <ArrowBackIcon />
-                            </IconButton>
-                        </Toolbar>
+                        {toolbarJSX}
                     </div>
 
-                    <div style={{ gridRow: 'Invite'}}>
+                    <div style={{ gridRow: 'Invite' }}>
                         <div style={inviteContainer}>
-                            <TextField
-                                placeholder="Email address"
-                                inputRef={this.emailInputRef}
-                                onKeyPress={this.handleEmailInputKeyPress} />
-                            <Button
-                                style={{ marginTop: '16px'}}
-                                variant="contained"
-                                onClick={this.handleInviteButtonClick}>
-                                Invite
-                             </Button>
+
+                            <InviteControl
+                                onInvite={(email) => { this.props.dispatch(inviteUserToProjectAsync(email)) }} />
+
                         </div>
                     </div>
 
-                        <Paper style={{...paperStyle, gridRow: 'Members', overflowY: 'scroll'}}>
-                            <List style={{padding: '8px 0px 8px 0px'}}>
-                                <ListSubheader disableSticky={true}> Owners </ListSubheader>
-                                <Divider />
-                                { this.getMembersJSX(filteredMembers, 'owner') }
+                    <Paper
+                        style={{ ...paperStyle, gridRow: 'Members', overflowY: 'scroll' }}>
+                        <List style={{ padding: '8px 0px 8px 0px' }}>
+                            <ListSubheader disableSticky={true}> Owners </ListSubheader>
+                            <Divider />
+                            {this.getMembersJSX(filteredMembers, 'owner')}
 
-                                <ListSubheader disableSticky={true}> Members </ListSubheader>
-                                <Divider />
-                                { this.getMembersJSX(filteredMembers, 'member') }
-                            </List>
-                            
-                        </Paper>
+                            <ListSubheader disableSticky={true}> Members </ListSubheader>
+                            <Divider />
+                            {this.getMembersJSX(filteredMembers, 'member')}
+                        </List>
 
-                    <div style={{ gridRow: 'Actions'}}>
+                    </Paper>
+
+                    <div style={{ gridRow: 'Actions' }}>
                         <Paper style={paperStyle}>
                             <div style={actionsContainer}>
-                                
+
 
                                 <ActionButton
-                                    onClick={() => {this.handleLeaveProjectButtonClick(filteredMembers)}}>
+                                    onClick={() => { this.handleLeaveProjectButtonClick(filteredMembers) }}>
                                     Leave
                         </ActionButton>
 
                                 <ActionButton
                                     disabled={!this.isCurrentUserAnOwner(filteredMembers)}
-                                    onClick={() => { this.handleMakePersonalButtonClick(filteredMembers)}}>
+                                    onClick={() => { this.handleMakePersonalButtonClick(filteredMembers) }}>
                                     Make Personal
                         </ActionButton>
 
-                        <ActionButton
+                                <ActionButton
                                     color="secondary"
                                     disabled={!this.isCurrentUserAnOwner(filteredMembers)}
-                                    onClick={() => {this.handleDeleteProjectButtonClick(filteredMembers)}}>
+                                    onClick={() => { this.handleDeleteProjectButtonClick(filteredMembers) }}>
                                     Delete
                         </ActionButton>
                             </div>
@@ -141,17 +209,16 @@ class ShareMenu extends React.Component {
                     </div>
                 </div>
 
-                <WaitingOverlay open={this.props.isShareMenuWaiting} message={this.props.shareMenuMessage}
-                    subMessage={this.props.shareMenuSubMessage} />
+                {waitingOverlayJSX}
 
-            </FullScreenView>      
+            </FullScreenView>
         )
     }
 
     handleMakePersonalButtonClick(filteredMembers) {
         if (this.isCurrentUserAnOwner(filteredMembers)) {
             this.props.dispatch(migrateProjectBackToLocalAsync(this.props.selectedProjectId));
-        }   
+        }
     }
 
     handleLeaveProjectButtonClick(filteredMembers) {
@@ -174,31 +241,31 @@ class ShareMenu extends React.Component {
 
     getMembersJSX(filteredMembers, role) {
         var membersJSX = [];
-        
+
         if (this.props.selectedProjectId !== -1) {
             var isCurrentUserOwner = this.isCurrentUserAnOwner(filteredMembers);
 
             var roledMembers = filteredMembers.filter(item => {
                 return item.role === role;
-            })            
+            })
 
-            membersJSX = roledMembers.map( item => {
+            membersJSX = roledMembers.map(item => {
                 var isUpdating = this.getIsMemberUpdating(item.userId, this.props.selectedProjectId);
 
                 return (
                     <MemberListItem
-                    key={item.userId}
-                    isUpdating={isUpdating}
-                    status={item.status}
-                    displayName={item.displayName}
-                    email={item.email}
-                    role={item.role}
-                    allowElevatedPrivileges={ isCurrentUserOwner }
-                    canBeDemoted={ !this.isCurrentUserTheOnlyOwner(filteredMembers) }
-                    canBeKicked={ isCurrentUserOwner && item.userId !== getUserUid() }
-                    onKick={ () => { this.props.dispatch(kickUserFromProjectAsync(this.props.selectedProjectId, item.userId)) }}
-                    onPromote={ () => { this.props.dispatch(updateMemberRoleAsync(item.userId, this.props.selectedProjectId, 'owner')) }}
-                    onDemote={ () => { this.props.dispatch(updateMemberRoleAsync(item.userId, this.props.selectedProjectId, 'member')) }}
+                        key={item.userId}
+                        isUpdating={isUpdating}
+                        status={item.status}
+                        displayName={item.displayName}
+                        email={item.email}
+                        role={item.role}
+                        allowElevatedPrivileges={isCurrentUserOwner}
+                        canBeDemoted={!this.isCurrentUserTheOnlyOwner(filteredMembers)}
+                        canBeKicked={isCurrentUserOwner && item.userId !== getUserUid()}
+                        onKick={() => { this.props.dispatch(kickUserFromProjectAsync(this.props.selectedProjectId, item.userId)) }}
+                        onPromote={() => { this.props.dispatch(updateMemberRoleAsync(item.userId, this.props.selectedProjectId, 'owner')) }}
+                        onDemote={() => { this.props.dispatch(updateMemberRoleAsync(item.userId, this.props.selectedProjectId, 'member')) }}
                     />
                 )
             })
@@ -249,16 +316,16 @@ class ShareMenu extends React.Component {
     parseStatusIntoKickButtonText(status) {
         switch (status) {
             case 'pending':
-            return 'Revoke';
+                return 'Revoke';
 
             case 'added':
-            return 'Kick';
+                return 'Kick';
 
             case 'rejected invite':
-            return 'Revoke';
+                return 'Revoke';
 
-            default: 
-            return '';
+            default:
+                return '';
         }
     }
 

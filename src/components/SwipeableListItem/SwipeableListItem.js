@@ -163,6 +163,8 @@ class SwipeableListItem extends Component {
 
     handleActionClick(value) {
         this.reset();
+
+        this.props.onActionClick(value);
     }
 
     processActions(actions) {

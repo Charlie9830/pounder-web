@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Swipeable from 'react-swipeable';
 import SwipeableListItemAction from './SwipeableListItemAction';
 import { withSize } from 'react-sizeme';
-import { ClickAwayListener, withTheme } from '@material-ui/core';
+import { ClickAwayListener } from '@material-ui/core';
 
 const swipeLeftThreshold = 64 * 1.5; // Todo Make these aware of their Children Sizes.
 const swipeRightThreshold = 64 * 1.5;
@@ -37,20 +37,7 @@ class SwipeableListItem extends Component {
         this.processActions = this.processActions.bind(this);
         this.reset = this.reset.bind(this);
     }
-
-    componentDidUpdate(prevProps, prevState) {
-        // if (this.state.isSwiping === false) {
-        //     if (this.state.leftOffset > 0 && this.state.isLeftOpen === false) {
-        //         this.reset();
-        //     }
-
-        //     if (this.state.rightOffset > 0 && this.state.isRightOpen === false) {
-        //         this.reset();
-        //     }
-        // }
-    }
     
-
     render() {
         let capturedWidth = 
         this.state.isSwiping ||

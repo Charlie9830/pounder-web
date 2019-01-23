@@ -304,7 +304,6 @@ class Project extends React.Component {
                     <ListItemTransition
                     key={item.uid}>
                         <SwipeableListItem
-                            
                             leftActions={leftActions}
                             rightActions={rightActions}
                             onActionClick={(value) => { this.props.onTaskActionClick(value, item.uid, item.taskList) }}>

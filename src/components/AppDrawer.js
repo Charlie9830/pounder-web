@@ -2,16 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ProjectListItem from './ProjectListItem/ProjectListItem';
 import InviteListItem from './InviteListItem';
+import SwipeableListItem from './SwipeableListItem/SwipeableListItem';
 
-import { AppBar, Toolbar, Typography, Grid, IconButton, List, ListSubheader, Divider, Fab } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Grid, IconButton, withTheme, ListSubheader, Divider, Fab } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import AccountIcon from '@material-ui/icons/AccountCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AddIcon from '@material-ui/icons/Add';
+import ShareIcon from '@material-ui/icons/Share';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-import { acceptProjectInviteAsync, denyProjectInviteAsync, addNewProjectAsync,
-setIsAppSettingsOpen, selectProject } from 'handball-libs/libs/pounder-redux/action-creators';
+import {
+    acceptProjectInviteAsync, denyProjectInviteAsync, addNewProjectAsync,
+    setIsAppSettingsOpen, selectProject, setIsShareMenuOpen, removeProjectAsync,
+} from 'handball-libs/libs/pounder-redux/action-creators';
 import FullScreenView from '../layout-components/FullScreenView';
 import TransitionList from './TransitionList/TransitionList';
 import ListItemTransition from './TransitionList/ListItemTransition';
@@ -54,6 +59,7 @@ class AppDrawer extends Component {
         // Method Bindings.
         this.projectMapper = this.projectMapper.bind(this);
         this.getInvitesJSX = this.getInvitesJSX.bind(this);
+        this.handleProjectActionClick = this.handleProjectActionClick.bind(this);
     }
 
     render() {
@@ -166,23 +172,43 @@ class AppDrawer extends Component {
 
     projectMapper(projects) {
         let jsx = projects.map( item => {
+            let leftActions = [ { value: 'share', background: this.props.theme.palette.primary.main, icon: <ShareIcon/> }];
+            let rightActions = [ {value: 'delete', background: this.props.theme.palette.error.dark, icon: <DeleteIcon/> }]
+
             return (
                 <ListItemTransition
                     key={item.uid}>
-                    <ProjectListItem
-                        onClick={() => { this.props.dispatch(selectProject(item.uid)) }}
-                        name={item.projectName}
-                        isFavorite={this.props.favouriteProjectId === item.uid}
-                        isSelected={this.props.selectedProjectId === item.uid}
-                        indicators={this.props.projectSelectorIndicators[item.uid]}
-                    />
+                    <SwipeableListItem
+                    leftActions={leftActions}
+                    rightActions={rightActions}
+                    onActionClick={(action) => { this.handleProjectActionClick(item.uid, action) }}>
+                        <ProjectListItem
+                            onClick={() => { this.props.dispatch(selectProject(item.uid)) }}
+                            name={item.projectName}
+                            isFavorite={this.props.favouriteProjectId === item.uid}
+                            isSelected={this.props.selectedProjectId === item.uid}
+                            indicators={this.props.projectSelectorIndicators[item.uid]}
+                        />
+                    </SwipeableListItem>
                 </ListItemTransition>
             )
         })
 
         return jsx;
     }
+
+    handleProjectActionClick(uid, action) {
+        if (action === 'share') {
+            this.props.dispatch(setIsShareMenuOpen(true));
+            this.props.dispatch(selectProject(uid));
+        }
+
+        if (action === 'delete') {
+            this.props.dispatch(removeProjectAsync(uid));
+        }
+    }
 }
+
 
 let mapStateToProps = (state) => {
     return {
@@ -197,6 +223,6 @@ let mapStateToProps = (state) => {
     }
 }
 
-let VisibleAppDrawer = connect(mapStateToProps)(withStyles(styles)(AppDrawer));
+let VisibleAppDrawer = connect(mapStateToProps)(withStyles(styles)(withTheme()(AppDrawer)));
 
 export default VisibleAppDrawer;

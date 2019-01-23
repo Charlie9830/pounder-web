@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { IconButton, Menu, MenuItem, Typography, Switch } from '@material-ui/core';
+import { IconButton, Menu, MenuItem, Typography, Switch, Divider, ListItemIcon } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/MoreVert';
+
+import DeleteIcon from '@material-ui/icons/Delete';
 
 class ProjectMenu extends Component {
     constructor(props) {
@@ -43,6 +45,16 @@ class ProjectMenu extends Component {
                     </MenuItem>
 
                     <MenuItem onClick={() => { this.handleMenuSelection('renameProject')}}> Rename project </MenuItem>
+
+                    <Divider/>
+
+                    <MenuItem
+                    onClick={() => { this.handleMenuSelection('deleteProject')}}>
+                        <ListItemIcon>
+                            <DeleteIcon/>
+                        </ListItemIcon>
+                        Delete Project
+                    </MenuItem>
                 </Menu>
             </React.Fragment>
         );
@@ -65,6 +77,10 @@ class ProjectMenu extends Component {
 
         if (selection === 'renameProject') {
             this.props.onRenameProjectButtonClick();
+        }
+
+        if (selection === 'deleteProject') {
+            this.props.onDeleteProjectButtonClick();
         }
         
     }

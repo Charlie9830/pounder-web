@@ -13,7 +13,7 @@ import {
     startTaskMoveAsync, moveTaskAsync, updateTaskListSettingsAsync, setOpenTaskListSettingsMenuId,
     updateTaskListNameAsync, removeTaskListAsync, openChecklistSettings, manuallyRenewChecklistAsync,
     getLocalMuiThemes, getGeneralConfigAsync, moveTaskListToProjectAsync,
-    openJumpMenu, closeJumpMenu,
+    openJumpMenu, closeJumpMenu, removeProjectAsync,
 } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import { Drawer, CssBaseline, withTheme } from '@material-ui/core';
@@ -55,6 +55,7 @@ class App extends React.Component {
         this.handleMoveTaskListButtonClick = this.handleMoveTaskListButtonClick.bind(this);
         this.handleJumpMenuOpen = this.handleJumpMenuOpen.bind(this);
         this.handleJumpMenuClose = this.handleJumpMenuClose.bind(this);
+        this.handleDeleteProjectButtonClick = this.handleDeleteProjectButtonClick.bind(this);
     }
 
     componentDidMount() {
@@ -139,6 +140,7 @@ class App extends React.Component {
                         onJumpMenuOpen={this.handleJumpMenuOpen}
                         onJumpMenuClose={this.handleJumpMenuClose}
                         isJumpMenuOpen={this.props.isJumpMenuOpen}
+                        onDeleteProjectButtonClick={this.handleDeleteProjectButtonClick}
                     />
 
                     <TextInputDialog
@@ -186,6 +188,10 @@ class App extends React.Component {
                     />
                 </React.Fragment>
         )
+    }
+
+    handleDeleteProjectButtonClick(projectId) {
+        this.props.dispatch(removeProjectAsync(projectId));
     }
 
     handleJumpMenuOpen() {

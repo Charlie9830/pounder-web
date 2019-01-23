@@ -168,6 +168,9 @@ class SwipeableListItem extends Component {
     }
 
     processActions(actions) {
+        if (actions === undefined) {
+            return null;
+        }
         let jsx = actions.map( (item, index) => {
             return (
                 <SwipeableListItemAction

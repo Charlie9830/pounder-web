@@ -85,7 +85,8 @@ class AppDrawer extends Component {
                     </Toolbar>
                 </AppBar>
 
-                <TransitionList style={{marginTop: '56px'}}>
+                <TransitionList 
+                style={{marginTop: '56px', marginBottom: '72px'}}>
                     { this.getAddProjectHintButtonJSX() }
 
                     {/* Invites  */} 

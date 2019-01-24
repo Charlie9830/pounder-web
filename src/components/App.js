@@ -91,7 +91,10 @@ class App extends React.Component {
                         <TaskInspector />
                     </Drawer>
 
-                    <Drawer open={this.props.isAppDrawerOpen} anchor="left">
+                    <Drawer
+                    open={this.props.isAppDrawerOpen}
+                    anchor="left"
+                    keepMounted={true}>
                         <VisibleAppDrawer />
                     </Drawer>
 

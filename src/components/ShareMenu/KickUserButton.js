@@ -8,7 +8,9 @@ const KickUserButton = (props) => {
     }
 
     return (
-        <IconButton onClick={props.onClick}>
+        <IconButton 
+        disabled={props.disabled}
+        onClick={props.onClick}>
             <RemoveIcon fontSize="small" />
         </IconButton>
     )

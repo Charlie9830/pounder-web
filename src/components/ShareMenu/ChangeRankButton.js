@@ -7,7 +7,9 @@ import ArrowDownIcon from '@material-ui/icons/ArrowDownward';
 const ChangeRankButton = (props) => {
     if (props.canPromote === true) {
         return (
-            <IconButton onClick={props.onPromote}>
+            <IconButton
+            disabled={props.disabled}
+             onClick={props.onPromote}>
                 <ArrowUpIcon fontSize="small"/>
             </IconButton>
         )
@@ -15,7 +17,9 @@ const ChangeRankButton = (props) => {
 
     if (props.canBeDemoted === true) {
         return (
-            <IconButton onClick={props.onDemote}>
+            <IconButton
+            disabled={props.disabled}
+             onClick={props.onDemote}>
                 <ArrowDownIcon fontSize="small"/>
             </IconButton>  
         );

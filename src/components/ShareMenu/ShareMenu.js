@@ -195,14 +195,11 @@ class ShareMenu extends React.Component {
                             
                             {this.getMembersJSX(filteredMembers, 'member')}
                         </TransitionList>
-
                     </Paper>
 
                     <div style={{ gridRow: 'Actions' }}>
                         <Paper style={paperStyle}>
                             <div style={actionsContainer}>
-
-
                                 <ActionButton
                                     onClick={() => { this.handleLeaveProjectButtonClick(filteredMembers) }}>
                                     Leave

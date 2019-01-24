@@ -236,7 +236,7 @@ class Project extends React.Component {
             })
 
             if (filteredTasks.length === 0) {
-                if (isChecklist) {
+                if (isChecklist && this.props.showOnlySelfTasks === false) {
                     return (
                         <RenewChecklistButton
                         disabled={this.props.movingTaskId !== -1}

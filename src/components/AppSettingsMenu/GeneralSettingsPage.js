@@ -77,7 +77,9 @@ class GeneralSettingsPage extends React.Component {
 
         // Build options into HTML select Element.
         return (
-            <Select value={favouriteProjectId}
+            <Select
+            native
+            value={favouriteProjectId}
             onChange={this.handleFavouriteProjectSelectChange}>
                 {optionsJSX}
             </Select>
@@ -88,7 +90,9 @@ class GeneralSettingsPage extends React.Component {
         var sortProjectsBy = this.props.generalConfig.sortProjectsBy === undefined ? 'alphabetically' : this.props.generalConfig.sortProjectsBy;
 
         return (
-            <Select value={sortProjectsBy}
+            <Select 
+            native
+            value={sortProjectsBy}
             onChange={this.handleSortProjectsBySelectorChange}>
                 <option key={0} value='alphabetically'> Alphabetically </option>
                 <option key={1} value='created'> Date created </option>

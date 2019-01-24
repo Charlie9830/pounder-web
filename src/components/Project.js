@@ -238,17 +238,23 @@ class Project extends React.Component {
             if (filteredTasks.length === 0) {
                 if (isChecklist && this.props.showOnlySelfTasks === false) {
                     return (
-                        <RenewChecklistButton
-                        disabled={this.props.movingTaskId !== -1}
-                        onClick={() => { this.props.onRenewChecklistButtonClick(taskListId)}} />
+                        <ListItemTransition
+                        key="renewchecklistbutton">
+                            <RenewChecklistButton
+                                disabled={this.props.movingTaskId !== -1}
+                                onClick={() => { this.props.onRenewChecklistButtonClick(taskListId) }} />
+                        </ListItemTransition>
                     )
                 }
 
                 else {
                     return (
-                        <AddNewTaskButton
-                        disabled={this.props.movingTaskId !== -1}
-                        onClick={() => { this.props.onAddNewTaskButtonClick(taskListId) }} />
+                        <ListItemTransition
+                        key="addtaskbutton">
+                            <AddNewTaskButton
+                                disabled={this.props.movingTaskId !== -1}
+                                onClick={() => { this.props.onAddNewTaskButtonClick(taskListId) }} />
+                        </ListItemTransition>
                     )
                 }
             }

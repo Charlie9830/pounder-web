@@ -3,18 +3,17 @@ import DueDateChit from './DueDateChit';
 import UnseenCommentsChit from './UnseenCommentsChit';
 import { ListItem, ListItemText, ListItemSecondaryAction, ListItemIcon, withTheme, Grid } from '@material-ui/core';
 
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavouriteIcon from '@material-ui/icons/Favorite';
 import ListItemTransition from '../TransitionList/ListItemTransition';
 
 
 const ProjectListItem = (props) => {
-    let { theme, name, isFavorite, indicators, isSelected, onClick } = props;
-    
+    let { theme, name, isFavourite, indicators, isSelected, onClick } = props;
     return (
             <ListItem
                 onClick={onClick}
                 selected={isSelected}>
-                {isFavorite && <ListItemIcon style={{ marginRight: '0px' }}><FavoriteIcon fontSize="small" /></ListItemIcon>}
+                {isFavourite && <ListItemIcon style={{ marginRight: '0px' }}><FavouriteIcon fontSize="small" color='disabled' /></ListItemIcon>}
 
                 <ListItemText primary={name} />
 

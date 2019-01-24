@@ -13,7 +13,7 @@ import {
     moveTaskViaDialogAsync, updateTaskListSettingsAsync, setOpenTaskListSettingsMenuId,
     updateTaskListNameAsync, removeTaskListAsync, openChecklistSettings, manuallyRenewChecklistAsync,
     getLocalMuiThemes, getGeneralConfigAsync, moveTaskListToProjectAsync,
-    openJumpMenu, closeJumpMenu, removeProjectAsync, removeTaskAsync,
+    openJumpMenu, closeJumpMenu, removeProjectAsync, removeTaskAsync, getAccountConfigAsync,
 } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import { Drawer, CssBaseline, withTheme } from '@material-ui/core';

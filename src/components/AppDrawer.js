@@ -189,6 +189,7 @@ class AppDrawer extends Component {
     }
 
     projectMapper(projects) {
+        let favouriteProjectId = this.props.accountConfig.favouriteProjectId === undefined ? '-1' : this.props.accountConfig.favouriteProjectId;
         let jsx = projects.map( item => {
             let leftActions = [ { value: 'share', background: this.props.theme.palette.primary.main, icon: <ShareIcon/> }];
             let rightActions = [ {value: 'delete', background: this.props.theme.palette.error.dark, icon: <DeleteIcon/> }]
@@ -203,7 +204,7 @@ class AppDrawer extends Component {
                         <ProjectListItem
                             onClick={() => { this.props.dispatch(selectProject(item.uid)) }}
                             name={item.projectName}
-                            isFavorite={this.props.favouriteProjectId === item.uid}
+                            isFavourite={favouriteProjectId === item.uid}
                             isSelected={this.props.selectedProjectId === item.uid}
                             indicators={this.props.projectSelectorIndicators[item.uid]}
                         />
@@ -234,7 +235,8 @@ let mapStateToProps = (state) => {
         remoteProjects: state.remoteProjects,
         invites: state.invites,
         projectSelectorIndicators: state.projectSelectorIndicators,
-        favouriteProjectId: state.favouriteProjectId,
+        generalConfig: state.generalConfig,
+        accountConfig: state.accountConfig,
         selectedProjectId: state.selectedProjectId,
         updatingInviteIds: state.updatingInviteIds,
         isASnackbarOpen: state.isASnackbarOpen,

@@ -19,6 +19,8 @@ import FullScreenView from '../../layout-components/FullScreenView';
 import ActionButton from './ActionButton';
 import MemberListItem from './MemberListItem';
 import InviteControl from './InviteControl';
+import TransitionList from '../TransitionList/TransitionList';
+import ListItemTransition from '../TransitionList/ListItemTransition';
 
 
 let simpleGrid = {
@@ -170,15 +172,29 @@ class ShareMenu extends React.Component {
 
                     <Paper
                         style={{ ...paperStyle, gridRow: 'Members', overflowY: 'scroll' }}>
-                        <List style={{ padding: '8px 0px 8px 0px' }}>
-                            <ListSubheader disableSticky={true}> Owners </ListSubheader>
-                            <Divider />
+                        <TransitionList style={{ padding: '8px 0px 8px 0px' }}>
+                            <ListItemTransition
+                            key="ownersheader">
+                                <ListSubheader disableSticky={true}> Owners </ListSubheader>
+                            </ListItemTransition>
+                            <ListItemTransition
+                            key="ownersdivider">
+                                <Divider />
+                            </ListItemTransition>
+                            
                             {this.getMembersJSX(filteredMembers, 'owner')}
 
-                            <ListSubheader disableSticky={true}> Members </ListSubheader>
-                            <Divider />
+                            <ListItemTransition
+                            key="memebersheader">
+                                <ListSubheader disableSticky={true}> Members </ListSubheader>
+                            </ListItemTransition>
+                            <ListItemTransition
+                            key="membersdivider">
+                                <Divider />
+                            </ListItemTransition>
+                            
                             {this.getMembersJSX(filteredMembers, 'member')}
-                        </List>
+                        </TransitionList>
 
                     </Paper>
 
@@ -253,20 +269,22 @@ class ShareMenu extends React.Component {
                 var isUpdating = this.getIsMemberUpdating(item.userId, this.props.selectedProjectId);
 
                 return (
-                    <MemberListItem
-                        key={item.userId}
-                        isUpdating={isUpdating}
-                        status={item.status}
-                        displayName={item.displayName}
-                        email={item.email}
-                        role={item.role}
-                        allowElevatedPrivileges={isCurrentUserOwner}
-                        canBeDemoted={!this.isCurrentUserTheOnlyOwner(filteredMembers)}
-                        canBeKicked={isCurrentUserOwner && item.userId !== getUserUid()}
-                        onKick={() => { this.props.dispatch(kickUserFromProjectAsync(this.props.selectedProjectId, item.userId)) }}
-                        onPromote={() => { this.props.dispatch(updateMemberRoleAsync(item.userId, this.props.selectedProjectId, 'owner')) }}
-                        onDemote={() => { this.props.dispatch(updateMemberRoleAsync(item.userId, this.props.selectedProjectId, 'member')) }}
-                    />
+                    <ListItemTransition
+                    key={item.userId}>
+                        <MemberListItem
+                            isUpdating={isUpdating}
+                            status={item.status}
+                            displayName={item.displayName}
+                            email={item.email}
+                            role={item.role}
+                            allowElevatedPrivileges={isCurrentUserOwner}
+                            canBeDemoted={!this.isCurrentUserTheOnlyOwner(filteredMembers)}
+                            canBeKicked={isCurrentUserOwner && item.userId !== getUserUid()}
+                            onKick={() => { this.props.dispatch(kickUserFromProjectAsync(this.props.selectedProjectId, item.userId)) }}
+                            onPromote={() => { this.props.dispatch(updateMemberRoleAsync(item.userId, this.props.selectedProjectId, 'owner')) }}
+                            onDemote={() => { this.props.dispatch(updateMemberRoleAsync(item.userId, this.props.selectedProjectId, 'member')) }}
+                        />
+                    </ListItemTransition>
                 )
             })
 

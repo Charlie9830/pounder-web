@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, IconButton, Typography, withTheme } from '@material-ui/core';
-import ChecklistIcon from '@material-ui/icons/Check';
+import ChecklistIcon from '@material-ui/icons/PlaylistAddCheck';
 import TaskListSettingsMenu from './TaskListSettingsMenu';
 
 
@@ -18,6 +18,8 @@ const TaskListToolbar = (props) => {
             <ChecklistIcon fontSize="small"/>
         </IconButton>
     )
+
+    let isChecklist = props.taskListSettings.checklistSettings.isChecklist;
 
     return (
         <div 
@@ -37,13 +39,13 @@ const TaskListToolbar = (props) => {
             </div>
         
             <div
-            style={{gridColumn: 'Title', placeSelf: 'center', marginLeft: '-48px'}}>
+            style={{gridColumn: 'Title', placeSelf: 'center', marginLeft: isChecklist ? '-4px' : '-48px' }}>
                 <Typography variant="subtitle1"> {props.name} </Typography>
             </div>
             
             <div
             style={{gridColumn: 'ChecklistIndicator', placeSelf: 'center flex-end'}}>
-                { props.taskListSettings.checklistSettings.isChecklist && checklistIndicator }
+                { isChecklist  && checklistIndicator }
             </div>
 
         </div>

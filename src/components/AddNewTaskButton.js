@@ -7,7 +7,7 @@ const AddNewTaskButton = (props) => {
     return (
         <Button
             variant="text"
-            color="secondary"
+            color="primary"
             onClick={props.onClick}
             disabled={props.disabled}>
             <AddIcon />

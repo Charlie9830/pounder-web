@@ -179,6 +179,7 @@ class Project extends React.Component {
                 
                 <Fab
                     className={secondaryFabClassName}
+                    color="secondary"
                     onClick={this.props.onAddNewTaskListButtonClick}>
                     <AddTaskListIcon />
                 </Fab>

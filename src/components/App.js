@@ -57,6 +57,7 @@ class App extends React.Component {
         this.handleJumpMenuOpen = this.handleJumpMenuOpen.bind(this);
         this.handleJumpMenuClose = this.handleJumpMenuClose.bind(this);
         this.handleDeleteProjectButtonClick = this.handleDeleteProjectButtonClick.bind(this);
+        
     }
 
     componentDidMount() {
@@ -106,8 +107,6 @@ class App extends React.Component {
                         <VisibleChecklistSettingsMenu />
                     </Drawer>
 
-               
-
                     <Project
                         projectId={this.props.selectedProjectId}
                         projectName={this.getProjectName(this.props.projects, this.props.selectedProjectId)}
@@ -145,6 +144,7 @@ class App extends React.Component {
                         onJumpMenuClose={this.handleJumpMenuClose}
                         isJumpMenuOpen={this.props.isJumpMenuOpen}
                         onDeleteProjectButtonClick={this.handleDeleteProjectButtonClick}
+                        enableStates={this.props.enableStates}
                     />
 
                     <TextInputDialog
@@ -380,6 +380,7 @@ const mapStateToProps = state => {
         itemSelectDialog: state.itemSelectDialog,
         quickItemSelectDialog: state.quickItemSelectDialog,
         isJumpMenuOpen: state.isJumpMenuOpen,
+        enableStates: state.enableStates,
     }
 }
 

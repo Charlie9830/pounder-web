@@ -5,7 +5,7 @@ import InviteListItem from './InviteListItem';
 import SwipeableListItem from './SwipeableListItem/SwipeableListItem';
 import AddNewProjectButton from './AddNewProjectButton';
 
-import { AppBar, Toolbar, Typography, Grid, IconButton, withTheme, ListSubheader, Divider, Fab } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Grid, IconButton, withTheme, ListSubheader, Divider, Fab, Zoom } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import AccountIcon from '@material-ui/icons/AccountCircle';
@@ -102,15 +102,21 @@ class AppDrawer extends Component {
                     { this.props.remoteProjects.length > 0 && this.getRemoteProjectsSubheading() && this.projectMapper(this.props.remoteProjects) }
                 </TransitionList>
 
-                <Fab className={classes[fabClassName]}
-                onClick={() => { this.props.dispatch(addNewProjectAsync()) }}>
-                    <AddIcon/>
-                </Fab>
+                <Zoom in={this.props.enableStates.newProject}>
+                    <Fab className={classes[fabClassName]}
+                        onClick={() => { this.props.dispatch(addNewProjectAsync()) }}>
+                        <AddIcon />
+                    </Fab>
+                </Zoom>
             </FullScreenView>
         );
     }
 
     getAddProjectHintButtonJSX() {
+        if (this.props.enableStates.newProject === false ) {
+            return null;
+        }
+
         if (this.props.invites.length === 0 &&
         this.props.localProjects.length === 0 &&
         this.props.remoteProjects.length === 0 ) {
@@ -241,6 +247,7 @@ let mapStateToProps = (state) => {
         selectedProjectId: state.selectedProjectId,
         updatingInviteIds: state.updatingInviteIds,
         isASnackbarOpen: state.isASnackbarOpen,
+        enableStates: state.enableStates,
     }
 }
 

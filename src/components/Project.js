@@ -22,7 +22,7 @@ import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import { TaskMetadataStore } from 'handball-libs/libs/pounder-stores';
 import { ParseDueDate } from 'handball-libs/libs/pounder-utilities';
 
-import { AppBar, Toolbar, Typography, withTheme, IconButton, Fab} from '@material-ui/core';
+import { AppBar, Toolbar, Typography, withTheme, IconButton, Fab, Zoom} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -54,7 +54,7 @@ let styles = theme => {
         primaryFabMoveUp: {
             ...primaryFabBase,
             transform: 'translate3d(0, -46px, 0)',
-            transition: theme.transitions.create('transform', {
+            transition: theme.transitions.create(['transform', 'bottom'], {
                 duration: theme.transitions.duration.enteringScreen,
                 easing: theme.transitions.easing.easeOut,
             }),
@@ -63,7 +63,7 @@ let styles = theme => {
         primaryFabMoveDown: {
             ...primaryFabBase,
             transform: 'translate3d(0, 0, 0)',
-            transition: theme.transitions.create('transform', {
+            transition: theme.transitions.create(['transform', 'bottom'], {
                 duration: theme.transitions.duration.leavingScreen,
                 easing: theme.transitions.easing.sharp,
             }),
@@ -72,7 +72,7 @@ let styles = theme => {
         secondaryFabMoveUp: {
             ...secondaryFabBase,
             transform: 'translate3d(0, -46px, 0)',
-            transition: theme.transitions.create('transform', {
+            transition: theme.transitions.create(['transform', 'bottom'], {
                 duration: theme.transitions.duration.enteringScreen,
                 easing: theme.transitions.easing.easeOut,
             }),
@@ -81,7 +81,7 @@ let styles = theme => {
         secondaryFabMoveDown: {
             ...secondaryFabBase,
             transform: 'translate3d(0, 0, 0)',
-            transition: theme.transitions.create('transform', {
+            transition: theme.transitions.create(['transform', 'bottom'], {
                 duration: theme.transitions.duration.leavingScreen,
                 easing: theme.transitions.easing.sharp,
             }),
@@ -110,13 +110,13 @@ class Project extends React.Component {
         this.getTaskSorter = this.getTaskSorter.bind(this);
         this.getFilteredTaskLists = this.getFilteredTaskLists.bind(this);
         this.handleJumpMenuItemClick = this.handleJumpMenuItemClick.bind(this);
+        this.getFabClassNames = this.getFabClassNames.bind(this);
     }
 
     render() {
-        let { theme, classes } = this.props;
-        const primaryFabClassName = this.props.isASnackbarOpen ? classes['primaryFabMoveUp'] : classes['primaryFabMoveDown'];
-        const secondaryFabClassName = this.props.isASnackbarOpen ? classes['secondaryFabMoveUp'] : classes['secondaryFabMoveDown'];
-
+        let { theme} = this.props;
+        const { primaryFabClassName, secondaryFabClassName } = this.getFabClassNames();
+        
         let filteredTaskLists = this.getFilteredTaskLists();
 
         let contentGridStyle = {
@@ -130,7 +130,6 @@ class Project extends React.Component {
             alignItems: 'center',
             overflowY: 'scroll',
         }
-
         return (
             <React.Fragment>
                 <AppBar>
@@ -167,13 +166,16 @@ class Project extends React.Component {
                     {this.getTaskListsJSX(filteredTaskLists)}
                     <AddNewTaskListButton onClick={this.props.onAddNewTaskListButtonClick} />
                 </div>
-                        
-                <Fab
-                    className={primaryFabClassName}
-                    color="primary"
-                    onClick={this.props.onAddNewTaskButtonClick}>
-                    <AddIcon />
-                </Fab>
+                
+                <Zoom 
+                in={this.props.enableStates.newTaskFab}>
+                    <Fab
+                        className={primaryFabClassName}
+                        color="primary"
+                        onClick={this.props.onAddNewTaskButtonClick}>
+                        <AddIcon />
+                    </Fab>
+                </Zoom>
                 
                 <Fab
                     className={secondaryFabClassName}
@@ -183,6 +185,22 @@ class Project extends React.Component {
 
             </React.Fragment>
         )
+    }
+
+    getFabClassNames() {
+        let { classes } = this.props;
+        const primaryFabClassName = this.props.isASnackbarOpen ? classes['primaryFabMoveUp'] : classes['primaryFabMoveDown'];
+        let secondaryFabClassName = this.props.isASnackbarOpen ? classes['secondaryFabMoveUp'] : classes['secondaryFabMoveDown'];
+
+        // Override if the Primary button is going to be hidden so the secondary will 'take it's place'.
+        if (this.props.enableStates.newTaskFab === false ) {
+            secondaryFabClassName = primaryFabClassName;
+        }
+
+        return {
+            primaryFabClassName,
+            secondaryFabClassName,
+        }
     }
 
     handleJumpMenuItemClick(id) {

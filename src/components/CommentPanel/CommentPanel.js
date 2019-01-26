@@ -25,6 +25,10 @@ let commentContainerStyle = {
 
 let spinnerContainer = {
     ...commentContainerStyle,
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
 }
@@ -57,7 +61,8 @@ class CommentPanel extends Component {
     render() {
         return (
             <div style={gridStyle}>
-                <Panel isLoadingComments={this.props.isLoadingComments}>
+                <Panel 
+                isLoadingComments={this.props.isLoadingComments}>
                     { this.getCommentsJSX() }
                 </Panel>
                     

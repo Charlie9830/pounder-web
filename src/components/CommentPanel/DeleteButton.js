@@ -8,7 +8,8 @@ const DeleteButton = (props) => {
     }
     
     return (
-        <IconButton>
+        <IconButton
+        onClick={props.onClick}>
             <DeleteIcon/>
         </IconButton>
     );

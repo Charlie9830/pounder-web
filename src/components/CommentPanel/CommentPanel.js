@@ -70,7 +70,7 @@ class CommentPanel extends Component {
     }
 
     getCommentsJSX() {
-        let sortedComments = this.props.comments.sort(this.commentSorter);
+        let sortedComments = this.props.comments.slice().sort(this.commentSorter);
 
         let jsx = sortedComments.map( item => {
             let canDelete = item.createdBy === getUserUid();
@@ -86,7 +86,7 @@ class CommentPanel extends Component {
                 isUnread={isUnread}
                 canDelete={canDelete}
                 isSynced={item.isSynced}
-                onDeleteButtonClick={() => { this.props.onCommentDelete(item.uid)}}
+                onDelete={() => { this.props.onCommentDelete(item.uid)}}
                 />
             )
         })
@@ -94,7 +94,7 @@ class CommentPanel extends Component {
         jsx.unshift(<ShowMoreButton
             key="showmorebutton"
             isLoadingMore={this.props.isPaginating}
-            hasMoreComments={!this.props.isAllCommentsFetched}
+            hasMoreComments={!this.props.isAllLoaded}
             onClick={this.props.onPaginateComments} />
         )
 

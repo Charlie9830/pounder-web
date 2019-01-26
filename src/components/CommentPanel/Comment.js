@@ -79,7 +79,9 @@ class Comment extends Component {
 
                     <div
                     style={deleteButtonContainer}>
-                        <DeleteButton show={this.state.isMouseOver}/>
+                        <DeleteButton
+                        onClick={this.props.onDelete}
+                        show={this.state.isMouseOver}/>
                     </div>
                 </div>
             </ListItem>

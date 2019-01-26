@@ -105,6 +105,8 @@ class TaskInspector extends Component {
                         <ExpandingCommentPanel
                             comments={this.props.taskComments}
                             isLoadingComments={this.props.isGettingTaskComments}
+                            isPaginating={this.props.isTaskCommentsPaginating}
+                            isAllLoaded={this.props.isAllTaskCommentsFetched}
                             onCommentPost={(text) => { this.props.dispatch(postNewCommentAsync(task.uid, text)) }}
                             onCommentDelete={(commentId) => { this.props.dispatch(deleteTaskCommentAsync(task.uid, commentId)) }}
                             onPaginateComments={() => { this.props.dispatch(paginateTaskCommentsAsync(task.uid)) }}
@@ -131,6 +133,8 @@ const mapStateToProps = (state) => {
         memberLookup: state.memberLookup,
         members: state.members,
         isSelectedProjectRemote: state.isSelectedProjectRemote,
+        isAllTaskCommentsFetched: state.isAllTaskCommentsFetched,
+        isTaskCommentsPaginating: state.isTaskCommentsPaginating,
     }
 }
 

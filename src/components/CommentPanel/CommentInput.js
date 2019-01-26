@@ -32,7 +32,7 @@ class NakedCommentInput extends Component {
                     inputRef={this.textFieldRef}
                     multiline
                     placeholder="Add a comment"
-                    onKeyPress={(e) => { if (e.key === "Enter") this.handlePostComment() }}
+                    onKeyUp={(e) => { if (e.key === "Enter") this.handlePostComment() }}
                     />
                 </div>
 

@@ -30,6 +30,7 @@ class ExpandingCommentPanel extends Component {
                 {/* Preview Comment */} 
                 <CommentPanel
                 onCommentPost={ () => {} }
+                disableInteraction={true}
                 disableSyncStatus={true}
                 comments={this.props.previewComments}
                 isLoadingComments={false}

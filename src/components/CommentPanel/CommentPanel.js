@@ -90,7 +90,8 @@ class CommentPanel extends Component {
             let timeAgo = Moment(item.created).fromNow();
             let isUnread = !item.seenBy.some(item => { return item === getUserUid() })
 
-            let rightActions = canDelete === true ? [ { value: 'delete', background: this.props.theme.palette.error.dark, icon: <DeleteIcon/> }] :
+            let rightActions = canDelete === true && !this.props.disableInteraction ?
+            [ { value: 'delete', background: this.props.theme.palette.error.dark, icon: <DeleteIcon/> }] :
             null;
 
             return (
@@ -105,9 +106,7 @@ class CommentPanel extends Component {
                             timeAgo={timeAgo}
                             displayName={item.displayName}
                             isUnread={isUnread}
-                            canDelete={canDelete}
                             isSynced={item.isSynced}
-                            onDelete={() => { this.props.onCommentDelete(item.uid) }}
                         />
                     </SwipeableListItem>
                 </ListItemTransition>

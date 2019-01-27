@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { updateTaskDueDateAsync, updateTaskPriorityAsync, updateTaskAssignedToAsync,
     postNewCommentAsync, paginateTaskCommentsAsync, deleteTaskCommentAsync,
-    updateTaskNoteAsync, closeTaskInspectorAsync } from 'handball-libs/libs/pounder-redux/action-creators';
+    updateTaskNoteAsync, closeTaskInspectorAsync, getTaskCommentsAsync } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import { GetProjectMembers } from 'handball-libs/libs/pounder-utilities';
 
@@ -103,7 +103,9 @@ class TaskInspector extends Component {
                 <Paper style={paperStyle}>
                     <div>
                         <ExpandingCommentPanel
+                            previewComments={task.commentPreview}
                             comments={this.props.taskComments}
+                            onOpen={ () => { this.props.dispatch(getTaskCommentsAsync(task.uid))}}
                             isLoadingComments={this.props.isGettingTaskComments}
                             isPaginating={this.props.isTaskCommentsPaginating}
                             isAllLoaded={this.props.isAllTaskCommentsFetched}

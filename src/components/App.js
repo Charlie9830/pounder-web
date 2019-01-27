@@ -8,7 +8,7 @@ import '../assets/css/App.css';
 import { connect } from 'react-redux';
 import {
     updateTaskCompleteAsync, setIsAppDrawerOpen, attachAuthListenerAsync, setFocusedTaskListId,
-    updateTaskNameAsync, addNewTaskAsync, addNewTaskListAsync, openTaskInspectorAsync, selectProject,
+    updateTaskNameAsync, addNewTaskAsync, addNewTaskListAsync, openTaskInspector, selectProject,
     setIsShareMenuOpen, updateProjectNameAsync, setShowCompletedTasksAsync, setShowOnlySelfTasks,
     moveTaskViaDialogAsync, updateTaskListSettingsAsync, setOpenTaskListSettingsMenuId,
     updateTaskListNameAsync, removeTaskListAsync, openChecklistSettings, manuallyRenewChecklistAsync,
@@ -269,7 +269,7 @@ class App extends React.Component {
     }
 
     handleDueDateContainerTap(taskId) {
-        this.props.dispatch(openTaskInspectorAsync(taskId));
+        this.props.dispatch(openTaskInspector(taskId));
     }
 
     handleAddNewTaskListButtonClick() {

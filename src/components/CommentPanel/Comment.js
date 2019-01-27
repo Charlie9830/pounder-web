@@ -38,7 +38,6 @@ let deleteButtonContainer = {
     placeSelf: 'center center',
 }
 
-
 class Comment extends Component {
     constructor(props) {
         super(props);
@@ -50,7 +49,7 @@ class Comment extends Component {
     }
 
     render() {
-        let timeAgo = this.props.isSynced ? this.props.timeAgo : "Not Synced";
+        let timeAgo = this.props.isSynced || this.props.disableSyncStatus === true ? this.props.timeAgo : "Not Synced";
 
         return (
             <ListItem

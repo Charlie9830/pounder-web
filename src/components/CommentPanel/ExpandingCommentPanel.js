@@ -15,26 +15,46 @@ class ExpandingCommentPanel extends Component {
         this.state = {
             isOpen: false,
         }
+
+        // Method Bindings.
+        this.handleContainerClick = this.handleContainerClick.bind(this);
     }
     
 
     render() {
         return (
             <div 
+            ref={this.anchorRef}
             style={{padding: '8px'}}
-            onClick={() => { if (this.state.isOpen === false) this.setState({ isOpen: true })}}>
-                <CommentInput
-                 ref={this.anchorRef}
-                 onPost={this.props.onCommentPost}/>
+            onClick={this.handleContainerClick}>
+                {/* Preview Comment Container  */} 
+                <CommentPanel
+                {...this.props}
+                disableSyncStatus={true}
+                comments={this.props.previewComments}
+                isLoadingComments={false}
+                isPaginating={false}
+                disableShowMoreButton={true}/>
 
                 <Expander
                     open={this.state.isOpen}
                     anchorEl={this.anchorRef.current}
                     onClose={() => { this.setState({ isOpen: false }) }}>
+                    {/* Full Comments  */} 
                     <CommentPanel {...this.props} />
                 </Expander>
             </div>
         );
+    }
+
+    handleContainerClick() {
+        if (this.state.isOpen === false) {
+            this.setState({ isOpen: true })
+            
+            if (this.props.onOpen !== undefined) {
+                this.props.onOpen();
+            }
+        }  
     }
 }
 

@@ -85,6 +85,7 @@ class CommentPanel extends Component {
             return (
                 <Comment 
                 key={item.uid}
+                disableSyncStatus={this.props.disableSyncStatus}
                 text={item.text}
                 timeAgo={timeAgo}
                 displayName={item.displayName}
@@ -96,13 +97,15 @@ class CommentPanel extends Component {
             )
         })
 
-        jsx.unshift(<ShowMoreButton
-            key="showmorebutton"
-            isLoadingMore={this.props.isPaginating}
-            hasMoreComments={!this.props.isAllLoaded}
-            onClick={this.props.onPaginateComments} />
-        )
-
+        if (this.props.disableShowMoreButton !== true) {
+            jsx.unshift(<ShowMoreButton
+                key="showmorebutton"
+                isLoadingMore={this.props.isPaginating}
+                hasMoreComments={!this.props.isAllLoaded}
+                onClick={this.props.onPaginateComments} />
+            )
+        }
+        
         return jsx;
     }
 

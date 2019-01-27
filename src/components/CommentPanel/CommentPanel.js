@@ -4,8 +4,9 @@ import CommentInput from './CommentInput';
 import ShowMoreButton from './ShowMoreButton';
 import Comment from './Comment';
 import SwipeableListItem from '../SwipeableListItem/SwipeableListItem';
+import TransitionList from '../TransitionList/TransitionList';
+import ListItemTransition from '../TransitionList/ListItemTransition';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
-
 import { CircularProgress, withTheme } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -66,7 +67,9 @@ class CommentPanel extends Component {
             <div style={gridStyle}>
                 <Panel 
                 isLoadingComments={this.props.isLoadingComments}>
-                    { this.getCommentsJSX() }
+                    <TransitionList>
+                        {this.getCommentsJSX()}
+                    </TransitionList>
                 </Panel>
                     
 
@@ -89,30 +92,35 @@ class CommentPanel extends Component {
             null;
 
             return (
-                <SwipeableListItem
-                key={item.uid}
-                rightActions={rightActions}
-                onActionClick={(action) => { this.props.onCommentDelete(item.uid)}}>
-                    <Comment
-                        disableSyncStatus={this.props.disableSyncStatus}
-                        text={item.text}
-                        timeAgo={timeAgo}
-                        displayName={item.displayName}
-                        isUnread={isUnread}
-                        canDelete={canDelete}
-                        isSynced={item.isSynced}
-                        onDelete={() => { this.props.onCommentDelete(item.uid) }}
-                    />
-                </SwipeableListItem>
+                <ListItemTransition
+                key={item.uid}>
+                    <SwipeableListItem
+                        rightActions={rightActions}
+                        onActionClick={(action) => { this.props.onCommentDelete(item.uid) }}>
+                        <Comment
+                            disableSyncStatus={this.props.disableSyncStatus}
+                            text={item.text}
+                            timeAgo={timeAgo}
+                            displayName={item.displayName}
+                            isUnread={isUnread}
+                            canDelete={canDelete}
+                            isSynced={item.isSynced}
+                            onDelete={() => { this.props.onCommentDelete(item.uid) }}
+                        />
+                    </SwipeableListItem>
+                </ListItemTransition>
             )
         })
 
         if (this.props.disableShowMoreButton !== true) {
-            jsx.unshift(<ShowMoreButton
-                key="showmorebutton"
-                isLoadingMore={this.props.isPaginating}
-                hasMoreComments={!this.props.isAllLoaded}
-                onClick={this.props.onPaginateComments} />
+            jsx.unshift(
+                <ListItemTransition
+                key="showmorebutton">
+                    <ShowMoreButton
+                        isLoadingMore={this.props.isPaginating}
+                        hasMoreComments={!this.props.isAllLoaded}
+                        onClick={this.props.onPaginateComments} />
+                </ListItemTransition>
             )
         }
         

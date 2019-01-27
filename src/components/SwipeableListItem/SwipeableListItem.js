@@ -8,7 +8,7 @@ const transitionDuration = 250;
 const thresholdRatio = 1.5;
 const baseActionWidth = 64;
 const getSwipeLeftThreshold = (props) => {
-    if (props.leftActions === undefined) {
+    if (props.leftActions === undefined || props.leftActions === null) {
         return 0;
     }
 
@@ -20,7 +20,7 @@ const getOpenChildrenWidth = (childrenCount) => {
 }
 
 const getSwipeRightThreshold = (props) => {
-    if (props.rightActions === undefined) {
+    if (props.rightActions === undefined || props.rightActions === null) {
         return 0;
     }
 
@@ -176,7 +176,7 @@ class SwipeableListItem extends Component {
     }
 
     processActions(actions) {
-        if (actions === undefined) {
+        if (actions === undefined || actions === null) {
             return null;
         }
         let jsx = actions.map( (item, index) => {
@@ -209,7 +209,7 @@ class SwipeableListItem extends Component {
             // Threshold Acheived.
             this.setState({
                 isSwiping: false,
-                rightOffset: getOpenChildrenWidth(this.props.rightActions === undefined ? 0 : this.props.rightActions.length),
+                rightOffset: getOpenChildrenWidth(this.props.rightActions === undefined || this.props.rightActions === null ? 0 : this.props.rightActions.length),
                 isRightOpen: true,
                 leftOffset: 0,
                 isLeftOpen: false,
@@ -247,7 +247,7 @@ class SwipeableListItem extends Component {
             // Threshold Acheived.
             this.setState({
                 isSwiping: false,
-                leftOffset: getOpenChildrenWidth(this.props.leftActions === undefined ? 0 : this.props.leftActions.length),
+                leftOffset: getOpenChildrenWidth(this.props.leftActions === undefined || this.props.leftActions === null ? 0 : this.props.leftActions.length),
                 isLeftOpen: true,
             })
         }

@@ -3,9 +3,12 @@ import Moment from 'moment';
 import CommentInput from './CommentInput';
 import ShowMoreButton from './ShowMoreButton';
 import Comment from './Comment';
+import SwipeableListItem from '../SwipeableListItem/SwipeableListItem';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, withTheme } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 let gridStyle = {
     width: '100%',
@@ -82,18 +85,25 @@ class CommentPanel extends Component {
             let timeAgo = Moment(item.created).fromNow();
             let isUnread = !item.seenBy.some(item => { return item === getUserUid() })
 
+            let rightActions = canDelete === true ? [ { value: 'delete', background: this.props.theme.palette.error.dark, icon: <DeleteIcon/> }] :
+            null;
+
             return (
-                <Comment 
+                <SwipeableListItem
                 key={item.uid}
-                disableSyncStatus={this.props.disableSyncStatus}
-                text={item.text}
-                timeAgo={timeAgo}
-                displayName={item.displayName}
-                isUnread={isUnread}
-                canDelete={canDelete}
-                isSynced={item.isSynced}
-                onDelete={() => { this.props.onCommentDelete(item.uid)}}
-                />
+                rightActions={rightActions}
+                onActionClick={(action) => { this.props.onCommentDelete(item.uid)}}>
+                    <Comment
+                        disableSyncStatus={this.props.disableSyncStatus}
+                        text={item.text}
+                        timeAgo={timeAgo}
+                        displayName={item.displayName}
+                        isUnread={isUnread}
+                        canDelete={canDelete}
+                        isSynced={item.isSynced}
+                        onDelete={() => { this.props.onCommentDelete(item.uid) }}
+                    />
+                </SwipeableListItem>
             )
         })
 
@@ -118,4 +128,4 @@ class CommentPanel extends Component {
 
 }
 
-export default CommentPanel;
+export default withTheme()(CommentPanel);

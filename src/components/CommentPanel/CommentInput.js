@@ -27,6 +27,7 @@ class NakedCommentInput extends Component {
             style={gridStyle}>
                 <div style={{gridColumn: 'TextInput', placeSelf: 'stretch stretch'}}>
                     <TextField
+                    autoFocus={this.props.autoFocus}
                     style={{width: '100%', marginLeft: '8px', marginRight: '8px'}}
                     variant="outlined"
                     inputRef={this.textFieldRef}

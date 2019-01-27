@@ -74,7 +74,9 @@ class CommentPanel extends Component {
                     
 
                 <div style={{gridRow: 'Input', placeSelf: 'stretch stretch'}}>
-                    <CommentInput onPost={this.props.onCommentPost}/>
+                    <CommentInput 
+                    autoFocus={this.props.autoFocus}
+                    onPost={this.props.onCommentPost}/>
                 </div>
             </div>
         );

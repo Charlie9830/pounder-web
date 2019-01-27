@@ -27,9 +27,9 @@ class ExpandingCommentPanel extends Component {
             ref={this.anchorRef}
             style={{padding: '8px'}}
             onClick={this.handleContainerClick}>
-                {/* Preview Comment Container  */} 
+                {/* Preview Comment */} 
                 <CommentPanel
-                {...this.props}
+                onCommentPost={ () => {} }
                 disableSyncStatus={true}
                 comments={this.props.previewComments}
                 isLoadingComments={false}
@@ -41,13 +41,18 @@ class ExpandingCommentPanel extends Component {
                     anchorEl={this.anchorRef.current}
                     onClose={() => { this.setState({ isOpen: false }) }}>
                     {/* Full Comments  */} 
-                    <CommentPanel {...this.props} />
+                    <CommentPanel 
+                    autoFocus={true}
+                    {...this.props} />
                 </Expander>
             </div>
         );
     }
 
-    handleContainerClick() {
+    handleContainerClick(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
         if (this.state.isOpen === false) {
             this.setState({ isOpen: true })
             

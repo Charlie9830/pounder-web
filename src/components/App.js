@@ -73,7 +73,6 @@ class App extends React.Component {
         // this.props.dispatch(setIsAppSettingsOpen(true));
         // this.props.dispatch(setAppSettingsMenuPage('general'));
     }
-    
 
     render() {
         return (

@@ -44,7 +44,7 @@ const Expander = (props) => {
                 </div>
 
                 <div
-                style={{ gridRow: 'Children', placeSelf: 'stretch' }}
+                style={{ gridRow: 'Children', placeSelf: 'stretch', overflowY: 'scroll' }}
                 onClick={(e) => { e.stopPropagation() }}>
                     { props.children }
                 </div>

@@ -10,7 +10,7 @@ const TaskListToolbar = (props) => {
     let toolbarStyle = {
         display: 'grid',
         gridTemplateColumns: '[Menu]auto [Title]1fr [ChecklistIndicator]auto',
-        background: props.isFocused ? theme.palette.action.selected : 'unset',
+        background: props.isFocused ? theme.palette.secondary.main : 'unset',
     }
 
     let checklistIndicator = (

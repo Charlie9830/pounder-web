@@ -26,7 +26,7 @@ export function BuildMuiTheme(storedTheme) {
                 "overdue": mergeValues('#F00', storedTheme.palette.custom.overdue),
                 "later": mergeValues('#22B30B', storedTheme.palette.custom.later),
                 "unreadItem": mergeValues('#1455c0', storedTheme.palette.custom.unreadItem),
-            }
+            },
         },
         'spacing': {
             'unit': getSpacingUnit(storedTheme.isDense),

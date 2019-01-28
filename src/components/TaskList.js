@@ -32,7 +32,7 @@ const styles = theme => {
 
         focused: {
             ...basePaperStyle,
-            background: theme.palette.action.selected,//getFocusedBackgroundColor(theme.palette.background.paper),
+            background: getFocusedBackgroundColor(theme.palette.background.paper),
         }
     }
 }

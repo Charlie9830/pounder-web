@@ -18,8 +18,8 @@ const Expander = (props) => {
 
     let gridStyle = {
         width: '100vw',
-        height: '99.9vh',
-        maxHeight: '99.9vh',
+        height: '99.8vh',
+        maxHeight: '99.8vh',
         display: 'grid',
         gridTemplateRows: '[Toolbar]56px [Children]1fr',
     }
@@ -44,7 +44,7 @@ const Expander = (props) => {
                 </div>
 
                 <div
-                style={{ gridRow: 'Children', placeSelf: 'stretch', overflowY: 'scroll' }}
+                style={{ gridRow: 'Children', placeSelf: 'stretch', overflowY: 'hidden' }}
                 onClick={(e) => { e.stopPropagation() }}>
                     { props.children }
                 </div>

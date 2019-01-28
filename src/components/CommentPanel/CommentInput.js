@@ -5,7 +5,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 
 let gridStyle = {
     display: 'grid',
-    gridTemplateColumns: '[TextInput]1fr [Button]auto',
+    gridTemplateColumns: '[TextInput]1fr [Button]64px',
 }
 
 class NakedCommentInput extends Component {

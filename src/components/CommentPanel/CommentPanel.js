@@ -9,6 +9,7 @@ import ListItemTransition from '../TransitionList/ListItemTransition';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import { CircularProgress, withTheme } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Panel from './Panel';
 
 
 let gridStyle = {
@@ -27,7 +28,7 @@ let commentContainerStyle = {
     padding: '0px 8px 0px 8px',
 }
 
-let spinnerContainer = {
+let spinnerContainerStyle = {
     ...commentContainerStyle,
     width: '100%',
     height: '100%',
@@ -37,35 +38,23 @@ let spinnerContainer = {
     alignItems: 'center'
 }
 
-const Panel = (props) => {
-    if (props.isLoadingComments) {
-        return (
-            <div style={spinnerContainer}>
-                <CircularProgress />
-            </div>
-        )
-    }
-
-    return (
-        <div style={commentContainerStyle}>
-            {props.children}
-        </div>
-    );
-};
-
-
 class CommentPanel extends Component {
     constructor(props) {
         super(props);
         
+        // Refs.
+        this.panelRef = React.createRef();
+
         // Method Bindings.
         this.getCommentsJSX = this.getCommentsJSX.bind(this);
     }
-    
+
     render() {
         return (
             <div style={gridStyle}>
                 <Panel 
+                spinnerContainerStyle={spinnerContainerStyle}
+                commentContainerStyle={commentContainerStyle}
                 isLoadingComments={this.props.isLoadingComments}>
                     <TransitionList>
                         {this.getCommentsJSX()}
@@ -128,13 +117,11 @@ class CommentPanel extends Component {
         return jsx;
     }
 
-
     commentSorter(a,b) {
         var createdA = new Date(a.created);
         var createdB = new Date(b.created);
         return createdA - createdB;
     }
-
 }
 
 export default withTheme()(CommentPanel);

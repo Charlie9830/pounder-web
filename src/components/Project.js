@@ -350,7 +350,6 @@ class Project extends React.Component {
                 return (
                     <ListItemTransition
                     key={item.uid}>
-                    <ButtonBase></ButtonBase>
                     <SwipeableListItem
                             leftActions={leftActions}
                             rightActions={rightActions}

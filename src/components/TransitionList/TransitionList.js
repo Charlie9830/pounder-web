@@ -6,6 +6,7 @@ class TransitionList extends Component {
     render() {
         return (
             <List
+            style={{padding: '0px'}}
             {...this.props}>
                 <TransitionGroup>
                     {this.props.children}

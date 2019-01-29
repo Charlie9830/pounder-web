@@ -434,6 +434,12 @@ class Project extends React.Component {
             } 
         }
 
+        if (result.type === 'complete') {
+            return {
+                type: 'complete'
+            }
+        }
+
         return {
             color: theme.palette.custom[result.type], // Extract color from Theme
             text: result.text,

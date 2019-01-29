@@ -4,7 +4,7 @@ import colorString from 'color-string';
 import { withTheme } from '@material-ui/core';
 
 const DueDate = (props) => {
-    if (props.type === 'unset') {
+    if (props.type === 'unset' || props.type === 'complete') {
         return null;
     }
 

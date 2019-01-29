@@ -306,15 +306,17 @@ class Project extends React.Component {
 
             let builtTasks = filteredTasks.map((item, index, array) => {
                 // Render Element.
-                var isTaskSelected = item.uid === this.props.selectedTaskId;
-                var isTaskMoving = item.uid === this.props.movingTaskId;
-
-                var hasUnseenComments = item.unseenTaskCommentMembers !== undefined &&
+                let isTaskSelected = item.uid === this.props.selectedTaskId;
+                let isTaskMoving = item.uid === this.props.movingTaskId;
+                let hasUnseenComments = item.unseenTaskCommentMembers !== undefined &&
                  item.unseenTaskCommentMembers[getUserUid()] !== undefined;
 
-                var metadata = item.metadata === undefined ?  { ...new TaskMetadataStore("", "", "", "", "") }
+                let metadata = item.metadata === undefined ?  { ...new TaskMetadataStore("", "", "", "", "") }
                 : item.metadata; 
+
                 let assignedToDisplayName = GetDisplayNameFromLookup(item.assignedTo, this.props.memberLookup);
+
+                let showDivider = index !== array.length - 1 && array.length > 1;
 
                 let priorityIndicator = <PriorityIndicator
                     isHighPriority={item.isHighPriority}
@@ -365,6 +367,7 @@ class Project extends React.Component {
                                 onTextContainerTap={() => { this.props.onTaskTextContainerTap(item.uid) }}
                                 onPress={() => { this.props.onTaskPress(item.uid, item.taskList, item.taskName, item.metadata) }}
                                 onDueDateContainerTap={() => { this.props.onDueDateContainerTap(item.uid) }}
+                                showDivider={showDivider}
                             />
                         </SwipeableListItem>                        
                     </ListItemTransition>

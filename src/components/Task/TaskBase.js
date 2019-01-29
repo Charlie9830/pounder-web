@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Hammer from 'hammerjs';
+import Divider from './Divider';
 import { withTheme } from '@material-ui/core';
 
 class TaskBase extends Component {
@@ -42,10 +43,11 @@ class TaskBase extends Component {
             width: '100%',
             height: 'fit-content',
             display: 'grid',
-            gridTemplateRows: '[Content]1fr [IndicatorPanel]auto',
+            gridTemplateRows: '[Content]1fr [IndicatorPanel]auto [Divider]auto',
             gridTemplateColumns: '[PriorityIndicator]auto [Checkbox]auto [Text]1fr [DueDate]auto',
             gridTemplateAreas: `'PriorityIndicator Checkbox       Text           DueDate'
-                                'PriorityIndicator IndicatorPanel IndicatorPanel IndicatorPanel'`,
+                                'PriorityIndicator IndicatorPanel IndicatorPanel IndicatorPanel'
+                                '       .               .         Divider        Divider        '`,
             background: this.props.isMoving ? theme.palette.primary.dark : 'unset',
         }
         
@@ -65,7 +67,8 @@ class TaskBase extends Component {
             style={ContainerGridStyle}
             ref={this.taskContainerRef}>
                 {/* Priority Indicator  */} 
-                <div style={{gridArea: 'PriorityIndicator'}}>
+                <div 
+                style={{gridArea: 'PriorityIndicator'}}>
                     { this.props.priorityIndicator }
                 </div>
 
@@ -76,13 +79,15 @@ class TaskBase extends Component {
                 </div>
 
                 {/* Text  */}
-                <div ref={this.textContainerRef}
+                <div 
+                ref={this.textContainerRef}
                  style={TextContainerStyle}>
                     { this.props.taskText }
                 </div> 
 
                 {/* DueDate  */}
-                <div ref={this.dueDateContainerRef}
+                <div 
+                ref={this.dueDateContainerRef}
                 style={{gridArea: 'DueDate', placeSelf: 'center'}}>
                     { this.props.dueDate }
                 </div>
@@ -90,7 +95,14 @@ class TaskBase extends Component {
                 {/* Indicator Panel  */}
                 <div style={{gridArea: 'IndicatorPanel'}}>
                     { this.props.indicatorPanel }
-                </div> 
+                </div>
+
+                {/* Divider  */} 
+                <div
+                style={{gridArea: 'Divider'}}>
+                    <Divider
+                    show={this.props.showDivider}/>
+                </div>
             </div>
         );
     }

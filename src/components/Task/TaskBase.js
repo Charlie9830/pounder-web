@@ -60,6 +60,7 @@ class TaskBase extends Component {
             flexDirection: 'row',
             justifyContent: 'flex-start',
             alignItems: 'center',
+            padding: `${theme.spacing.unit}px 0px ${theme.spacing.unit}px 0px`,
         }
 
         return (

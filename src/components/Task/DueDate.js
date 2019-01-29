@@ -2,14 +2,26 @@ import React from 'react';
 import Color from 'color';
 import colorString from 'color-string';
 import { withTheme } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
 
 const DueDate = (props) => {
-    if (props.type === 'unset' || props.type === 'complete') {
-        return null;
-    }
-
     let { theme } = props;
     let isSet = props.type !== "unset";
+
+    if (isSet === false) {
+        if (theme.hideTaskEditIcon) {
+            return null;
+        }
+        
+        else {
+            return (
+                <div style={{ margin: `${theme.spacing.unit}px` }}>
+                    <EditIcon color="disabled" fontSize="small" />
+                </div>
+            )
+        }
+    }
+
     let color = isSet ? props.color : "transparent";
     let textColor = props.type === "unset" ? "unset" : getTextColor(color)
 

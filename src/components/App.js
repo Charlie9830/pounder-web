@@ -8,7 +8,7 @@ import '../assets/css/App.css';
 import { connect } from 'react-redux';
 import {
     updateTaskCompleteAsync, setIsAppDrawerOpen, attachAuthListenerAsync, setFocusedTaskListId,
-    updateTaskNameAsync, addNewTaskAsync, addNewTaskListAsync, openTaskInspector, selectProject,
+    updateTaskNameWithDialogAsync, addNewTaskAsync, addNewTaskListAsync, openTaskInspector, selectProject,
     setIsShareMenuOpen, updateProjectNameAsync, setShowCompletedTasksAsync, setShowOnlySelfTasks,
     moveTaskViaDialogAsync, updateTaskListSettingsAsync, setOpenTaskListSettingsMenuId,
     updateTaskListNameAsync, removeTaskListAsync, openChecklistSettings, manuallyRenewChecklistAsync,
@@ -295,12 +295,14 @@ class App extends React.Component {
     }
 
     handleTaskTextContainerTap(taskId) {
-        this.props.dispatch(openTaskInspector(taskId))
+        // Reserved. Whatever you put here has to be compatiable with the user wanting to focus the Task List.
+        // for example opening the task Inspector or the Text Input Dialog would interfere with the user just
+        // trying to focus the Task list.
     }
 
     handleTaskPress(taskId, taskListId, currentValue, currentMetadata) {
         this.props.dispatch(setFocusedTaskListId(taskListId));
-        this.props.dispatch(updateTaskNameAsync(taskId, currentValue, currentMetadata));
+        this.props.dispatch(openTaskInspector(taskId));
     }
 
     handleTaskListClick(taskListId) {

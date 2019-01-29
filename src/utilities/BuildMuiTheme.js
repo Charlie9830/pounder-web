@@ -29,6 +29,7 @@ export function BuildMuiTheme(storedTheme) {
                 "highPriority": mergeValues('#FF9300', storedTheme.palette.custom.highPriority)
             },
         },
+        'hideTaskEditIcon': mergeValues(false, storedTheme.hideTaskEditIcon),
         'spacing': {
             'unit': getSpacingUnit(storedTheme.isDense),
         },

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { updateTaskDueDateAsync, updateTaskPriorityAsync, updateTaskAssignedToAsync,
     postNewCommentAsync, paginateTaskCommentsAsync, deleteTaskCommentAsync,
-    updateTaskNoteAsync, closeTaskInspectorAsync, getTaskCommentsAsync } from 'handball-libs/libs/pounder-redux/action-creators';
+    updateTaskNoteAsync, closeTaskInspectorAsync, getTaskCommentsAsync, updateTaskNameAsync } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import { GetProjectMembers } from 'handball-libs/libs/pounder-utilities';
 
@@ -18,6 +18,7 @@ import ExpandingCommentPanel from '../CommentPanel/ExpandingCommentPanel';
 import ExpandingMetadataListItem from './ExpandingMetadataListItem';
 import ExpandingAssignmentSelectorListItem from './ExpandingAssignmentSelectorListItem';
 import { GetDisplayNameFromLookup } from 'handball-libs/libs/pounder-utilities';
+import EditableTextInput from '../EditableTextInput';
 
 
 let toolbarStyle = {
@@ -79,6 +80,13 @@ class TaskInspector extends Component {
                         onToggle={ (newValue) => { this.props.dispatch(updateTaskPriorityAsync(task.uid, newValue, task.isHighPriority))}} />
                     </div>
                 </Toolbar>
+
+                <div style={{padding: '8px 8px 16px 8px '}}>
+                    <EditableTextInput
+                    typographyVariant="body1"
+                    defaultValue={task.taskName}
+                    onChange={(newValue) => { this.props.dispatch(updateTaskNameAsync(task.uid, newValue, task.taskName, task.metadata))}}/>
+                </div>
 
                 <Paper style={paperStyle}>
                     <List>

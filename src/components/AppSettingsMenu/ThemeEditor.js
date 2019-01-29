@@ -13,6 +13,7 @@ class ThemeEditor extends Component {
         this.handleColorChange = this.handleColorChange.bind(this);
         this.handleIsDarkChange = this.handleIsDarkChange.bind(this);
         this.handleCustomColorChange = this.handleCustomColorChange.bind(this);
+        this.handleHideTaskEditIconChange = this.handleHideTaskEditIconChange.bind(this);
     }
     
     render() {
@@ -75,6 +76,17 @@ class ThemeEditor extends Component {
                                 checked={this.props.muiTheme.isDense}
                                 onChange={(e) => { this.handleisDenseChange(e.target.checked) }} />
                         } />
+                </ListItem>
+
+                <ListItem>
+                
+                <FormControlLabel
+                    label="Hide Task edit icon"
+                    control={
+                        <Switch
+                            checked={this.props.muiTheme.hideTaskEditIcon}
+                            onChange={(e) => { this.handleHideTaskEditIconChange(e.target.checked) }} />
+                    } />
                 </ListItem>
 
                 <ListSubheader disableSticky={true}> Indicator Colours </ListSubheader>
@@ -169,6 +181,13 @@ class ThemeEditor extends Component {
     handleCustomColorChange(newValue, type) {
         let theme = { ...this.props.muiTheme }
         theme.palette.custom[type] = newValue;
+
+        this.props.onThemeChange(theme);
+    }
+
+    handleHideTaskEditIconChange(newValue) {
+        let theme= { ...this.props.muiTheme }
+        theme.hideTaskEditIcon = newValue;
 
         this.props.onThemeChange(theme);
     }

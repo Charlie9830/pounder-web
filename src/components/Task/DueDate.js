@@ -4,6 +4,10 @@ import colorString from 'color-string';
 import { withTheme } from '@material-ui/core';
 
 const DueDate = (props) => {
+    if (props.type === 'unset') {
+        return null;
+    }
+
     let { theme } = props;
     let isSet = props.type !== "unset";
     let color = isSet ? props.color : "transparent";

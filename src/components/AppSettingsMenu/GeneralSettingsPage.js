@@ -30,7 +30,7 @@ class GeneralSettingsPage extends React.Component {
                     <List>
                         <ListItem>
                             <ListItemText primary="Favourite Project"
-                                secondary="Auto select this project on launch" />
+                                secondary="Auto select on launch" />
                             <ListItemSecondaryAction>
                                 {this.getFavouriteProjectSelectorJSX()}
                             </ListItemSecondaryAction>

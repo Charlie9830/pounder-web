@@ -22,7 +22,7 @@ import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import { TaskMetadataStore } from 'handball-libs/libs/pounder-stores';
 import { ParseDueDate } from 'handball-libs/libs/pounder-utilities';
 
-import { AppBar, Toolbar, Typography, withTheme, IconButton, Fab, Zoom} from '@material-ui/core';
+import { AppBar, Toolbar, Typography, withTheme, IconButton, Fab, Zoom, ButtonBase} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -30,6 +30,7 @@ import AddTaskListIcon from '@material-ui/icons/PlaylistAdd';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MenuIcon from '@material-ui/icons/Menu';
 import JumpMenu from './JumpMenu';
+import TouchRipple from '@material-ui/core/ButtonBase/TouchRipple';
 
 let styles = theme => {
     let primaryFabBase = {
@@ -349,7 +350,8 @@ class Project extends React.Component {
                 return (
                     <ListItemTransition
                     key={item.uid}>
-                        <SwipeableListItem
+                    <ButtonBase></ButtonBase>
+                    <SwipeableListItem
                             leftActions={leftActions}
                             rightActions={rightActions}
                             onActionClick={(value) => { this.props.onTaskActionClick(value, item.uid, item.taskList, item.project) }}>
@@ -361,11 +363,11 @@ class Project extends React.Component {
                                 taskText={taskText}
                                 dueDate={dueDate}
                                 indicatorPanel={indicatorPanel}
-                                onTextContainerTap={() => { this.props.onTaskTextContainerTap() }}
+                                onTextContainerTap={() => { this.props.onTaskTextContainerTap(item.uid) }}
                                 onPress={() => { this.props.onTaskPress(item.uid, item.taskList, item.taskName, item.metadata) }}
                                 onDueDateContainerTap={() => { this.props.onDueDateContainerTap(item.uid) }}
                             />
-                        </SwipeableListItem>
+                        </SwipeableListItem>                        
                     </ListItemTransition>
                     
                 )

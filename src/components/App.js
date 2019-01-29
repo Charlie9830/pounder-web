@@ -294,8 +294,8 @@ class App extends React.Component {
         
     }
 
-    handleTaskTextContainerTap() {
-        
+    handleTaskTextContainerTap(taskId) {
+        this.props.dispatch(openTaskInspector(taskId))
     }
 
     handleTaskPress(taskId, taskListId, currentValue, currentMetadata) {

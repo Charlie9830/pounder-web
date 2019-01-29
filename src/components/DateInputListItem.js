@@ -15,6 +15,7 @@ class DateInputListItem extends Component {
 
         // Method Bindings.
         this.handleDateInputChange = this.handleDateInputChange.bind(this);
+        this.handleDateInputClose = this.handleDateInputClose.bind(this);
     }
     
 
@@ -22,7 +23,7 @@ class DateInputListItem extends Component {
         return (
             <ListItem 
             disabled={this.props.disabled}
-            onClick={() => { this.setState({ isInputOpen: true })}}>
+            onClick={() => { if (this.state.isInputOpen === false) { this.setState({ isInputOpen: true }) }}}>
                 <ListItemIcon>
                     <CalendarIcon />
                 </ListItemIcon>
@@ -30,9 +31,16 @@ class DateInputListItem extends Component {
                     { ...this.props }
                     isOpen={this.state.isInputOpen}
                     value={this.props.value}
-                    onChange={this.handleDateInputChange} />
+                    onChange={this.handleDateInputChange}
+                    onClose={this.handleDateInputClose} />
             </ListItem>
         );
+    }
+
+    handleDateInputClose() {
+        if (this.state.isInputOpen === true) {
+            this.setState({ isInputOpen: false })
+        }
     }
 
     handleDateInputChange(newValue) {

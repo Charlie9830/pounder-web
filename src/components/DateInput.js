@@ -27,6 +27,7 @@ class DateInput extends Component {
     
     
     render() {
+        console.log(this.props.isOpen);
         let hasDate = this.props.value !== "";
         let momentDate = hasDate ? Moment(this.props.value) : null;
         let closedValue = hasDate ? this.getDateText(momentDate) : this.props.placeholder || "";
@@ -49,12 +50,13 @@ class DateInput extends Component {
                     style={{ display: 'none' }}
                     onChange={this.props.onChange}
                     value={momentDate}
+                    onClose={this.props.onClose}
                 />
             </React.Fragment>
         );
     }
 
-    handleInputClick() {
+    handleInputClick(e) {
         if (this.props.isOpen === undefined) {
             // Uncontrolled Mode
             this.datePickerRef.current.open()

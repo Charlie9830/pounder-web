@@ -6,6 +6,7 @@ import AddIcon from '@material-ui/icons/Add';
 const AddNewTaskButton = (props) => {
     return (
         <Button
+            style={{minHeight: '48px'}}
             variant="text"
             color="primary"
             onClick={props.onClick}

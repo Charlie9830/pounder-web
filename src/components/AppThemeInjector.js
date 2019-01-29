@@ -36,7 +36,15 @@ class AppThemeInjector extends Component {
         })
 
         if (storedTheme === undefined || storedTheme.theme === undefined) {
-            return undefined;
+            // Look for hardcoded Default.
+            storedTheme = this.props.muiThemes.find( item => {
+                return item.id === 'default';
+            })
+
+            if (storedTheme === undefined || storedTheme.theme === undefined) {
+                // Give up.
+                return undefined;
+            }
         }
 
         console.log(storedTheme);

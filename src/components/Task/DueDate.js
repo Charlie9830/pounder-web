@@ -1,7 +1,7 @@
 import React from 'react';
 import Color from 'color';
 import colorString from 'color-string';
-import { withTheme } from '@material-ui/core';
+import { withTheme, IconButton } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 
 const DueDate = (props) => {
@@ -16,7 +16,9 @@ const DueDate = (props) => {
         else {
             return (
                 <div style={{ margin: `${theme.spacing.unit}px` }}>
-                    <EditIcon color="disabled" fontSize="small" />
+                    <IconButton>
+                        <EditIcon color="disabled" fontSize="small" />
+                    </IconButton>
                 </div>
             )
         }

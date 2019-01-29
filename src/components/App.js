@@ -110,8 +110,8 @@ class App extends React.Component {
                     <Project
                         projectId={this.props.selectedProjectId}
                         projectName={this.getProjectName(this.props.projects, this.props.selectedProjectId)}
-                        tasks={this.getProjectRelatedTasks(this.props.tasks, this.props.selectedProjectId)}
-                        taskLists={this.props.taskLists}
+                        tasks={this.props.filteredTasks}
+                        taskLists={this.props.filteredTaskLists}
                         focusedTaskListId={this.props.focusedTaskListId}
                         onTaskCheckboxChange={this.handleTaskCheckboxChange}
                         onTaskActionClick={this.handleTaskActionClick}
@@ -309,18 +309,6 @@ class App extends React.Component {
         this.props.dispatch(setFocusedTaskListId(taskListId));
     }
 
-    getProjectRelatedTasks(tasks, projectId) {
-        if (projectId === -1) {
-            return [];
-        }
-
-        let relatedTasks = tasks.filter( item => {
-            return item.project === projectId
-        })
-
-        return relatedTasks;
-    }
-
     getProjectName(projects, projectId) {
         if (projectId === -1 || projects === undefined) {
             return "";
@@ -360,8 +348,8 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        tasks: state.tasks,
-        taskLists: state.taskLists,
+        filteredTasks: state.filteredTasks,
+        filteredTaskLists: state.filteredTaskLists,
         projects: state.projects,
         selectedProjectId: state.selectedProjectId,
         isAppDrawerOpen: state.isAppDrawerOpen,

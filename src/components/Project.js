@@ -131,9 +131,6 @@ class Project extends React.Component {
         // Method Bindings.
         this.getTaskListsJSX = this.getTaskListsJSX.bind(this);
         this.getTasksJSX = this.getTasksJSX.bind(this);
-        this.getTaskFilter = this.getTaskFilter.bind(this);
-        this.getTaskSorter = this.getTaskSorter.bind(this);
-        this.getFilteredTaskLists = this.getFilteredTaskLists.bind(this);
         this.handleJumpMenuItemClick = this.handleJumpMenuItemClick.bind(this);
         this.getFabClassNames = this.getFabClassNames.bind(this);
     }
@@ -142,8 +139,6 @@ class Project extends React.Component {
         let { classes } = this.props;
         const { primaryFabClassName, secondaryFabClassName } = this.getFabClassNames();
         
-        let filteredTaskLists = this.getFilteredTaskLists();
-
         return (
             <React.Fragment>
                 <div
@@ -172,7 +167,7 @@ class Project extends React.Component {
                                         isOpen={this.props.isJumpMenuOpen}
                                         onOpen={this.props.onJumpMenuOpen}
                                         onClose={this.props.onJumpMenuClose}
-                                        taskLists={filteredTaskLists}
+                                        taskLists={this.props.taskLists}
                                         onItemClick={this.handleJumpMenuItemClick} />
                                 </div>
 
@@ -184,7 +179,7 @@ class Project extends React.Component {
                     <div
                         className={classes['contentContainer']}
                         ref={this.contentContainerRef}>
-                        {this.getTaskListsJSX(filteredTaskLists)}
+                        {this.getTaskListsJSX()}
                         <AddNewTaskListButton onClick={this.props.onAddNewTaskListButtonClick} />
                     </div>
 
@@ -240,7 +235,7 @@ class Project extends React.Component {
     }
 
     getTaskListsJSX(taskLists) {
-        let taskListsJSX = taskLists.map(item => {
+        let taskListsJSX = this.props.taskLists.map(item => {
             // Widget Layer.
             let isFocused = this.props.focusedTaskListId === item.uid;
             let isSettingsMenuOpen = this.props.openTaskListSettingsMenuId === item.uid;
@@ -271,13 +266,7 @@ class Project extends React.Component {
 
     getTasksJSX(taskListId, sortBy, isChecklist) {
         if (this.props.tasks !== undefined) {
-            // Filter.
-            let taskFilter = this.getTaskFilter();
-            let filteredTasks = this.props.tasks.filter((item) => {
-                return taskFilter(item, taskListId)
-            })
-
-            if (filteredTasks.length === 0) {
+            if (this.props.tasks.length === 0) {
                 if (isChecklist && this.props.showOnlySelfTasks === false) {
                     return (
                         <ListItemTransition
@@ -302,9 +291,9 @@ class Project extends React.Component {
             }
 
             // Sort.
-            filteredTasks.sort(this.getTaskSorter(sortBy));
+            let sortedTasks = [...this.props.tasks].sort(this.getTaskSorter(sortBy));
 
-            let builtTasks = filteredTasks.map((item, index, array) => {
+            let builtTasks = sortedTasks.map((item, index, array) => {
                 // Render Element.
                 let isTaskSelected = item.uid === this.props.selectedTaskId;
                 let isTaskMoving = item.uid === this.props.movingTaskId;
@@ -408,24 +397,6 @@ class Project extends React.Component {
             default:
             return TaskPrioritySorter;
         }
-    }
-
-    getTaskFilter() {
-        if (this.props.showOnlySelfTasks === true) {
-            return this.showOnlySelfTasksFilter;
-        }
-
-        else {
-            return this.standardTaskFilter;
-        }
-    }
-
-    standardTaskFilter(task, taskListId) {
-        return task.taskList === taskListId;
-    }
-
-    showOnlySelfTasksFilter(task, taskListId) {
-        return task.taskList === taskListId && task.assignedTo === getUserUid();
     }
 
     getDueDateProps(isComplete, dueDate, theme) {

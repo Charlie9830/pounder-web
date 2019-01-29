@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import {
     updateTaskCompleteAsync, setIsAppDrawerOpen, attachAuthListenerAsync, setFocusedTaskListId,
     updateTaskNameWithDialogAsync, addNewTaskAsync, addNewTaskListAsync, openTaskInspector, selectProject,
-    setIsShareMenuOpen, updateProjectNameAsync, setShowCompletedTasksAsync, setShowOnlySelfTasks,
+    openShareMenu, updateProjectNameAsync, setShowCompletedTasksAsync, setShowOnlySelfTasks,
     moveTaskViaDialogAsync, updateTaskListSettingsAsync, setOpenTaskListSettingsMenuId,
     updateTaskListNameAsync, removeTaskListAsync, openChecklistSettings, manuallyRenewChecklistAsync,
     getLocalMuiThemes, getGeneralConfigAsync, moveTaskListToProjectAsync,
@@ -81,7 +81,7 @@ class App extends React.Component {
                     <CssBaseline />
 
                     <Drawer
-                        open={this.props.isShareMenuOpen}
+                        open={this.props.openShareMenuId !== -1}
                         anchor="left">
                         <VisibleShareMenu />
                     </Drawer>
@@ -268,8 +268,8 @@ class App extends React.Component {
         this.props.dispatch(updateProjectNameAsync(selectedProjectId))
     }
     
-    handleShareMenuButtonClick() {
-        this.props.dispatch(setIsShareMenuOpen(true));
+    handleShareMenuButtonClick(projectId) {
+        this.props.dispatch(openShareMenu(projectId));
     }
 
     handleDueDateContainerTap(taskId) {
@@ -371,7 +371,7 @@ const mapStateToProps = state => {
         focusedTaskListId: state.focusedTaskListId,
         openTaskInspectorId: state.openTaskInspectorId,
         openTaskInspectorEntity: state.openTaskInspectorEntity,
-        isShareMenuOpen: state.isShareMenuOpen,
+        openShareMenuId: state.openShareMenuId,
         informationDialog: state.informationDialog,
         confirmationDialog: state.confirmationDialog,
         isASnackbarOpen: state.isASnackbarOpen,

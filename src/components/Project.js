@@ -161,7 +161,7 @@ class Project extends React.Component {
                                 <Typography variant="h6" style={{ flexGrow: 1 }}> {this.props.projectName} </Typography>
                                 <div style={projectRightButtonsContainer}>
                                     <ProjectMenu
-                                        onShareMenuButtonClick={this.props.onShareMenuButtonClick}
+                                        onShareMenuButtonClick={() => { this.props.onShareMenuButtonClick(this.props.projectId)}}
                                         onRenameProjectButtonClick={() => { this.props.onRenameProjectButtonClick(this.props.projectId, this.props.projectName) }}
                                         onCompletedTasksButtonClick={this.props.onCompletedTasksButtonClick}
                                         showCompletedTasks={this.props.showCompletedTasks}

@@ -16,7 +16,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import {
     acceptProjectInviteAsync, denyProjectInviteAsync, addNewProjectAsync,
-    setIsAppSettingsOpen, selectProject, setIsShareMenuOpen, removeProjectAsync,
+    setIsAppSettingsOpen, selectProject, openShareMenu, removeProjectAsync,
 } from 'handball-libs/libs/pounder-redux/action-creators';
 import FullScreenView from '../layout-components/FullScreenView';
 import TransitionList from './TransitionList/TransitionList';
@@ -225,8 +225,7 @@ class AppDrawer extends Component {
 
     handleProjectActionClick(uid, action) {
         if (action === 'share') {
-            this.props.dispatch(setIsShareMenuOpen(true));
-            this.props.dispatch(selectProject(uid));
+            this.props.dispatch(openShareMenu(uid));
         }
 
         if (action === 'delete') {

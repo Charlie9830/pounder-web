@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-    inviteUserToProjectAsync, kickUserFromProjectAsync, updateMemberRoleAsync, setIsShareMenuOpen,
+    inviteUserToProjectAsync, kickUserFromProjectAsync, updateMemberRoleAsync, closeShareMenu,
     removeRemoteProjectAsync, migrateProjectBackToLocalAsync, leaveRemoteProjectAsync
 } from 'handball-libs/libs/pounder-redux/action-creators';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
@@ -94,12 +94,12 @@ class ShareMenu extends React.Component {
     }
 
     render() {
-        let filteredMembers = GetProjectMembers(this.props.members, this.props.selectedProjectId);
+        let filteredMembers = GetProjectMembers(this.props.members, this.props.openShareMenuId);
         let toolbarJSX = (
             <Toolbar
                 disableGutters={true}>
                 <IconButton
-                    onClick={() => { this.props.dispatch(setIsShareMenuOpen(false)) }}>
+                    onClick={() => { this.props.dispatch(closeShareMenu()) }}>
                     <ArrowBackIcon />
                 </IconButton>
             </Toolbar>
@@ -145,7 +145,7 @@ class ShareMenu extends React.Component {
                             
                             <InviteControl
                             autoFocus={true}
-                            onInvite={(email) => { this.props.dispatch(inviteUserToProjectAsync(email)) }} />
+                            onInvite={(email) => { this.props.dispatch(inviteUserToProjectAsync(email, this.props.openShareMenuId)) }} />
 
                         </div>
                     </div>
@@ -165,7 +165,7 @@ class ShareMenu extends React.Component {
                         <div style={inviteContainer}>
 
                             <InviteControl
-                                onInvite={(email) => { this.props.dispatch(inviteUserToProjectAsync(email)) }} />
+                                onInvite={(email) => { this.props.dispatch(inviteUserToProjectAsync(email, this.props.openShareMenuId)) }} />
 
                         </div>
                     </div>
@@ -230,16 +230,16 @@ class ShareMenu extends React.Component {
 
     handleMakePersonalButtonClick(filteredMembers) {
         if (this.isCurrentUserAnOwner(filteredMembers)) {
-            this.props.dispatch(migrateProjectBackToLocalAsync(this.props.selectedProjectId));
+            this.props.dispatch(migrateProjectBackToLocalAsync(this.props.openShareMenuId));
         }
     }
 
     handleLeaveProjectButtonClick(filteredMembers) {
-        this.props.dispatch(leaveRemoteProjectAsync(this.props.selectedProjectId, getUserUid()));
+        this.props.dispatch(leaveRemoteProjectAsync(this.props.openShareMenuId, getUserUid()));
     }
 
     handleDeleteProjectButtonClick(filteredMembers) {
-        this.props.dispatch(removeRemoteProjectAsync(this.props.selectedProjectId, this.isCurrentUserAnOwner(filteredMembers)))
+        this.props.dispatch(removeRemoteProjectAsync(this.props.openShareMenuId, this.isCurrentUserAnOwner(filteredMembers)))
     }
 
     handleInviteButtonClick() {
@@ -255,7 +255,7 @@ class ShareMenu extends React.Component {
     getMembersJSX(filteredMembers, role) {
         var membersJSX = [];
 
-        if (this.props.selectedProjectId !== -1) {
+        if (this.props.openShareMenuId !== -1) {
             var isCurrentUserOwner = this.isCurrentUserAnOwner(filteredMembers);
 
             var roledMembers = filteredMembers.filter(item => {
@@ -263,7 +263,7 @@ class ShareMenu extends React.Component {
             })
 
             membersJSX = roledMembers.map(item => {
-                var isUpdating = this.getIsMemberUpdating(item.userId, this.props.selectedProjectId);
+                var isUpdating = this.getIsMemberUpdating(item.userId, this.props.openShareMenuId);
 
                 return (
                     <ListItemTransition
@@ -277,9 +277,9 @@ class ShareMenu extends React.Component {
                             allowElevatedPrivileges={isCurrentUserOwner}
                             canBeDemoted={!this.isCurrentUserTheOnlyOwner(filteredMembers)}
                             canBeKicked={isCurrentUserOwner && item.userId !== getUserUid()}
-                            onKick={() => { this.props.dispatch(kickUserFromProjectAsync(this.props.selectedProjectId, item.userId)) }}
-                            onPromote={() => { this.props.dispatch(updateMemberRoleAsync(item.userId, this.props.selectedProjectId, 'owner')) }}
-                            onDemote={() => { this.props.dispatch(updateMemberRoleAsync(item.userId, this.props.selectedProjectId, 'member')) }}
+                            onKick={() => { this.props.dispatch(kickUserFromProjectAsync(this.props.openShareMenuId, item.userId)) }}
+                            onPromote={() => { this.props.dispatch(updateMemberRoleAsync(item.userId, this.props.openShareMenuId, 'owner')) }}
+                            onDemote={() => { this.props.dispatch(updateMemberRoleAsync(item.userId, this.props.openShareMenuId, 'member')) }}
                         />
                     </ListItemTransition>
                 )
@@ -345,9 +345,9 @@ class ShareMenu extends React.Component {
     }
 
     getProjectName() {
-        if (this.props.selectedProjectId !== -1) {
+        if (this.props.openShareMenuId !== -1) {
             var selectedProject = this.props.projects.find(item => {
-                return item.uid === this.props.selectedProjectId
+                return item.uid === this.props.openShareMenuId
             })
 
             if (selectedProject !== undefined) {
@@ -369,11 +369,10 @@ class ShareMenu extends React.Component {
 
 let mapStateToProps = state => {
     return {
+        openShareMenuId: state.openShareMenuId,
         shareMenuMessage: state.shareMenuMessage,
         shareMenuSubMessage: state.shareMenuSubMessage,
         isShareMenuWaiting: state.isShareMenuWaiting,
-        selectedProjectId: state.selectedProjectId,
-        isSelectedProjectRemote: state.isSelectedProjectRemote,
         projects: state.projects,
         members: state.members,
         userEmail: state.userEmail,

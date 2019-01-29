@@ -27,7 +27,6 @@ class DateInput extends Component {
     
     
     render() {
-        console.log(this.props.isOpen);
         let hasDate = this.props.value !== "";
         let momentDate = hasDate ? Moment(this.props.value) : null;
         let closedValue = hasDate ? this.getDateText(momentDate) : this.props.placeholder || "";

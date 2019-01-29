@@ -85,6 +85,30 @@ let styles = theme => {
                 duration: theme.transitions.duration.leavingScreen,
                 easing: theme.transitions.easing.sharp,
             }),
+        },
+
+        projectGrid: {
+            display: 'grid',
+            width: '100%',
+            height: '100%',
+            gridTemplateRows: '[Toolbar]auto [Content]1fr'
+        },
+
+        toolbarContainer: {
+            gridRow: 'Toolbar',
+            placeSelf: 'stretch'
+        },
+
+        contentContainer: {
+            gridRow: 'Content',
+            placeSelf: 'stretch',
+            overflowY: 'scroll',
+            background: theme.palette.background.default,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            paddingBottom: '160px' // Clear the Fabs
         }
     }
 };
@@ -114,61 +138,59 @@ class Project extends React.Component {
     }
 
     render() {
-        let { theme} = this.props;
+        let { classes } = this.props;
         const { primaryFabClassName, secondaryFabClassName } = this.getFabClassNames();
         
         let filteredTaskLists = this.getFilteredTaskLists();
 
-        let contentGridStyle = {
-            height: '100%',
-            background: theme.palette.background.default,
-            paddingTop: '56px', // Clear the AppBar
-            paddingBottom: '160px', // Clear the Fabs at lowest Scroll Point
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            overflowY: 'scroll',
-        }
         return (
             <React.Fragment>
-                <AppBar>
-                    <Toolbar
-                    disableGutters={true}>
-                        <IconButton
-                         onClick={this.props.onMenuButtonClick}>
-                            <MenuIcon/>
-                        </IconButton>
-                        <Typography variant="h6" style={{flexGrow: 1}}> {this.props.projectName} </Typography>
-                            <div style={projectRightButtonsContainer}>
-                                <ProjectMenu
-                                onShareMenuButtonClick={this.props.onShareMenuButtonClick}
-                                onRenameProjectButtonClick={() => { this.props.onRenameProjectButtonClick(this.props.projectId, this.props.projectName) }}
-                                onCompletedTasksButtonClick={this.props.onCompletedTasksButtonClick}
-                                showCompletedTasks={this.props.showCompletedTasks}
-                                onShowOnlySelfTasksButtonClick={this.props.onShowOnlySelfTasksButtonClick}
-                                showOnlySelfTasks={this.props.showOnlySelfTasks}
-                                onDeleteProjectButtonClick={() => { this.props.onDeleteProjectButtonClick(this.props.projectId) }}/> 
-                                <JumpMenu
-                                isOpen={this.props.isJumpMenuOpen}
-                                onOpen={this.props.onJumpMenuOpen}
-                                onClose={this.props.onJumpMenuClose}
-                                taskLists={filteredTaskLists}
-                                onItemClick={this.handleJumpMenuItemClick}/>
-                            </div>
-                            
-                    </Toolbar>
-                </AppBar>
+                <div
+                    className={classes['projectGrid']}>
+                    <div
+                        className={classes['toolbarContainer']}>
+                        <AppBar
+                            position="static">
+                            <Toolbar
+                                disableGutters={true}>
+                                <IconButton
+                                    onClick={this.props.onMenuButtonClick}>
+                                    <MenuIcon />
+                                </IconButton>
+                                <Typography variant="h6" style={{ flexGrow: 1 }}> {this.props.projectName} </Typography>
+                                <div style={projectRightButtonsContainer}>
+                                    <ProjectMenu
+                                        onShareMenuButtonClick={this.props.onShareMenuButtonClick}
+                                        onRenameProjectButtonClick={() => { this.props.onRenameProjectButtonClick(this.props.projectId, this.props.projectName) }}
+                                        onCompletedTasksButtonClick={this.props.onCompletedTasksButtonClick}
+                                        showCompletedTasks={this.props.showCompletedTasks}
+                                        onShowOnlySelfTasksButtonClick={this.props.onShowOnlySelfTasksButtonClick}
+                                        showOnlySelfTasks={this.props.showOnlySelfTasks}
+                                        onDeleteProjectButtonClick={() => { this.props.onDeleteProjectButtonClick(this.props.projectId) }} />
+                                    <JumpMenu
+                                        isOpen={this.props.isJumpMenuOpen}
+                                        onOpen={this.props.onJumpMenuOpen}
+                                        onClose={this.props.onJumpMenuClose}
+                                        taskLists={filteredTaskLists}
+                                        onItemClick={this.handleJumpMenuItemClick} />
+                                </div>
 
-                <div 
-                style={contentGridStyle}
-                ref={this.contentContainerRef}>
-                    {this.getTaskListsJSX(filteredTaskLists)}
-                    <AddNewTaskListButton onClick={this.props.onAddNewTaskListButtonClick} />
+                            </Toolbar>
+                        </AppBar>
+                    </div>
+
+
+                    <div
+                        className={classes['contentContainer']}
+                        ref={this.contentContainerRef}>
+                        {this.getTaskListsJSX(filteredTaskLists)}
+                        <AddNewTaskListButton onClick={this.props.onAddNewTaskListButtonClick} />
+                    </div>
+
                 </div>
-                
-                <Zoom 
-                in={this.props.enableStates.newTaskFab}>
+
+                <Zoom
+                    in={this.props.enableStates.newTaskFab}>
                     <Fab
                         className={primaryFabClassName}
                         color="primary"
@@ -176,15 +198,15 @@ class Project extends React.Component {
                         <AddIcon />
                     </Fab>
                 </Zoom>
-                
+
                 <Fab
                     className={secondaryFabClassName}
                     color="secondary"
                     onClick={this.props.onAddNewTaskListButtonClick}>
                     <AddTaskListIcon />
                 </Fab>
-
             </React.Fragment>
+            
         )
     }
 

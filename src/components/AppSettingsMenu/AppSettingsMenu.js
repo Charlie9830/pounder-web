@@ -1,6 +1,6 @@
 import React from 'react';
 import GeneralSettingsPage from './GeneralSettingsPage';
-import AccountSettingsPage from './AccountSettingsPage';
+import VisibleAccountSettingsPage from './AccountSettingsPage';
 import AboutPage from './AboutPage';
 import { connect } from 'react-redux';
 import { setAppSettingsMenuPage, setFavouriteProjectIdAsync, setGeneralConfigAsync,
@@ -29,9 +29,6 @@ class AppSettingsMenu extends React.Component {
         // Method Bindings.
         this.getPageJSX = this.getPageJSX.bind(this);
         this.handleFavouriteProjectSelectChange = this.handleFavouriteProjectSelectChange.bind(this);
-        this.handleRegisterButtonClick = this.handleRegisterButtonClick.bind(this);
-        this.handlePasswordResetButtonClick = this.handlePasswordResetButtonClick.bind(this);
-        this.handleRegisterModeChanged = this.handleRegisterModeChanged.bind(this);
         this.handleSortProjectsBySelectorChange = this.handleSortProjectsBySelectorChange.bind(this);
     }
 
@@ -81,14 +78,6 @@ class AppSettingsMenu extends React.Component {
         )
     }
 
-    handleRegisterModeChanged(newValue) {
-        this.props.dispatch(setIsInRegisterMode(newValue));
-    }    
-
-    handleRegisterButtonClick(email, password, displayName) {
-        this.props.dispatch(registerNewUserAsync(email, password, displayName));
-    }
-
     getPageJSX() {
         var menuPage = this.props.menuPage === "" ? "general" : this.props.menuPage;
 
@@ -106,14 +95,7 @@ class AppSettingsMenu extends React.Component {
 
             case "account":
                 return (
-                    <AccountSettingsPage authStatusMessage={this.props.authStatusMessage} isLoggingIn={this.props.isLoggingIn}
-                    isLoggedIn={this.props.isLoggedIn} userEmail={this.props.userEmail}
-                    onLogInButtonClick={(email, password) => {this.props.dispatch(logInUserAsync(email,password))}}
-                    onLogOutButtonClick={() => {this.props.dispatch(logOutUserAsync())}} displayName={this.props.displayName}
-                    onRegisterButtonClick={this.handleRegisterButtonClick}
-                    onPasswordResetButtonClick={this.handlePasswordResetButtonClick} 
-                    isInRegisterMode={this.props.isInRegisterMode} onRegisterModeChanged={this.handleRegisterModeChanged}
-                    />
+                    <VisibleAccountSettingsPage/>
                 )
             case "about":
             return (
@@ -133,10 +115,6 @@ class AppSettingsMenu extends React.Component {
         var generalConfig = this.props.generalConfig;
         generalConfig.isFirstTimeBoot = false;
         this.props.dispatch(setGeneralConfigAsync(generalConfig));
-    }
-
-    handlePasswordResetButtonClick() {
-        this.props.dispatch(sendPasswordResetEmailAsync());
     }
 
     handleDisableAnimationsChange(newValue) {

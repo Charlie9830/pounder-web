@@ -27,6 +27,7 @@ import VisibleChecklistSettingsMenu from './ChecklistSettingsMenu.js/ChecklistSe
 import VisibleThemeSettings from './AppSettingsMenu/ThemeSettings';
 import ItemSelectDialog from './dialogs/ItemSelectDialog';
 import QuickItemSelectDialog from './dialogs/QuickItemSelectDialog';
+import VisibleOnboarder from './Onboarder/Onboarder';
 
 class App extends React.Component {
     constructor(props) {
@@ -145,6 +146,10 @@ class App extends React.Component {
                         onDeleteProjectButtonClick={this.handleDeleteProjectButtonClick}
                         enableStates={this.props.enableStates}
                     />
+
+                    <Drawer anchor="left" open={this.props.isOnboarding}>
+                        <VisibleOnboarder />
+                    </Drawer>
 
                     <TextInputDialog
                         isOpen={this.props.textInputDialog.isOpen}
@@ -380,6 +385,7 @@ const mapStateToProps = state => {
         quickItemSelectDialog: state.quickItemSelectDialog,
         isJumpMenuOpen: state.isJumpMenuOpen,
         enableStates: state.enableStates,
+        isOnboarding: state.isOnboarding,
     }
 }
 

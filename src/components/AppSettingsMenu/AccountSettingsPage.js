@@ -1,6 +1,12 @@
 import React from 'react';
 
 import { Grid, TextField, Button,  Typography, CircularProgress } from '@material-ui/core';
+import { connect } from 'react-redux';
+import {
+    logInUserAsync, logOutUserAsync, registerNewUserAsync,
+    sendPasswordResetEmailAsync, setIsInRegisterMode
+} from 'handball-libs/libs/pounder-redux/action-creators';
+
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const PAGE_STATES = {
@@ -9,6 +15,8 @@ const PAGE_STATES = {
     loggingIn: "loggingIn",
     newAccount: "newAccount",
 }
+
+
 
 class AccountSettingsPage extends React.Component {
     constructor(props) {
@@ -32,10 +40,7 @@ class AccountSettingsPage extends React.Component {
         this.getFormJSX = this.getFormJSX.bind(this);
         this.getTitleJSX = this.getTitleJSX.bind(this);
         this.getBoiledDownPageState = this.getBoiledDownPageState.bind(this);
-        this.handlePasswordInputKeyPress = this.handlePasswordInputKeyPress.bind(this);
-    }
-
-    componentDidMount() {
+        this.handlePasswordInputKeyUp = this.handlePasswordInputKeyUp.bind(this);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -160,8 +165,20 @@ class AccountSettingsPage extends React.Component {
                         direction="column"
                         justify="space-evenly"
                         alignItems="center">
-                        <TextField key="email" type="email" defaultValue={emailDefaultValue} label="Email" inputRef={this.emailInputRef} />
-                        <TextField key="password" type="password" label="Password" inputRef={this.passwordInputRef} onKeyPress={this.handlePasswordInputKeyPress} />
+                        <TextField 
+                        key="email"
+                        type="email"
+                        defaultValue={emailDefaultValue}
+                        label="Email"
+                        inputRef={this.emailInputRef}
+                        onKeyUp={(e) => { if (e.key === "Enter") { this.passwordInputRef.current.focus() }}}/>
+
+                        <TextField
+                        key="password"
+                        type="password"
+                        label="Password"
+                        inputRef={this.passwordInputRef}
+                        onKeyUp={this.handlePasswordInputKeyUp} />
                     </Grid>
     
                     <Grid item style={{ marginTop: '48px' }}>
@@ -181,9 +198,26 @@ class AccountSettingsPage extends React.Component {
                         direction="column"
                         justify="space-evenly"
                         alignItems="center">
-                        <TextField key="displayName" label="Display Name" inputRef={this.displayNameInputRef}/>
-                        <TextField key="email" type="email" defaultValue={this.props.userEmail} label="Email" inputRef={this.emailInputRef} />
-                        <TextField key="password" type="password" label="Password" inputRef={this.passwordInputRef} />
+                        <TextField
+                        key="displayName"
+                        label="Display Name"
+                        inputRef={this.displayNameInputRef}
+                        onKeyUp={(e) => { if (e.key === "Enter") { this.emailInputRef.current.focus() }}}/>
+
+                        <TextField
+                        key="email"
+                        type="email"
+                        defaultValue={this.props.userEmail}
+                        label="Email"
+                        inputRef={this.emailInputRef}
+                        onKeyUp={(e) => { if (e.key === "Enter") { this.passwordInputRef.current.focus() }}}/>
+
+                        <TextField
+                        key="password"
+                        type="password"
+                        label="Password"
+                        inputRef={this.passwordInputRef} 
+                        onKeyUp={(e) => { if (e.key === "Enter") { this.handleRegisterButtonClick() }}}/>
                     </Grid>
     
                     <Grid item style={{ marginTop: '48px' }}>
@@ -212,7 +246,7 @@ class AccountSettingsPage extends React.Component {
                         <Typography color="textSecondary"> {this.props.userEmail} </Typography>
                     </Grid>
 
-                    <Button style={buttonStyle} variant="contained" onClick={() => {this.props.onLogOutButtonClick()}}>
+                    <Button style={buttonStyle} variant="contained" onClick={() => {this.props.dispatch(logOutUserAsync())}}>
                         Log Out
                     </Button>
                 </React.Fragment>
@@ -233,7 +267,7 @@ class AccountSettingsPage extends React.Component {
         )
     }
 
-    handlePasswordInputKeyPress(e) {
+    handlePasswordInputKeyUp(e) {
         if (e.key === "Enter") {
             this.handleLogInButtonClick();
         }
@@ -291,7 +325,7 @@ class AccountSettingsPage extends React.Component {
     }
 
     handlePasswordResetButtonClick() {
-        this.props.onPasswordResetButtonClick();
+        this.props.dispatch(sendPasswordResetEmailAsync());
     }
 
     handleRegisterButtonClick() {
@@ -299,15 +333,15 @@ class AccountSettingsPage extends React.Component {
         var password = this.passwordInputRef.current.value;
         var displayName = this.displayNameInputRef.current.value;
 
-        this.props.onRegisterButtonClick(email, password, displayName);
+        this.props.dispatch(registerNewUserAsync(email, password, displayName));
     }
 
     handleRegisterActionButtonClick() {
-        this.props.onRegisterModeChanged(true);
+        this.props.dispatch(setIsInRegisterMode(true));
     }
 
     handleSignInActionButtonClick() {
-        this.props.onRegisterModeChanged(false);
+        this.props.dispatch(setIsInRegisterMode(false));
     }
 
     handleLogInButtonClick() {
@@ -316,8 +350,20 @@ class AccountSettingsPage extends React.Component {
         
         this.lastEnteredEmail = email;
 
-        this.props.onLogInButtonClick(email, password);
+        this.props.dispatch(logInUserAsync(email, password));
     }
 }
 
-export default AccountSettingsPage;
+const mapStateToProps = state => {
+    return {
+        authStatusMessage: state.authStatusMessage,
+        isLoggingIn: state.isLoggingIn,
+        isLoggedIn: state.isLoggedIn,
+        userEmail: state.userEmail,
+        displayName: state.displayName,
+        isInRegisterMode: state.isInRegisterMode,
+    }
+}
+
+let VisibleAccountSettingsPage = connect(mapStateToProps)(AccountSettingsPage);
+export default VisibleAccountSettingsPage;

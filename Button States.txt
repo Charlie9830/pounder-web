@@ -1,5 +1,0 @@
-New Project FAB
-    - Logged In
-
-New Task FAB
-    - Is a Task List Selected

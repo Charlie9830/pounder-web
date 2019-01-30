@@ -28,6 +28,7 @@ import VisibleThemeSettings from './AppSettingsMenu/ThemeSettings';
 import ItemSelectDialog from './dialogs/ItemSelectDialog';
 import QuickItemSelectDialog from './dialogs/QuickItemSelectDialog';
 import VisibleOnboarder from './Onboarder/Onboarder';
+import VisibleInductionSplash from './Induction/InductionSplash';
 
 class App extends React.Component {
     constructor(props) {
@@ -195,6 +196,8 @@ class App extends React.Component {
                 negativeButtonText={this.props.quickItemSelectDialog.negativeButtonText}
                 onSelect={this.props.quickItemSelectDialog.onSelect}
                 onNegative={this.props.quickItemSelectDialog.onNegative}/>
+
+                <VisibleInductionSplash/>
 
                     <GeneralSnackbar
                         isOpen={this.props.generalSnackbar.isOpen}

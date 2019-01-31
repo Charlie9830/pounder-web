@@ -17,7 +17,7 @@ export function BuildMuiTheme(storedTheme) {
             'secondary': {
                 main: GetColor(secondaryColorId, secondaryColorShadeIndex),
             },
-            'background': getBackground(storedTheme.palette.backgroundColor, storedTheme.palette.type),
+            'background': getBackground(storedTheme.palette.backgroundColor, storedTheme.type),
 
             'type': storedTheme.type,
             'custom': {
@@ -60,7 +60,7 @@ function getMuiIconButtonPadding(isDense) {
 }
 
 function getBackground(backgroundColor, themeType) {
-    let clonedColor = {... backgroundColor};
+    let clonedColor = {...backgroundColor};
     let backgroundDummyTheme = createMuiTheme({
         palette: {
             'primary': {

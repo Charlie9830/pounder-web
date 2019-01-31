@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setIsInducting, bumpVersionNumberToCurrentAsync } from 'handball-libs/libs/pounder-redux/action-creators';
-import { Typography, Button, Modal, Drawer } from '@material-ui/core';
+import { Typography, Button, Drawer } from '@material-ui/core';
 import FullScreenView from '../../layout-components/FullScreenView';
 
 let gridStyle = {

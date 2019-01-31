@@ -45,7 +45,7 @@ class ChecklistSettingsMenu extends Component {
             return null;
         }
 
-        let disabled = settings.isChecklist == false;
+        let disabled = settings.isChecklist === false;
 
         return (
             <FullScreenView>

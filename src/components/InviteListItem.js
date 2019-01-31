@@ -3,7 +3,6 @@ import { ListItem, ListItemText, ListItemSecondaryAction, Grid, IconButton, Circ
 
 import AcceptIcon from '@material-ui/icons/Check';
 import DenyIcon from '@material-ui/icons/Close';
-import ListItemTransition from './TransitionList/ListItemTransition';
 
 const InviteListItem = (props) => {
     let { projectName, sourceEmail, isUpdating, onAccept, onDeny }  = props;

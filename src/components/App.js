@@ -8,12 +8,12 @@ import '../assets/css/App.css';
 import { connect } from 'react-redux';
 import {
     updateTaskCompleteAsync, setIsAppDrawerOpen, attachAuthListenerAsync, setFocusedTaskListId,
-    updateTaskNameWithDialogAsync, addNewTaskAsync, addNewTaskListAsync, openTaskInspector, selectProject,
+    addNewTaskAsync, addNewTaskListAsync, openTaskInspector,
     openShareMenu, updateProjectNameAsync, setShowCompletedTasksAsync, setShowOnlySelfTasks,
     moveTaskViaDialogAsync, updateTaskListSettingsAsync, setOpenTaskListSettingsMenuId,
     updateTaskListNameAsync, removeTaskListAsync, openChecklistSettings, manuallyRenewChecklistAsync,
     getLocalMuiThemes, getGeneralConfigAsync, moveTaskListToProjectAsync,
-    openJumpMenu, closeJumpMenu, removeProjectAsync, removeTaskAsync, getAccountConfigAsync,
+    openJumpMenu, closeJumpMenu, removeProjectAsync, removeTaskAsync,
 } from 'handball-libs/libs/pounder-redux/action-creators';
 
 import { Drawer, CssBaseline, withTheme } from '@material-ui/core';
@@ -24,7 +24,6 @@ import InformationDialog from './dialogs/InformationDialog';
 import ConfirmationDialog from './dialogs/ConfirmationDialog';
 import GeneralSnackbar from './Snackbars/GeneralSnackbar';
 import VisibleChecklistSettingsMenu from './ChecklistSettingsMenu.js/ChecklistSettingsMenu';
-import VisibleThemeSettings from './AppSettingsMenu/ThemeSettings';
 import ItemSelectDialog from './dialogs/ItemSelectDialog';
 import QuickItemSelectDialog from './dialogs/QuickItemSelectDialog';
 import VisibleOnboarder from './Onboarder/Onboarder';
@@ -71,9 +70,6 @@ class App extends React.Component {
 
         // Get Mui Themes.
         this.props.dispatch(getLocalMuiThemes());
-
-        // this.props.dispatch(setIsAppSettingsOpen(true));
-        // this.props.dispatch(setAppSettingsMenuPage('general'));
     }
 
     render() {

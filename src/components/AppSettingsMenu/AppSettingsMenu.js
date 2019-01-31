@@ -3,9 +3,10 @@ import GeneralSettingsPage from './GeneralSettingsPage';
 import VisibleAccountSettingsPage from './AccountSettingsPage';
 import AboutPage from './AboutPage';
 import { connect } from 'react-redux';
-import { setAppSettingsMenuPage, setFavouriteProjectIdAsync, setGeneralConfigAsync,
-    setIsAppSettingsOpen, logInUserAsync, logOutUserAsync, registerNewUserAsync,
-    sendPasswordResetEmailAsync, setIsInRegisterMode } from 'handball-libs/libs/pounder-redux/action-creators';
+import {
+    setAppSettingsMenuPage, setFavouriteProjectIdAsync, setGeneralConfigAsync,
+    setIsAppSettingsOpen,
+} from 'handball-libs/libs/pounder-redux/action-creators';
 
 import { AppBar, IconButton, Typography, Toolbar, Tabs, Tab } from '@material-ui/core';
 

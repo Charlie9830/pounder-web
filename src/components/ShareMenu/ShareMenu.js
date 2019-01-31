@@ -10,7 +10,7 @@ import WaitingOverlay from './WaitingOverlay';
 
 
 import {
-    Toolbar, IconButton, List, ListSubheader, Paper, Divider, Typography
+    Toolbar, IconButton, ListSubheader, Paper, Divider, Typography
 } from '@material-ui/core';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';

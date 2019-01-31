@@ -22,7 +22,7 @@ import { getUserUid } from 'handball-libs/libs/pounder-firebase';
 import { TaskMetadataStore } from 'handball-libs/libs/pounder-stores';
 import { ParseDueDate } from 'handball-libs/libs/pounder-utilities';
 
-import { AppBar, Toolbar, Typography, withTheme, IconButton, Fab, Zoom, ButtonBase} from '@material-ui/core';
+import { AppBar, Toolbar, Typography, withTheme, IconButton, Fab, Zoom } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -30,7 +30,6 @@ import AddTaskListIcon from '@material-ui/icons/PlaylistAdd';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MenuIcon from '@material-ui/icons/Menu';
 import JumpMenu from './JumpMenu';
-import TouchRipple from '@material-ui/core/ButtonBase/TouchRipple';
 
 let styles = theme => {
     let primaryFabBase = {

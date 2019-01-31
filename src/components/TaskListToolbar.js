@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, IconButton, Typography, withTheme } from '@material-ui/core';
+import { IconButton, Typography, withTheme } from '@material-ui/core';
 import ChecklistIcon from '@material-ui/icons/PlaylistAddCheck';
 import TaskListSettingsMenu from './TaskListSettingsMenu';
 

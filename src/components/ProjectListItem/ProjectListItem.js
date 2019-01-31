@@ -4,7 +4,6 @@ import UnseenCommentsChit from './UnseenCommentsChit';
 import { ListItem, ListItemText, ListItemSecondaryAction, ListItemIcon, withTheme, Grid } from '@material-ui/core';
 
 import FavouriteIcon from '@material-ui/icons/Favorite';
-import ListItemTransition from '../TransitionList/ListItemTransition';
 
 
 const ProjectListItem = (props) => {

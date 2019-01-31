@@ -7,7 +7,7 @@ import SwipeableListItem from '../SwipeableListItem/SwipeableListItem';
 import TransitionList from '../TransitionList/TransitionList';
 import ListItemTransition from '../TransitionList/ListItemTransition';
 import { getUserUid } from 'handball-libs/libs/pounder-firebase';
-import { CircularProgress, withTheme } from '@material-ui/core';
+import { withTheme } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Panel from './Panel';
 

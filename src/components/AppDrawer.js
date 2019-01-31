@@ -8,7 +8,6 @@ import AddNewProjectButton from './AddNewProjectButton';
 import { AppBar, Toolbar, Typography, Grid, IconButton, withTheme, ListSubheader, Divider, Fab, Zoom } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-import AccountIcon from '@material-ui/icons/AccountCircle';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AddIcon from '@material-ui/icons/Add';
 import ShareIcon from '@material-ui/icons/Share';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Typography, TextField, ListItem, ListItemText, List, Button, Paper} from '@material-ui/core';
+import { Typography, List, Button } from '@material-ui/core';
 import Expander from '../Expander';
 import MemberListItem from './MemberListItem';
 

@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import CommentInput from './CommentInput';
-import { Popover, Toolbar, IconButton } from '@material-ui/core';
 import CommentPanel from './CommentPanel';
 import Expander from '../Expander';
 

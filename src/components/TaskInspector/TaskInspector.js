@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Typography, Toolbar, IconButton, List, ListItem, ListItemIcon, Paper} from '@material-ui/core';
+import { Toolbar, IconButton, List, Paper} from '@material-ui/core';
 import FullScreenView from '../../layout-components/FullScreenView';
 import PriorityToggle from './PriorityToggle';
 import { connect } from 'react-redux';
@@ -11,7 +11,6 @@ import { updateTaskDueDateAsync, updateTaskPriorityAsync, updateTaskAssignedToAs
 import { GetProjectMembers } from 'handball-libs/libs/pounder-utilities';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import PersonIcon from '@material-ui/icons/Person';
 import DateInputListItem from '../DateInputListItem';
 import ExpandingNoteInputListItem from './ExpandingNoteInputListItem';
 import ExpandingCommentPanel from '../CommentPanel/ExpandingCommentPanel';

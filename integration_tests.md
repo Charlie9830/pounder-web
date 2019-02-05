@@ -122,4 +122,8 @@
 11. Concurrency.
     1. Task Changes with Task Inspector Open
     2. Checklist changes with Checklist settings open
+
+12. Onboarding / Induction
+    1. Ensure that iOS isn't deleting the Indexed DB due to storage pressure and creating unwanted onboarding and induction
+        screens.
         

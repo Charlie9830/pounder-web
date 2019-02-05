@@ -52,11 +52,19 @@ class InductionSplash extends Component {
                             <p />
     
                             <Typography variant="body1">
-                                Everything you see has been vastly redesigned to feel more intuitive and familiar.
+                                Everything you see has been redesigned to feel more intuitive and familiar.
                             </Typography>
     
                             <p />
-    
+
+                            <Typography variant="body1">
+                                Common actions can now be initiated from the Floating Action Buttons in the bottom right hand corner.
+                                Actions specific to items can now be accessed by swiping left or right on that item. Many other features
+                                have been rolled into the Project and List menus.
+                            </Typography>
+                            
+                            <p />
+
                             <Typography variant="body1">
                                 We hope you enjoy the changes.
                             </Typography>

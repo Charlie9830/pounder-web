@@ -265,7 +265,12 @@ class Project extends React.Component {
 
     getTasksJSX(taskListId, sortBy, isChecklist) {
         if (this.props.tasks !== undefined) {
-            if (this.props.tasks.length === 0) {
+            let filteredTasks = this.props.tasks.filter(item => {
+                return item.taskList === taskListId;
+            })
+
+
+            if (filteredTasks === 0) {
                 if (isChecklist && this.props.showOnlySelfTasks === false) {
                     return (
                         <ListItemTransition
@@ -290,7 +295,7 @@ class Project extends React.Component {
             }
 
             // Sort.
-            let sortedTasks = [...this.props.tasks].sort(this.getTaskSorter(sortBy));
+            let sortedTasks = [...filteredTasks].sort(this.getTaskSorter(sortBy));
 
             let builtTasks = sortedTasks.map((item, index, array) => {
                 // Render Element.

@@ -7,7 +7,6 @@
     4. Metadata Updates
     5. Select Project Reseting State
         - Show only self Tasks Reset                                ** Come back to Later
-        - Show completed Tasks Reset
     6. Favorite Project Selection
     7. Project Indicators Syncing
 

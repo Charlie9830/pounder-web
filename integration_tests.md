@@ -6,7 +6,7 @@
     3. Renaming
     4. Metadata Updates
     5. Select Project Reseting State
-        - Show only self Tasks Reset
+        - Show only self Tasks Reset                                ** Come back to Later
         - Show completed Tasks Reset
     6. Favorite Project Selection
     7. Project Indicators Syncing
@@ -15,9 +15,8 @@
     1. Creation
     2. Deleting
         - Via List Menu
-        - Via Swipeable List Item
     3. Renaming
-    4. Project Layout compatability
+    4. Project Layout compatability                                 ** Come back to Later
     5. Sorting
         - Completed
         - Due Date
@@ -27,9 +26,9 @@
         - Alphabetically
     6. Checklist
         - Auto Renewing
-            - On Initalization
+            - On Initalization                                      ** Come back to Later
             - When already running
-    7. Project moving
+    7. Project moving                                               <=======================================
         - Not leaving behind Copies
         - Tasks moving correctly between Lists in new Project
     

@@ -6,8 +6,8 @@ const MuiColorChit = (props) => {
     let chitStyle = {
         flexGrow: 0,
         flexShrink: 0,
-        width: '16px',
-        height: '16px',
+        width: '24px',
+        height: '24px',
         borderRadius: '50%',
         background: props.color
     }
@@ -20,8 +20,8 @@ const MuiColorChit = (props) => {
         justifyContent: 'center',
         alignItems: 'center',
         margin: props.isSelected ? '0px' : '8px',
-        width: props.isSelected ? '24px' : '16px',
-        height: props.isSelected ? '24px' : '16px',
+        width: props.isSelected ? '32px' : '24px',
+        height: props.isSelected ? '32px' : '24px',
         borderRadius: '50%',
         background: theme.palette.action.selected,
         transition: theme.transitions.create(['width', 'height', 'margin']),
@@ -29,10 +29,10 @@ const MuiColorChit = (props) => {
 
     return (
         <div
-            style={containerStyle}>
+            style={containerStyle}
+            onClick={props.onClick} >
             <div
-                style={chitStyle}
-                onClick={props.onClick} />
+                style={chitStyle}/>
         </div>
     )
 };

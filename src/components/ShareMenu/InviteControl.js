@@ -28,7 +28,7 @@ class InviteControl extends Component {
                 <Button
                     style={{ marginTop: '16px' }}
                     variant="contained"
-                    onClick={this.props.onInviteButtonClick}
+                    onClick={() => { this.props.onInvite(this.emailInputRef.current.value)}}
                     disabled={!this.state.isValid}>
                     Invite
          </Button>

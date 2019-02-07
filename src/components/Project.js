@@ -270,7 +270,7 @@ class Project extends React.Component {
             })
 
 
-            if (filteredTasks === 0) {
+            if (filteredTasks.length === 0) {
                 if (isChecklist && this.props.showOnlySelfTasks === false) {
                     return (
                         <ListItemTransition

@@ -12,7 +12,9 @@ const Assignment = (props) => {
     return (
         <div style={grid}>
             <div style={{ gridColumn: 'Icon', placeSelf: 'center' }}>
-                <AssignedToIcon fontSize="small" />
+                <AssignedToIcon
+                color="disabled"
+                fontSize="small" />
             </div>
 
             <div style={{ gridColumn: 'DisplayName' }}>

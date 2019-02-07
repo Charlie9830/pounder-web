@@ -14,7 +14,7 @@ let gridStyle = {
 const IndicatorPanel = (props) => {
     let { theme } = props;
     let commentIconJSX = props.hasUnreadComments === true ? <CommentIcon fontSize="small" color="action"/> : null;
-    let notesIconJSX = props.hasNote === true ? <NotesIcon fontSize="small" color="action"/> : null;
+    let notesIconJSX = props.hasNote === true ? <NotesIcon fontSize="small" color="disabled"/> : null;
     let assignedToJSX = props.assignedTo !== -1 ? <Assignment displayName={props.assignedToDisplayName} /> : null;
 
     return (

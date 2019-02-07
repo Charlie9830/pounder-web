@@ -27,7 +27,7 @@
         - Auto Renewing
             - On Initalization                                      ** Come back to Later
             - When already running
-    7. Project moving                                               <=======================================
+    7. Project moving                                               
         - Not leaving behind Copies
         - Tasks moving correctly between Lists in new Project
     

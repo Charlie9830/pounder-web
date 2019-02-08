@@ -9,6 +9,7 @@ let gridStyle = {
     gridTemplateRows: '[Content]auto',
     gridTemplateColumns: '[UnreadComments]auto [Notes]auto [Assignment]1fr',
     gridTemplateAreas: 'UnreadComments Notes Assignment',
+    paddingLeft: '4px',
 }
 
 const IndicatorPanel = (props) => {

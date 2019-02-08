@@ -59,10 +59,13 @@ class ThemeListItem extends Component {
 
                         <div style={chitContainer}>
                             <MuiColorChit
+                                size="small"
                                 color={this.props.primaryColor} />
                             <MuiColorChit
+                                size="small"
                                 color={this.props.secondaryColor} />
                             <MuiColorChit
+                                size="small"
                                 color={this.props.backgroundColor} />
                         </div>
                     </div>

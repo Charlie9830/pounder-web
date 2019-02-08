@@ -10,12 +10,12 @@ let container = {
     flexGrow: '1',
     width: '100%',
     display: 'grid',
-    gridTemplateRows: '[Slider]1fr [Chits]1fr',
+    gridTemplateRows: '[Slider]64px [Chits]1fr',
 }
 
 let sliderContainer = {
     gridRow: 'Slider',
-    placeSelf: 'stretch',
+    placeSelf: 'flex-start stretch',
     width: '100%',
     display: 'flex',
     flexDirection: 'row',

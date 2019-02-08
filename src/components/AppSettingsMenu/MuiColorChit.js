@@ -6,8 +6,8 @@ const MuiColorChit = (props) => {
     let chitStyle = {
         flexGrow: 0,
         flexShrink: 0,
-        width: '24px',
-        height: '24px',
+        width: props.size === "small" ? '16px' : '24px',
+        height: props.size === "small" ? '16px' : '24px',
         borderRadius: '50%',
         background: props.color
     }
@@ -26,6 +26,9 @@ const MuiColorChit = (props) => {
         background: theme.palette.action.selected,
         transition: theme.transitions.create(['width', 'height', 'margin']),
     }
+
+    containerStyle.width = props.size === "small" ? '16px' : containerStyle.width;
+    containerStyle.height = props.size === "small" ? '16px' : containerStyle.height;
 
     return (
         <div

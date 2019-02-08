@@ -54,6 +54,7 @@
     "react-transition-group": "^2.3.1",
     "redux": "^3.7.2",
     "rollbar": "^2.4.4",
+    "source-map-explorer": "^1.6.0",
     "style-loader": "0.18.2",
     "sw-precache-webpack-plugin": "0.11.4",
     "typeface-open-sans": "0.0.54",
@@ -67,7 +68,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "analyze": "source-map-explorer build/static/js/main.*"
   },
   "jest": {
     "collectCoverageFrom": [

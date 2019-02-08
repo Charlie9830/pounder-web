@@ -149,9 +149,6 @@ class SwipeableListItem extends Component {
 
     reset() {
         this.setState({
-            isSwiping: false,
-            isLeftOpen: false,
-            isRightOpen: false,
             leftOffset: 0.1,
             rightOffset: 0.1,
         })
@@ -159,6 +156,9 @@ class SwipeableListItem extends Component {
         // Wait for animation to finish.
         let timeoutId = setTimeout( () => {
             this.setState({
+                isSwiping: false,
+                isLeftOpen: false,
+                isRightOpen: false,
                 leftOffset: 0,
                 rightOffset: 0,
             })

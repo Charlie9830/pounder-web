@@ -76,10 +76,13 @@ class SwipeableListItem extends Component {
             'unset'; // Capture the Width at Drag start and set it here. 
                     // This stops the Text flowing downards as it its width is squeezed
 
+        let leftActionsWidth = this.state.isSwiping || this.state.isLeftOpen ? 'auto' : '0px';
+        let rightActionsWidth = this.state.isSwiping || this.state.isRightOpen ? 'auto' : '0px';
+
         let container = {
             position: 'relative',
             display: 'grid',
-            gridTemplateColumns: `[LeftActions]auto [Children]1fr [RightActions]auto`,
+            gridTemplateColumns: `[LeftActions]${leftActionsWidth} [Children]1fr [RightActions]${rightActionsWidth}`,
             width: capturedWidth,
             overflowX: 'hidden', // With Width set above, container will crop the child, stopping the Document Width increasing.
         }
@@ -90,7 +93,6 @@ class SwipeableListItem extends Component {
             overflowX: 'hidden',
             transition: this.state.isSwiping ? 'unset' : `width ${transitionDuration}ms, margin-left ${transitionDuration}ms`,
             marginLeft: `${this.state.rightOffset * -1}px`,
-
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'flex-start',
@@ -120,7 +122,7 @@ class SwipeableListItem extends Component {
         return (
             <ClickAwayListener
                 touchEvent="onTouchStart"
-                onClickAway={() => { this.reset() }}>
+                onClickAway={() => { if (this.state.isLeftOpen || this.state.isRightOpen) { this.reset() } }}>
                 <div style={container}>
                     <div style={leftActionsContainer}>
                         {this.processActions(this.props.leftActions)}

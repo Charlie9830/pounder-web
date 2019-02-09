@@ -40,7 +40,7 @@ const onUpdateAvailable = () => {
 
 require('typeface-open-sans');
 
-setupBackend("production", "mobile");
+setupBackend("development", "mobile");
 
 ReactDOM.render(
     <MuiPickersUtilsProvider utils={MomentUtils}>

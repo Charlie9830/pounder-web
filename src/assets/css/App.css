@@ -2,12 +2,13 @@ body {
     width: 100vw;
     height: 100vh;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
     margin: 0;
     padding: 0;
     font-family: open-sans;
-    overflow: hidden;
     -webkit-tap-highlight-color: rgba(0,0,0,0); /* Stop iOS dimming on touch down */
+
+    -webkit-overflow-scrolling: touch;
 }
 
 #root {

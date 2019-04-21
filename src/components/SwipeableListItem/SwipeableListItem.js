@@ -122,7 +122,7 @@ class SwipeableListItem extends Component {
         return (
             <ClickAwayListener
                 touchEvent="onTouchStart"
-                onClickAway={() => { if (this.state.isLeftOpen || this.state.isRightOpen) { this.reset() } }}>
+                onClickAway={() => { if (this.state.isLeftOpen || this.state.isRightOpen) { this.reset() }; }}>
                 <div style={container}>
                     <div style={leftActionsContainer}>
                         {this.processActions(this.props.leftActions)}
@@ -168,7 +168,6 @@ class SwipeableListItem extends Component {
         }, transitionDuration);
 
         this.timeouts[timeoutId] = 0;
-
     }
 
     handleActionClick(value) {

@@ -40,40 +40,21 @@ class InductionSplash extends Component {
                         <div
                             style={{ gridRow: 'Message', placeSelf: 'flex-start stretch' }}>
                             <Typography variant="h5" color="secondary">
-                                Welcome to the new look Handball
+                                Version 2.2.1
                             </Typography>
     
                             <p />
     
                             <Typography variant="body1">
-                                A lot has changed!
+                                This update brings Undo functionality and an interim improvement for the scrolling bug introduced
+                                in iOS 12.2.
                             </Typography>
-    
-                            <p />
-    
-                            <Typography variant="body1">
-                                Everything you see has been redesigned to feel more intuitive and familiar.
-                            </Typography>
-    
-                            <p />
 
+                            <p />
                             <Typography variant="body1">
-                                Common actions can now be initiated from the Floating Action Buttons in the bottom right hand corner.
-                                Actions specific to items can now be accessed by swiping left or right on that item. Many other features
-                                have been rolled into the Project and List menus.
+                                A permanent fix for the scrolling bug is being worked on.
                             </Typography>
                             
-                            <p />
-
-                            <Typography variant="body1">
-                                We hope you enjoy the changes.
-                            </Typography>
-    
-                            <p />
-    
-                            <Typography variant="body1">
-                                As always feedback is greatly appreciated.
-                            </Typography>
                         </div>
                         <div
                             style={buttonContainer}>

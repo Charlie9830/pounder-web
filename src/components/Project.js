@@ -160,6 +160,9 @@ class Project extends React.Component {
                                         onCompletedTasksButtonClick={this.props.onCompletedTasksButtonClick}
                                         showCompletedTasks={this.props.showCompletedTasks}
                                         onShowOnlySelfTasksButtonClick={this.props.onShowOnlySelfTasksButtonClick}
+                                        onUndoButtonClick={this.props.onUndoButtonClick}
+                                        canUndo={this.props.canUndo}
+                                        undoButtonText={this.props.undoButtonText}
                                         showOnlySelfTasks={this.props.showOnlySelfTasks}
                                         onDeleteProjectButtonClick={() => { this.props.onDeleteProjectButtonClick(this.props.projectId) }} />
                                     <JumpMenu

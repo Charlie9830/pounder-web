@@ -35,6 +35,12 @@ class ProjectMenu extends Component {
                 open={this.state.isOpen}
                 anchorEl={this.anchorRef.current}
                 onClose={ () => { this.setState({ isOpen: false })}}>
+                    <MenuItem
+                        disabled={!this.props.canUndo}
+                        onClick={() => { this.handleMenuSelection('undo') }}>
+                        Undo {this.props.undoButtonText}
+                    </MenuItem>
+
                     <MenuItem onClick={() => { this.handleMenuSelection('share') }}> Share </MenuItem>
 
                     <MenuItem onClick={() => { this.handleMenuSelection('completedTasks') }}> {completedTasksText} </MenuItem>
@@ -83,6 +89,10 @@ class ProjectMenu extends Component {
             this.props.onDeleteProjectButtonClick();
         }
         
+        if (selection === 'undo') {
+            this.props.onUndoButtonClick();
+        }
+
     }
 }
 

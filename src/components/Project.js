@@ -103,12 +103,14 @@ let styles = theme => {
             gridRow: 'Content',
             placeSelf: 'stretch',
             overflowY: 'scroll',
+            height: '100vh',
             background: theme.palette.background.default,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flex-start',
             alignItems: 'center',
-            paddingBottom: '160px' // Clear the Fabs
+            paddingBottom: '160px', // Clear the Fabs
+            paddingTop: '56px',
         }
     }
 };
@@ -137,15 +139,24 @@ class Project extends React.Component {
     render() {
         let { classes } = this.props;
         const { primaryFabClassName, secondaryFabClassName } = this.getFabClassNames();
+
+        let leftActions = [
+            { value: 'moveTask', background: this.props.theme.palette.primary.light, icon: <MoveTaskIcon/> },
+        ]
+
+        let rightActions = [
+            { value: 'deleteTask', background: this.props.theme.palette.error.dark, icon: <DeleteIcon/>},
+        ]
+
         
         return (
-            <React.Fragment>
+            <div>
                 <div
                     className={classes['projectGrid']}>
                     <div
                         className={classes['toolbarContainer']}>
                         <AppBar
-                            position="static">
+                            position="fixed">
                             <Toolbar
                                 disableGutters={true}>
                                 <IconButton
@@ -181,12 +192,13 @@ class Project extends React.Component {
                     <div
                         className={classes['contentContainer']}
                         ref={this.contentContainerRef}>
+
                         {this.getTaskListsJSX()}
+                       
                         <AddNewTaskListButton onClick={this.props.onAddNewTaskListButtonClick} />
                     </div>
 
                 </div>
-
                 <Zoom
                     in={this.props.enableStates.newTaskFab}>
                     <Fab
@@ -203,7 +215,7 @@ class Project extends React.Component {
                     onClick={this.props.onAddNewTaskListButtonClick}>
                     <AddTaskListIcon />
                 </Fab>
-            </React.Fragment>
+            </div>
             
         )
     }

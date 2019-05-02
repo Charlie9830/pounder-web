@@ -40,21 +40,14 @@ class InductionSplash extends Component {
                         <div
                             style={{ gridRow: 'Message', placeSelf: 'flex-start stretch' }}>
                             <Typography variant="h5" color="secondary">
-                                Version 2.2.1
+                                Version 2.2.2
                             </Typography>
     
                             <p />
     
                             <Typography variant="body1">
-                                This update brings Undo functionality and an interim improvement for the scrolling bug introduced
-                                in iOS 12.2.
+                                This update brings further improvements to the Scrolling bug introduced in iOS Safari 12.2.
                             </Typography>
-
-                            <p />
-                            <Typography variant="body1">
-                                A permanent fix for the scrolling bug is being worked on.
-                            </Typography>
-                            
                         </div>
                         <div
                             style={buttonContainer}>
